@@ -1,0 +1,43 @@
+html {
+    box-sizing: border-box;
+    font-size: 10px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+:root {
+    --color-primary-dark: #001829;
+    --color-primary: #003052;
+    --color-primary-light: #00477A;
+    --color-primary-highlight: #47B3FF;
+    --color-neutral: #EBF7FF;
+    --color-contrast: #FBC337;
+    --color-contrast-warning: #9C0000;
+}
+  
+/* ------------------------- Typography ------------------------- */
+
+body {
+    margin: 0;
+    font-family: "DM Sans", Helvetica, Arial, sans-serif;
+    color: var(--color-neutral);
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: var(--color-primary-dark);
+}
+  
+h1,
+h2,
+h3,
+h4 {
+    color: var(--color-primary-highlight);
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+}
