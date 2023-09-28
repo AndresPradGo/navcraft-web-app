@@ -10,11 +10,11 @@ html {
 }
 
 :root {
-    --color-primary-dark: #001829;
-    --color-primary: #003052;
-    --color-primary-light: #00477A;
-    --color-primary-highlight: #47B3FF;
-    --color-neutral: #EBF7FF;
+    --color-primary: #000F14;
+    --color-primary-light: #002E3D;
+    --color-highlight: #1FC7FF;
+    --color-grey: #6E7F87;
+    --color-neutral: #FDFFFF;
     --color-contrast: #FBC337;
     --color-contrast-warning: #9C0000;
 }
@@ -27,14 +27,14 @@ body {
     color: var(--color-neutral);
     font-size: 16px;
     line-height: 1.6;
-    background-color: var(--color-primary-dark);
+    background-color: var(--color-primary);
 }
   
 h1,
 h2,
 h3,
 h4 {
-    color: var(--color-primary-highlight);
+    color: var(--color-grey);
     font-weight: normal;
 }
 
