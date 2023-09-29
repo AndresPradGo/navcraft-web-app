@@ -1,14 +1,15 @@
 import { ReactElement } from "react";
+import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
 import {
   MdFlightTakeoff,
   MdAirplanemodeActive,
   MdOutlineLogout,
 } from "react-icons/md";
-import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
 import { useLocation, Link } from "react-router-dom";
 import { styled } from "styled-components";
+
 import NavBarExpandButton from "./NavBarExpandButton";
-import Button from "./common/Button";
+import Button from "./common/button";
 
 interface HtmlNavbarProps {
   $expanded: boolean;
@@ -109,19 +110,15 @@ const HtmlNavLink = styled(Link)<HtmlNavLinkProps>`
 
   transition: all 0.2s linear;
   color: ${(props) =>
-    props.$active ? "var(--color-highlight)" : "var(--color-grey)"};
-  background-color: ${(props) =>
-    props.$active ? "var(--color-primary)" : "var(--color-primary)"};
+    props.$active ? "var(--color-neutral)" : "var(--color-grey)"};
+  background-color: "var(--color-primary)";
 
   pointer-events: ${(props) => (props.$active ? "none" : "auto")};
   cursor: ${(props) => (props.$active ? "none" : "pointer")};
 
   &:hover,
   &:focus {
-    color: ${(props) =>
-      props.$active ? "var(--color-highlight)" : "var(--color-neutral)"};
-    background-color: ${(props) =>
-      props.$active ? "var(--color-primary)" : "var(--color-primary)"};
+    color: var(--color-neutral);
   }
 
   @media screen and (min-width: 768px) {
@@ -136,6 +133,12 @@ const HtmlNavLink = styled(Link)<HtmlNavLinkProps>`
       props.$active ? "var(--color-primary)" : "var(--color-grey)"};
     background-color: ${(props) =>
       props.$active ? "var(--color-neutral)" : "var(--color-primary)"};
+
+    &:hover,
+    &:focus {
+      color: ${(props) =>
+        props.$active ? "var(--color-primary)" : "var(--color-neutral)"};
+    }
   }
 
   @media screen and (min-width: 1440px) {
@@ -158,7 +161,7 @@ const HtmlLogoutButtonLogo = styled(MdOutlineLogout)`
 
 interface Props {
   expanded: boolean;
-  handleExpand: () => void;
+  handleExpand: (expandNavBar: boolean) => void;
   linksLinst: string[];
 }
 
@@ -179,6 +182,7 @@ interface LinkIconSelector {
 }
 
 interface LinksDataType {
+  path: LinkDataSelector;
   text: LinkDataSelector;
   href: LinkDataSelector;
   icon: LinkIconSelector;
@@ -188,6 +192,13 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
   const path = pathname.split("/").filter((item) => item);
 
   const linksData: LinksDataType = {
+    path: {
+      flights: "flights",
+      waypoints: "waypoints",
+      aircraft: "aircraft-list",
+      profile: "profile",
+      users: "users",
+    },
     text: {
       flights: "Flights",
       waypoints: "Waypoints",
@@ -198,7 +209,7 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
     href: {
       flights: "/flights",
       waypoints: "/waypoints",
-      aircraft: "/aircraft",
+      aircraft: "/aircraft-list",
       profile: "/profile",
       users: "/users",
     },
@@ -219,11 +230,7 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
     fill: false,
     scale: 1,
     margin: "0px",
-    children: ["Logout", <HtmlLogoutButtonLogo />],
-  };
-
-  const handlExpandButtonClick = () => {
-    handleExpand();
+    children: ["Logout", <HtmlLogoutButtonLogo key="logoutButtonIcon" />],
   };
 
   return (
@@ -239,10 +246,7 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
           margin={logoutButtonProps.margin}
           children={logoutButtonProps.children}
         />
-        <NavBarExpandButton
-          isExpanded={expanded}
-          handleClick={handlExpandButtonClick}
-        />
+        <NavBarExpandButton isExpanded={expanded} handleClick={handleExpand} />
       </HtmlNavBarGroup>
       <HtmlNavLinkContainer>
         {linksLinst.map((link) => (
@@ -251,9 +255,10 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
             to={linksData["href"][link as keyof LinkDataSelector]}
             $active={
               (!path.length && link === "flights") ||
-              (path.length === 1 && path[0] === link)
+              (path.length === 1 &&
+                path[0] === linksData.path[link as keyof LinkDataSelector])
             }
-            onClick={handleExpand}
+            onClick={() => handleExpand(false)}
           >
             {linksData["icon"][link as keyof LinkIconSelector]}
             <HtmlLinkText>

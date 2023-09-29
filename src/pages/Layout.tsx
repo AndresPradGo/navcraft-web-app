@@ -32,13 +32,9 @@ const Layout = () => {
     "flights",
     "waypoints",
     "aircraft",
-    "profile",
     "users",
+    "profile",
   ]);
-
-  const handlExpandNavBar = () => {
-    setNavBarIsExpanded(!navBarIsExpanded);
-  };
 
   return (
     <HtmlLayoutContainer
@@ -47,7 +43,7 @@ const Layout = () => {
     >
       <NavBar
         expanded={navBarIsExpanded}
-        handleExpand={handlExpandNavBar}
+        handleExpand={setNavBarIsExpanded}
         linksLinst={navBarLinks}
       />
     </HtmlLayoutContainer>

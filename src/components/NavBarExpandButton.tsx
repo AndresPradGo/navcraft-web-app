@@ -35,12 +35,12 @@ const CrossIcon = styled(RxCross1)`
 
 interface Props {
   isExpanded: boolean;
-  handleClick: () => void;
+  handleClick: (expandNavBar: boolean) => void;
 }
 
 const NavBarExpandButton = ({ isExpanded, handleClick }: Props) => {
   return (
-    <Button onClick={handleClick}>
+    <Button onClick={() => handleClick(!isExpanded)}>
       {isExpanded ? <CrossIcon /> : <HamburguerMenueIcon />}
     </Button>
   );
