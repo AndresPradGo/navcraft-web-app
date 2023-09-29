@@ -14,7 +14,7 @@ const HtmlLayoutContainer = styled.div<HtmlLayoutContainerProps>`
   min-height: 100vh;
   width: 100vw;
   grid-template-rows: ${(props) =>
-      props.$navBarIsExpanded ? props.$numNavLinks * 50 + 52 : 52}px auto 100px;
+      props.$navBarIsExpanded ? props.$numNavLinks * 50 + 64 : 62}px auto 100px;
   grid-template-columns: 100%;
   grid-template-areas:
     "header"

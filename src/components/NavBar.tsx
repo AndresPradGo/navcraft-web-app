@@ -1,9 +1,14 @@
 import { ReactElement } from "react";
-import { MdFlightTakeoff, MdAirplanemodeActive } from "react-icons/md";
+import {
+  MdFlightTakeoff,
+  MdAirplanemodeActive,
+  MdOutlineLogout,
+} from "react-icons/md";
 import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
 import { useLocation, Link } from "react-router-dom";
 import { styled } from "styled-components";
 import NavBarExpandButton from "./NavBarExpandButton";
+import Button from "./common/Button";
 
 interface HtmlNavbarProps {
   $expanded: boolean;
@@ -24,19 +29,54 @@ const HtmlNavbar = styled.div<HtmlNavbarProps>`
     flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
+    & div:last-of-type {
+      min-width: 105.703px;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    & div:last-of-type {
+      min-width: 115.703px;
+    }
+  }
+
+  @media screen and (min-width: 1440px) {
+    & div:last-of-type {
+      min-width: 135.703px;
+    }
   }
 `;
 
-const HtmlNavBarGroup = styled.div`
+const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   min-width: 100vw;
-  padding: 5px;
+  min-height: ${(props) => (props.$expanded ? "62px" : "60px")};
+  padding: 5px 10px;
+
+  border-bottom: ${(props) =>
+    props.$expanded ? "2px solid var(--color-primary-light)" : "0px"};
+
+  @media screen and (min-width: 425px) {
+    padding: 5px 20px;
+  }
 
   @media screen and (min-width: 768px) {
     min-width: 0px;
+    border-bottom: 0px;
+    padding: 5px 10px 5px 0px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    padding: 5px 20px 5px 0px;
+  }
+
+  @media screen and (min-width: 1440px) {
+    min-width: 0px;
+    border-bottom: 0px;
+    padding: 5px 40px 5px 0px;
   }
 `;
 
@@ -98,7 +138,7 @@ const HtmlNavLink = styled(Link)<HtmlNavLinkProps>`
       props.$active ? "var(--color-neutral)" : "var(--color-primary)"};
   }
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 1440px) {
     padding: 5px 40px;
   }
 `;
@@ -109,6 +149,11 @@ const HtmlLinkText = styled.span`
   @media screen and (min-width: 768px) {
     margin-left: 0px;
   }
+`;
+
+const HtmlLogoutButtonLogo = styled(MdOutlineLogout)`
+  font-size: 18px;
+  margin-left: 5px;
 `;
 
 interface Props {
@@ -166,13 +211,34 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
     },
   };
 
+  const logoutButtonProps = {
+    color: "var(--color-grey)",
+    hoverColor: "var(--color-neutral)",
+    backgroundColor: "var(--color-grey)",
+    backgroundHoverColor: "var(--color-neutral)",
+    fill: false,
+    scale: 1,
+    margin: "0px",
+    children: ["Logout", <HtmlLogoutButtonLogo />],
+  };
+
   const handlExpandButtonClick = () => {
     handleExpand();
   };
 
   return (
     <HtmlNavbar $expanded={expanded}>
-      <HtmlNavBarGroup>
+      <HtmlNavBarGroup $expanded={expanded}>
+        <Button
+          color={logoutButtonProps.color}
+          hoverColor={logoutButtonProps.hoverColor}
+          backgroundColor={logoutButtonProps.backgroundColor}
+          backgroundHoverColor={logoutButtonProps.backgroundHoverColor}
+          fill={logoutButtonProps.fill}
+          scale={logoutButtonProps.scale}
+          margin={logoutButtonProps.margin}
+          children={logoutButtonProps.children}
+        />
         <NavBarExpandButton
           isExpanded={expanded}
           handleClick={handlExpandButtonClick}
@@ -196,7 +262,7 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
           </HtmlNavLink>
         ))}
       </HtmlNavLinkContainer>
-      <HtmlNavBarGroup />
+      <div />
     </HtmlNavbar>
   );
 };
