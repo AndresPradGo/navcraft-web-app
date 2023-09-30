@@ -11,15 +11,12 @@ import { styled } from "styled-components";
 import NavBarExpandButton from "./NavBarExpandButton";
 import Button from "./common/button";
 
-interface HtmlNavbarProps {
-  $expanded: boolean;
-}
-const HtmlNavbar = styled.div<HtmlNavbarProps>`
+const HtmlNavBarContainer = styled.div`
   display: flex;
   overflow-y: hidden;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   min-width: 100vw;
   grid-area: header;
   background-color: var(--color-primary);
@@ -27,6 +24,26 @@ const HtmlNavbar = styled.div<HtmlNavbarProps>`
 
   @media screen and (min-width: 768px) {
     max-height: 72px;
+    flex-direction: row;
+  }
+`;
+
+interface HtmlNavbarProps {
+  $expanded: boolean;
+}
+const HtmlNavbar = styled.div`
+  display: flex;
+  overflow-y: hidden;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100vw;
+  grid-area: header;
+  background-color: var(--color-primary);
+
+  @media screen and (min-width: 768px) {
+    max-height: 72px;
+    max-width: 1400px;
     flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
@@ -38,12 +55,6 @@ const HtmlNavbar = styled.div<HtmlNavbarProps>`
   @media screen and (min-width: 1024px) {
     & div:last-of-type {
       min-width: 115.703px;
-    }
-  }
-
-  @media screen and (min-width: 1440px) {
-    & div:last-of-type {
-      min-width: 135.703px;
     }
   }
 `;
@@ -72,10 +83,6 @@ const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
 
   @media screen and (min-width: 1024px) {
     padding: 5px 20px 5px 0px;
-  }
-
-  @media screen and (min-width: 1440px) {
-    padding: 5px 40px 5px 0px;
   }
 `;
 
@@ -232,41 +239,46 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
   };
 
   return (
-    <HtmlNavbar $expanded={expanded}>
-      <HtmlNavBarGroup $expanded={expanded}>
-        <Button
-          color={logoutButtonProps.color}
-          hoverColor={logoutButtonProps.hoverColor}
-          backgroundColor={logoutButtonProps.backgroundColor}
-          backgroundHoverColor={logoutButtonProps.backgroundHoverColor}
-          fill={logoutButtonProps.fill}
-          scale={logoutButtonProps.scale}
-          margin={logoutButtonProps.margin}
-          children={logoutButtonProps.children}
-        />
-        <NavBarExpandButton isExpanded={expanded} handleClick={handleExpand} />
-      </HtmlNavBarGroup>
-      <HtmlNavLinkContainer>
-        {linksLinst.map((link) => (
-          <HtmlNavLink
-            key={link}
-            to={linksData["href"][link as keyof LinkDataSelector]}
-            $active={
-              (!path.length && link === "flights") ||
-              (path.length === 1 &&
-                path[0] === linksData.path[link as keyof LinkDataSelector])
-            }
-            onClick={() => handleExpand(false)}
-          >
-            {linksData["icon"][link as keyof LinkIconSelector]}
-            <HtmlLinkText>
-              {linksData["text"][link as keyof LinkDataSelector]}
-            </HtmlLinkText>
-          </HtmlNavLink>
-        ))}
-      </HtmlNavLinkContainer>
-      <div />
-    </HtmlNavbar>
+    <HtmlNavBarContainer>
+      <HtmlNavbar>
+        <HtmlNavBarGroup $expanded={expanded}>
+          <Button
+            color={logoutButtonProps.color}
+            hoverColor={logoutButtonProps.hoverColor}
+            backgroundColor={logoutButtonProps.backgroundColor}
+            backgroundHoverColor={logoutButtonProps.backgroundHoverColor}
+            fill={logoutButtonProps.fill}
+            scale={logoutButtonProps.scale}
+            margin={logoutButtonProps.margin}
+            children={logoutButtonProps.children}
+          />
+          <NavBarExpandButton
+            isExpanded={expanded}
+            handleClick={handleExpand}
+          />
+        </HtmlNavBarGroup>
+        <HtmlNavLinkContainer>
+          {linksLinst.map((link) => (
+            <HtmlNavLink
+              key={link}
+              to={linksData["href"][link as keyof LinkDataSelector]}
+              $active={
+                (!path.length && link === "flights") ||
+                (path.length === 1 &&
+                  path[0] === linksData.path[link as keyof LinkDataSelector])
+              }
+              onClick={() => handleExpand(false)}
+            >
+              {linksData["icon"][link as keyof LinkIconSelector]}
+              <HtmlLinkText>
+                {linksData["text"][link as keyof LinkDataSelector]}
+              </HtmlLinkText>
+            </HtmlNavLink>
+          ))}
+        </HtmlNavLinkContainer>
+        <div />
+      </HtmlNavbar>
+    </HtmlNavBarContainer>
   );
 };
 
