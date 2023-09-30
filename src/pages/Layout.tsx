@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import { styled } from "styled-components";
 
 import NavBar from "../components/NavBar";
@@ -46,6 +47,7 @@ const Layout = () => {
         handleExpand={setNavBarIsExpanded}
         linksLinst={navBarLinks}
       />
+      <Outlet />
     </HtmlLayoutContainer>
   );
 };
