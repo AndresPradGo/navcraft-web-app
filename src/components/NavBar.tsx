@@ -75,8 +75,6 @@ const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
   }
 
   @media screen and (min-width: 1440px) {
-    min-width: 0px;
-    border-bottom: 0px;
     padding: 5px 40px 5px 0px;
   }
 `;
@@ -141,7 +139,7 @@ const HtmlNavLink = styled(Link)<HtmlNavLinkProps>`
     }
   }
 
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1024px) {
     padding: 5px 40px;
   }
 `;
