@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import AircraftList from "./pages/AircraftList";
+import Aircraft from "./pages/Aircraft";
 import Flights from "./pages/Flights";
 import Layout from "./pages/Layout";
 import Users from "./pages/Users";
@@ -11,10 +11,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <Flights /> },
+      { index: true },
       { path: "flights", element: <Flights /> },
       { path: "waypoints", element: <Waypoints /> },
-      { path: "aircraft-list", element: <AircraftList /> },
+      { path: "aircraft", element: <Aircraft /> },
       { path: "users", element: <Users /> },
     ],
   },

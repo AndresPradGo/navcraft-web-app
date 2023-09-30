@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { BiSolidErrorAlt } from "react-icons/bi";
+import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
+import { MdFlightTakeoff, MdAirplanemodeActive } from "react-icons/md";
+import { useLocation } from "react-router-dom";
 import { styled } from "styled-components";
 
 import NavBar from "../components/NavBar";
+import ContentSection from "./ContentSection";
 interface HtmlLayoutContainerProps {
   $numNavLinks: number;
   $navBarIsExpanded: boolean;
@@ -28,14 +32,43 @@ const HtmlLayoutContainer = styled.div<HtmlLayoutContainerProps>`
 `;
 
 const Layout = () => {
+  const { pathname } = useLocation();
+  const currentPath = pathname.split("/").filter((item) => item);
+
   const [navBarIsExpanded, setNavBarIsExpanded] = useState(false);
   const [navBarLinks, setNavBarLinks] = useState([
-    "flights",
-    "waypoints",
-    "aircraft",
-    "users",
-    "profile",
+    {
+      text: "Flights",
+      href: "/flights",
+      icon: <MdFlightTakeoff />,
+    },
+    {
+      text: "Waypoints",
+      href: "/waypoints",
+      icon: <FaMapLocationDot />,
+    },
+    {
+      text: "Aircraft",
+      href: "/aircraft",
+      icon: <MdAirplanemodeActive />,
+    },
+    {
+      text: "Profile",
+      href: "/profile",
+      icon: <FaUserGear />,
+    },
+    {
+      text: "Users",
+      href: "/users",
+      icon: <FaUsersGear />,
+    },
   ]);
+
+  const titleData = navBarLinks.find(
+    (item) =>
+      (!currentPath.length && item.href === "/flights") ||
+      (currentPath.length === 1 && `/${currentPath[0]}` === item.href)
+  );
 
   return (
     <HtmlLayoutContainer
@@ -47,7 +80,10 @@ const Layout = () => {
         handleExpand={setNavBarIsExpanded}
         linksLinst={navBarLinks}
       />
-      <Outlet />
+      <ContentSection
+        titleText={titleData ? titleData.text : ""}
+        titleIcon={titleData ? titleData.icon : <BiSolidErrorAlt />}
+      />
     </HtmlLayoutContainer>
   );
 };

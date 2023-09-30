@@ -1,5 +1,5 @@
-const Flights = () => {
-  return <div>Flights</div>;
+const flights = () => {
+  return <div>flights</div>;
 };
 
-export default Flights;
+export default flights;

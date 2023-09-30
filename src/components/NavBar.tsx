@@ -1,11 +1,7 @@
 import { ReactElement } from "react";
-import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
-import {
-  MdFlightTakeoff,
-  MdAirplanemodeActive,
-  MdOutlineLogout,
-} from "react-icons/md";
-import { useLocation, Link } from "react-router-dom";
+
+import { MdOutlineLogout } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 import { styled } from "styled-components";
 
 import NavBarExpandButton from "./NavBarExpandButton";
@@ -98,11 +94,7 @@ const HtmlNavLinkContainer = styled.div`
   }
 `;
 
-interface HtmlNavLinkProps {
-  $active: boolean;
-}
-
-const HtmlNavLink = styled(Link)<HtmlNavLinkProps>`
+const HtmlNavLink = styled(NavLink)`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -114,12 +106,9 @@ const HtmlNavLink = styled(Link)<HtmlNavLinkProps>`
   border-radius: 5px;
 
   transition: all 0.2s linear;
-  color: ${(props) =>
-    props.$active ? "var(--color-neutral)" : "var(--color-grey)"};
-  background-color: "var(--color-primary)";
-
-  pointer-events: ${(props) => (props.$active ? "none" : "auto")};
-  cursor: ${(props) => (props.$active ? "none" : "pointer")};
+  color: var(--color-grey);
+  background-color: var(--color-primary);
+  cursor: pointer;
 
   &:hover,
   &:focus {
@@ -134,15 +123,12 @@ const HtmlNavLink = styled(Link)<HtmlNavLinkProps>`
     height: 70px;
     padding: 5px 20px;
 
-    color: ${(props) =>
-      props.$active ? "var(--color-primary)" : "var(--color-grey)"};
-    background-color: ${(props) =>
-      props.$active ? "var(--color-neutral)" : "var(--color-primary)"};
+    color: var(--color-grey);
+    background-color: var(--color-primary);
 
     &:hover,
     &:focus {
-      color: ${(props) =>
-        props.$active ? "var(--color-primary)" : "var(--color-neutral)"};
+      color: var(--color-neutral);
     }
   }
 
@@ -164,69 +150,18 @@ const HtmlLogoutButtonLogo = styled(MdOutlineLogout)`
   margin-left: 5px;
 `;
 
+interface NavLinkDataType {
+  text: string;
+  href: string;
+  icon: ReactElement;
+}
 interface Props {
   expanded: boolean;
   handleExpand: (expandNavBar: boolean) => void;
-  linksLinst: string[];
+  linksLinst: NavLinkDataType[];
 }
 
-interface LinkDataSelector {
-  flights: string;
-  waypoints: string;
-  aircraft: string;
-  profile: string;
-  users: string;
-}
-
-interface LinkIconSelector {
-  flights: ReactElement;
-  waypoints: ReactElement;
-  aircraft: ReactElement;
-  profile: ReactElement;
-  users: ReactElement;
-}
-
-interface LinksDataType {
-  path: LinkDataSelector;
-  text: LinkDataSelector;
-  href: LinkDataSelector;
-  icon: LinkIconSelector;
-}
 const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
-  const { pathname } = useLocation();
-  const path = pathname.split("/").filter((item) => item);
-
-  const linksData: LinksDataType = {
-    path: {
-      flights: "flights",
-      waypoints: "waypoints",
-      aircraft: "aircraft-list",
-      profile: "profile",
-      users: "users",
-    },
-    text: {
-      flights: "Flights",
-      waypoints: "Waypoints",
-      aircraft: "Aircraft",
-      profile: "Profile",
-      users: "Users",
-    },
-    href: {
-      flights: "/flights",
-      waypoints: "/waypoints",
-      aircraft: "/aircraft-list",
-      profile: "/profile",
-      users: "/users",
-    },
-    icon: {
-      flights: <MdFlightTakeoff />,
-      waypoints: <FaMapLocationDot />,
-      aircraft: <MdAirplanemodeActive />,
-      profile: <FaUserGear />,
-      users: <FaUsersGear />,
-    },
-  };
-
   const logoutButtonProps = {
     color: "var(--color-grey)",
     hoverColor: "var(--color-neutral)",
@@ -260,19 +195,12 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
         <HtmlNavLinkContainer>
           {linksLinst.map((link) => (
             <HtmlNavLink
-              key={link}
-              to={linksData["href"][link as keyof LinkDataSelector]}
-              $active={
-                (!path.length && link === "flights") ||
-                (path.length === 1 &&
-                  path[0] === linksData.path[link as keyof LinkDataSelector])
-              }
+              key={link.href}
+              to={link.href}
               onClick={() => handleExpand(false)}
             >
-              {linksData["icon"][link as keyof LinkIconSelector]}
-              <HtmlLinkText>
-                {linksData["text"][link as keyof LinkDataSelector]}
-              </HtmlLinkText>
+              {link.icon}
+              <HtmlLinkText>{link.text}</HtmlLinkText>
             </HtmlNavLink>
           ))}
         </HtmlNavLinkContainer>
