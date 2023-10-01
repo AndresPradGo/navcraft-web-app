@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { BiSolidErrorAlt } from "react-icons/bi";
-import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
-import { MdFlightTakeoff, MdAirplanemodeActive } from "react-icons/md";
-import { useLocation, Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { styled } from "styled-components";
 
 import NavBar from "../components/NavBar";
-import ContentSection from "./ContentSection";
+import useNavLinks from "../hooks/useNavLinks";
 import SideBarContext from "../state-management/contexts/sideBarContext";
+import usePathData from "../hooks/usePathData";
 interface HtmlLayoutContainerProps {
   $numNavLinks: number;
   $navBarIsExpanded: boolean;
@@ -32,44 +30,82 @@ const HtmlLayoutContainer = styled.div<HtmlLayoutContainerProps>`
   }
 `;
 
+const HtmlMainContainer = styled.main`
+  grid-area: main;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+`;
+
+const HtmlMainContent = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+
+  max-width: 1280px;
+`;
+
+const HtmlTitleSection = styled.section`
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  color: var(--color-neutral);
+  padding: 40px 10px 0px;
+  font-size: 36px;
+
+  @media screen and (min-width: 768px) {
+    padding: 0px;
+    max-width: 0px;
+    max-height: 0px;
+    diosplay: none;
+  }
+`;
+
+const HtmlTitleText = styled.span`
+  margin: 0 10px;
+  font-size: 26px;
+  @media screen and (min-width: 768px) {
+    margin: 0px;
+    font-size: 0px;
+  }
+`;
+
+const HtmlBodySection = styled.section`
+  width: 100%;
+  height: 100%;
+  padding: 40px 3%;
+
+  @media screen and (min-width: 533px) {
+    padding: 40px 16px;
+  }
+
+  @media screen and (min-width: 1280px) {
+    padding: 40px calc(16px - (100vw - 1280px) * 0.5);
+  }
+
+  @media screen and (min-width: 1312px) {
+    padding: 40px 0px;
+  }
+`;
+
 const Layout = () => {
-  const { pathname } = useLocation();
-  const currentPath = pathname.split("/").filter((item) => item);
-  if (!currentPath.length) return <Navigate to="/flights" />;
+  const navBarLinks = useNavLinks(true);
+  const pathData = usePathData(navBarLinks);
+
+  if (!pathData) return <Navigate to="/flights" />;
 
   const [sideBarIsExpanded, setSideBarIsExpanded] = useState(false);
   const [navBarIsExpanded, setNavBarIsExpanded] = useState(false);
-  const [navBarLinks, setNavBarLinks] = useState([
-    {
-      text: "Flights",
-      href: "/flights",
-      icon: <MdFlightTakeoff />,
-    },
-    {
-      text: "Waypoints",
-      href: "/waypoints",
-      icon: <FaMapLocationDot />,
-    },
-    {
-      text: "Aircraft",
-      href: "/aircraft",
-      icon: <MdAirplanemodeActive />,
-    },
-    {
-      text: "Profile",
-      href: "/profile",
-      icon: <FaUserGear />,
-    },
-    {
-      text: "Users",
-      href: "/users",
-      icon: <FaUsersGear />,
-    },
-  ]);
 
-  const titleData = navBarLinks.find(
-    (item) => currentPath.length === 1 && `/${currentPath[0]}` === item.href
-  );
+  const TitleIconComponent = pathData.titleData.titleIcon;
 
   return (
     <SideBarContext.Provider
@@ -84,10 +120,17 @@ const Layout = () => {
           handleExpand={setNavBarIsExpanded}
           linksLinst={navBarLinks}
         />
-        <ContentSection
-          titleText={titleData ? titleData.text : ""}
-          titleIcon={titleData ? titleData.icon : <BiSolidErrorAlt />}
-        />
+        <HtmlMainContainer>
+          <HtmlMainContent>
+            <HtmlTitleSection>
+              <TitleIconComponent />
+              <HtmlTitleText>{pathData.titleData.titleText}</HtmlTitleText>
+            </HtmlTitleSection>
+            <HtmlBodySection>
+              <Outlet />
+            </HtmlBodySection>
+          </HtmlMainContent>
+        </HtmlMainContainer>
       </HtmlLayoutContainer>
     </SideBarContext.Provider>
   );

@@ -1,5 +1,3 @@
-import { ReactElement } from "react";
-
 import { MdOutlineLogout } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { styled } from "styled-components";
@@ -7,6 +5,7 @@ import { styled } from "styled-components";
 import NavBarExpandButton from "./NavBarExpandButton";
 import Button from "./common/Button";
 import SideBarExpandButton from "./SideBarExpandButton";
+import { NavLinkData } from "../entities/NavLinkData";
 
 const HtmlNavBarContainer = styled.div`
   display: flex;
@@ -172,15 +171,10 @@ const HtmlLogoutButtonLogo = styled(MdOutlineLogout)`
   margin-left: 5px;
 `;
 
-interface NavLinkDataType {
-  text: string;
-  href: string;
-  icon: ReactElement;
-}
 interface Props {
   expanded: boolean;
   handleExpand: (expandNavBar: boolean) => void;
-  linksLinst: NavLinkDataType[];
+  linksLinst: NavLinkData[];
 }
 
 const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
@@ -216,16 +210,19 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
           />
         </HtmlNavBarGroup>
         <HtmlNavLinkContainer>
-          {linksLinst.map((link) => (
-            <HtmlNavLink
-              key={link.href}
-              to={link.href}
-              onClick={() => handleExpand(false)}
-            >
-              {link.icon}
-              <HtmlLinkText>{link.text}</HtmlLinkText>
-            </HtmlNavLink>
-          ))}
+          {linksLinst.map((link) => {
+            const IconComponent = link.icon;
+            return (
+              <HtmlNavLink
+                key={link.href}
+                to={link.href}
+                onClick={() => handleExpand(false)}
+              >
+                <IconComponent />
+                <HtmlLinkText>{link.text}</HtmlLinkText>
+              </HtmlNavLink>
+            );
+          })}
         </HtmlNavLinkContainer>
         <div>
           <SideBarExpandButton />

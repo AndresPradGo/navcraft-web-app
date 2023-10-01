@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { index: true },
+      { index: true, element: <Flights /> },
       { path: "flights", element: <Flights /> },
       { path: "waypoints", element: <Waypoints /> },
       { path: "aircraft", element: <Aircraft /> },
