@@ -14,23 +14,27 @@ const Button = styled.button`
   border: 0px solid var(--color-primary);
   cursor: pointer;
   transition: all 0.2s linear;
+  color: var(--color-grey);
   background-color: var(--color-primary);
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-primary-light);
+  }
 
   @media screen and (min-width: 768px) {
     max-width: 0px;
     max-height: 0px;
-    diosplay: none;
+    display: none;
   }
 `;
 
 const HamburguerMenueIcon = styled(RxHamburgerMenu)`
   font-size: 26px;
-  color: var(--color-grey);
 `;
 
 const CrossIcon = styled(RxCross1)`
   font-size: 20px;
-  color: var(--color-grey);
 `;
 
 interface Props {
