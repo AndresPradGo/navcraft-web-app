@@ -6,6 +6,7 @@ import { styled } from "styled-components";
 
 import NavBarExpandButton from "./NavBarExpandButton";
 import Button from "./common/button";
+import SideBarExpandButton from "./SideBarExpandButton";
 
 const HtmlNavBarContainer = styled.div`
   display: flex;
@@ -177,6 +178,7 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
     <HtmlNavBarContainer>
       <HtmlNavbar>
         <HtmlNavBarGroup $expanded={expanded}>
+          <SideBarExpandButton />
           <Button
             color={logoutButtonProps.color}
             hoverColor={logoutButtonProps.hoverColor}

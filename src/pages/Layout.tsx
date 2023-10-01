@@ -7,6 +7,7 @@ import { styled } from "styled-components";
 
 import NavBar from "../components/NavBar";
 import ContentSection from "./ContentSection";
+import SideBarContext from "../state-management/contexts/sideBarContext";
 interface HtmlLayoutContainerProps {
   $numNavLinks: number;
   $navBarIsExpanded: boolean;
@@ -35,6 +36,7 @@ const Layout = () => {
   const { pathname } = useLocation();
   const currentPath = pathname.split("/").filter((item) => item);
 
+  const [sideBarIsExpanded, setSideBarIsExpanded] = useState(false);
   const [navBarIsExpanded, setNavBarIsExpanded] = useState(false);
   const [navBarLinks, setNavBarLinks] = useState([
     {
@@ -71,20 +73,24 @@ const Layout = () => {
   );
 
   return (
-    <HtmlLayoutContainer
-      $numNavLinks={navBarLinks.length}
-      $navBarIsExpanded={navBarIsExpanded}
+    <SideBarContext.Provider
+      value={{ sideBarIsExpanded, setSideBarIsExpanded }}
     >
-      <NavBar
-        expanded={navBarIsExpanded}
-        handleExpand={setNavBarIsExpanded}
-        linksLinst={navBarLinks}
-      />
-      <ContentSection
-        titleText={titleData ? titleData.text : ""}
-        titleIcon={titleData ? titleData.icon : <BiSolidErrorAlt />}
-      />
-    </HtmlLayoutContainer>
+      <HtmlLayoutContainer
+        $numNavLinks={navBarLinks.length}
+        $navBarIsExpanded={navBarIsExpanded}
+      >
+        <NavBar
+          expanded={navBarIsExpanded}
+          handleExpand={setNavBarIsExpanded}
+          linksLinst={navBarLinks}
+        />
+        <ContentSection
+          titleText={titleData ? titleData.text : ""}
+          titleIcon={titleData ? titleData.icon : <BiSolidErrorAlt />}
+        />
+      </HtmlLayoutContainer>
+    </SideBarContext.Provider>
   );
 };
 
