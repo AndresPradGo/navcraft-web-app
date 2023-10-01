@@ -16,21 +16,55 @@ const HtmlMainContent = styled.section`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 100%;
+
   max-width: 1280px;
 `;
 
 const HtmlTitleSection = styled.section`
-  max-height: 70px;
-  color: var(--color-highlight);
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  color: var(--color-neutral);
+  padding: 40px 10px 0px;
+  font-size: 36px;
+
+  @media screen and (min-width: 768px) {
+    padding: 0px;
+    max-width: 0px;
+    max-height: 0px;
+    diosplay: none;
+  }
 `;
 
-const HtmlBodySection = styled.section``;
-
-const HtmlLinkText = styled.span`
+const HtmlTitleText = styled.span`
   margin: 0 10px;
-  font-size: 16px;
+  font-size: 26px;
   @media screen and (min-width: 768px) {
-    margin-left: 0px;
+    margin: 0px;
+    font-size: 0px;
+  }
+`;
+
+const HtmlBodySection = styled.section`
+  width: 100%;
+  height: 100%;
+  padding: 40px 3%;
+
+  @media screen and (min-width: 533px) {
+    padding: 40px 16px;
+  }
+
+  @media screen and (min-width: 1280px) {
+    padding: 40px calc(16px - (100vw - 1280px) * 0.5);
+  }
+
+  @media screen and (min-width: 1312px) {
+    padding: 40px 0px;
   }
 `;
 
@@ -45,18 +79,10 @@ const ContentSection = ({ titleText, titleIcon }: Props) => {
       <HtmlMainContent>
         <HtmlTitleSection>
           {titleIcon}
-          <HtmlLinkText>{titleText}</HtmlLinkText>
+          <HtmlTitleText>{titleText}</HtmlTitleText>
         </HtmlTitleSection>
-        <Outlet />
         <HtmlBodySection>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit
-            tenetur earum optio sit accusantium voluptas et deleniti dolores a
-            expedita aut facere modi quas, explicabo deserunt eum vero delectus
-            accusamus cumque id placeat. Dolore ratione explicabo nam. Odit
-            atque voluptatum veritatis quas adipisci facere, debitis, quidem
-            alias harum, dolor aperiam.
-          </p>
+          <Outlet />
         </HtmlBodySection>
       </HtmlMainContent>
     </HtmlMainContainer>
