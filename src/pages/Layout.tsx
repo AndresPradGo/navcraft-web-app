@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BiSolidErrorAlt } from "react-icons/bi";
 import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
 import { MdFlightTakeoff, MdAirplanemodeActive } from "react-icons/md";
-import { useLocation } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 import NavBar from "../components/NavBar";
@@ -35,6 +35,7 @@ const HtmlLayoutContainer = styled.div<HtmlLayoutContainerProps>`
 const Layout = () => {
   const { pathname } = useLocation();
   const currentPath = pathname.split("/").filter((item) => item);
+  if (!currentPath.length) return <Navigate to="/flights" />;
 
   const [sideBarIsExpanded, setSideBarIsExpanded] = useState(false);
   const [navBarIsExpanded, setNavBarIsExpanded] = useState(false);
@@ -67,9 +68,7 @@ const Layout = () => {
   ]);
 
   const titleData = navBarLinks.find(
-    (item) =>
-      (!currentPath.length && item.href === "/flights") ||
-      (currentPath.length === 1 && `/${currentPath[0]}` === item.href)
+    (item) => currentPath.length === 1 && `/${currentPath[0]}` === item.href
   );
 
   return (
