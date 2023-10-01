@@ -38,6 +38,12 @@ const HtmlNavbar = styled.div`
   grid-area: header;
   background-color: var(--color-primary);
 
+  & div:last-of-type {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
   @media screen and (min-width: 768px) {
     max-height: 72px;
     max-width: 1400px;
@@ -221,7 +227,9 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
             </HtmlNavLink>
           ))}
         </HtmlNavLinkContainer>
-        <div />
+        <div>
+          <SideBarExpandButton />
+        </div>
       </HtmlNavbar>
     </HtmlNavBarContainer>
   );

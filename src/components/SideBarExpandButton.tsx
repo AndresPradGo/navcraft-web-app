@@ -26,6 +26,14 @@ const Button = styled.button<ButtonProps>`
   color: var(--color-grey);
   background-color: var(--color-primary);
 
+  &:last-of-type {
+    max-width: 0px;
+    max-height: 0px;
+    display: none;
+    pointer-events: none;
+    cursor: none;
+  }
+
   .chevron-icon:first-child {
     transition: all 0.2s linear;
     transform: ${(props) =>
@@ -42,11 +50,30 @@ const Button = styled.button<ButtonProps>`
     background-color: var(--color-primary-light);
   }
 
+  @media screen and (min-width: 768px) {
+    &:first-of-type {
+      max-width: 0px;
+      max-height: 0px;
+      display: none;
+      pointer-events: none;
+      cursor: none;
+    }
+
+    &:last-of-type {
+      max-width: 40px;
+      max-height: 40px;
+      display: flex;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+  }
+
   @media screen and (min-width: 1024px) {
-    max-width: 0px;
-    max-height: 0px;
-    display: none;
-    background-color: var(--color-primary);
+    max-width: 0px !important;
+    max-height: 0px !important;
+    display: none !important;
+    pointer-events: none !important;
+    cursor: none !important;
   }
 `;
 
