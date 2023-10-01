@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { styled } from "styled-components";
 
 import NavBarExpandButton from "./NavBarExpandButton";
-import Button from "./common/button";
+import Button from "./common/Button";
 import SideBarExpandButton from "./SideBarExpandButton";
 
 const HtmlNavBarContainer = styled.div`
@@ -86,12 +86,27 @@ const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
 const HtmlNavLinkContainer = styled.div`
   min-width: 100%;
 
+  & .active {
+    color: var(--color-neutral) !important;
+    pointer-events: none !important;
+    cursor: none !important;
+  }
+
   @media screen and (min-width: 768px) {
     min-width: 0px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+
+    & .active {
+      color: var(--color-primary) !important;
+      background-color: var(--color-neutral) !important;
+    }
+    & .active:hover,
+    & .active:focus {
+      color: var(--color-primary) !important;
+    }
   }
 `;
 

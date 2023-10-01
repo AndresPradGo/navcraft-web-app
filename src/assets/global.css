@@ -41,22 +41,3 @@ h4 {
 a {
     text-decoration: none;
 }
-
-/* ------------------------- Navigation Links ------------------------- */
-
-.active {
-    color: var(--color-neutral) !important;
-    pointer-events: none !important;
-    cursor: none !important;
-}
-
-@media screen and (min-width: 768px) {
-    .active { 
-        color: var(--color-primary) !important;
-        background-color: var(--color-neutral) !important;
-    }
-    .active:hover,
-    .active:focus {
-      color: var(--color-primary) !important;
-    }
-}
