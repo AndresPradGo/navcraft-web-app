@@ -9,11 +9,11 @@ interface TitleDataType {
 }
 
 interface PathDataType {
-    titleData: TitleDataType;
+    titleData: TitleDataType | null;
     hasSideBar: boolean;
 }
 
-const usePathData = (navBarLinks: NavLinkData[]): PathDataType | null => {
+const usePathData = (navBarLinks: NavLinkData[]): PathDataType => {
     const { pathname } = useLocation();
     const currentPath = pathname.split("/").filter((item) => item);
 
@@ -29,7 +29,7 @@ const usePathData = (navBarLinks: NavLinkData[]): PathDataType | null => {
         })
     }
   
-    return null
+    return {titleData: null, hasSideBar: true}
 }
 
 export default usePathData;

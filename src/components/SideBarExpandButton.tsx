@@ -19,11 +19,11 @@ const Button = styled.button<ButtonProps>`
   justify-content: center;
   align-items: center;
 
-  border: 2px solid var(--color-primary-light);
+  border: 1px solid var(--color-grey);
   cursor: pointer;
   transition: all 0.2s linear;
   color: var(--color-grey);
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-dark);
 
   &:last-of-type {
     max-width: 0px;
@@ -76,8 +76,21 @@ const Button = styled.button<ButtonProps>`
   }
 `;
 
+const HtmlDummyButton = styled.button`
+  border: 0px;
+  max-width: 0px;
+  max-height: 0px;
+  display: none;
+  pointer-events: none;
+  cursor: none;
+  background-color: transparent,
+  visibility: hidden;
+`;
+
 const SideBarExpandButton = () => {
-  const { sideBarIsExpanded, setSideBarIsExpanded } = useSideBar();
+  const { hasSideBar, sideBarIsExpanded, setSideBarIsExpanded } = useSideBar();
+
+  if (!hasSideBar) return <HtmlDummyButton />;
 
   return (
     <Button

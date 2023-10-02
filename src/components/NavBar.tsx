@@ -6,17 +6,20 @@ import NavBarExpandButton from "./NavBarExpandButton";
 import Button from "./common/Button";
 import SideBarExpandButton from "./SideBarExpandButton";
 import { NavLinkData } from "../entities/NavLinkData";
+import useSideBar from "../hooks/useSideBar";
 
 const HtmlNavBarContainer = styled.div`
+  z-index: 9999;
   display: flex;
   overflow-y: hidden;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-width: 100vw;
-  grid-area: header;
-  background-color: var(--color-primary);
-  border-bottom: 2px solid var(--color-primary-light);
+  grid-row: 1;
+  grid-column: 1 / span2;
+  background-color: var(--color-primary-dark);
+  border-bottom: 0px solid var(--color-primary-light);
 
   @media screen and (min-width: 768px) {
     max-height: 72px;
@@ -35,7 +38,7 @@ const HtmlNavbar = styled.div`
   align-items: flex-start;
   width: 100vw;
   grid-area: header;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-dark);
 
   & div:last-of-type {
     display: flex;
@@ -128,7 +131,7 @@ const HtmlNavLink = styled(NavLink)`
 
   transition: all 0.2s linear;
   color: var(--color-grey);
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-dark);
   cursor: pointer;
 
   &:hover,
@@ -145,7 +148,7 @@ const HtmlNavLink = styled(NavLink)`
     padding: 5px 20px;
 
     color: var(--color-grey);
-    background-color: var(--color-primary);
+    background-color: var(--color-primary-dark);
 
     &:hover,
     &:focus {
@@ -178,6 +181,7 @@ interface Props {
 }
 
 const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
+  const { setSideBarIsExpanded } = useSideBar();
   const logoutButtonProps = {
     color: "var(--color-grey)",
     hoverColor: "var(--color-neutral)",
@@ -187,6 +191,11 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
     scale: 1,
     margin: "0px",
     children: ["Logout", <HtmlLogoutButtonLogo key="logoutButtonIcon" />],
+  };
+
+  const handleLinkClick = () => {
+    handleExpand(false);
+    setSideBarIsExpanded(false);
   };
 
   return (
@@ -216,7 +225,7 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
               <HtmlNavLink
                 key={link.href}
                 to={link.href}
-                onClick={() => handleExpand(false)}
+                onClick={handleLinkClick}
               >
                 <IconComponent />
                 <HtmlLinkText>{link.text}</HtmlLinkText>
