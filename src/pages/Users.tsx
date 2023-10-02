@@ -1,5 +1,12 @@
+import ContentLayout from "./ContentLayout";
+import WithSideBar from "../components/sidebar/WithSideBar";
+
 const Users = () => {
-  return <div>Users</div>;
+  return (
+    <WithSideBar>
+      <ContentLayout>users</ContentLayout>
+    </WithSideBar>
+  );
 };
 
 export default Users;

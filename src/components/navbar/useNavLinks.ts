@@ -1,6 +1,12 @@
 import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
 import { MdFlightTakeoff, MdAirplanemodeActive } from "react-icons/md";
-import { NavLinkData } from './NavLinkData';
+import { IconType } from "react-icons";
+
+interface NavLinkData {
+  text: string;
+  href: string;
+  icon: IconType;
+}
 
 const useNavLinks = (userIsMaster: boolean): NavLinkData[] => {
   const navLinksData = [

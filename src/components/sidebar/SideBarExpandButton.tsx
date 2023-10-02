@@ -1,7 +1,7 @@
 import { BsChevronUp, BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
 
-import useSideBar from "../hooks/useSideBar";
+import useSideBar from "./useSideBar";
 
 interface ButtonProps {
   $expanded: boolean;

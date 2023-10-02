@@ -1,25 +1,32 @@
-import { MdOutlineLogout } from "react-icons/md";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { styled } from "styled-components";
 
 import NavBarExpandButton from "./NavBarExpandButton";
-import Button from "./common/Button";
-import SideBarExpandButton from "./SideBarExpandButton";
-import { NavLinkData } from "../entities/NavLinkData";
-import useSideBar from "../hooks/useSideBar";
+import { SideBarExpandButton } from "../sidebar";
+import { useSideBar } from "../sidebar";
+import useNavLinks from "./useNavLinks";
+import usePathList from "../../hooks/usePathList";
 
-const HtmlNavBarContainer = styled.div`
+interface HtmlNavBarContainerProps {
+  $expanded: boolean;
+}
+const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
+  transition: all 0.2s linear;
   z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+
   display: flex;
   overflow-y: hidden;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-width: 100vw;
-  grid-row: 1;
-  grid-column: 1 / span2;
+  max-height: ${(props) => (props.$expanded ? "100vh" : "60px")};
+
   background-color: var(--color-primary-dark);
-  border-bottom: 0px solid var(--color-primary-light);
 
   @media screen and (min-width: 768px) {
     max-height: 72px;
@@ -37,7 +44,6 @@ const HtmlNavbar = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   width: 100vw;
-  grid-area: header;
   background-color: var(--color-primary-dark);
 
   & div:last-of-type {
@@ -169,57 +175,47 @@ const HtmlLinkText = styled.span`
   }
 `;
 
-const HtmlLogoutButtonLogo = styled(MdOutlineLogout)`
-  font-size: 18px;
-  margin-left: 5px;
+const HtmlTitle = styled.div`
+  @media screen and (min-width: 768px) {
+    overflow: hidden;
+    max-height: 0;
+    max-width: 0;
+    display: none;
+  }
 `;
 
-interface Props {
-  expanded: boolean;
-  handleExpand: (expandNavBar: boolean) => void;
-  linksLinst: NavLinkData[];
-}
+const NavBar = () => {
+  const [expanded, setExpanded] = useState(false);
+  const linksList = useNavLinks(true);
+  const { hasSideBar, setSideBarIsExpanded } = useSideBar();
 
-const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
-  const { setSideBarIsExpanded } = useSideBar();
-  const logoutButtonProps = {
-    color: "var(--color-grey)",
-    hoverColor: "var(--color-neutral)",
-    backgroundColor: "var(--color-grey)",
-    backgroundHoverColor: "var(--color-neutral)",
-    fill: false,
-    scale: 1,
-    margin: "0px",
-    children: ["Logout", <HtmlLogoutButtonLogo key="logoutButtonIcon" />],
-  };
+  let currentPath = usePathList();
+  let activeLinkDataList = linksList.filter(
+    (item) => item.href === `/${currentPath[0]}`
+  );
+  if (!activeLinkDataList.length)
+    activeLinkDataList = linksList.filter((item) => item.href === "/flights");
+  const activeLinkData = activeLinkDataList[0];
+  const ActiveLinkIcon = activeLinkData.icon;
 
   const handleLinkClick = () => {
-    handleExpand(false);
+    setExpanded(false);
     setSideBarIsExpanded(false);
   };
 
   return (
-    <HtmlNavBarContainer>
+    <HtmlNavBarContainer $expanded={expanded}>
       <HtmlNavbar>
         <HtmlNavBarGroup $expanded={expanded}>
-          <SideBarExpandButton />
-          <Button
-            color={logoutButtonProps.color}
-            hoverColor={logoutButtonProps.hoverColor}
-            backgroundColor={logoutButtonProps.backgroundColor}
-            backgroundHoverColor={logoutButtonProps.backgroundHoverColor}
-            fill={logoutButtonProps.fill}
-            scale={logoutButtonProps.scale}
-            margin={logoutButtonProps.margin}
-            children={logoutButtonProps.children}
-          />
-          <NavBarExpandButton
-            isExpanded={expanded}
-            handleClick={handleExpand}
-          />
+          {hasSideBar ? <SideBarExpandButton /> : <></>}
+          <HtmlTitle>
+            <ActiveLinkIcon />
+            <HtmlLinkText>{activeLinkData.text}</HtmlLinkText>
+          </HtmlTitle>
+          <NavBarExpandButton isExpanded={expanded} handleClick={setExpanded} />
         </HtmlNavBarGroup>
         <HtmlNavLinkContainer>
-          {linksLinst.map((link) => {
+          {linksList.map((link) => {
             const IconComponent = link.icon;
             return (
               <HtmlNavLink
@@ -233,9 +229,7 @@ const NavBar = ({ expanded, handleExpand, linksLinst }: Props) => {
             );
           })}
         </HtmlNavLinkContainer>
-        <div>
-          <SideBarExpandButton />
-        </div>
+        <div>{hasSideBar ? <SideBarExpandButton /> : <></>}</div>
       </HtmlNavbar>
     </HtmlNavBarContainer>
   );

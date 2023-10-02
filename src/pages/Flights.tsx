@@ -1,5 +1,12 @@
+import ContentLayout from "./ContentLayout";
+import WithSideBar from "../components/sidebar/WithSideBar";
+
 const flights = () => {
-  return <div>flights</div>;
+  return (
+    <WithSideBar>
+      <ContentLayout>flights</ContentLayout>
+    </WithSideBar>
+  );
 };
 
 export default flights;
