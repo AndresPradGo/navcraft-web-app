@@ -1,8 +1,7 @@
-import { useContext } from "react";
 import { BsChevronUp, BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
 
-import SideBarContext from "../state-management/contexts/sideBarContext";
+import useSideBar from "../hooks/useSideBar";
 
 interface ButtonProps {
   $expanded: boolean;
@@ -78,8 +77,7 @@ const Button = styled.button<ButtonProps>`
 `;
 
 const SideBarExpandButton = () => {
-  const { sideBarIsExpanded, setSideBarIsExpanded } =
-    useContext(SideBarContext);
+  const { sideBarIsExpanded, setSideBarIsExpanded } = useSideBar();
 
   return (
     <Button

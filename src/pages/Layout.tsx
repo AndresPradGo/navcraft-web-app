@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 
 import NavBar from "../components/NavBar";
 import useNavLinks from "../hooks/useNavLinks";
-import SideBarContext from "../state-management/contexts/sideBarContext";
+import SideBarContext from "../contexts/sideBarContext";
 import usePathData from "../hooks/usePathData";
 interface HtmlLayoutContainerProps {
   $numNavLinks: number;
