@@ -25,8 +25,10 @@ const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
   align-items: center;
   min-width: 100vw;
   max-height: ${(props) => (props.$expanded ? "100vh" : "60px")};
+  box-shadow: 0 0 10px 2px rgb(255 255 255/10%);
 
   background-color: var(--color-primary-dark);
+  opacity: 0.95;
 
   @media screen and (min-width: 768px) {
     max-height: 72px;
@@ -44,7 +46,7 @@ const HtmlNavbar = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   width: 100vw;
-  background-color: var(--color-primary-dark);
+  background-color: transparent;
 
   & div:last-of-type {
     display: flex;
@@ -58,14 +60,24 @@ const HtmlNavbar = styled.div`
     flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
+
     & div:last-of-type {
-      min-width: 105.703px;
+      width: 80px;
+      padding: 5px 20px;
     }
   }
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
+    max-height: 72px;
+    max-width: 1400px;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+
     & div:last-of-type {
-      min-width: 115.703px;
+      width: 40px;
+      padding: 0px;
+      margin-left: calc(5vw - 10px);
     }
   }
 `;
@@ -76,11 +88,16 @@ const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
   justify-content: space-between;
   align-items: center;
   min-width: 100vw;
-  min-height: ${(props) => (props.$expanded ? "62px" : "60px")};
+  min-height: 61px;
   padding: 5px 10px;
 
   border-bottom: ${(props) =>
-    props.$expanded ? "2px solid var(--color-primary-light)" : "0px"};
+    props.$expanded ? "1px solid var(--color-grey-dark)" : "0px"};
+
+  & div:first-of-type {
+    min-width: 40px;
+    min-height: 40px;
+  }
 
   @media screen and (min-width: 425px) {
     padding: 5px 20px;
@@ -88,8 +105,14 @@ const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
 
   @media screen and (min-width: 768px) {
     min-width: 0px;
+    width: 40px;
     border-bottom: 0px;
-    padding: 5px 10px 5px 0px;
+    padding: 0px;
+    margin-left: calc(5vw - 10px);
+
+    & * {
+      display: none;
+    }
   }
 
   @media screen and (min-width: 1024px) {
@@ -97,11 +120,14 @@ const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
   }
 `;
 
-const HtmlNavLinkContainer = styled.div`
+const HtmlNavLinkContainer = styled.div<HtmlNavbarProps>`
   min-width: 100%;
 
+  background-color: var(--color-primary-dark);
+  opacity: 1;
+
   & .active {
-    color: var(--color-neutral) !important;
+    color: var(--color-white) !important;
     pointer-events: none !important;
     cursor: none !important;
   }
@@ -114,12 +140,12 @@ const HtmlNavLinkContainer = styled.div`
     align-items: center;
 
     & .active {
-      color: var(--color-primary) !important;
-      background-color: var(--color-neutral) !important;
+      color: var(--color-primary-dark) !important;
+      background-color: var(--color-white) !important;
     }
     & .active:hover,
     & .active:focus {
-      color: var(--color-primary) !important;
+      color: var(--color-primary-dark) !important;
     }
   }
 `;
@@ -137,32 +163,34 @@ const HtmlNavLink = styled(NavLink)`
 
   transition: all 0.2s linear;
   color: var(--color-grey);
-  background-color: var(--color-primary-dark);
+  background-color: transparent;
   cursor: pointer;
 
   &:hover,
   &:focus {
-    color: var(--color-neutral);
+    color: var(--color-white);
+    background-color: transparent;
   }
 
   @media screen and (min-width: 768px) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-width: 0px;
+    min-width: 110px;
     height: 70px;
-    padding: 5px 20px;
+    padding: 5px 10px;
 
     color: var(--color-grey);
-    background-color: var(--color-primary-dark);
+    background-color: transparent;
 
     &:hover,
     &:focus {
-      color: var(--color-neutral);
+      color: var(--color-white);
     }
   }
 
   @media screen and (min-width: 1024px) {
+    min-width: 170px;
     padding: 5px 40px;
   }
 `;
@@ -176,6 +204,13 @@ const HtmlLinkText = styled.span`
 `;
 
 const HtmlTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  color: var(--color-white);
+
   @media screen and (min-width: 768px) {
     overflow: hidden;
     max-height: 0;
@@ -186,7 +221,7 @@ const HtmlTitle = styled.div`
 
 const NavBar = () => {
   const [expanded, setExpanded] = useState(false);
-  const linksList = useNavLinks(true);
+  const linksList = useNavLinks(false);
   const { hasSideBar, setSideBarIsExpanded } = useSideBar();
 
   let currentPath = usePathList();
@@ -207,14 +242,14 @@ const NavBar = () => {
     <HtmlNavBarContainer $expanded={expanded}>
       <HtmlNavbar>
         <HtmlNavBarGroup $expanded={expanded}>
-          {hasSideBar ? <SideBarExpandButton /> : <></>}
+          {hasSideBar ? <SideBarExpandButton /> : <div></div>}
           <HtmlTitle>
             <ActiveLinkIcon />
             <HtmlLinkText>{activeLinkData.text}</HtmlLinkText>
           </HtmlTitle>
           <NavBarExpandButton isExpanded={expanded} handleClick={setExpanded} />
         </HtmlNavBarGroup>
-        <HtmlNavLinkContainer>
+        <HtmlNavLinkContainer $expanded={expanded}>
           {linksList.map((link) => {
             const IconComponent = link.icon;
             return (

@@ -19,10 +19,10 @@ const Button = styled.button<ButtonProps>`
   justify-content: center;
   align-items: center;
 
-  border: 1px solid var(--color-grey);
+  border: 1px solid var(--color-grey-dark);
   cursor: pointer;
   transition: all 0.2s linear;
-  color: var(--color-grey);
+  color: var(--color-grey-light);
   background-color: var(--color-primary-dark);
 
   &:last-of-type {
@@ -36,17 +36,18 @@ const Button = styled.button<ButtonProps>`
   .chevron-icon:first-child {
     transition: all 0.2s linear;
     transform: ${(props) =>
-      props.$expanded ? "translateY(12.3px)" : "translateY(3px)"};
+      props.$expanded ? "translateY(13px)" : "translateY(3px)"};
   }
   .chevron-icon:last-child {
     transition: all 0.2s linear;
     transform: ${(props) =>
-      props.$expanded ? "translateY(-12.3px)" : "translateY(-3px)"};
+      props.$expanded ? "translateY(-13px)" : "translateY(-3px)"};
   }
 
   &:hover,
   &:focus {
-    background-color: var(--color-primary-light);
+    color: var(--color-white);
+    background-color: var(--color-primary-bright);
   }
 
   @media screen and (min-width: 768px) {

@@ -30,7 +30,10 @@ interface HtmlSideBarContainerProps {
 const HtmlMainContainerWithSideBar = styled(
   HtmlMainContainer
 )<HtmlSideBarContainerProps>`
-  transform: translate(${(props) => (props.$sideBarIsExpanded ? "200%" : "0")});
+  max-width: ${(props) => (props.$sideBarIsExpanded ? "10px" : "100vw")};
+  transform: translate(
+    ${(props) => (props.$sideBarIsExpanded ? "100vw" : "0")}
+  );
 `;
 
 interface Props {
@@ -39,7 +42,12 @@ interface Props {
 
 const WithSideBar = ({ children }: Props) => {
   const { hasSideBar, sideBarIsExpanded } = useSideBar();
-  if (!hasSideBar) return <HtmlMainContainer>{children}</HtmlMainContainer>;
+  if (!hasSideBar)
+    return (
+      <HtmlSideBarAndContentContainer>
+        <HtmlMainContainer>{children}</HtmlMainContainer>
+      </HtmlSideBarAndContentContainer>
+    );
 
   return (
     <HtmlSideBarAndContentContainer>

@@ -9,8 +9,6 @@ interface HtmlSideBarContainerProps {
 const HtmlSideBarContainer = styled.section<HtmlSideBarContainerProps>`
   transition: all 0.5s ease-out;
   overflow-x: hidden;
-  grid-row: 2 / span 2;
-  grid-column: 1 / span 1;
   width: ${(props) => (props.$sideBarIsExpanded ? "300px" : "0px")};
   height: 100%;
 
@@ -25,8 +23,7 @@ const HtmlSideBarContainer = styled.section<HtmlSideBarContainerProps>`
 `;
 
 const HtmlSideBar = styled.div`
-  background-color: var(--color-primary);
-  border-right: 2px solid var(--color-primary-light);
+  background-color: var(--color-primary-dark);
   height: 100%;
   width: 100%;
   transition: all 1s linear;

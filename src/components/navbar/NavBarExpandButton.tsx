@@ -14,12 +14,13 @@ const Button = styled.button`
   border: 0px solid var(--color-primary);
   cursor: pointer;
   transition: all 0.2s linear;
-  color: var(--color-grey);
+  color: var(--color-grey-bright);
   background-color: var(--color-primary-dark);
 
   &:hover,
   &:focus {
-    background-color: var(--color-primary-light);
+    color: var(--color-white);
+    background-color: var(--color-primary-bright);
   }
 
   @media screen and (min-width: 768px) {
