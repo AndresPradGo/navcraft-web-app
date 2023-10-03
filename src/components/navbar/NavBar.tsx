@@ -29,7 +29,7 @@ const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
   border-bottom: 1px solid var(--color-grey-dark);
 
   background-color: var(--color-primary-dark);
-  opacity: 0.96;
+  opacity: 0.93;
 
   @media screen and (min-width: 768px) {
     max-height: 72px;
@@ -130,8 +130,6 @@ const HtmlNavLinkContainer = styled.div<HtmlNavbarProps>`
 
   & .active {
     color: var(--color-white) !important;
-    pointer-events: none !important;
-    cursor: none !important;
   }
 
   @media screen and (min-width: 768px) {
@@ -211,7 +209,7 @@ const HtmlTitle = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 26px;
-  color: var(--color-white);
+  color: var(--color-highlight);
 
   @media screen and (min-width: 768px) {
     overflow: hidden;

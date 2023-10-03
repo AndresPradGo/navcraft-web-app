@@ -1,4 +1,5 @@
-import { useState, ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
+import { animateScroll as scroll } from "react-scroll";
 
 import SideBarContext from "./sideBarContext";
 import usePathList from "../../hooks/usePathList";
@@ -24,6 +25,19 @@ const SideBarProvider = ({ children }: Props) => {
     : false;
 
   const [sideBarIsExpanded, setSideBarIsExpanded] = useState(false);
+
+  useEffect(() => {
+    scroll.scrollMore(0.5, {
+      duration: 500,
+      delay: 500,
+      smooth: false,
+    });
+    scroll.scrollMore(-0.5, {
+      duration: 500,
+      delay: 500,
+      smooth: false,
+    });
+  }, [sideBarIsExpanded]);
 
   return (
     <SideBarContext.Provider

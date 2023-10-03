@@ -68,7 +68,7 @@ const Button = styled.button<ButtonProps>`
     }
   }
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 1280px) {
     max-width: 0px !important;
     max-height: 0px !important;
     display: none !important;

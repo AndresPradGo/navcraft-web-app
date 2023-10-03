@@ -1,8 +1,9 @@
 import { Outlet } from "react-router-dom";
 import { styled } from "styled-components";
 
-import { NavBar } from "../components/navbar";
-import { SideBarProvider } from "../components/sidebar";
+import { NavBar } from "../../components/navbar";
+import { SideBarProvider } from "../../components/sidebar";
+import useScroll from "./useScroll";
 
 const HtmlLayoutContainer = styled.div`
   transition: all 0.5s ease-out;
@@ -19,6 +20,7 @@ const HtmlLayoutContainer = styled.div`
 `;
 
 const Layout = () => {
+  useScroll();
   return (
     <SideBarProvider>
       <HtmlLayoutContainer>

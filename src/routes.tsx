@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import Aircraft from "./pages/Aircraft";
 import Flights from "./pages/Flights";
-import Layout from "./pages/Layout";
+import { Layout } from "./pages/layout";
 import Users from "./pages/Users";
 import Waypoints from "./pages/Waypoints";
 
