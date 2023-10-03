@@ -10,11 +10,11 @@ const HtmlLayoutContainer = styled.div`
   display: grid;
   min-height: 100vh;
   width: 100vw;
-  grid-template-rows: 62px 100fr;
+  grid-template-rows: 61px 100fr;
   grid-template-columns: 100fr;
 
   @media screen and (min-width: 768px) {
-    grid-template-rows: 72px 100fr;
+    grid-template-rows: 71px 100fr;
   }
 `;
 

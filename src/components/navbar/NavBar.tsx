@@ -24,11 +24,12 @@ const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
   justify-content: center;
   align-items: center;
   min-width: 100vw;
-  max-height: ${(props) => (props.$expanded ? "100vh" : "60px")};
-  box-shadow: 0 0 10px 2px rgb(255 255 255/10%);
+  max-height: ${(props) => (props.$expanded ? "100vh" : "61px")};
+
+  border-bottom: 1px solid var(--color-grey-dark);
 
   background-color: var(--color-primary-dark);
-  opacity: 0.95;
+  opacity: 0.96;
 
   @media screen and (min-width: 768px) {
     max-height: 72px;
@@ -36,9 +37,6 @@ const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
   }
 `;
 
-interface HtmlNavbarProps {
-  $expanded: boolean;
-}
 const HtmlNavbar = styled.div`
   display: flex;
   overflow-y: hidden;
@@ -81,6 +79,10 @@ const HtmlNavbar = styled.div`
     }
   }
 `;
+
+interface HtmlNavbarProps {
+  $expanded: boolean;
+}
 
 const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
   display: flex;
