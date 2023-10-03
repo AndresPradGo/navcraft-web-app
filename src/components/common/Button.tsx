@@ -7,30 +7,40 @@ interface HtmlButtonProps {
   $backgroundColor: string;
   $backgroundHoverColor: string;
   $fill: boolean;
-  $scale: number;
+  $shadow: boolean;
+  $width: number;
+  $fontSize: number;
+  $borderRadious: number;
   $margin: string;
+  $padding: string;
+  $justifyContent: "space-between" | "center";
 }
 
 const HtmlButton = styled.button<HtmlButtonProps>`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: ${(props) => props.$justifyContent};
   align-items: center;
-  height: 24px;
-  font-size: 12px;
+  min-height: 24px;
+  min-width: ${(props) => props.$width}px;
+  font-size: ${(props) => props.$fontSize}px;
   font-weight: lighter;
   letter-spacing: 2px;
   white-space: nowrap;
   border: 2px solid ${(props) => props.$backgroundColor};
-  border-radius: 10px;
+  border-radius: ${(props) => props.$borderRadious}px;
   cursor: pointer;
   outline: 0;
   transition: all 0.2s linear;
-  padding: 15px 10px;
+  padding: ${(props) => props.$padding};
   margin: ${(props) => props.$margin};
   color: ${(props) => props.$color};
   background-color: ${(props) =>
     props.$fill ? props.$backgroundColor : "transparent"};
+  box-shadow: ${(props) =>
+    props.$shadow
+      ? "0 0 10px 1px var(--color-grey)"
+      : "0 0 0 0 var(--color-primary-dark)"};
 
   &:hover,
   &:focus {
@@ -42,13 +52,17 @@ const HtmlButton = styled.button<HtmlButtonProps>`
 `;
 
 interface Props {
-  color: string;
-  hoverColor: string;
-  backgroundColor: string;
-  backgroundHoverColor: string;
-  fill: boolean;
-  scale: number;
-  margin: string;
+  color?: string;
+  hoverColor?: string;
+  backgroundColor?: string;
+  backgroundHoverColor?: string;
+  fill?: boolean;
+  shadow?: boolean;
+  width?: number;
+  fontSize?: number;
+  borderRadious?: number;
+  margin?: string;
+  padding?: string;
   children: ReactNode[];
   handleClick?: () => void;
 }
@@ -58,21 +72,48 @@ const Button = ({
   hoverColor,
   backgroundColor,
   backgroundHoverColor,
-  fill,
-  scale,
+  fill = true,
+  shadow,
+  width,
+  fontSize,
+  borderRadious,
   margin,
+  padding,
   children,
   handleClick,
 }: Props) => {
+  const defaultColor = color
+    ? color
+    : fill
+    ? "var(--color-grey-dark)"
+    : "var(--color-highlight)";
+
+  const defaultHoverColor = hoverColor
+    ? hoverColor
+    : fill
+    ? "var(--color-grey-bright)"
+    : "var(--color-highlight-hover)";
+
   return (
     <HtmlButton
-      $color={color}
-      $hoverColor={hoverColor}
-      $backgroundColor={backgroundColor}
-      $backgroundHoverColor={backgroundHoverColor}
+      $color={defaultColor}
+      $hoverColor={defaultHoverColor}
+      $backgroundColor={
+        backgroundColor ? backgroundColor : "var(--color-highlight)"
+      }
+      $backgroundHoverColor={
+        backgroundHoverColor
+          ? backgroundHoverColor
+          : "var(--color-highlight-hover)"
+      }
       $fill={fill}
-      $scale={scale}
-      $margin={margin}
+      $shadow={shadow ? shadow : false}
+      $width={width ? width : 0}
+      $fontSize={fontSize ? fontSize : 12}
+      $borderRadious={borderRadious ? borderRadious : 10}
+      $margin={margin ? margin : "0px"}
+      $padding={padding ? padding : "10px 10px"}
+      $justifyContent={children.length >= 2 ? "space-between" : "center"}
       onClick={handleClick ? handleClick : () => {}}
     >
       {children.map((child) => child)}

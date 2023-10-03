@@ -4,7 +4,7 @@ import WithSideBar from "../components/sidebar/WithSideBar";
 const flights = () => {
   return (
     <WithSideBar>
-      <ContentLayout>flights</ContentLayout>
+      <ContentLayout>Flights</ContentLayout>
     </WithSideBar>
   );
 };

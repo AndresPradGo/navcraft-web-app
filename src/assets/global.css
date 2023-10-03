@@ -13,11 +13,12 @@ html {
     --color-primary-dark: #060A0F;
     --color-primary: #0C151D;
     --color-primary-bright: #17293B;
-    --color-grey-dark: #373E43;
+    --color-grey-dark: #25292D;
     --color-grey: #7B848E;
     --color-grey-bright: #C3C7CC;
     --color-white: #FFFFFF;
     --color-highlight: #50A5E2;
+    --color-highlight-hover: #1D72AF;
     --color-contrast: #F0AD05;
     --color-contrast-warning: #9C0000;
 }
