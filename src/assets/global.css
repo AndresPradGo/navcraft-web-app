@@ -13,14 +13,17 @@ html {
     --color-primary-dark: #060A0F;
     --color-primary: #0C151D;
     --color-primary-bright: #17293B;
-    --color-grey-dark: #25292D;
-    --color-grey: #7B848E;
-    --color-grey-bright: #C3C7CC;
+    --color-grey-dark: #292929;
+    --color-grey: #707070;
+    --color-grey-bright: #A3A3A3;
+    --color-shadow: rgb(112 112 112 / 60%);
     --color-white: #FFFFFF;
     --color-highlight: #50A5E2;
     --color-highlight-hover: #1D72AF;
     --color-contrast: #F0AD05;
-    --color-contrast-warning: #9C0000;
+    --color-contrast-hover: #B48204;
+    --color-warning: #9C0000;
+    --color-warning-hover: #660000;
 }
   
 /* ------------------------- Typography ------------------------- */
