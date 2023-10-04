@@ -10,19 +10,12 @@ const HtmlMainContentContainer = styled.div`
 `;
 
 const HtmlMainContentContainerWithConstrain = styled(HtmlMainContentContainer)`
-    max-width: 1280px;
-    padding: 40px 3%;
+  max-width: 1312px;
+  padding: 40px 3%;
 
-    @media screen and (min-width: 533px) {
+  @media screen and (min-width: 533px) {
     padding: 40px 16px;
-    }
-
-    @media screen and (min-width: 1280px) {
-    padding: 40px calc(16px - (100vw - 1280px) * 0.5);
-    }
-
-    @media screen and (min-width: 1312px) {
-    padding: 40px 0px;
+  }
 `;
 
 interface Props {

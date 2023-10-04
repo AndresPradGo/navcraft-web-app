@@ -16,6 +16,7 @@ const EditIcon = styled(RiEditFill)`
 
 const HtmlButtonGroup = styled.div`
   display: flex;
+
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -42,8 +43,8 @@ const flights = () => {
             href="/flights/1"
             height={24}
             spaceChildren={true}
-            margin={"5px"}
             borderRadious={40}
+            margin={"5px calc(10% - 10px) 5px 0"}
           >
             EDIT
             <EditIcon />
@@ -55,7 +56,7 @@ const flights = () => {
             backgroundHoverColor={"var(--color-warning-hover)"}
             height={24}
             spaceChildren={true}
-            margin={"5px"}
+            margin={"5px 0 5px calc(10% - 10px)"}
             borderRadious={40}
           >
             DELETE
@@ -117,7 +118,12 @@ const flights = () => {
   return (
     <WithSideBar>
       <ContentLayout>
-        <Table keys={keys} headers={headings} rows={flights} />
+        <Table
+          keys={keys}
+          headers={headings}
+          rows={flights}
+          breakingPoint={1000}
+        />
       </ContentLayout>
     </WithSideBar>
   );
