@@ -136,7 +136,7 @@ const Button = ({
   const defaultHoverColor = hoverColor
     ? hoverColor
     : fill
-    ? "var(--color-grey-bright)"
+    ? "var(--color-white)"
     : "var(--color-highlight-hover)";
 
   if (href)

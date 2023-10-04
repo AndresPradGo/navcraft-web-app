@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import useSideBar from "../../sidebar/useSideBar";
+import EditTableButtons from "./EditTableButtons";
 
 interface HtmlTagProps {
   $sideBarIsExpanded: boolean;
@@ -58,6 +59,7 @@ const HtmlTableBody = styled.tbody<HtmlTagProps>`
 const HtmlTableRow = styled.tr<HtmlTagProps>`
   display: block;
   padding: 0;
+  padding-bottom: 20px;
   text-align: left;
   white-space: normal;
   border-radius: 3px;
@@ -70,6 +72,8 @@ const HtmlTableRow = styled.tr<HtmlTagProps>`
 
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
     display: ${(props) => (props.$sideBarIsExpanded ? "block" : "table-row")};
+    padding-bottom: ${(props) => (props.$sideBarIsExpanded ? "20" : "0")}px;
+
     & td:last-of-type,
     & th:last-of-type {
       border-radius: 0 3px 3px 0;
@@ -83,6 +87,7 @@ const HtmlTableRow = styled.tr<HtmlTagProps>`
 
   @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {
     display: table-row;
+    padding-bottom: 0;
   }
 `;
 
@@ -143,11 +148,9 @@ const HtmlTableBodyHeaderCell = styled(HtmlTableHeaderCell)`
 const HtmlTableDataCell = styled.td<HtmlTagProps>`
   display: block;
   white-space: normal;
-
   vertical-align: middle;
-  padding: 8px 16px;
   text-align: right;
-
+  padding: 8px 16px;
   color: var(--color-grey-bright);
 
   &:first-of-type {
@@ -175,14 +178,9 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
     padding: ${(props) => (props.$sideBarIsExpanded ? "8px 5%" : "8px 20%")};
   }
 
-  @media screen and (min-width: 768px) {
-    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 10%" : "8px 25%")};
-  }
-
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
+    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 20%" : "16px 10px")};
     display: ${(props) => (props.$sideBarIsExpanded ? "block" : "table-cell")};
-
-    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 25%" : "16px 10px")};
     text-align: ${(props) => (props.$sideBarIsExpanded ? "right" : "center")};
 
     &:last-of_type {
@@ -192,86 +190,123 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
     &:before {
       content: ${(props) =>
         props.$sideBarIsExpanded ? "attr(data-title)" : "none"};
+      margin-right: ${(props) => (props.$sideBarIsExpanded ? "10px" : "0")};
     }
   }
 
   @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {
     display: table-cell;
-
-    padding: 16px 10px;
     text-align: center;
+    padding: 16px 10px;
 
     &:before {
       content: none;
+      margin-right: 0;
     }
   }
 `;
 
+interface RowType {
+  id: number;
+  href: string;
+  onDelete: () => void;
+  data: { [key: string]: string | number };
+}
+
 interface Props {
   keys: string[];
   headers: { [key: string]: string };
-  rows: { [key: string]: any }[];
+  rows: RowType[];
   breakingPoint?: number;
+  editable?: "edit" | "open";
 }
 
-const Table = ({ keys, headers, rows, breakingPoint = 768 }: Props) => {
+const Table = ({
+  keys,
+  headers,
+  rows,
+  breakingPoint = 768,
+  editable,
+}: Props) => {
   const { sideBarIsExpanded } = useSideBar();
 
-  breakingPoint =
+  const keysWithButtons = [...keys];
+  const headersWithButtons = { ...headers };
+  if (editable) {
+    keysWithButtons.push("buttons");
+    headersWithButtons.buttons = "";
+  } else {
+  }
+
+  const truncatedBreakingPoint =
     breakingPoint < 768 ? 768 : breakingPoint > 980 ? 980 : breakingPoint;
 
   return (
     <>
       <HtmlTable
         $sideBarIsExpanded={sideBarIsExpanded}
-        $breakingPoint={breakingPoint}
+        $breakingPoint={truncatedBreakingPoint}
       >
         <HtmlTableHead
           $sideBarIsExpanded={sideBarIsExpanded}
-          $breakingPoint={breakingPoint}
+          $breakingPoint={truncatedBreakingPoint}
         >
           <HtmlTableRow
             $sideBarIsExpanded={sideBarIsExpanded}
-            $breakingPoint={breakingPoint}
+            $breakingPoint={truncatedBreakingPoint}
           >
-            {keys.map((key) => (
+            {keysWithButtons.map((key) => (
               <HtmlTableHeaderCell
                 key={key}
                 $sideBarIsExpanded={sideBarIsExpanded}
-                $breakingPoint={breakingPoint}
+                $breakingPoint={truncatedBreakingPoint}
               >
-                {headers[key]}
+                {headersWithButtons[key]}
               </HtmlTableHeaderCell>
             ))}
           </HtmlTableRow>
         </HtmlTableHead>
         <HtmlTableBody
           $sideBarIsExpanded={sideBarIsExpanded}
-          $breakingPoint={breakingPoint}
+          $breakingPoint={truncatedBreakingPoint}
         >
           {rows.map((row) => (
             <HtmlTableRow
               key={row.id}
               $sideBarIsExpanded={sideBarIsExpanded}
-              $breakingPoint={breakingPoint}
+              $breakingPoint={truncatedBreakingPoint}
             >
-              {keys.map((key, idx) =>
+              {keysWithButtons.map((key, idx) =>
                 idx ? (
-                  <HtmlTableDataCell
-                    data-title={headers[key]}
-                    key={`${key}${row}`}
-                    $sideBarIsExpanded={sideBarIsExpanded}
-                    $breakingPoint={breakingPoint}
-                  >
-                    {row[key]}
-                  </HtmlTableDataCell>
+                  key === "buttons" ? (
+                    <HtmlTableDataCell
+                      key={`${key}${row.id}`}
+                      $sideBarIsExpanded={sideBarIsExpanded}
+                      $breakingPoint={truncatedBreakingPoint}
+                    >
+                      <EditTableButtons
+                        href={row.href}
+                        onDelete={row.onDelete}
+                        editable={editable ? editable : "edit"}
+                      />
+                    </HtmlTableDataCell>
+                  ) : (
+                    <HtmlTableDataCell
+                      data-title={headersWithButtons[key]}
+                      key={`${key}${row.id}`}
+                      $sideBarIsExpanded={sideBarIsExpanded}
+                      $breakingPoint={truncatedBreakingPoint}
+                    >
+                      {row.data[key]}
+                    </HtmlTableDataCell>
+                  )
                 ) : (
                   <HtmlTableBodyHeaderCell
-                    key={`${key}${row}`}
+                    key={`${key}${row.id}`}
                     $sideBarIsExpanded={sideBarIsExpanded}
-                    $breakingPoint={breakingPoint}
+                    $breakingPoint={truncatedBreakingPoint}
                   >
-                    {row[key]}
+                    {row.data[key]}
                   </HtmlTableBodyHeaderCell>
                 )
               )}
