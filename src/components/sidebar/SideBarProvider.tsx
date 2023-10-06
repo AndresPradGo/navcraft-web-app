@@ -3,6 +3,7 @@ import { animateScroll as scroll } from "react-scroll";
 
 import SideBarContext from "./sideBarContext";
 import { usePathList } from "../../router";
+import useScroll from "../../pages/layout/useScroll";
 
 interface Props {
   children: ReactNode;
@@ -25,6 +26,8 @@ const SideBarProvider = ({ children }: Props) => {
     : false;
 
   const [sideBarIsExpanded, setSideBarIsExpanded] = useState<boolean>(false);
+
+  useScroll(hasSideBar);
 
   const handleExpandSideBar = (expand: boolean, fromNavBar?: boolean) => {
     if (!fromNavBar) {

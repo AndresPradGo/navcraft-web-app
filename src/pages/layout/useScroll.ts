@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSearchParams, useNavigationType, useLocation } from "react-router-dom";
 import { animateScroll as scroll, scroller } from 'react-scroll'
 
-export default function useScroll() {
+export default function useScroll(hasSideBar: boolean) {
 
     const location = useLocation();
     const searchParams = useSearchParams()[0];
@@ -19,21 +19,25 @@ export default function useScroll() {
                 offset: parseInt(scrollOffset ? scrollOffset:"", 10)
             })
         } else if (action === "REPLACE") {
-            scroll.scrollMore(0.5, {
+            if (hasSideBar) {
+                scroll.scrollMore(0.5, {
                 duration: 1,
                 delay: 200,
                 smooth: false,
-              });
-              scroll.scrollMore(-0.5, {
-                duration: 1,
-                delay: 200,
-                smooth: false,
-              });
+            });
             scroll.scrollToTop({
                 duration: 400,
                 delay: 200,
                 smooth: true,
             })
+        } else {
+            scroll.scrollToTop({
+                duration: 400,
+                delay: 0,
+                smooth: true,
+            })
+        }
+
         } else scroll.scrollToTop({
             duration: 1,
             delay: 0,
