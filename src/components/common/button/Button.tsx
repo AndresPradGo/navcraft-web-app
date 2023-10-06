@@ -107,9 +107,7 @@ interface Props {
   children: ReactNode;
   handleClick?: () => void;
   href?: string;
-  reference?: Dispatch<
-    SetStateAction<HTMLButtonElement | HTMLAnchorElement | null>
-  >;
+  reference?: Dispatch<SetStateAction<HTMLElement | null>>;
 }
 
 const Button = ({

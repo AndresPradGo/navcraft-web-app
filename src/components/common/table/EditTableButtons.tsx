@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import { RiDeleteBinLine, RiEditFill, RiArrowRightLine } from "react-icons/ri";
 
-import Button from "../Button";
+import Button from "../button/Button";
 
 const HtmlButtonGroup = styled.div`
   display: flex;

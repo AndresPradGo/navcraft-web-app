@@ -1,11 +1,11 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { usePopper } from "react-popper";
 import { HiArrowUp, HiArrowNarrowDown } from "react-icons/hi";
-import Button from "../Button";
+import Button from "../button/Button";
+import { usePopperButton } from "../button";
 
 interface HtmlListProps {
-  ref: Dispatch<SetStateAction<HTMLUListElement | null>>;
+  ref: Dispatch<SetStateAction<HTMLElement | null>>;
   $expanded: boolean;
 }
 
@@ -62,59 +62,10 @@ const SortButton = ({
   selectedSortData,
   changeSelectedSortData,
 }: Props) => {
-  const [listIsExpanded, setListIsExpanded] = useState<boolean>(false);
-  const [buttonRef, setButtonRef] = useState<
-    HTMLButtonElement | HTMLAnchorElement | null
-  >(null);
-  const [listRef, setListRef] = useState<HTMLUListElement | null>(null);
-
-  const { styles } = usePopper(buttonRef, listRef, {
-    placement: "bottom",
-    modifiers: [
-      {
-        name: "offset",
-        options: { offset: [0, 5] },
-      },
-      {
-        name: "preventOverflow",
-        options: {
-          padding: 0,
-        },
-      },
-      {
-        name: "flip",
-        options: {
-          fallbackPlacements: [],
-        },
-      },
-    ],
-  });
-
-  const closeExpandible = () => {
-    setListIsExpanded(false);
-    document.removeEventListener("click", hadleClickOutside, true);
-  };
-
-  const hadleClickOutside = (event: any) => {
-    if (listRef && buttonRef) {
-      if (
-        !listRef.contains(event.target) &&
-        !buttonRef.contains(event.target)
-      ) {
-        closeExpandible();
-      }
-    }
-  };
-
-  const handleButtonClick = () => {
-    if (!listIsExpanded) {
-      document.addEventListener("click", hadleClickOutside, true);
-    }
-    setListIsExpanded(!listIsExpanded);
-  };
+  const popperTools = usePopperButton();
 
   const handleListItemClick = (index: number) => {
-    closeExpandible();
+    popperTools.closeExpandible();
 
     const selectingSameColumn = selectedSortData.index === index;
     const selectedOrderIsAscending = selectedSortData.order === "asc";
@@ -141,8 +92,8 @@ const SortButton = ({
         backgroundColor="var(--color-grey-bright)"
         backgroundHoverColor="var(--color-white)"
         fill={false}
-        reference={setButtonRef}
-        handleClick={handleButtonClick}
+        reference={popperTools.setReferences.button}
+        handleClick={popperTools.handleButtonClick}
         shadow={false}
         height={40}
         width={280}
@@ -156,9 +107,9 @@ const SortButton = ({
         {arrowIcons[selectedSortData.order]}
       </Button>
       <HtmlList
-        ref={setListRef}
-        $expanded={listIsExpanded}
-        style={styles.popper}
+        ref={popperTools.setReferences.popper}
+        $expanded={popperTools.isExpanded}
+        style={popperTools.styles}
       >
         {sortOptions.map((sortColumn, index) => (
           <HtmlListItem
