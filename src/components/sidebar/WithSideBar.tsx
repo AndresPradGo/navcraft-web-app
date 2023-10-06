@@ -22,7 +22,7 @@ const HtmlMainContainer = styled.main`
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  height: 100%;
+  height: 200vh;
 `;
 
 interface HtmlSideBarContainerProps {

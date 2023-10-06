@@ -1,10 +1,9 @@
-import { Dispatch } from "react"
 import React from "react"
 
 interface SideBarContextType {
     hasSideBar: boolean,
     sideBarIsExpanded: boolean, 
-    setSideBarIsExpanded: Dispatch<React.SetStateAction<boolean>>
+    setSideBarIsExpanded: (newExpandedState: boolean) => void
 }
 
 const SideBarContext = React.createContext<SideBarContextType>({} as SideBarContextType);
