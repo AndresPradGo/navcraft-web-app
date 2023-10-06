@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import useSideBar from "../../sidebar/useSideBar";
-import EditTableButtons from "./EditTableButtons";
+import EditTableButtons, {
+  Props as EditButtonsProps,
+} from "./EditTableButtons";
 
 interface HtmlTagProps {
   $sideBarIsExpanded: boolean;
@@ -152,6 +154,7 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
   text-align: right;
   padding: 8px 16px;
   color: var(--color-grey-bright);
+  min-height: 70px;
 
   &:first-of-type {
     padding-top: 16px;
@@ -206,36 +209,29 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
   }
 `;
 
-interface RowType {
+interface RowDataType {
   id: number;
-  href: string;
-  onDelete: () => void;
-  data: { [key: string]: string | number };
 }
 
-interface Props {
+export interface RowType extends EditButtonsProps, RowDataType {
+  [key: string]: any;
+}
+
+export interface Props {
   keys: string[];
   headers: { [key: string]: string };
   rows: RowType[];
   breakingPoint?: number;
-  editable?: "edit" | "open";
 }
 
-const Table = ({
-  keys,
-  headers,
-  rows,
-  breakingPoint = 768,
-  editable,
-}: Props) => {
+const Table = ({ keys, headers, rows, breakingPoint = 768 }: Props) => {
   const { sideBarIsExpanded } = useSideBar();
 
   const keysWithButtons = [...keys];
   const headersWithButtons = { ...headers };
-  if (editable) {
+  if (rows.find((row) => !!row.permissions)) {
     keysWithButtons.push("buttons");
     headersWithButtons.buttons = "";
-  } else {
   }
 
   const truncatedBreakingPoint =
@@ -287,7 +283,7 @@ const Table = ({
                       <EditTableButtons
                         href={row.href}
                         onDelete={row.onDelete}
-                        editable={editable ? editable : "edit"}
+                        permissions={row.permissions}
                       />
                     </HtmlTableDataCell>
                   ) : (
@@ -297,7 +293,7 @@ const Table = ({
                       $sideBarIsExpanded={sideBarIsExpanded}
                       $breakingPoint={truncatedBreakingPoint}
                     >
-                      {row.data[key]}
+                      {row[key]}
                     </HtmlTableDataCell>
                   )
                 ) : (
@@ -306,7 +302,7 @@ const Table = ({
                     $sideBarIsExpanded={sideBarIsExpanded}
                     $breakingPoint={truncatedBreakingPoint}
                   >
-                    {row.data[key]}
+                    {row[key]}
                   </HtmlTableBodyHeaderCell>
                 )
               )}

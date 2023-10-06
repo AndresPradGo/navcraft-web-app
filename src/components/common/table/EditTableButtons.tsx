@@ -5,7 +5,7 @@ import Button from "../Button";
 
 const HtmlButtonGroup = styled.div`
   display: flex;
-
+  min-height: 38px;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
@@ -29,27 +29,28 @@ const OpenIcon = styled(RiArrowRightLine)`
   font-size: 14px;
 `;
 
-interface Props {
+export interface Props {
   href: string;
   onDelete: () => void;
-  editable: "edit" | "open";
+  permissions?: "open" | "edit" | "delete";
 }
 
-const EditTableButtons = ({ href, onDelete, editable }: Props) => {
-  if (editable === "edit")
+const EditTableButtons = ({ href, onDelete, permissions }: Props) => {
+  if (!permissions) return <HtmlButtonGroup />;
+  if (permissions === "delete")
     return (
       <HtmlButtonGroup>
-        <Button href={href} height={24} spaceChildren={true} borderRadious={40}>
+        <Button href={href} height={24} borderRadious={40}>
           EDIT
           <EditIcon />
         </Button>
         <Button
-          color={"var(--color-white)"}
-          hoverColor={"var(--color-white)"}
-          backgroundColor={"var(--color-warning)"}
-          backgroundHoverColor={"var(--color-warning-hover)"}
+          color="var(--color-white)"
+          hoverColor="var(--color-white)"
+          backgroundColor="var(--color-warning)"
+          backgroundHoverColor="var(--color-warning-hover)"
           height={24}
-          spaceChildren={true}
+          margin="10px"
           borderRadious={40}
           handleClick={onDelete}
         >
@@ -59,9 +60,19 @@ const EditTableButtons = ({ href, onDelete, editable }: Props) => {
       </HtmlButtonGroup>
     );
 
+  if (permissions === "edit")
+    return (
+      <HtmlButtonGroup>
+        <Button href={href} height={24} borderRadious={40}>
+          EDIT
+          <EditIcon />
+        </Button>
+      </HtmlButtonGroup>
+    );
+
   return (
     <HtmlButtonGroup>
-      <Button href={href} height={24} spaceChildren={true} borderRadious={40}>
+      <Button href={href} height={24} borderRadious={40}>
         DETAILS
         <OpenIcon />
       </Button>

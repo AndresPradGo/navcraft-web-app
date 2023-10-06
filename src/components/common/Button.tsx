@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, Dispatch, SetStateAction } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
@@ -11,7 +11,7 @@ interface HtmlButtonProps {
   $shadow: boolean;
   $width: number;
   $height: number;
-  $spaceChildren: boolean;
+  $spaceChildren: "center" | "space-between" | "space-evenly";
   $fontSize: number;
   $borderRadious: number;
   $margin: string;
@@ -21,8 +21,7 @@ interface HtmlButtonProps {
 const HtmlButton = styled.button<HtmlButtonProps>`
   display: flex;
   flex-direction: row;
-  justify-content: ${(props) =>
-    props.$spaceChildren ? "space-between" : "center"};
+  justify-content: ${(props) => props.$spaceChildren};
   align-items: center;
   min-width: ${(props) => props.$width}px;
   height: ${(props) => props.$height}px;
@@ -99,7 +98,7 @@ interface Props {
   shadow?: boolean;
   width?: number;
   height?: number;
-  spaceChildren?: boolean;
+  spaceChildren?: "center" | "space-between" | "space-evenly";
   fontSize?: number;
   borderRadious?: number;
   margin?: string;
@@ -107,6 +106,9 @@ interface Props {
   children: ReactNode;
   handleClick?: () => void;
   href?: string;
+  reference?: Dispatch<
+    SetStateAction<HTMLButtonElement | HTMLAnchorElement | null>
+  >;
 }
 
 const Button = ({
@@ -126,6 +128,7 @@ const Button = ({
   children,
   handleClick,
   href,
+  reference,
 }: Props) => {
   const defaultColor = color
     ? color
@@ -142,6 +145,7 @@ const Button = ({
   if (href)
     return (
       <HtmlLink
+        ref={reference}
         $color={defaultColor}
         $hoverColor={defaultHoverColor}
         $backgroundColor={
@@ -156,7 +160,7 @@ const Button = ({
         $shadow={shadow ? shadow : false}
         $width={width ? width : 0}
         $height={height ? height : 30}
-        $spaceChildren={spaceChildren ? spaceChildren : false}
+        $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
         $fontSize={fontSize ? fontSize : 12}
         $borderRadious={borderRadious ? borderRadious : 10}
         $margin={margin ? margin : "0px"}
@@ -170,6 +174,7 @@ const Button = ({
 
   return (
     <HtmlButton
+      ref={reference}
       $color={defaultColor}
       $hoverColor={defaultHoverColor}
       $backgroundColor={
@@ -184,7 +189,7 @@ const Button = ({
       $shadow={shadow ? shadow : false}
       $width={width ? width : 0}
       $height={height ? height : 30}
-      $spaceChildren={spaceChildren ? spaceChildren : false}
+      $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
       $fontSize={fontSize ? fontSize : 12}
       $borderRadious={borderRadious ? borderRadious : 10}
       $margin={margin ? margin : "0px"}
