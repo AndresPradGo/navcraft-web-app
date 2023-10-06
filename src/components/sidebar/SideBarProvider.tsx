@@ -26,18 +26,20 @@ const SideBarProvider = ({ children }: Props) => {
 
   const [sideBarIsExpanded, setSideBarIsExpanded] = useState<boolean>(false);
 
-  const handleExpandSideBar = (newExpandedState: boolean) => {
-    scroll.scrollMore(0.5, {
-      duration: 500,
-      delay: 500,
-      smooth: false,
-    });
-    scroll.scrollMore(-0.5, {
-      duration: 500,
-      delay: 500,
-      smooth: false,
-    });
-    setSideBarIsExpanded(newExpandedState);
+  const handleExpandSideBar = (expand: boolean, fromNavBar?: boolean) => {
+    if (!fromNavBar) {
+      scroll.scrollMore(0.5, {
+        duration: 1,
+        delay: 200,
+        smooth: false,
+      });
+      scroll.scrollMore(-0.5, {
+        duration: 1,
+        delay: 200,
+        smooth: false,
+      });
+    }
+    setSideBarIsExpanded(expand);
   };
 
   return (
@@ -45,7 +47,7 @@ const SideBarProvider = ({ children }: Props) => {
       value={{
         hasSideBar,
         sideBarIsExpanded,
-        setSideBarIsExpanded: hasSideBar ? handleExpandSideBar : () => {},
+        handleExpandSideBar,
       }}
     >
       {children}

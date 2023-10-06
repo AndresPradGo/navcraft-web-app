@@ -8,7 +8,7 @@ interface HtmlSideBarContainerProps {
 
 const HtmlSideBar = styled.div<HtmlSideBarContainerProps>`
   background-color: var(--color-primary-dark);
-  transition: all 0.5s ease-out;
+  transition: all 0.2s ease-out;
   overflow-x: hidden;
   width: ${(props) => (props.$sideBarIsExpanded ? "300px" : "0px")};
   height: 100%;

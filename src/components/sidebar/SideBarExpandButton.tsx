@@ -89,14 +89,14 @@ const HtmlDummyButton = styled.button`
 `;
 
 const SideBarExpandButton = () => {
-  const { hasSideBar, sideBarIsExpanded, setSideBarIsExpanded } = useSideBar();
+  const { hasSideBar, sideBarIsExpanded, handleExpandSideBar } = useSideBar();
 
   if (!hasSideBar) return <HtmlDummyButton />;
 
   return (
     <Button
       $expanded={sideBarIsExpanded}
-      onClick={() => setSideBarIsExpanded(!sideBarIsExpanded)}
+      onClick={() => handleExpandSideBar(!sideBarIsExpanded)}
     >
       <BsChevronUp className="chevron-icon" />
       <BsChevronDown className="chevron-icon" />

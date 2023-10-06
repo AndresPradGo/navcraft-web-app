@@ -16,7 +16,7 @@ const HtmlSideBarAndContentContainer = styled.div`
 
 const HtmlMainContainer = styled.main`
   overflow: hidden;
-  transition: all 0.5s ease-out;
+  transition: all 0.2s ease-out;
   display: flex;
   flex-direction: row;
   justify-content: center;

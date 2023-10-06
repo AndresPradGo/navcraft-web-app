@@ -3,7 +3,7 @@ import React from "react"
 interface SideBarContextType {
     hasSideBar: boolean,
     sideBarIsExpanded: boolean, 
-    setSideBarIsExpanded: (newExpandedState: boolean) => void
+    handleExpandSideBar: (expand: boolean, fromNavBar?: boolean) => void
 }
 
 const SideBarContext = React.createContext<SideBarContextType>({} as SideBarContextType);

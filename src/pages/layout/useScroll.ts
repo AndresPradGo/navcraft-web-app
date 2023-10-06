@@ -11,22 +11,34 @@ export default function useScroll() {
     useEffect(() => {
         const scrollTo = searchParams.get("scrollTo");
         const scrollOffset = searchParams.get("scrollOffset");
-
-        if (action !== "POP") {
-            if (scrollTo) {
-                scroller.scrollTo(scrollTo, {
-                    duration: 1000,
-                    delay: 0,
-                    smooth: true,
-                    offset: parseInt(scrollOffset ? scrollOffset:"", 10)
-                })
-            }
-            else scroll.scrollToTop({
+        if (scrollTo) {
+            scroller.scrollTo(scrollTo, {
+                duration: 1000,
+                delay: 100,
+                smooth: true,
+                offset: parseInt(scrollOffset ? scrollOffset:"", 10)
+            })
+        } else if (action === "REPLACE") {
+            scroll.scrollMore(0.5, {
                 duration: 1,
-                delay: 0,
+                delay: 200,
                 smooth: false,
-            });
-        }
-    }, [action, location]);
+              });
+              scroll.scrollMore(-0.5, {
+                duration: 1,
+                delay: 200,
+                smooth: false,
+              });
+            scroll.scrollToTop({
+                duration: 400,
+                delay: 200,
+                smooth: true,
+            })
+        } else scroll.scrollToTop({
+            duration: 1,
+            delay: 0,
+            smooth: false,
+        });
+    }, [location.key]);
 
 }

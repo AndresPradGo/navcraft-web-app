@@ -32,6 +32,16 @@ const HtmlTableHead = styled.thead<HtmlTagProps>`
       props.$sideBarIsExpanded ? "rect(1px 1px 1px 1px)" : "auto"};
     height: ${(props) => (props.$sideBarIsExpanded ? "1px" : "auto")};
     width: ${(props) => (props.$sideBarIsExpanded ? "1px" : "auto")};
+
+    & tr th:first-of-type {
+      border-radius: ${(props) =>
+        props.$sideBarIsExpanded ? "0" : "3px 0 0 3px"};
+    }
+
+    & tr th:last-of-type {
+      border-radius: ${(props) =>
+        props.$sideBarIsExpanded ? "0" : "0 3px 3px 0"};
+    }
   }
 
   @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {
@@ -39,6 +49,14 @@ const HtmlTableHead = styled.thead<HtmlTagProps>`
     clip: auto;
     height: auto;
     width: auto;
+
+    & tr th:first-of-type {
+      border-radius: 3px 0 0 3px;
+    }
+
+    & tr th:last-of-type {
+      border-radius: 0 3px 3px 0;
+    }
   }
 `;
 
@@ -51,10 +69,28 @@ const HtmlTableBody = styled.tbody<HtmlTagProps>`
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
     display: ${(props) =>
       props.$sideBarIsExpanded ? "block" : "table-row-group"};
+
+    & tr th:first-of-type {
+      border-radius: ${(props) =>
+        props.$sideBarIsExpanded ? "0" : "3px 0 0 3px"};
+    }
+
+    & tr td:last-of-type {
+      border-radius: ${(props) =>
+        props.$sideBarIsExpanded ? "0" : "0 3px 3px 0"};
+    }
   }
 
   @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {
     display: table-row-group;
+
+    & tr th:first-of-type {
+      border-radius: 3px 0 0 3px;
+    }
+
+    & tr td:last-of-type {
+      border-radius: 0 3px 3px 0;
+    }
   }
 `;
 
@@ -75,16 +111,6 @@ const HtmlTableRow = styled.tr<HtmlTagProps>`
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
     display: ${(props) => (props.$sideBarIsExpanded ? "block" : "table-row")};
     padding-bottom: ${(props) => (props.$sideBarIsExpanded ? "20" : "0")}px;
-
-    & td:last-of-type,
-    & th:last-of-type {
-      border-radius: 0 3px 3px 0;
-    }
-
-    & th:first-of-type,
-    & td:first-of-type {
-      border-radius: 3px 0 0 3px;
-    }
   }
 
   @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {

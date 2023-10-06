@@ -222,7 +222,7 @@ const HtmlTitle = styled.div`
 const NavBar = () => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const linksList = useNavLinks(false);
-  const { hasSideBar, setSideBarIsExpanded } = useSideBar();
+  const { hasSideBar, handleExpandSideBar } = useSideBar();
 
   let currentPath = usePathList();
   let activeLinkDataList = linksList.filter(
@@ -235,7 +235,7 @@ const NavBar = () => {
 
   const handleLinkClick = () => {
     setExpanded(false);
-    setSideBarIsExpanded(false);
+    handleExpandSideBar(false, true);
   };
 
   return (
