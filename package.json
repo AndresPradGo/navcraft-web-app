@@ -10,10 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@types/lodash": "^4.14.199",
     "@types/react-scroll": "^1.8.8",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
+    "react-popper": "^2.3.0",
     "react-router-dom": "^6.16.0",
     "react-scroll": "^1.8.9",
     "styled-components": "^6.0.8"
