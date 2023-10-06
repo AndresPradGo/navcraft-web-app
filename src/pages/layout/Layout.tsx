@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { styled } from "styled-components";
 
-import { NavBar } from "../../components/navbar";
+import NavBar from "../../components/navbar";
 import { SideBarProvider } from "../../components/sidebar";
 import useScroll from "./useScroll";
 

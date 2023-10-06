@@ -1,10 +1,10 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-import Aircraft from "./pages/Aircraft";
-import Flights from "./pages/Flights";
-import { Layout } from "./pages/layout";
-import Users from "./pages/Users";
-import Waypoints from "./pages/Waypoints";
+import Aircraft from "../pages/Aircraft";
+import Flights from "../pages/Flights";
+import { Layout } from "../pages/layout";
+import Users from "../pages/Users";
+import Waypoints from "../pages/Waypoints";
 
 const router = createBrowserRouter([
   {

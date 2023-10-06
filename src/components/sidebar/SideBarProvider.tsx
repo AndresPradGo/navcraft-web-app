@@ -2,7 +2,7 @@ import { useEffect, useState, ReactNode } from "react";
 import { animateScroll as scroll } from "react-scroll";
 
 import SideBarContext from "./sideBarContext";
-import usePathList from "../../hooks/usePathList";
+import { usePathList } from "../../router";
 
 interface Props {
   children: ReactNode;

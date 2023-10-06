@@ -6,7 +6,7 @@ import NavBarExpandButton from "./NavBarExpandButton";
 import { SideBarExpandButton } from "../sidebar";
 import { useSideBar } from "../sidebar";
 import useNavLinks from "./useNavLinks";
-import usePathList from "../../hooks/usePathList";
+import { usePathList } from "../../router";
 
 interface HtmlNavBarContainerProps {
   $expanded: boolean;
