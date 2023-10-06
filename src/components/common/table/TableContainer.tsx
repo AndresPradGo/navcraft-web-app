@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useReducer } from "react";
 import { styled } from "styled-components";
 import Table, { Props as TableProps } from "./Table";
 import SortButton, { SortColumnType, SortDataType } from "./SortButton";
@@ -42,15 +42,16 @@ const TableContainer = ({ tableData, sortColumnOptions }: Props) => {
     tableData.rows
   );
 
-  useEffect(() => {
+  const handleSortColumnChange = (newSortData: SortDataType) => {
     if (sortColumnOptions) {
       dispatch({
         type: "SORT",
-        sortKey: sortColumnOptions[sortData.index].key,
-        order: sortData.order,
+        sortKey: sortColumnOptions[newSortData.index].key,
+        order: newSortData.order,
       });
+      setSortData({ ...newSortData });
     }
-  }, [sortData.index, sortData.order]);
+  };
 
   return (
     <HtmlTableContainer>
@@ -59,7 +60,7 @@ const TableContainer = ({ tableData, sortColumnOptions }: Props) => {
           <SortButton
             sortOptions={sortColumnOptions}
             selectedSortData={sortData}
-            changeSelectedSortData={setSortData}
+            changeSelectedSortData={handleSortColumnChange}
           />
         ) : (
           <></>

@@ -55,7 +55,7 @@ export interface SortDataType {
 interface Props {
   sortOptions: SortColumnType[];
   selectedSortData: SortDataType;
-  changeSelectedSortData: Dispatch<SetStateAction<SortDataType>>;
+  changeSelectedSortData: (newSotData: SortDataType) => void;
 }
 
 const SortButton = ({
