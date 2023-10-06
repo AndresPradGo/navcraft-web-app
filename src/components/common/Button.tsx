@@ -101,6 +101,7 @@ interface Props {
   spaceChildren?: "center" | "space-between" | "space-evenly";
   fontSize?: number;
   borderRadious?: number;
+  borderWidth?: number;
   margin?: string;
   padding?: string;
   children: ReactNode;

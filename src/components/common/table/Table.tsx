@@ -154,7 +154,6 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
   text-align: right;
   padding: 8px 16px;
   color: var(--color-grey-bright);
-  min-height: 70px;
 
   &:first-of-type {
     padding-top: 16px;

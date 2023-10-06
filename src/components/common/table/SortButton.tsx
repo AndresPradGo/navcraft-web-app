@@ -20,7 +20,7 @@ const HtmlList = styled.ul<HtmlListProps>`
   border: ${(props) =>
     props.$expanded ? "1px groove var(--color-grey-bright)" : "none"};
   border-radius: 5px;
-  background-color: var(--color-highlight);
+  background-color: var(--color-primary-bright);
 `;
 
 const HtmlListItem = styled.li`
@@ -31,14 +31,13 @@ const HtmlListItem = styled.li`
   cursor: pointer;
   transition: all 0.2s linear;
   min-width: calc(280px - 2px);
-  color: var(--color-primary-dark);
-  background-color: var(--color-highlight);
+  color: var(--color-grey-bright);
+  background-color: var(--color-primary-bright);
   padding: 10px 20px;
 
   &:hover,
   &:focus {
-    background-color: var(--color-highlight-hover);
-    color: var(--color-white);
+    background-color: var(--color-primary);
   }
 `;
 
@@ -137,9 +136,14 @@ const SortButton = ({
   return (
     <>
       <Button
+        color="var(--color-grey-bright)"
+        hoverColor="var(--color-white)"
+        backgroundColor="var(--color-grey-bright)"
+        backgroundHoverColor="var(--color-white)"
+        fill={false}
         reference={setButtonRef}
         handleClick={handleButtonClick}
-        shadow={true}
+        shadow={false}
         height={40}
         width={280}
         fontSize={16}
