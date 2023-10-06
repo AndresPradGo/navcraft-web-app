@@ -63,7 +63,7 @@ const SortButton = ({
   selectedSortData,
   changeSelectedSortData,
 }: Props) => {
-  const [listIsExpanded, setListIsExpanded] = useState(false);
+  const [listIsExpanded, setListIsExpanded] = useState<boolean>(false);
   const [buttonRef, setButtonRef] = useState<
     HTMLButtonElement | HTMLAnchorElement | null
   >(null);

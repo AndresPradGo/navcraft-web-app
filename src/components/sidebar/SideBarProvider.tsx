@@ -24,7 +24,7 @@ const SideBarProvider = ({ children }: Props) => {
     ? true
     : false;
 
-  const [sideBarIsExpanded, setSideBarIsExpanded] = useState(false);
+  const [sideBarIsExpanded, setSideBarIsExpanded] = useState<boolean>(false);
 
   useEffect(() => {
     scroll.scrollMore(0.5, {

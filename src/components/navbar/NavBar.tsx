@@ -220,7 +220,7 @@ const HtmlTitle = styled.div`
 `;
 
 const NavBar = () => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState<boolean>(false);
   const linksList = useNavLinks(false);
   const { hasSideBar, setSideBarIsExpanded } = useSideBar();
 
