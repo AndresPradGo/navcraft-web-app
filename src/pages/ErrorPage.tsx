@@ -48,7 +48,7 @@ const HomeIcon = styled(TbHome)`
 
 const ErrorPage = () => {
   const error = useRouteError();
-  const errorCode = isRouteErrorResponse(error) ? "400" : "500";
+  const errorCode = isRouteErrorResponse(error) ? "404" : "500";
   const errorMessage = isRouteErrorResponse(error)
     ? "Page not found!"
     : "An unexpected error occurred! We're looking into it.";
