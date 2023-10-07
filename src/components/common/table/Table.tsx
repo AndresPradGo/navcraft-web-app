@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import useSideBar from "../../sidebar/useSideBar";
+import { ReactNode } from "react";
 import EditTableButtons, {
   Props as EditButtonsProps,
+  EditButtonsPropsTypeUnion,
 } from "./EditTableButtons";
 
 interface HtmlTagProps {
@@ -234,18 +236,15 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
   }
 `;
 
-interface RowDataType {
+export interface RowType extends EditButtonsProps {
   id: number;
-}
-
-export interface RowType extends EditButtonsProps, RowDataType {
-  [key: string]: any;
+  [key: string]: ReactNode | EditButtonsPropsTypeUnion;
 }
 
 export interface Props {
   keys: string[];
   headers: { [key: string]: string };
-  rows: RowType[];
+  rows: RowType[] | [];
   breakingPoint?: number;
 }
 
@@ -318,7 +317,7 @@ const Table = ({ keys, headers, rows, breakingPoint = 768 }: Props) => {
                       $sideBarIsExpanded={sideBarIsExpanded}
                       $breakingPoint={truncatedBreakingPoint}
                     >
-                      {row[key]}
+                      {row[key] as ReactNode}
                     </HtmlTableDataCell>
                   )
                 ) : (
@@ -327,7 +326,7 @@ const Table = ({ keys, headers, rows, breakingPoint = 768 }: Props) => {
                     $sideBarIsExpanded={sideBarIsExpanded}
                     $breakingPoint={truncatedBreakingPoint}
                   >
-                    {row[key]}
+                    {row[key] as ReactNode}
                   </HtmlTableBodyHeaderCell>
                 )
               )}

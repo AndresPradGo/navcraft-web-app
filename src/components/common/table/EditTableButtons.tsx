@@ -29,6 +29,9 @@ const OpenIcon = styled(RiArrowRightLine)`
   font-size: 14px;
 `;
 
+export type EditButtonsPropsTypeUnion =
+  | (() => void)
+  | ("open" | "edit" | "delete" | undefined);
 export interface Props {
   href: string;
   onDelete: () => void;

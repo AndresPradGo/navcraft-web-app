@@ -27,12 +27,23 @@ const HtmlButtonContainer = styled.div`
   }
 `;
 
+const HtmlNoDataMessageParagraph = styled.p`
+  font-size: 20px;
+  padding: 20px;
+  border-left: 1px solid var(--color-grey-bright);
+`;
+
 interface Props {
   tableData: TableProps;
   sortColumnOptions?: SortColumnType[];
+  emptyTableMessage: string;
 }
 
-const TableContainer = ({ tableData, sortColumnOptions }: Props) => {
+const TableContainer = ({
+  tableData,
+  sortColumnOptions,
+  emptyTableMessage,
+}: Props) => {
   const [sortData, setSortData] = useState<SortDataType>({
     index: 0,
     order: "asc",
@@ -52,7 +63,12 @@ const TableContainer = ({ tableData, sortColumnOptions }: Props) => {
       setSortData({ ...newSortData });
     }
   };
-
+  if (tableData.rows.length === 0)
+    return (
+      <HtmlNoDataMessageParagraph>
+        {emptyTableMessage}
+      </HtmlNoDataMessageParagraph>
+    );
   return (
     <HtmlTableContainer>
       <HtmlButtonContainer>

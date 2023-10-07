@@ -8,7 +8,7 @@ const flights = () => {
       id: 1,
       href: "flight/1",
       onDelete: () => {},
-
+      permissions: "open" as "open",
       route: "CZBB - CAT1",
       departure: "CZBB",
       destination: "CAT1",
@@ -81,6 +81,7 @@ const flights = () => {
             breakingPoint: 1000,
           }}
           sortColumnOptions={sortData}
+          emptyTableMessage="There are no saved flights..."
         />
       </ContentLayout>
     </WithSideBar>
