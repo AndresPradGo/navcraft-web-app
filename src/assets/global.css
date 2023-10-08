@@ -11,12 +11,12 @@ html {
 
 :root {
     --color-primary-dark: #060A0F;
-    --color-primary: #0C151D;
-    --color-primary-bright: #17293B;
-    --color-primary-light: #223D58;
+    --color-primary: #111F2C;
+    --color-primary-bright: #223D58;
+    --color-primary-light: #2A4865;
     --color-grey-dark: #292929;
     --color-grey: #707070;
-    --color-grey-bright: #A3A3A3;
+    --color-grey-bright: #B8B8B8;
     --color-shadow: rgb(112 112 112 / 60%);
     --color-white: #FFFFFF;
     --color-highlight: #50A5E2;
@@ -48,4 +48,17 @@ h4 {
 
 a {
     text-decoration: none;
+}
+
+/* ------------------------- Animations ------------------------- */
+
+@keyframes animate {
+    0%
+    {
+        transform: rotate(0deg);
+    }
+    100%
+    {
+        transform: rotate(360deg);
+    }
 }

@@ -6,6 +6,7 @@ import Layout from "../pages/layout";
 import Users from "../pages/Users";
 import Waypoints from "../pages/Waypoints";
 import ErrorPage from "../pages/ErrorPage";
+import LoginPage from "../pages/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,11 @@ const router = createBrowserRouter([
       { path: "aircraft", element: <Aircraft /> },
       { path: "users", element: <Users /> },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+    errorElement: <ErrorPage />,
   },
 ]);
 

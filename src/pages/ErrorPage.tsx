@@ -67,7 +67,7 @@ const ErrorPage = () => {
         backgroundHoverColor="var(--color-contrast-hover)"
         shadow={true}
         spaceChildren="space-evenly"
-        width={140}
+        width="140px"
       >
         HOME PAGE
         <HomeIcon />

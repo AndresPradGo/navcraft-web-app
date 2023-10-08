@@ -43,7 +43,7 @@ const EditTableButtons = ({ href, onDelete, permissions }: Props) => {
   if (permissions === "delete")
     return (
       <HtmlButtonGroup>
-        <Button href={href} height={24} borderRadious={40}>
+        <Button href={href} height="24px" borderRadious={40}>
           EDIT
           <EditIcon />
         </Button>
@@ -52,7 +52,7 @@ const EditTableButtons = ({ href, onDelete, permissions }: Props) => {
           hoverColor="var(--color-white)"
           backgroundColor="var(--color-warning)"
           backgroundHoverColor="var(--color-warning-hover)"
-          height={24}
+          height="24px"
           margin="10px"
           borderRadious={40}
           handleClick={onDelete}
@@ -66,7 +66,7 @@ const EditTableButtons = ({ href, onDelete, permissions }: Props) => {
   if (permissions === "edit")
     return (
       <HtmlButtonGroup>
-        <Button href={href} height={24} borderRadious={40}>
+        <Button href={href} height="24px" borderRadious={40}>
           EDIT
           <EditIcon />
         </Button>
@@ -75,7 +75,7 @@ const EditTableButtons = ({ href, onDelete, permissions }: Props) => {
 
   return (
     <HtmlButtonGroup>
-      <Button href={href} height={24} borderRadious={40}>
+      <Button href={href} height="24px" borderRadious={40}>
         DETAILS
         <OpenIcon />
       </Button>

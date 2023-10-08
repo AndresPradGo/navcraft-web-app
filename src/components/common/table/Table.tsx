@@ -15,7 +15,7 @@ const HtmlTable = styled.table<HtmlTagProps>`
   width: 100%;
   max-width: ${(props) => (props.$sideBarIsExpanded ? "100vw" : "100%")};
   margin-bottom: 24px;
-  border-spacing: 0 16px;
+  border-spacing: 0 10px;
 `;
 
 const HtmlTableHead = styled.thead<HtmlTagProps>`
