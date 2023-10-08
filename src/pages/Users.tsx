@@ -1,4 +1,4 @@
-import ContentLayout from "./ContentLayout";
+import { ContentLayout } from "./layout";
 import WithSideBar from "../components/sidebar/WithSideBar";
 
 const Users = () => {

@@ -3,7 +3,7 @@ import { animateScroll as scroll } from "react-scroll";
 
 import SideBarContext from "./sideBarContext";
 import { usePathList } from "../../router";
-import useScroll from "../../pages/layout/useScroll";
+import { useScroll } from "../../pages/layout";
 
 interface Props {
   children: ReactNode;
