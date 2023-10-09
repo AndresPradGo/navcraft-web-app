@@ -1,8 +1,9 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 import NavBar from "../../components/navbar";
 import { SideBarProvider } from "../../components/sidebar";
+import useAuth from "../login/useAuth";
 
 const HtmlLayoutContainer = styled.div`
   transition: all 0.5s ease-out;
@@ -19,6 +20,9 @@ const HtmlLayoutContainer = styled.div`
 `;
 
 const Layout = () => {
+  const user = useAuth();
+  if (!user) return <Navigate to="/login" />;
+
   return (
     <SideBarProvider>
       <HtmlLayoutContainer>
