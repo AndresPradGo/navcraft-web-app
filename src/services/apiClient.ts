@@ -4,7 +4,18 @@ const axiosInstance = axios.create({
     baseURL: 'http://127.0.0.1:8000'
 })
 
-class APIClient<TGet, TPost> {
+interface APIResponseData {
+    detail: string
+}
+interface APIResponse {
+    data: APIResponseData,
+    status: number
+}
+export interface APIClientError extends Error {
+    response?: APIResponse
+}
+
+class APIClient<TPost, TGet> {
     endpoint: string;
 
     constructor(endpoint: string) {
@@ -23,7 +34,7 @@ class APIClient<TGet, TPost> {
         return axiosInstance.get<TGet>(this._getEndpoint(endpointPostfix)).then(res => res.data)
     }
 
-    create = (data: TPost, endpointPostfix?: string): Promise<TGet> => {
+    post = (data: TPost, endpointPostfix?: string): Promise<TGet> => {
         return axiosInstance.post<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
     }
 

@@ -108,6 +108,7 @@ interface Props {
   handleClick?: () => void;
   href?: string;
   reference?: Dispatch<SetStateAction<HTMLElement | null>>;
+  btnType?: "button" | "reset" | "submit";
 }
 
 const Button = ({
@@ -128,6 +129,7 @@ const Button = ({
   handleClick,
   href,
   reference,
+  btnType,
 }: Props) => {
   const defaultColor = color
     ? color
@@ -173,6 +175,7 @@ const Button = ({
 
   return (
     <HtmlButton
+      type={btnType}
       ref={reference}
       $color={defaultColor}
       $hoverColor={defaultHoverColor}

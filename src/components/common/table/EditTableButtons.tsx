@@ -34,11 +34,11 @@ export type EditButtonsPropsTypeUnion =
   | ("open" | "edit" | "delete" | undefined);
 export interface Props {
   href: string;
-  onDelete: () => void;
+  handleDelete: () => void;
   permissions?: "open" | "edit" | "delete";
 }
 
-const EditTableButtons = ({ href, onDelete, permissions }: Props) => {
+const EditTableButtons = ({ href, handleDelete, permissions }: Props) => {
   if (!permissions) return <HtmlButtonGroup />;
   if (permissions === "delete")
     return (
@@ -55,7 +55,7 @@ const EditTableButtons = ({ href, onDelete, permissions }: Props) => {
           height="24px"
           margin="10px"
           borderRadious={40}
-          handleClick={onDelete}
+          handleClick={handleDelete}
         >
           DELETE
           <DeleteIcon />

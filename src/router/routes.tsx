@@ -6,7 +6,7 @@ import Layout from "../pages/layout";
 import Users from "../pages/Users";
 import Waypoints from "../pages/Waypoints";
 import ErrorPage from "../pages/ErrorPage";
-import LoginPage from "../pages/LoginPage";
+import LoginPage from "../pages/login";
 
 const router = createBrowserRouter([
   {
