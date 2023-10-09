@@ -1,20 +1,21 @@
 import { Link } from "react-router-dom";
 import { useForm, FieldValues } from "react-hook-form";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MdOutlineLogin } from "react-icons/md";
 import { TfiEmail, TfiLock } from "react-icons/tfi";
+import { AiOutlineForm } from "react-icons/ai";
+import { FaUser } from "react-icons/fa6";
+
 import { z } from "zod";
 
 import { styled } from "styled-components";
 import Button from "../../components/common/button/index";
-import useLogin from "./useLogin";
-import useAuth from "./useAuth";
+import useRegister from "./useRegister";
 
 const HtmlPageContainer = styled.div`
   position: relative;
   width: 100vw;
-  min-height: 500px;
+  min-height: 600px;
   height: 100vh;
   display: flex;
   flex-wrap: wrap;
@@ -30,7 +31,7 @@ const HtmlFormContainer = styled.div`
   position: relative;
   inset: 4px;
   width: 300px;
-  height: 428px;
+  height: 528px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,12 +43,12 @@ const HtmlFormContainer = styled.div`
   &::before {
     content: " ";
     position: absolute;
-    top: 50%;
-    left: 50%;
+    bottom: 50%;
+    right: 50%;
     width: 388px;
-    height: 428px;
+    height: 528px;
     background: linear-gradient(
-      0deg,
+      90deg,
       #50a5e2,
       #50a5e2,
       #50a5e2,
@@ -55,19 +56,19 @@ const HtmlFormContainer = styled.div`
       transparent
     );
     z-index: 1;
-    animation: animate 6s linear infinite;
-    transform-origin: top left;
+    animation: animate-reverse 6s linear infinite;
+    transform-origin: bottom right;
   }
 
   &::after {
     content: " ";
     position: absolute;
-    top: 50%;
-    left: 50%;
+    bottom: 50%;
+    right: 50%;
     width: 388px;
-    height: 428px;
+    height: 528px;
     background: linear-gradient(
-      0deg,
+      90deg,
       #50a5e2,
       #50a5e2,
       #50a5e2,
@@ -75,14 +76,14 @@ const HtmlFormContainer = styled.div`
       transparent
     );
     z-index: 1;
-    animation: animate 6s linear infinite;
-    transform-origin: top left;
+    animation: animate-reverse 6s linear infinite;
+    transform-origin: bottom right;
     animation-delay: -3s;
   }
 
   @media screen and (min-width: 425px) {
     width: 388px;
-    height: 428px;
+    height: 528px;
   }
 `;
 
@@ -94,12 +95,12 @@ const HtmlAnimationSpan = styled.form`
   &::before {
     content: " ";
     position: absolute;
-    top: 50%;
-    left: 50%;
+    bottom: 50%;
+    right: 50%;
     width: 388px;
-    height: 428px;
+    height: 528px;
     background: linear-gradient(
-      0deg,
+      90deg,
       #f0ad05,
       #f0ad05,
       #f0ad05,
@@ -107,20 +108,20 @@ const HtmlAnimationSpan = styled.form`
       transparent
     );
     z-index: 1;
-    animation: animate 6s linear infinite;
-    transform-origin: top left;
+    animation: animate-reverse 6s linear infinite;
+    transform-origin: bottom right;
     animation-delay: -4.5s;
   }
 
   &::after {
     content: " ";
     position: absolute;
-    top: 50%;
-    left: 50%;
+    bottom: 50%;
+    right: 50%;
     width: 388px;
-    height: 428px;
+    height: 528px;
     background: linear-gradient(
-      0deg,
+      90deg,
       #f0ad05,
       #f0ad05,
       #f0ad05,
@@ -128,8 +129,8 @@ const HtmlAnimationSpan = styled.form`
       transparent
     );
     z-index: 1;
-    animation: animate 6s linear infinite;
-    transform-origin: top left;
+    animation: animate-reverse 6s linear infinite;
+    transform-origin: bottom right;
     animation-delay: -1.5s;
   }
 `;
@@ -142,7 +143,7 @@ const HtmlLoginForm = styled.form`
   align-items: center;
   flex-basis: 292px;
   flex-shrink: 0;
-  height: 420px;
+  height: 520px;
 
   background-color: var(--color-primary);
   border-radius: 8px;
@@ -238,6 +239,10 @@ const HtmlInputField = styled.input<RequiredInput>`
   }
 `;
 
+const UserIcon = styled(FaUser)`
+  margin-right: 10px;
+`;
+
 const EmailIcon = styled(TfiEmail)`
   margin-right: 10px;
 `;
@@ -246,7 +251,7 @@ const LockIcon = styled(TfiLock)`
   margin-right: 10px;
 `;
 
-const LoginIcon = styled(MdOutlineLogin)`
+const RegisterIcon = styled(AiOutlineForm)`
   font-size: 25px;
   margin-left: 10px;
 `;
@@ -266,9 +271,6 @@ const HtmlRegisterLink = styled(Link)`
 `;
 
 const LoginPage = () => {
-  const userIsLogedin = useAuth();
-  if (userIsLogedin) return <Navigate to="/flights" />;
-
   const passwordSchema = z
     .string()
     .min(8, { message: "Must be at least 8 characters long" })
@@ -287,6 +289,13 @@ const LoginPage = () => {
     });
 
   const schema = z.object({
+    name: z
+      .string()
+      .min(2, { message: "Must be at least 2 characters long" })
+      .max(255, { message: "Must be at most 255 characters long" })
+      .regex(/^[a-zA-Z0-9\s']+$/, {
+        message: "Only letters, numbers, spaces and symbol '",
+      }),
     email: z.string().email(),
     password: passwordSchema,
   });
@@ -300,22 +309,37 @@ const LoginPage = () => {
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
   const navigate = useNavigate();
-  const login = useLogin(() => {
-    navigate("/flights");
+  const registerMutation = useRegister(() => {
+    navigate("/profile");
   });
 
   const submitHandler = (data: FieldValues) => {
-    const formData = new FormData();
-    formData.append("username", data.email);
-    formData.append("password", data.password);
-    login.mutate(formData);
+    registerMutation.mutate({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    });
   };
   return (
     <HtmlPageContainer>
       <HtmlFormContainer>
         <HtmlAnimationSpan />
         <HtmlLoginForm onSubmit={handleSubmit(submitHandler)}>
-          <h1>Login</h1>
+          <h1>Register</h1>
+          <HtmlInputContainer>
+            <HtmlInputField
+              {...register("name")}
+              id="name"
+              type="text"
+              required="required"
+            />
+            <span>
+              <UserIcon />
+              Name
+            </span>
+            <i></i>
+            {errors.name && <p>{errors.name.message}</p>}
+          </HtmlInputContainer>
           <HtmlInputContainer>
             <HtmlInputField
               {...register("email")}
@@ -358,11 +382,11 @@ const LoginPage = () => {
             borderRadious={4}
             btnType="submit"
           >
-            Login <LoginIcon />
+            Register <RegisterIcon />
           </Button>
           <HtmlRegisterContainer>
-            Don't have an account?
-            <HtmlRegisterLink to="/register">Register</HtmlRegisterLink>
+            Already have an account?
+            <HtmlRegisterLink to="/login">Login</HtmlRegisterLink>
           </HtmlRegisterContainer>
         </HtmlLoginForm>
       </HtmlFormContainer>

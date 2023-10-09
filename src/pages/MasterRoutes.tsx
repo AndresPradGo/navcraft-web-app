@@ -5,7 +5,7 @@ import { useAuth } from "./login";
 const MasterRoutes = () => {
   const user = useAuth();
   const userIsMaster = user && user.is_master;
-  if (!userIsMaster) return <Navigate to="/flights" />;
+  if (!userIsMaster) return <Navigate to="/notFound" />;
 
   return <Outlet />;
 };

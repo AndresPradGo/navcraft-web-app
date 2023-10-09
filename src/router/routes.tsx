@@ -8,6 +8,7 @@ import Waypoints from "../pages/Waypoints";
 import ErrorPage from "../pages/ErrorPage";
 import LoginPage from "../pages/login";
 import MasterRoutes from "../pages/MasterRoutes";
+import RegisterPage from "../pages/register/index";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
     errorElement: <ErrorPage />,
   },
   {
