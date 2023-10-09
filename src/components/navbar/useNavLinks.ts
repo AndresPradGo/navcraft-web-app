@@ -1,6 +1,7 @@
 import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
 import { MdFlightTakeoff, MdAirplanemodeActive } from "react-icons/md";
 import { IconType } from "react-icons";
+import {useAuth} from '../../pages/login';
 
 interface NavLinkData {
   text: string;
@@ -8,7 +9,10 @@ interface NavLinkData {
   icon: IconType;
 }
 
-const useNavLinks = (userIsMaster: boolean): NavLinkData[] => {
+const useNavLinks = (): NavLinkData[] => {
+  const user = useAuth()
+  const userIsMaster = user && user.is_master
+
   const navLinksData = [
     {
       text: "Flights",

@@ -7,6 +7,7 @@ import Users from "../pages/Users";
 import Waypoints from "../pages/Waypoints";
 import ErrorPage from "../pages/ErrorPage";
 import LoginPage from "../pages/login";
+import MasterRoutes from "../pages/MasterRoutes";
 
 const router = createBrowserRouter([
   {
@@ -18,13 +19,23 @@ const router = createBrowserRouter([
       { path: "flights", element: <Flights /> },
       { path: "waypoints", element: <Waypoints /> },
       { path: "aircraft", element: <Aircraft /> },
-      { path: "users", element: <Users /> },
     ],
   },
   {
     path: "/login",
     element: <LoginPage />,
     errorElement: <ErrorPage />,
+  },
+  {
+    element: <MasterRoutes />,
+    children: [
+      {
+        path: "/",
+        element: <Layout />,
+        errorElement: <ErrorPage />,
+        children: [{ path: "users", element: <Users /> }],
+      },
+    ],
   },
 ]);
 

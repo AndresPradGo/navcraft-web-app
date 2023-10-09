@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useForm, FieldValues } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdOutlineLogin } from "react-icons/md";
 import { TfiEmail, TfiLock } from "react-icons/tfi";
@@ -9,6 +9,7 @@ import { z } from "zod";
 import { styled } from "styled-components";
 import Button from "../../components/common/button/index";
 import useLogin from "./useLogin";
+import useAuth from "./useAuth";
 
 const HtmlPageContainer = styled.div`
   position: relative;
@@ -265,6 +266,9 @@ const HtmlRegisterLink = styled(Link)`
 `;
 
 const LoginPage = () => {
+  const userIsLogedin = useAuth();
+  if (userIsLogedin) return <Navigate to="/flights" />;
+
   const passwordSchema = z
     .string()
     .min(8, { message: "Must be at least 8 characters long" })
