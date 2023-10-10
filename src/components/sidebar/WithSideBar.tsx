@@ -45,9 +45,10 @@ const HtmlMainContainerWithSideBar = styled(
 
 interface Props {
   children: ReactNode;
+  sideBarContent: ReactNode;
 }
 
-const WithSideBar = ({ children }: Props) => {
+const WithSideBar = ({ children, sideBarContent }: Props) => {
   const { hasSideBar, sideBarIsExpanded } = useSideBar();
   if (!hasSideBar)
     return (
@@ -58,7 +59,7 @@ const WithSideBar = ({ children }: Props) => {
 
   return (
     <HtmlSideBarAndContentContainer>
-      <SideBar />
+      <SideBar>{sideBarContent}</SideBar>
       <HtmlMainContainerWithSideBar $sideBarIsExpanded={sideBarIsExpanded}>
         {children}
       </HtmlMainContainerWithSideBar>

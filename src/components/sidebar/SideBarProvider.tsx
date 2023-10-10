@@ -15,6 +15,10 @@ const SideBarProvider = ({ children }: Props) => {
       path: "flights",
       minLength: 1,
     },
+    {
+      path: "profile",
+      minLength: 1,
+    },
   ];
 
   const pathname = usePathList();

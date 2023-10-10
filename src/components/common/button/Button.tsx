@@ -14,6 +14,7 @@ interface HtmlButtonProps {
   $spaceChildren: "center" | "space-between" | "space-evenly";
   $fontSize: number;
   $borderRadious: number;
+  $borderWidth: number;
   $margin: string;
   $padding: string;
 }
@@ -29,7 +30,8 @@ const HtmlButton = styled.button<HtmlButtonProps>`
   font-weight: lighter;
   letter-spacing: 2px;
   white-space: nowrap;
-  border: 2px solid ${(props) => props.$backgroundColor};
+  border: ${(props) => props.$borderWidth}px solid
+    ${(props) => props.$backgroundColor};
   border-radius: ${(props) => props.$borderRadious}px;
   cursor: pointer;
   outline: 0;
@@ -49,7 +51,8 @@ const HtmlButton = styled.button<HtmlButtonProps>`
     color: ${(props) => props.$hoverColor};
     background-color: ${(props) =>
       props.$fill ? props.$backgroundHoverColor : "transparent"};
-    border: 2px solid ${(props) => props.$backgroundHoverColor};
+    border: ${(props) => props.$borderWidth}px solid
+      ${(props) => props.$backgroundHoverColor};
   }
 `;
 
@@ -123,6 +126,7 @@ const Button = ({
   spaceChildren,
   fontSize,
   borderRadious,
+  borderWidth,
   margin,
   padding,
   children,
@@ -164,6 +168,7 @@ const Button = ({
         $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
         $fontSize={fontSize ? fontSize : 12}
         $borderRadious={borderRadious ? borderRadious : 10}
+        $borderWidth={borderWidth ? borderWidth : 2}
         $margin={margin ? margin : "0px"}
         $padding={padding ? padding : "5px 10px"}
         onClick={handleClick ? handleClick : () => {}}
@@ -194,6 +199,7 @@ const Button = ({
       $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
       $fontSize={fontSize ? fontSize : 12}
       $borderRadious={borderRadious ? borderRadious : 10}
+      $borderWidth={borderWidth ? borderWidth : 2}
       $margin={margin ? margin : "0px"}
       $padding={padding ? padding : "5px 10px"}
       onClick={handleClick ? handleClick : () => {}}

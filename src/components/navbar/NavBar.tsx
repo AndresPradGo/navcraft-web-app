@@ -29,7 +29,7 @@ const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
   border-bottom: 1px solid var(--color-grey-dark);
 
   background-color: var(--color-primary-dark);
-  opacity: 0.91;
+  opacity: 0.95;
 
   @media screen and (min-width: 768px) {
     max-height: 72px;

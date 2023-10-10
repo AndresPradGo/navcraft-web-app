@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import Aircraft from "../pages/Aircraft";
 import Flights from "../pages/Flights";
 import Layout from "../pages/layout";
+import Profile from "../pages/profile";
 import Users from "../pages/Users";
 import Waypoints from "../pages/Waypoints";
 import ErrorPage from "../pages/ErrorPage";
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "flights", element: <Flights /> },
       { path: "waypoints", element: <Waypoints /> },
       { path: "aircraft", element: <Aircraft /> },
+      { path: "profile", element: <Profile /> },
     ],
   },
   {

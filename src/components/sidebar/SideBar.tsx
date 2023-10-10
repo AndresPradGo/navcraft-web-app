@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 
 import useSideBar from "./useSideBar";
+import { ReactNode } from "react";
 
 interface HtmlSideBarContainerProps {
   $sideBarIsExpanded: boolean;
@@ -8,11 +9,12 @@ interface HtmlSideBarContainerProps {
 
 const HtmlSideBar = styled.div<HtmlSideBarContainerProps>`
   background-color: var(--color-primary-dark);
+  border-right: 1px solid var(--color-grey-dark);
   transition: all 0.2s ease-out;
   overflow-x: hidden;
   width: ${(props) => (props.$sideBarIsExpanded ? "300px" : "0px")};
   height: 100%;
-  padding: ${(props) => (props.$sideBarIsExpanded ? "40px 20px 0" : "40px 0")};
+  padding: 0;
   display: flex;
   flex-direction: column;
 
@@ -21,15 +23,18 @@ const HtmlSideBar = styled.div<HtmlSideBarContainerProps>`
   }
 
   @media screen and (min-width: 1280px) {
-    padding: 40px 20px 0;
     width: 300px;
   }
 `;
 
-const SideBar = () => {
+interface Props {
+  children: ReactNode;
+}
+
+const SideBar = ({ children }: Props) => {
   const { sideBarIsExpanded } = useSideBar();
   return (
-    <HtmlSideBar $sideBarIsExpanded={sideBarIsExpanded}>SideBar</HtmlSideBar>
+    <HtmlSideBar $sideBarIsExpanded={sideBarIsExpanded}>{children}</HtmlSideBar>
   );
 };
 
