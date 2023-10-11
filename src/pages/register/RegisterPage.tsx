@@ -56,7 +56,8 @@ const HtmlFormContainer = styled.div`
       transparent
     );
     z-index: 1;
-    animation: animate-reverse 6s linear infinite;
+    animation: spin-reverse 6s linear infinite;
+    -webkit-animation: spin-reverse 6s linear infinite;
     transform-origin: bottom right;
   }
 
@@ -76,7 +77,8 @@ const HtmlFormContainer = styled.div`
       transparent
     );
     z-index: 1;
-    animation: animate-reverse 6s linear infinite;
+    animation: spin-reverse 6s linear infinite;
+    -webkit-animation: spin-reverse 6s linear infinite;
     transform-origin: bottom right;
     animation-delay: -3s;
   }
@@ -108,7 +110,8 @@ const HtmlAnimationSpan = styled.form`
       transparent
     );
     z-index: 1;
-    animation: animate-reverse 6s linear infinite;
+    animation: spin-reverse 6s linear infinite;
+    -webkit-animation: spin-reverse 6s linear infinite;
     transform-origin: bottom right;
     animation-delay: -4.5s;
   }
@@ -129,7 +132,8 @@ const HtmlAnimationSpan = styled.form`
       transparent
     );
     z-index: 1;
-    animation: animate-reverse 6s linear infinite;
+    animation: spin-reverse 6s linear infinite;
+    -webkit-animation: spin-reverse 6s linear infinite;
     transform-origin: bottom right;
     animation-delay: -1.5s;
   }

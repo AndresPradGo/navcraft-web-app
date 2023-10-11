@@ -55,7 +55,8 @@ const HtmlFormContainer = styled.div`
       transparent
     );
     z-index: 1;
-    animation: animate 6s linear infinite;
+    animation: spin 6s linear infinite;
+    -webkit-animation: spin 6s linear infinite;
     transform-origin: top left;
   }
 
@@ -75,7 +76,8 @@ const HtmlFormContainer = styled.div`
       transparent
     );
     z-index: 1;
-    animation: animate 6s linear infinite;
+    animation: spin 6s linear infinite;
+    -webkit-animation: spin 6s linear infinite;
     transform-origin: top left;
     animation-delay: -3s;
   }
@@ -107,7 +109,8 @@ const HtmlAnimationSpan = styled.form`
       transparent
     );
     z-index: 1;
-    animation: animate 6s linear infinite;
+    animation: spin 6s linear infinite;
+    -webkit-animation: spin 6s linear infinite;
     transform-origin: top left;
     animation-delay: -4.5s;
   }
@@ -128,7 +131,8 @@ const HtmlAnimationSpan = styled.form`
       transparent
     );
     z-index: 1;
-    animation: animate 6s linear infinite;
+    animation: spin 6s linear infinite;
+    -webkit-animation: spin 6s linear infinite;
     transform-origin: top left;
     animation-delay: -1.5s;
   }

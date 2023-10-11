@@ -7,6 +7,7 @@ import { ContentLayout } from "../layout";
 import WithSideBar from "../../components/sidebar/WithSideBar";
 import SideBarContent from "./SideBarContent";
 import useProfileData from "./useProfileData";
+import Loader from "../../components/Loader";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -116,7 +117,7 @@ const HtmlPassengerTable = styled.div``;
 const Profile = () => {
   const [weightInKg, setWeightInKg] = useState(false);
 
-  const { data: profileData, error } = useProfileData();
+  const { data: profileData, error, isLoading } = useProfileData();
 
   if (error) {
     if (error.response)
@@ -133,6 +134,8 @@ const Profile = () => {
 
     throw new Error("");
   }
+
+  if (isLoading) return <Loader />;
 
   return (
     <WithSideBar sideBarContent={<SideBarContent />}>
