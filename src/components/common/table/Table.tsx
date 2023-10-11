@@ -305,8 +305,8 @@ const Table = ({ keys, headers, rows, breakingPoint = 768 }: Props) => {
                       $breakingPoint={truncatedBreakingPoint}
                     >
                       <EditTableButtons
-                        href={row.href}
-                        onDelete={row.onDelete}
+                        handleEdit={row.handleEdit}
+                        handleDelete={row.handleDelete as () => {}}
                         permissions={row.permissions}
                       />
                     </HtmlTableDataCell>

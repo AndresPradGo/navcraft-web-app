@@ -1,4 +1,4 @@
-import { useState, useReducer } from "react";
+import { useState, useReducer, ReactNode } from "react";
 import { styled } from "styled-components";
 import Table, { Props as TableProps } from "./Table";
 import SortButton, { SortColumnType, SortDataType } from "./SortButton";
@@ -36,6 +36,7 @@ const HtmlNoDataMessageParagraph = styled.p`
 interface Props {
   tableData: TableProps;
   sortColumnOptions?: SortColumnType[];
+  addButton?: ReactNode;
   emptyTableMessage: string;
 }
 
@@ -43,6 +44,7 @@ const TableContainer = ({
   tableData,
   sortColumnOptions,
   emptyTableMessage,
+  addButton,
 }: Props) => {
   const [sortData, setSortData] = useState<SortDataType>({
     index: 0,
@@ -72,15 +74,14 @@ const TableContainer = ({
   return (
     <HtmlTableContainer>
       <HtmlButtonContainer>
-        {sortColumnOptions ? (
+        {sortColumnOptions && (
           <SortButton
             sortOptions={sortColumnOptions}
             selectedSortData={sortData}
             changeSelectedSortData={handleSortColumnChange}
           />
-        ) : (
-          <></>
         )}
+        {addButton && addButton}
       </HtmlButtonContainer>
       <Table
         rows={processedData}

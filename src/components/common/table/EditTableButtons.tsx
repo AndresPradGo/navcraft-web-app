@@ -33,17 +33,22 @@ export type EditButtonsPropsTypeUnion =
   | (() => void)
   | ("open" | "edit" | "delete" | undefined);
 export interface Props {
-  href: string;
+  handleEdit: string | (() => void);
   handleDelete: () => void;
   permissions?: "open" | "edit" | "delete";
 }
 
-const EditTableButtons = ({ href, handleDelete, permissions }: Props) => {
+const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
   if (!permissions) return <HtmlButtonGroup />;
   if (permissions === "delete")
     return (
       <HtmlButtonGroup>
-        <Button href={href} height="24px" borderRadious={40}>
+        <Button
+          href={typeof handleEdit === "string" ? handleEdit : undefined}
+          handleClick={typeof handleEdit !== "string" ? handleEdit : undefined}
+          height="24px"
+          borderRadious={40}
+        >
           EDIT
           <EditIcon />
         </Button>
@@ -62,22 +67,23 @@ const EditTableButtons = ({ href, handleDelete, permissions }: Props) => {
         </Button>
       </HtmlButtonGroup>
     );
-
-  if (permissions === "edit")
-    return (
-      <HtmlButtonGroup>
-        <Button href={href} height="24px" borderRadious={40}>
-          EDIT
-          <EditIcon />
-        </Button>
-      </HtmlButtonGroup>
-    );
-
   return (
     <HtmlButtonGroup>
-      <Button href={href} height="24px" borderRadious={40}>
-        DETAILS
-        <OpenIcon />
+      <Button
+        href={typeof handleEdit === "string" ? handleEdit : undefined}
+        handleClick={typeof handleEdit !== "string" ? handleEdit : undefined}
+        height="24px"
+        borderRadious={40}
+      >
+        {permissions === "edit" ? (
+          <>
+            EDIT <EditIcon />
+          </>
+        ) : (
+          <>
+            DETAILS <OpenIcon />
+          </>
+        )}
       </Button>
     </HtmlButtonGroup>
   );

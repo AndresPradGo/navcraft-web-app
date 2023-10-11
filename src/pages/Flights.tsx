@@ -6,8 +6,8 @@ const flights = () => {
   const flights = [
     {
       id: 1,
-      href: "flight/1",
-      onDelete: () => {},
+      handleEdit: "flight/1",
+      handleDelete: () => {},
       permissions: "open" as "open",
       route: "CZBB - CAT1",
       departure: "CZBB",
@@ -19,8 +19,8 @@ const flights = () => {
     },
     {
       id: 2,
-      href: "flights/2",
-      onDelete: () => {},
+      handleEdit: "flights/2",
+      handleDelete: () => {},
       permissions: "delete" as "delete",
 
       route: "CYXX - CYPW",
@@ -71,7 +71,7 @@ const flights = () => {
   ];
 
   return (
-    <WithSideBar>
+    <WithSideBar sideBarContent="Sidebar">
       <ContentLayout>
         <Table
           tableData={{
