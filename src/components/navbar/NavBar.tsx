@@ -34,6 +34,7 @@ const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
   @media screen and (min-width: 768px) {
     max-height: 72px;
     flex-direction: row;
+    opacity: 0.9;
   }
 `;
 

@@ -10,13 +10,14 @@ const HtmlLoader = styled.div`
   overflow: hidden;
 
   & div {
-    border: 16px solid var(--color-contrast);
+    border-right: 4px solid transparent;
     border-radius: 50%;
-    border-top: 16px solid var(--color-primary-dark);
+    border-top: 4px solid var(--color-contrast);
+    background-color: transparent;
     width: 120px;
     height: 120px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
   }
 `;
 

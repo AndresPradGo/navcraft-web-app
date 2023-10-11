@@ -48,12 +48,17 @@ const SideBarContent = () => {
   const queryClient = useQueryClient();
 
   const commonStyles = {
+    color: "var(--color-white)",
+    hoverColor: "var(--color-white)",
+    backgroundColor: "var(--color-primary-light)",
+    backgroundHoverColor: "var(--color-primary-bright)",
     width: "100%",
     height: "40px",
     fontSize: 15,
-    margin: "15px 0",
+    margin: "5px 0",
     fill: true,
     borderWidth: 3,
+    borderRadious: 4,
   };
   const buttons = [
     {
@@ -90,6 +95,7 @@ const SideBarContent = () => {
         backgroundColor: "var(--color-grey)",
         backgroundHoverColor: "var(--color-white)",
         fill: false,
+        margin: "20px 0 5px",
       },
       onClick: () => {
         queryClient.clear();
