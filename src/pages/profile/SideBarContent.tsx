@@ -3,6 +3,7 @@ import { MdOutlineLogout } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { TbMailCog, TbLockCog } from "react-icons/tb";
 import { styled } from "styled-components";
+import { useQueryClient } from "@tanstack/react-query";
 
 import Button from "../../components/common/button/index";
 import { useNavigate } from "react-router-dom";
@@ -44,6 +45,7 @@ const DeleteIcon = styled(RiDeleteBinLine)`
 
 const SideBarContent = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const commonStyles = {
     width: "100%",
@@ -90,6 +92,7 @@ const SideBarContent = () => {
         fill: false,
       },
       onClick: () => {
+        queryClient.clear();
         localStorage.removeItem("token");
         navigate("/login");
       },

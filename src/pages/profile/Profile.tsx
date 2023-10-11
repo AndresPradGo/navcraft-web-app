@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { FaWeightScale } from "react-icons/fa6";
 import { styled } from "styled-components";
+import { toast } from "react-toastify";
 
 import { ContentLayout } from "../layout";
 import WithSideBar from "../../components/sidebar/WithSideBar";
 import SideBarContent from "./SideBarContent";
+import useProfileData from "./useProfileData";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -114,13 +116,31 @@ const HtmlPassengerTable = styled.div``;
 const Profile = () => {
   const [weightInKg, setWeightInKg] = useState(false);
 
+  const { data: profileData, error } = useProfileData();
+
+  if (error) {
+    if (error.response)
+      toast.error(error.response.data.detail, {
+        position: "top-center",
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+
+    throw new Error("");
+  }
+
   return (
     <WithSideBar sideBarContent={<SideBarContent />}>
       <ContentLayout>
         <HtmlContainer>
           <HtmlTitleContainer>
-            <h1>Andres Eduardo Pradilla Gomez</h1>
-            <p>ae.pradillagomez@gmail.com</p>
+            <h1>{profileData?.name}</h1>
+            <p>{profileData?.email}</p>
           </HtmlTitleContainer>
           <HtmlWeightCardContainer>
             <HtmlWeightCard>
@@ -130,7 +150,7 @@ const Profile = () => {
                   WEIGHT
                 </h2>
                 <p>
-                  <span>140</span>
+                  <span>{profileData?.weight}</span>
                   <span onClick={() => setWeightInKg(!weightInKg)}>Lb</span>
                 </p>
               </HtmlWeightCardFront>
@@ -140,7 +160,11 @@ const Profile = () => {
                   WEIGHT
                 </h2>
                 <p>
-                  <span>{Math.round(140 * 0.4533)}</span>
+                  <span>
+                    {Math.round(
+                      (profileData ? profileData.weight : 0) * 0.4533
+                    )}
+                  </span>
                   <span onClick={() => setWeightInKg(!weightInKg)}>Kg</span>
                 </p>
               </HtmlWeightCardBack>

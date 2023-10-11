@@ -8,7 +8,9 @@ email: string;
 }
 
 interface UserType {
-    jtw: string;
+    jwt: string;
+    jwtType: string;
+    authorization: string;
     email: string;
     is_active: boolean;
     is_admin: boolean;
@@ -17,7 +19,8 @@ interface UserType {
 
 const useAuth = (): UserType | null => {
   const jwt = localStorage.getItem('token');
-  if (!jwt) {
+  const jwtType = localStorage.getItem('token_type');
+  if (!jwt || !jwtType) {
       return null; 
     }
   const jwtData = jwtDecode(jwt) as JwtPayloadType
@@ -27,11 +30,14 @@ const useAuth = (): UserType | null => {
 
   if (currentTime > expirationTime) {
     localStorage.removeItem('token');
+    localStorage.removeItem('token_type');
     return null;
   }
 
   const user = {
-    jtw: jwt,
+    jwt,
+    jwtType,
+    authorization:`${jwtType} ${jwt}`,
     email: jwtData.email,
     is_active: jwtData.active,
     is_admin: jwtData.permissions.includes("admin"),

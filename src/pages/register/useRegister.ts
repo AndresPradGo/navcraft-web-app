@@ -15,9 +15,10 @@ const apiClient = new APIClient<UserRegisterData, AccessToken>("/users")
 const useRegister = (onRegister: () => void) => {
 
     return useMutation<AccessToken, APIClientError, UserRegisterData>({
-        mutationFn: (data: UserRegisterData) => apiClient.post(data),
+        mutationFn: (data: UserRegisterData) => apiClient.postWithoutAuth(data),
         onSuccess: (JWTData) => {
             localStorage.setItem('token', JWTData.access_token)
+            localStorage.setItem('token_type', JWTData.token_type)
             onRegister()
         },
         onError: (error: APIClientError) => {

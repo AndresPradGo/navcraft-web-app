@@ -13,9 +13,10 @@ const apiClient = new APIClient<FormData, AccessToken>("/login")
 const useLogin = (onLogin: () => void) => {
 
     return useMutation<AccessToken, APIClientError, FormData>({
-        mutationFn: (data: FormData) => apiClient.post(data),
+        mutationFn: (data: FormData) => apiClient.postWithoutAuth(data),
         onSuccess: (JWTData) => {
             localStorage.setItem('token', JWTData.access_token)
+            localStorage.setItem('token_type', JWTData.token_type)
             onLogin()
         },
         onError: (error: APIClientError) => {
