@@ -14,7 +14,7 @@ interface HtmlTagProps {
 const HtmlTable = styled.table<HtmlTagProps>`
   width: 100%;
   max-width: ${(props) => (props.$sideBarIsExpanded ? "100vw" : "100%")};
-  margin-bottom: 24px;
+  margin-bottom: 10px;
   border-spacing: 0 10px;
 `;
 
@@ -248,12 +248,22 @@ export interface Props {
   breakingPoint?: number;
 }
 
-const Table = ({ keys, headers, rows, breakingPoint = 768 }: Props) => {
+interface InternalProps extends Props {
+  hasButtons: boolean;
+}
+
+const Table = ({
+  keys,
+  headers,
+  rows,
+  hasButtons,
+  breakingPoint = 768,
+}: InternalProps) => {
   const { sideBarIsExpanded } = useSideBar();
 
   const keysWithButtons = [...keys];
   const headersWithButtons = { ...headers };
-  if (rows.find((row) => !!row.permissions)) {
+  if (hasButtons) {
     keysWithButtons.push("buttons");
     headersWithButtons.buttons = "";
   }

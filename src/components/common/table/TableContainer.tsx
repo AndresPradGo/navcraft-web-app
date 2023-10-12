@@ -73,20 +73,23 @@ const TableContainer = ({
     );
   return (
     <HtmlTableContainer>
-      <HtmlButtonContainer>
-        {sortColumnOptions && (
-          <SortButton
-            sortOptions={sortColumnOptions}
-            selectedSortData={sortData}
-            changeSelectedSortData={handleSortColumnChange}
-          />
-        )}
-        {addButton && addButton}
-      </HtmlButtonContainer>
+      {sortColumnOptions && (
+        <HtmlButtonContainer>
+          {sortColumnOptions && (
+            <SortButton
+              sortOptions={sortColumnOptions}
+              selectedSortData={sortData}
+              changeSelectedSortData={handleSortColumnChange}
+            />
+          )}
+          {addButton && addButton}
+        </HtmlButtonContainer>
+      )}
       <Table
         rows={processedData}
         headers={tableData.headers}
         keys={tableData.keys}
+        hasButtons={!!tableData.rows.find((row) => !!row.permissions)}
       />
     </HtmlTableContainer>
   );

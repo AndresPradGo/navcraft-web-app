@@ -10,7 +10,7 @@ const HtmlLayoutContainer = styled.div`
   overflow: hidden;
   display: grid;
   min-height: 100vh;
-  width: 100vw;
+  max-width: 100vw;
   grid-template-rows: 61px 100fr;
   grid-template-columns: 100fr;
 

@@ -8,6 +8,7 @@ import WithSideBar from "../../components/sidebar/WithSideBar";
 import SideBarContent from "./SideBarContent";
 import useProfileData from "./useProfileData";
 import Loader from "../../components/Loader";
+import PassengersTable from "./PassengersTable";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -39,7 +40,7 @@ const HtmlWeightCardContainer = styled.div`
   width: 100%;
   max-width: 250px;
   height: 144px;
-  margin: 50px 0 0 20px;
+  margin: 30px 0 0 10px;
   display: flex;
   justify-content: flex-start;
 `;
@@ -112,8 +113,6 @@ const WeightIcon = styled(FaWeightScale)`
   margin-right: 10px;
 `;
 
-const HtmlPassengerTable = styled.div``;
-
 const Profile = () => {
   const [weightInKg, setWeightInKg] = useState(false);
 
@@ -173,6 +172,7 @@ const Profile = () => {
               </HtmlWeightCardBack>
             </HtmlWeightCard>
           </HtmlWeightCardContainer>
+          <PassengersTable />
         </HtmlContainer>
       </ContentLayout>
     </WithSideBar>

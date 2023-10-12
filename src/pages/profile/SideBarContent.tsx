@@ -95,7 +95,7 @@ const SideBarContent = () => {
         backgroundColor: "var(--color-grey)",
         backgroundHoverColor: "var(--color-white)",
         fill: false,
-        margin: "20px 0 5px",
+        margin: "30px 0 5px",
       },
       onClick: () => {
         queryClient.clear();

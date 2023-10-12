@@ -5,13 +5,15 @@ import useSideBar from "./useSideBar";
 import SideBar from "./SideBar";
 
 const HtmlSideBarAndContentContainer = styled.div`
-  grid-row: 2;
+  grid-row: 1 / spans 2;
   grid-column: 1;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
   overflow: hidden;
+  width: 100%;
+  min-height: 100vh;
 `;
 
 const HtmlMainContainer = styled.main`
@@ -22,7 +24,11 @@ const HtmlMainContainer = styled.main`
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  height: 200vh;
+  padding: 61px 0 0;
+
+  @media screen and (min-width: 768px) {
+    padding: 71px 0 0;
+  }
 `;
 
 interface HtmlSideBarContainerProps {

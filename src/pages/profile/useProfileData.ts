@@ -10,6 +10,7 @@ interface EditProfileData {
 }
 
 interface ProfileData {
+    id: number,
     name: string
     email: string
     weight: number
@@ -21,19 +22,21 @@ const apiClient = new APIClient<EditProfileData, ProfileData>("/users")
 const useProfileData = () => {
     const user = useAuth();
     return useQuery<ProfileData, APIClientError>({
-    queryKey: ['profile'],
-    queryFn: () => {
-        return apiClient.getAndPreProcess<ProfileDataFromAPI>(
-            user? user.authorization: "",
-            (data: ProfileDataFromAPI) => {
-            return {
-                name: data.name,
-                email: data.email,
-                weight: data.weight_lb
-            }
-        } , "/me")
-    }
-})}
+        queryKey: ['profile'],
+        queryFn: () => {
+            return apiClient.getAndPreProcess<ProfileDataFromAPI>(
+                user? user.authorization: "",
+                (data: ProfileDataFromAPI) => {
+                return {
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                    weight: data.weight_lb
+                }
+            } , "/me")
+        }
+    })
+}
 
 export default useProfileData
 
