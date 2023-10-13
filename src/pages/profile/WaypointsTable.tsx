@@ -90,6 +90,17 @@ const WaypointsTable = ({ userId }: { userId: number }) => {
     breakingPoint: 0,
   };
 
+  const sortData = [
+    {
+      key: "code",
+      title: "Code",
+    },
+    {
+      key: "name",
+      title: "Name",
+    },
+  ];
+
   return (
     <HtmlContainer>
       <HtmlTitleContainer>
@@ -117,6 +128,7 @@ const WaypointsTable = ({ userId }: { userId: number }) => {
         ) : (
           <Table
             tableData={tableData}
+            sortColumnOptions={sortData}
             pageSize={5}
             emptyTableMessage="No Waypoints saved..."
           />

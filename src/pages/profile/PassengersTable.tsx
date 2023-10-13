@@ -87,6 +87,13 @@ const PassengersTable = ({ userId }: { userId: number }) => {
     breakingPoint: 0,
   };
 
+  const sortData = [
+    {
+      key: "name",
+      title: "Name",
+    },
+  ];
+
   return (
     <HtmlContainer>
       <HtmlTitleContainer>
@@ -114,6 +121,7 @@ const PassengersTable = ({ userId }: { userId: number }) => {
         ) : (
           <Table
             tableData={tableData}
+            sortColumnOptions={sortData}
             pageSize={5}
             emptyTableMessage="No Passengers saved..."
           />

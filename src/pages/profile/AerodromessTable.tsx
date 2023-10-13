@@ -100,6 +100,17 @@ const AerodromesTable = ({ userId }: { userId: number }) => {
     breakingPoint: 1000,
   };
 
+  const sortData = [
+    {
+      title: "Code",
+      key: "code",
+    },
+    {
+      title: "Name",
+      key: "name",
+    },
+  ];
+
   return (
     <HtmlContainer>
       <HtmlTitleContainer>
@@ -127,6 +138,7 @@ const AerodromesTable = ({ userId }: { userId: number }) => {
         ) : (
           <Table
             tableData={tableData}
+            sortColumnOptions={sortData}
             pageSize={5}
             emptyTableMessage="No Aerodromes saved..."
           />
