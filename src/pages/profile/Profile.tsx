@@ -10,6 +10,7 @@ import useProfileData from "./useProfileData";
 import Loader from "../../components/Loader";
 import PassengersTable from "./PassengersTable";
 import WaypointsTable from "./WaypointsTable";
+import AerodromesTable from "./AerodromessTable";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -174,6 +175,7 @@ const Profile = () => {
             </HtmlWeightCard>
           </HtmlWeightCardContainer>
           <PassengersTable />
+          <AerodromesTable />
           <WaypointsTable />
         </HtmlContainer>
       </ContentLayout>

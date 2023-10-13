@@ -3,7 +3,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
 
-import useWaypointsData from "./useWaypointsData";
+import useAerodromesData from "./useAerodromesData";
 import Table from "../../components/common/table";
 import Loader from "../../components/Loader";
 import Button from "../../components/common/button/index";
@@ -66,28 +66,38 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
   overflow: hidden;
 `;
 
-const WaypointsTable = () => {
+const AerodromesTable = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { data: waypoints, isLoading } = useWaypointsData();
+  const { data: aerodromes, isLoading } = useAerodromesData();
 
   const tableData = {
-    keys: ["code", "name", "latitude", "longitude", "variation"],
+    keys: [
+      "code",
+      "name",
+      "latitude",
+      "longitude",
+      "elevation",
+      "runways",
+      "variation",
+    ],
     headers: {
       code: "Code",
       name: "Name",
       latitude: "Latitude",
       longitude: "Longitude",
+      elevation: "Elevation [ft]",
+      runways: "Runways",
       variation: "Magnetic Var",
     },
-    rows: waypoints
-      ? waypoints.map((waypoint) => ({
-          ...waypoint,
+    rows: aerodromes
+      ? aerodromes.map((aerodrome) => ({
+          ...aerodrome,
           handleEdit: () => {},
           handleDelete: () => {},
           permissions: "delete" as "delete",
         }))
       : [],
-    breakingPoint: 0,
+    breakingPoint: 1000,
   };
 
   return (
@@ -95,7 +105,7 @@ const WaypointsTable = () => {
       <HtmlTitleContainer>
         <div>
           <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
-          <h3>Saved Waypoints</h3>
+          <h3>Saved Aerodromes</h3>
         </div>
         <Button
           borderRadious={100}
@@ -115,10 +125,10 @@ const WaypointsTable = () => {
         {isLoading ? (
           <Loader />
         ) : (
-          waypoints && (
+          aerodromes && (
             <Table
               tableData={tableData}
-              emptyTableMessage="No Waypoints saved..."
+              emptyTableMessage="No Aerodromes saved..."
             />
           )
         )}
@@ -127,4 +137,4 @@ const WaypointsTable = () => {
   );
 };
 
-export default WaypointsTable;
+export default AerodromesTable;

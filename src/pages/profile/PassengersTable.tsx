@@ -14,7 +14,6 @@ interface HtmlTagProps {
 const HtmlContainer = styled.div`
   margin-top: 100px;
   width: 100%;
-  max-width: 1000px;
 `;
 
 const HtmlTitleContainer = styled.div`
@@ -61,8 +60,8 @@ const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
 const HtmlTableContainer = styled.div<HtmlTagProps>`
   transition: max-height 0.3s, padding 0.3s, opacity 0.3s;
   border-bottom: 1px solid var(--color-grey);
-  padding: ${(props) => (props.$isOpen ? "30px" : "0px 30px")};
-  max-height: ${(props) => (props.$isOpen ? "100vh" : "0px")};
+  padding: ${(props) => (props.$isOpen ? "15px" : "0px 15px")};
+  max-height: ${(props) => (props.$isOpen ? "10000vh" : "0px")};
   opacity: ${(props) => (props.$isOpen ? "1" : "0")};
   overflow: hidden;
 `;

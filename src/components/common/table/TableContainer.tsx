@@ -90,6 +90,7 @@ const TableContainer = ({
         headers={tableData.headers}
         keys={tableData.keys}
         hasButtons={!!tableData.rows.find((row) => !!row.permissions)}
+        breakingPoint={tableData.breakingPoint}
       />
     </HtmlTableContainer>
   );

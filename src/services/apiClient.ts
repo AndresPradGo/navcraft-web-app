@@ -37,9 +37,9 @@ class APIClient<TPost, TGet> {
 
     getAndPreProcessAll = <TFromAPI>(
         token: string,
-        handlePreProcess: (preData: TFromAPI[]) => TGet[], 
+        handlePreProcess: (preData: TFromAPI[]) => TGet[] | [], 
         endpointPostfix?: string
-    ): Promise<TGet[]> => {
+    ): Promise<TGet[] | []> => {
         this._setAuthHeader(token)
         return axiosInstance.get<TFromAPI[]>(this._getEndpoint(endpointPostfix)).then(res => handlePreProcess(res.data))
     }

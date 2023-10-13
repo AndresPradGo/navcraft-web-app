@@ -24,12 +24,31 @@ export interface WaypointDataFromAPI {
     lat_degrees: number,
     lat_minutes: number,
     lat_seconds: number,
-    lat_direction: string,
+    lat_direction: "N" | "S",
     lon_degrees: number,
     lon_minutes: number,
     lon_seconds: number,
-    lon_direction: string,
+    lon_direction: "E" | "W",
     magnetic_variation: number,
     created_at_utc: string,
     last_updated_utc: string
+}
+
+interface RunwayDataFromAPI {
+    id: number
+    number: number
+    position?: string
+    length_ft: number
+    landing_length_ft?: number
+    interception_departure_length_ft?: number
+    surface: string
+    surface_id: number
+}
+
+export interface AerodromeDataFromAPI extends WaypointDataFromAPI {
+    elevation_ft: number
+    hidden: boolean,
+    status: string,
+    registered: boolean,
+    runways: RunwayDataFromAPI[]
 }

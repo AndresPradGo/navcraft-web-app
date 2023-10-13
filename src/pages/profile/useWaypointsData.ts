@@ -32,7 +32,7 @@ const apiClient = new APIClient<EditWaypointData, WaypointData>("/waypoints/user
 const useWaypointsData = () => {
     const user = useAuth();
     return useQuery<WaypointData[], APIClientError>({
-        queryKey: ['profile', 'wypoints'],
+        queryKey: ['profile', 'waypoints'],
         queryFn: () => {
             return apiClient.getAndPreProcessAll<WaypointDataFromAPI>(
                 user? user.authorization: "",
@@ -43,7 +43,7 @@ const useWaypointsData = () => {
                         name: w.name,
                         latitude: `${w.lat_direction}${w.lat_degrees}\u00B0${w.lat_minutes}'${w.lat_seconds}"`,
                         longitude: `${w.lon_direction}${w.lon_degrees}\u00B0${w.lon_minutes}'${w.lon_seconds}"`,
-                        variation: `${Math.abs(w.magnetic_variation)}${w.magnetic_variation < 0 ? "E" : "W"}`
+                        variation: `${Math.abs(w.magnetic_variation)}\u00B0${w.magnetic_variation < 0 ? "E" : "W"}`
                     })
                 }))
             )
