@@ -28,13 +28,12 @@ const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
 
   border-bottom: 1px solid var(--color-grey-dark);
 
-  background-color: var(--color-primary-dark);
-  opacity: 0.95;
+  background-color: var(--color-primary-dark-opacity);
+  backdrop-filter: blur(4px) saturate(180%);
 
   @media screen and (min-width: 768px) {
     max-height: 72px;
     flex-direction: row;
-    opacity: 0.9;
   }
 `;
 
@@ -126,7 +125,7 @@ const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
 const HtmlNavLinkContainer = styled.div<HtmlNavbarProps>`
   min-width: 100%;
 
-  background-color: var(--color-primary-dark);
+  background-color: transparent;
   opacity: 1;
 
   & .active {
