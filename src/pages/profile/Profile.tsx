@@ -174,9 +174,9 @@ const Profile = () => {
               </HtmlWeightCardBack>
             </HtmlWeightCard>
           </HtmlWeightCardContainer>
-          <PassengersTable />
-          <AerodromesTable />
-          <WaypointsTable />
+          <PassengersTable userId={profileData.id} />
+          <AerodromesTable userId={profileData.id} />
+          <WaypointsTable userId={profileData.id} />
         </HtmlContainer>
       </ContentLayout>
     </WithSideBar>

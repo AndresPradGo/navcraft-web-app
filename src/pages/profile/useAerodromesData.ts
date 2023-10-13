@@ -32,15 +32,15 @@ interface AerodromeData {
 
 const apiClient = new APIClient<EditAerodromeData, AerodromeData>("/waypoints/aerodromes")
 
-const useWaypointsData = () => {
+const useWaypointsData = (userId: number) => {
     const user = useAuth();
     return useQuery<AerodromeData[], APIClientError>({
-        queryKey: ['profile', 'aerodromes'],
+        queryKey: ['profile', userId, 'aerodromes'],
         queryFn: () => {
             return apiClient.getAndPreProcessAll<AerodromeDataFromAPI>(
                 user? user.authorization: "",
                 (data: AerodromeDataFromAPI[]) => {
-                    const privateAerodromes = data.filter(a => a.registered)
+                    const privateAerodromes = data.filter(a => !a.registered)
                     return (privateAerodromes.map(a => ({
                         id: a.id,
                         code: a.code,

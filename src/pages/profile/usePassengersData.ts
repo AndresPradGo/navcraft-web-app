@@ -15,10 +15,10 @@ interface PassengerData extends EditPassengerData {
 
 const apiClient = new APIClient<EditPassengerData, PassengerData>("/users")
 
-const usePassengersData = () => {
+const usePassengersData = (userId: number) => {
     const user = useAuth();
     return useQuery<PassengerData[], APIClientError>({
-        queryKey: ['profile', 'passengers'],
+        queryKey: ['profile', userId, 'passengers'],
         queryFn: () => {
             return apiClient.getAndPreProcessAll<PassengerDataFromAPI>(
                 user? user.authorization: "",

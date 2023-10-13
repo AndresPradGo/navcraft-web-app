@@ -66,9 +66,9 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
   overflow: hidden;
 `;
 
-const WaypointsTable = () => {
+const WaypointsTable = ({ userId }: { userId: number }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const { data: waypoints, isLoading } = useWaypointsData();
+  const { data: waypoints, isLoading } = useWaypointsData(userId);
 
   const tableData = {
     keys: ["code", "name", "latitude", "longitude", "variation"],
@@ -115,12 +115,10 @@ const WaypointsTable = () => {
         {isLoading ? (
           <Loader />
         ) : (
-          waypoints && (
-            <Table
-              tableData={tableData}
-              emptyTableMessage="No Waypoints saved..."
-            />
-          )
+          <Table
+            tableData={tableData}
+            emptyTableMessage="No Waypoints saved..."
+          />
         )}
       </HtmlTableContainer>
     </HtmlContainer>

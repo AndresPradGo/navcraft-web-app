@@ -1,8 +1,8 @@
-import { useState, useReducer, ReactNode } from "react";
+import _ from "lodash";
+import { useState, ReactNode } from "react";
 import { styled } from "styled-components";
 import Table, { Props as TableProps } from "./Table";
 import SortButton, { SortColumnType, SortDataType } from "./SortButton";
-import tableDataReducer from "./tableDataReducer";
 
 const HtmlTableContainer = styled.div`
   display: flex;
@@ -50,27 +50,29 @@ const TableContainer = ({
     index: 0,
     order: "asc",
   });
-  const [processedData, dispatch] = useReducer(
-    tableDataReducer,
-    tableData.rows
-  );
+
+  let processedData = tableData.rows;
+  if (sortColumnOptions) {
+    processedData = _.orderBy(
+      tableData.rows,
+      [sortColumnOptions[sortData.index].key],
+      [sortData.order]
+    );
+  }
 
   const handleSortColumnChange = (newSortData: SortDataType) => {
     if (sortColumnOptions) {
-      dispatch({
-        type: "SORT",
-        sortKey: sortColumnOptions[newSortData.index].key,
-        order: newSortData.order,
-      });
       setSortData({ ...newSortData });
     }
   };
+
   if (tableData.rows.length === 0)
     return (
       <HtmlNoDataMessageParagraph>
         {emptyTableMessage}
       </HtmlNoDataMessageParagraph>
     );
+
   return (
     <HtmlTableContainer>
       {sortColumnOptions && (

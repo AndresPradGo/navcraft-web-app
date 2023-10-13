@@ -66,9 +66,9 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
   overflow: hidden;
 `;
 
-const PassengersTable = () => {
+const PassengersTable = ({ userId }: { userId: number }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const { data: passengers, isLoading } = usePassengersData();
+  const { data: passengers, isLoading } = usePassengersData(userId);
 
   const tableData = {
     keys: ["name", "weight"],
@@ -112,12 +112,10 @@ const PassengersTable = () => {
         {isLoading ? (
           <Loader />
         ) : (
-          passengers && (
-            <Table
-              tableData={tableData}
-              emptyTableMessage="No Passengers saved..."
-            />
-          )
+          <Table
+            tableData={tableData}
+            emptyTableMessage="No Passengers saved..."
+          />
         )}
       </HtmlTableContainer>
     </HtmlContainer>

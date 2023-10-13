@@ -29,10 +29,10 @@ interface WaypointData {
 
 const apiClient = new APIClient<EditWaypointData, WaypointData>("/waypoints/user")
 
-const useWaypointsData = () => {
+const useWaypointsData = (userId: number) => {
     const user = useAuth();
     return useQuery<WaypointData[], APIClientError>({
-        queryKey: ['profile', 'waypoints'],
+        queryKey: ['profile', userId, 'waypoints'],
         queryFn: () => {
             return apiClient.getAndPreProcessAll<WaypointDataFromAPI>(
                 user? user.authorization: "",
