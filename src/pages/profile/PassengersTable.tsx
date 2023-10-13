@@ -114,6 +114,7 @@ const PassengersTable = ({ userId }: { userId: number }) => {
         ) : (
           <Table
             tableData={tableData}
+            pageSize={5}
             emptyTableMessage="No Passengers saved..."
           />
         )}

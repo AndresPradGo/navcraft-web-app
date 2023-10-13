@@ -1,8 +1,11 @@
-import _ from "lodash";
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useReducer } from "react";
 import { styled } from "styled-components";
+
 import Table, { Props as TableProps } from "./Table";
 import SortButton, { SortColumnType, SortDataType } from "./SortButton";
+import pageReducer from "./pageReducer";
+import Pagination from "./Pagination";
+import useProcessTableData from "./useProcessTableData";
 
 const HtmlTableContainer = styled.div`
   display: flex;
@@ -35,36 +38,42 @@ const HtmlNoDataMessageParagraph = styled.p`
 
 interface Props {
   tableData: TableProps;
-  sortColumnOptions?: SortColumnType[];
-  addButton?: ReactNode;
   emptyTableMessage: string;
+  sortColumnOptions?: SortColumnType[];
+  pageSize?: number;
+  addButton?: ReactNode;
 }
 
 const TableContainer = ({
   tableData,
-  sortColumnOptions,
   emptyTableMessage,
+  sortColumnOptions,
+  pageSize,
   addButton,
 }: Props) => {
+  const [page, dispatchPage] = useReducer(pageReducer, 1);
   const [sortData, setSortData] = useState<SortDataType>({
     index: 0,
     order: "asc",
   });
 
-  let processedData = tableData.rows;
-  if (sortColumnOptions) {
-    processedData = _.orderBy(
-      tableData.rows,
-      [sortColumnOptions[sortData.index].key],
-      [sortData.order]
-    );
-  }
+  const numPages = pageSize ? Math.ceil(tableData.rows.length / pageSize) : 1;
 
-  const handleSortColumnChange = (newSortData: SortDataType) => {
-    if (sortColumnOptions) {
-      setSortData({ ...newSortData });
-    }
-  };
+  const processedData = useProcessTableData({
+    data: tableData.rows,
+    sortParams: sortColumnOptions
+      ? {
+          key: sortColumnOptions[sortData.index].key,
+          order: sortData.order,
+        }
+      : undefined,
+    paginationParams: pageSize
+      ? {
+          currentPage: page,
+          pageSize: pageSize,
+        }
+      : undefined,
+  });
 
   if (tableData.rows.length === 0)
     return (
@@ -81,7 +90,9 @@ const TableContainer = ({
             <SortButton
               sortOptions={sortColumnOptions}
               selectedSortData={sortData}
-              changeSelectedSortData={handleSortColumnChange}
+              changeSelectedSortData={(newSortData: SortDataType) => {
+                setSortData({ ...newSortData });
+              }}
             />
           )}
           {addButton && addButton}
@@ -94,6 +105,13 @@ const TableContainer = ({
         hasButtons={!!tableData.rows.find((row) => !!row.permissions)}
         breakingPoint={tableData.breakingPoint}
       />
+      {numPages >= 2 && (
+        <Pagination
+          currentPage={page}
+          finalPage={numPages}
+          dispatch={dispatchPage}
+        />
+      )}
     </HtmlTableContainer>
   );
 };
