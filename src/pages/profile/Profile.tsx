@@ -9,6 +9,7 @@ import SideBarContent from "./SideBarContent";
 import useProfileData from "./useProfileData";
 import Loader from "../../components/Loader";
 import PassengersTable from "./PassengersTable";
+import WaypointsTable from "./WaypointsTable";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -173,6 +174,7 @@ const Profile = () => {
             </HtmlWeightCard>
           </HtmlWeightCardContainer>
           <PassengersTable />
+          <WaypointsTable />
         </HtmlContainer>
       </ContentLayout>
     </WithSideBar>

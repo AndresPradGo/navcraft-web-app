@@ -15,7 +15,7 @@ interface PassengerData extends EditPassengerData {
 
 const apiClient = new APIClient<EditPassengerData, PassengerData>("/users")
 
-const usePassengerData = () => {
+const usePassengersData = () => {
     const user = useAuth();
     return useQuery<PassengerData[], APIClientError>({
         queryKey: ['profile', 'passengers'],
@@ -33,7 +33,7 @@ const usePassengerData = () => {
     })
 }
 
-export default usePassengerData
+export default usePassengersData
 
 
 

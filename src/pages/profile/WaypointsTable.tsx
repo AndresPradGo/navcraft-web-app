@@ -3,7 +3,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
 
-import usePassengersData from "./usePassengersData";
+import useWaypointsData from "./useWaypointsData";
 import Table from "../../components/common/table";
 import Loader from "../../components/Loader";
 import Button from "../../components/common/button/index";
@@ -67,19 +67,22 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
   overflow: hidden;
 `;
 
-const PassengersTable = () => {
+const WaypointsTable = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { data: passengers, isLoading } = usePassengersData();
+  const { data: waypoints, isLoading } = useWaypointsData();
 
   const tableData = {
-    keys: ["name", "weight"],
+    keys: ["code", "name", "latitude", "longitude", "variation"],
     headers: {
+      code: "Code",
       name: "Name",
-      weight: "Weight [lb]",
+      latitude: "Latitude",
+      longitude: "Longitude",
+      variation: "Magnetic Var",
     },
-    rows: passengers
-      ? passengers.map((passenger) => ({
-          ...passenger,
+    rows: waypoints
+      ? waypoints.map((waypoint) => ({
+          ...waypoint,
           handleEdit: () => {},
           handleDelete: () => {},
           permissions: "delete" as "delete",
@@ -93,7 +96,7 @@ const PassengersTable = () => {
       <HtmlTitleContainer>
         <div>
           <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
-          <h3>Frequent Passengers</h3>
+          <h3>Saved Waypoints</h3>
         </div>
         <Button
           borderRadious={100}
@@ -113,10 +116,10 @@ const PassengersTable = () => {
         {isLoading ? (
           <Loader />
         ) : (
-          passengers && (
+          waypoints && (
             <Table
               tableData={tableData}
-              emptyTableMessage="No Passengers saved..."
+              emptyTableMessage="No Waypoints saved..."
             />
           )
         )}
@@ -125,4 +128,4 @@ const PassengersTable = () => {
   );
 };
 
-export default PassengersTable;
+export default WaypointsTable;
