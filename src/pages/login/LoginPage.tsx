@@ -84,11 +84,10 @@ const HtmlFormContainer = styled.div`
 
   @media screen and (min-width: 425px) {
     width: 388px;
-    height: 428px;
   }
 `;
 
-const HtmlAnimationSpan = styled.form`
+const HtmlAnimationSpan = styled.span`
   position: absolute;
   top: 0;
   inset: 0;

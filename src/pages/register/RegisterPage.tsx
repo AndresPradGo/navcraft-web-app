@@ -15,7 +15,7 @@ import useRegister from "./useRegister";
 const HtmlPageContainer = styled.div`
   position: relative;
   width: 100vw;
-  min-height: 600px;
+  min-height: 800px;
   height: 100vh;
   display: flex;
   flex-wrap: wrap;
@@ -31,7 +31,7 @@ const HtmlFormContainer = styled.div`
   position: relative;
   inset: 4px;
   width: 300px;
-  height: 528px;
+  height: 658px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,7 +46,7 @@ const HtmlFormContainer = styled.div`
     bottom: 50%;
     right: 50%;
     width: 388px;
-    height: 528px;
+    height: 658px;
     background: linear-gradient(
       90deg,
       #50a5e2,
@@ -67,7 +67,7 @@ const HtmlFormContainer = styled.div`
     bottom: 50%;
     right: 50%;
     width: 388px;
-    height: 528px;
+    height: 658px;
     background: linear-gradient(
       90deg,
       #50a5e2,
@@ -85,11 +85,10 @@ const HtmlFormContainer = styled.div`
 
   @media screen and (min-width: 425px) {
     width: 388px;
-    height: 528px;
   }
 `;
 
-const HtmlAnimationSpan = styled.form`
+const HtmlAnimationSpan = styled.span`
   position: absolute;
   top: 0;
   inset: 0;
@@ -100,7 +99,7 @@ const HtmlAnimationSpan = styled.form`
     bottom: 50%;
     right: 50%;
     width: 388px;
-    height: 528px;
+    height: 658px;
     background: linear-gradient(
       90deg,
       #f0ad05,
@@ -122,7 +121,7 @@ const HtmlAnimationSpan = styled.form`
     bottom: 50%;
     right: 50%;
     width: 388px;
-    height: 528px;
+    height: 658px;
     background: linear-gradient(
       90deg,
       #f0ad05,
@@ -139,7 +138,7 @@ const HtmlAnimationSpan = styled.form`
   }
 `;
 
-const HtmlLoginForm = styled.form`
+const HtmlRegisterForm = styled.form`
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -147,7 +146,7 @@ const HtmlLoginForm = styled.form`
   align-items: center;
   flex-basis: 292px;
   flex-shrink: 0;
-  height: 520px;
+  height: 650px;
 
   background-color: var(--color-primary);
   border-radius: 8px;
@@ -274,7 +273,7 @@ const HtmlRegisterLink = styled(Link)`
   }
 `;
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const passwordSchema = z
     .string()
     .min(8, { message: "Must be at least 8 characters long" })
@@ -302,6 +301,7 @@ const LoginPage = () => {
       }),
     email: z.string().email(),
     password: passwordSchema,
+    confirmPassword: z.string(),
   });
 
   type FormDataType = z.infer<typeof schema>;
@@ -310,6 +310,7 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
   const navigate = useNavigate();
@@ -318,17 +319,23 @@ const LoginPage = () => {
   });
 
   const submitHandler = (data: FieldValues) => {
-    registerMutation.mutate({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
+    if (data.confirmPassword !== data.password)
+      setError("confirmPassword", {
+        type: "manual",
+        message: "Password confirmation does not match",
+      });
+    else
+      registerMutation.mutate({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
   };
   return (
     <HtmlPageContainer>
       <HtmlFormContainer>
         <HtmlAnimationSpan />
-        <HtmlLoginForm onSubmit={handleSubmit(submitHandler)}>
+        <HtmlRegisterForm onSubmit={handleSubmit(submitHandler)}>
           <h1>Register</h1>
           <HtmlInputContainer>
             <HtmlInputField
@@ -372,6 +379,20 @@ const LoginPage = () => {
             <i></i>
             {errors.password && <p>{errors.password.message}</p>}
           </HtmlInputContainer>
+          <HtmlInputContainer>
+            <HtmlInputField
+              {...register("confirmPassword")}
+              id="confirmPassword"
+              type="password"
+              required="required"
+            />
+            <span>
+              <LockIcon />
+              Confirm Password
+            </span>
+            <i></i>
+            {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+          </HtmlInputContainer>
           <Button
             color="var(--color-primary-dark)"
             hoverColor="var(--color-grey-dark)"
@@ -392,10 +413,10 @@ const LoginPage = () => {
             Already have an account?
             <HtmlRegisterLink to="/login">Login</HtmlRegisterLink>
           </HtmlRegisterContainer>
-        </HtmlLoginForm>
+        </HtmlRegisterForm>
       </HtmlFormContainer>
     </HtmlPageContainer>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
