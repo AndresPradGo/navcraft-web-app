@@ -130,7 +130,10 @@ const WaypointsTable = ({ userId }: { userId: number }) => {
             tableData={tableData}
             sortColumnOptions={sortData}
             pageSize={5}
-            searchBarParameters={{ placeHolder: "Search Waypoints..." }}
+            searchBarParameters={{
+              placeHolder: "Search Waypoints...",
+              columnKeys: ["code", "name"],
+            }}
             emptyTableMessage="No Waypoints saved..."
           />
         )}

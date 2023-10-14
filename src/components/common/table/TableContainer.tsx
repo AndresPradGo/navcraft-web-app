@@ -1,8 +1,8 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { styled } from "styled-components";
 
 import Table, { Props as TableProps } from "./Table";
-import SearchBar, { Props as SearchBarDataType } from "./SearchBar";
+import SearchBar, { SearchBarDataType } from "./SearchBar";
 import SortButton, { SortColumnType, SortDataType } from "./SortButton";
 import pageReducer from "./pageReducer";
 import Pagination from "./Pagination";
@@ -38,12 +38,16 @@ const HtmlNoDataMessageParagraph = styled.p`
   border-left: 1px solid var(--color-grey-bright);
 `;
 
+interface SearchBarParametersType extends SearchBarDataType {
+  columnKeys: string[];
+}
+
 interface Props {
   tableData: TableProps;
   emptyTableMessage: string;
   sortColumnOptions?: SortColumnType[];
   pageSize?: number;
-  searchBarParameters?: SearchBarDataType;
+  searchBarParameters?: SearchBarParametersType;
 }
 
 const TableContainer = ({
@@ -53,15 +57,14 @@ const TableContainer = ({
   pageSize,
   searchBarParameters,
 }: Props) => {
+  const [searchText, setSearchText] = useState("");
   const [page, dispatchPage] = useReducer(pageReducer, 1);
   const [sort, dispatchSort] = useReducer(sortReducer, {
     index: 0,
     order: "asc",
   } as SortDataType);
 
-  const numPages = pageSize ? Math.ceil(tableData.rows.length / pageSize) : 1;
-
-  const processedData = useProcessTableData({
+  const { processedData, numPages } = useProcessTableData({
     data: tableData.rows,
     sortParams: sortColumnOptions
       ? {
@@ -73,6 +76,12 @@ const TableContainer = ({
       ? {
           currentPage: page,
           pageSize: pageSize,
+        }
+      : undefined,
+    searchParams: searchBarParameters
+      ? {
+          columnKeys: searchBarParameters.columnKeys,
+          text: searchText,
         }
       : undefined,
   });
@@ -87,7 +96,11 @@ const TableContainer = ({
   return (
     <HtmlTableContainer>
       {searchBarParameters && (
-        <SearchBar placeHolder={searchBarParameters.placeHolder} />
+        <SearchBar
+          placeHolder={searchBarParameters.placeHolder}
+          text={searchText}
+          setText={setSearchText}
+        />
       )}
       {sortColumnOptions && (
         <HtmlButtonContainer>

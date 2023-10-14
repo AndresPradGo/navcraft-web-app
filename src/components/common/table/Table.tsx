@@ -270,7 +270,6 @@ const Table = ({
 
   const truncatedBreakingPoint =
     breakingPoint < 768 ? 768 : breakingPoint > 980 ? 980 : breakingPoint;
-
   return (
     <>
       <HtmlTable

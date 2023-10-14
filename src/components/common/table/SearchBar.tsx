@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { LiaTimesSolid } from "react-icons/lia";
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 
 const HtmlContainer = styled.div`
   margin: 10px 0;
@@ -19,7 +19,6 @@ const HtmlForm = styled.form<FormProps>`
     ${(props) => (props.$isFocus ? "var(--color-white)" : "var(--color-grey)")};
   border-radius: 200px;
   width: 100%;
-  max-width: 1000px;
   display: flex;
   align-items: center;
 
@@ -44,53 +43,73 @@ const HtmlForm = styled.form<FormProps>`
       font-size: 20px;
     }
   }
-`;
 
-const XIcon = styled(LiaTimesSolid)`
-  cursor: pointer;
+  & button {
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  font-size: 30px;
-  flex-basis: 30px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  height: 30px;
-  padding: 3px;
-  border-radius: 100%;
-  background-color: var(--color-grey);
-  color: var(--color-primary-dark);
-  margin-right: 10px;
-
-  &:hover,
-  &:focus {
-    background-color: var(--color-grey-bright);
+    cursor: pointer;
+    font-size: 20px;
+    flex-basis: 27px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: 27px;
+    padding: 3px;
+    border-radius: 100%;
+    background-color: var(--color-grey);
     color: var(--color-primary-dark);
-  }
+    margin-right: 10px;
 
-  @media screen and (min-width: 768px) {
-    font-size: 40px;
-    flex-basis: 40px;
-    height: 40px;
-    padding: 5px;
+    &:hover,
+    &:focus {
+      background-color: var(--color-grey-bright);
+      color: var(--color-primary-dark);
+    }
+
+    @media screen and (min-width: 768px) {
+      font-size: 30px;
+      flex-basis: 40px;
+      height: 40px;
+      padding: 5px;
+    }
   }
 `;
 
-export interface Props {
+export interface SearchBarDataType {
   placeHolder?: string;
 }
 
-const SearchBar = ({ placeHolder }: Props) => {
+interface Props extends SearchBarDataType {
+  text: string;
+  setText: (text: string) => void;
+}
+
+const SearchBar = ({ placeHolder, text, setText }: Props) => {
   const [isFocus, setIsFocus] = useState(false);
+
+  const handleClearSearch = (event: FormEvent) => {
+    event.preventDefault();
+    setText("");
+  };
 
   return (
     <HtmlContainer>
-      <HtmlForm $isFocus={isFocus}>
+      <HtmlForm $isFocus={isFocus} onSubmit={handleClearSearch}>
         <input
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
+          onChange={(event) => setText(event.target.value)}
+          id="search"
           type="text"
+          autoComplete="off"
           placeholder={placeHolder ? placeHolder : "Search..."}
+          value={text}
         />
-        <XIcon />
+        <button type="submit">
+          <LiaTimesSolid />
+        </button>
       </HtmlForm>
     </HtmlContainer>
   );

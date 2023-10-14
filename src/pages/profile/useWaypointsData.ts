@@ -27,7 +27,7 @@ interface WaypointData {
     variation: string
 }
 
-const apiClient = new APIClient<EditWaypointData, WaypointData>("/waypoints/user")
+const apiClient = new APIClient<EditWaypointData, WaypointData>("/waypoints/vfr")
 
 const useWaypointsData = (userId: number) => {
     const user = useAuth();
