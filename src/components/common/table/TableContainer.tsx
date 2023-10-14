@@ -1,7 +1,8 @@
-import { useState, ReactNode, useReducer } from "react";
+import { useState, useReducer } from "react";
 import { styled } from "styled-components";
 
 import Table, { Props as TableProps } from "./Table";
+import SearchBar, { Props as SearchBarDataType } from "./SearchBar";
 import SortButton, { SortColumnType, SortDataType } from "./SortButton";
 import pageReducer from "./pageReducer";
 import Pagination from "./Pagination";
@@ -41,7 +42,7 @@ interface Props {
   emptyTableMessage: string;
   sortColumnOptions?: SortColumnType[];
   pageSize?: number;
-  addButton?: ReactNode;
+  searchBarParameters?: SearchBarDataType;
 }
 
 const TableContainer = ({
@@ -49,7 +50,7 @@ const TableContainer = ({
   emptyTableMessage,
   sortColumnOptions,
   pageSize,
-  addButton,
+  searchBarParameters,
 }: Props) => {
   const [page, dispatchPage] = useReducer(pageReducer, 1);
   const [sortData, setSortData] = useState<SortDataType>({
@@ -84,6 +85,9 @@ const TableContainer = ({
 
   return (
     <HtmlTableContainer>
+      {searchBarParameters && (
+        <SearchBar placeHolder={searchBarParameters.placeHolder} />
+      )}
       {sortColumnOptions && (
         <HtmlButtonContainer>
           {sortColumnOptions && (
@@ -95,7 +99,6 @@ const TableContainer = ({
               }}
             />
           )}
-          {addButton && addButton}
         </HtmlButtonContainer>
       )}
       <Table
