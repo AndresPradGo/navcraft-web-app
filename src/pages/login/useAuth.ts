@@ -25,15 +25,6 @@ const useAuth = (): UserType | null => {
     }
   const jwtData = jwtDecode(jwt) as JwtPayloadType
 
-  const expirationTime = jwtData.exp * 1000;
-  const currentTime = new Date().getTime();
-
-  if (currentTime > expirationTime) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('token_type');
-    return null;
-  }
-
   const user = {
     jwt,
     jwtType,
