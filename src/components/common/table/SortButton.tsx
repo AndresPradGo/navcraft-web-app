@@ -4,6 +4,8 @@ import { HiArrowUp, HiArrowNarrowDown } from "react-icons/hi";
 import Button from "../button/Button";
 import { usePopperButton } from "../button";
 
+import { SortAction } from "./sortReducer";
+
 interface HtmlListProps {
   ref: Dispatch<SetStateAction<HTMLElement | null>>;
   $expanded: boolean;
@@ -54,29 +56,17 @@ export interface SortDataType {
 interface Props {
   sortOptions: SortColumnType[];
   selectedSortData: SortDataType;
-  changeSelectedSortData: (newSotData: SortDataType) => void;
+  dispatch: Dispatch<SortAction>;
 }
 
-const SortButton = ({
-  sortOptions,
-  selectedSortData,
-  changeSelectedSortData,
-}: Props) => {
+const SortButton = ({ sortOptions, selectedSortData, dispatch }: Props) => {
   const popperTools = usePopperButton();
 
   const handleListItemClick = (index: number) => {
     popperTools.closeExpandible();
-
     const selectingSameColumn = selectedSortData.index === index;
-    const selectedOrderIsAscending = selectedSortData.order === "asc";
-    changeSelectedSortData({
-      index: index,
-      order:
-        !selectingSameColumn ||
-        (selectingSameColumn && !selectedOrderIsAscending)
-          ? "asc"
-          : "desc",
-    });
+    if (selectingSameColumn) dispatch({ type: "SWAP" });
+    else dispatch({ type: "CHANGE", value: index });
   };
 
   const arrowIcons = {

@@ -1,4 +1,4 @@
-import { useState, useReducer } from "react";
+import { useReducer } from "react";
 import { styled } from "styled-components";
 
 import Table, { Props as TableProps } from "./Table";
@@ -7,6 +7,7 @@ import SortButton, { SortColumnType, SortDataType } from "./SortButton";
 import pageReducer from "./pageReducer";
 import Pagination from "./Pagination";
 import useProcessTableData from "./useProcessTableData";
+import sortReducer from "./sortReducer";
 
 const HtmlTableContainer = styled.div`
   display: flex;
@@ -53,10 +54,10 @@ const TableContainer = ({
   searchBarParameters,
 }: Props) => {
   const [page, dispatchPage] = useReducer(pageReducer, 1);
-  const [sortData, setSortData] = useState<SortDataType>({
+  const [sort, dispatchSort] = useReducer(sortReducer, {
     index: 0,
     order: "asc",
-  });
+  } as SortDataType);
 
   const numPages = pageSize ? Math.ceil(tableData.rows.length / pageSize) : 1;
 
@@ -64,8 +65,8 @@ const TableContainer = ({
     data: tableData.rows,
     sortParams: sortColumnOptions
       ? {
-          key: sortColumnOptions[sortData.index].key,
-          order: sortData.order,
+          key: sortColumnOptions[sort.index].key,
+          order: sort.order,
         }
       : undefined,
     paginationParams: pageSize
@@ -93,10 +94,8 @@ const TableContainer = ({
           {sortColumnOptions && (
             <SortButton
               sortOptions={sortColumnOptions}
-              selectedSortData={sortData}
-              changeSelectedSortData={(newSortData: SortDataType) => {
-                setSortData({ ...newSortData });
-              }}
+              selectedSortData={sort}
+              dispatch={dispatchSort}
             />
           )}
         </HtmlButtonContainer>
