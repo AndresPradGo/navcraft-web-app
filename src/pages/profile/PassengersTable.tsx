@@ -58,7 +58,7 @@ const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
 `;
 
 const HtmlTableContainer = styled.div<HtmlTagProps>`
-  transition: max-height 0.3s, padding 0.3s, opacity 0.3s;
+  transition: all 0.3s linear;
   border-bottom: 1px solid var(--color-grey);
   padding: ${(props) => (props.$isOpen ? "15px" : "0px 15px")};
   max-height: ${(props) => (props.$isOpen ? "10000vh" : "0px")};
