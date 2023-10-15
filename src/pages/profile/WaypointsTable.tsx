@@ -111,8 +111,8 @@ const WaypointsTable = ({ userId }: { userId: number }) => {
       },
       {
         key: "name",
-        value: "Automal",
-        title: "Name is Automal",
+        value: "Automall",
+        title: "Name is Automall",
       },
       {
         key: "latitude",

@@ -98,6 +98,12 @@ const TableContainer = ({
           text: searchText,
         }
       : undefined,
+    filterParams: filters
+      .filter((item) => item.selected)
+      .map((item) => ({
+        key: item.key,
+        value: item.value,
+      })),
   });
 
   if (tableData.rows.length === 0)

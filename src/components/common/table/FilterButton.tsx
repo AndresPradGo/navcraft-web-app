@@ -45,14 +45,9 @@ const HtmlCheckbox = styled.label`
   & input[type="checkbox"] {
     cursor: pointer;
     margin: 0;
-    border-radius: 30px;
-    border: none;
-    outline: none;
-    background-color: var(--color-primary);
-    font-size: 2px;
-
     min-height: 15px;
     min-width: 15px;
+    transition: all 0.2s linear;
   }
 
   & span {

@@ -17,11 +17,17 @@ interface SearchParamsType {
     text: string;
 }
 
+interface FilterParamsType {
+    key: string;
+    value: string;
+}
+
 interface DataProcessingParameters {
     data: RowType[] | [];
     sortParams?: DataSortingParameters;
     paginationParams?: PaginationParamsType;
     searchParams?: SearchParamsType;
+    filterParams: FilterParamsType[] | [];
 }
 
 interface ReturnType {
@@ -33,7 +39,8 @@ const useProcessTableData = ({
     data, 
     sortParams,
     paginationParams,
-    searchParams
+    searchParams,
+    filterParams
 }: DataProcessingParameters):ReturnType  => {
 
     // Variable to store the processed data
@@ -46,6 +53,16 @@ const useProcessTableData = ({
                 return !!row[key]?.toString().toLowerCase().includes(searchParams.text.trim().toLowerCase())
             }).some(bool => bool === true)
         })
+    }
+
+    if (filterParams.length) {
+        processedData = processedData.filter(row => (
+            filterParams.some(filter => (
+                row[filter.key]?.toString().toLowerCase().includes(
+                    filter.value.trim().toLowerCase()
+                ) 
+            ))
+        ))
     }
 
     
