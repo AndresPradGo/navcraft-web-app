@@ -20,7 +20,7 @@ const filtersReducer = (filters: FilterWithValueType[], action: FilterAction): F
                 return val
             })
         case 'CLEAR':
-            return []
+            return filters.map(filter => ({...filter, selected: false}))
 
     }
 }

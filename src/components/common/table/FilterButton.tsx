@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { VscFilter, VscFilterFilled } from "react-icons/vsc";
+import { TbFilterOff } from "react-icons/tb";
 
 import Button from "../button/Button";
 import { usePopperButton } from "../button";
@@ -23,6 +24,31 @@ const HtmlForm = styled.ul<HtmlFormProps>`
     props.$expanded ? "1px groove var(--color-grey-bright)" : "none"};
   border-radius: 5px;
   background-color: var(--color-primary-light);
+
+  & button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: 0;
+    border: none;
+    transition: all 0.2s linear;
+    min-width: calc(280px - 2px);
+    color: var(--color-grey-bright);
+    background-color: var(--color-primary-light);
+    padding: 10px 10px 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:hover,
+    &:focus {
+      background-color: var(--color-primary);
+    }
+
+    & svg {
+      font-size: 22px;
+      margin-left: 15px;
+    }
+  }
 `;
 
 const HtmlCheckbox = styled.label`
@@ -57,6 +83,14 @@ const HtmlCheckbox = styled.label`
     margin-left: 10px;
     text-wrap: wrap;
   }
+`;
+
+const FilterIcon = styled(VscFilter)`
+  font-size: 20px;
+`;
+
+const FilterFilledIcon = styled(VscFilterFilled)`
+  font-size: 20px;
 `;
 
 export interface FiltersType {
@@ -108,9 +142,9 @@ const FilterButton = ({ text, filters, dispatch }: Props) => {
       >
         {text}
         {filters.some((item) => item.selected) ? (
-          <VscFilterFilled />
+          <FilterFilledIcon />
         ) : (
-          <VscFilter />
+          <FilterIcon />
         )}
       </Button>
       <HtmlForm
@@ -118,6 +152,9 @@ const FilterButton = ({ text, filters, dispatch }: Props) => {
         ref={popperTools.setReferences.popper}
         style={popperTools.styles}
       >
+        <button onClick={() => dispatch({ type: "CLEAR" })}>
+          Clear all <TbFilterOff />
+        </button>
         {filters.map((filter, idx) => (
           <HtmlCheckbox key={`checkbox-${idx}`} htmlFor={`checkbox-${idx}`}>
             <input

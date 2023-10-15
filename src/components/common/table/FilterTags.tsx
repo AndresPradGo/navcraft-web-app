@@ -51,7 +51,10 @@ const FilterTags = ({ filters, dispatch }: Props) => {
   return (
     <HtmlContainer>
       {filters.map((filter, idx) => (
-        <HtmlFilterTag onClick={() => dispatch({ type: "CHANGE", index: idx })}>
+        <HtmlFilterTag
+          key={filter.key}
+          onClick={() => dispatch({ type: "CHANGE", index: idx })}
+        >
           <span>{filter.title}</span>
           <LiaTimesSolid />
         </HtmlFilterTag>
