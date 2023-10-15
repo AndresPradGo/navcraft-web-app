@@ -1,6 +1,7 @@
 import { useReducer, useState } from "react";
 import { styled } from "styled-components";
 
+import FilterButton, { FilterParametersType } from "./filterButton";
 import Table, { Props as TableProps } from "./Table";
 import SearchBar, { SearchBarDataType } from "./SearchBar";
 import SortButton, { SortColumnType, SortDataType } from "./SortButton";
@@ -8,6 +9,7 @@ import pageReducer from "./pageReducer";
 import Pagination from "./Pagination";
 import useProcessTableData from "./useProcessTableData";
 import sortReducer from "./sortReducer";
+import filtersReducer from "./filtersReducer";
 
 const HtmlTableContainer = styled.div`
   display: flex;
@@ -25,7 +27,6 @@ const HtmlButtonContainer = styled.div`
   flex-wrap: wrap;
   width: 100%;
   min-height: 60px;
-  margin: 0;
 
   @media screen and (min-width: 917px) {
     justify-content: space-between;
@@ -48,6 +49,7 @@ interface Props {
   sortColumnOptions?: SortColumnType[];
   pageSize?: number;
   searchBarParameters?: SearchBarParametersType;
+  filterParameters?: FilterParametersType;
 }
 
 const TableContainer = ({
@@ -56,9 +58,21 @@ const TableContainer = ({
   sortColumnOptions,
   pageSize,
   searchBarParameters,
+  filterParameters,
 }: Props) => {
   const [searchText, setSearchText] = useState("");
   const [page, dispatchPage] = useReducer(pageReducer, 1);
+  const [filters, dispatchFilters] = useReducer(
+    filtersReducer,
+    filterParameters
+      ? filterParameters.filters.map((filter) => ({
+          key: filter.key,
+          value: filter.value,
+          title: filter.title,
+          selected: false,
+        }))
+      : []
+  );
   const [sort, dispatchSort] = useReducer(sortReducer, {
     index: 0,
     order: "asc",
@@ -102,13 +116,20 @@ const TableContainer = ({
           setText={setSearchText}
         />
       )}
-      {sortColumnOptions && (
+      {(sortColumnOptions || filterParameters) && (
         <HtmlButtonContainer>
           {sortColumnOptions && (
             <SortButton
               sortOptions={sortColumnOptions}
               selectedSortData={sort}
               dispatch={dispatchSort}
+            />
+          )}
+          {filterParameters && (
+            <FilterButton
+              text={filterParameters.text}
+              filters={filters}
+              dispatch={dispatchFilters}
             />
           )}
         </HtmlButtonContainer>

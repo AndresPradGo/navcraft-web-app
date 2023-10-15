@@ -101,6 +101,27 @@ const WaypointsTable = ({ userId }: { userId: number }) => {
     },
   ];
 
+  const filterParams = {
+    text: "Filter Waypoints",
+    filters: [
+      {
+        key: "code",
+        value: "VCABN",
+        title: "Code is VCABN",
+      },
+      {
+        key: "name",
+        value: "Automal",
+        title: "Name is Automal",
+      },
+      {
+        key: "latitude",
+        value: `N49°7'42"`,
+        title: `Latitude is N49°7'42"`,
+      },
+    ],
+  };
+
   return (
     <HtmlContainer>
       <HtmlTitleContainer>
@@ -134,6 +155,7 @@ const WaypointsTable = ({ userId }: { userId: number }) => {
               placeHolder: "Search Waypoints...",
               columnKeys: ["code", "name"],
             }}
+            filterParameters={filterParams}
             emptyTableMessage="No Waypoints saved..."
           />
         )}

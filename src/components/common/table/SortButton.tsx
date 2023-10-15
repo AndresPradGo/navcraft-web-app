@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { HiArrowUp, HiArrowNarrowDown } from "react-icons/hi";
+import { HiArrowUp, HiArrowDown } from "react-icons/hi";
 import Button from "../button/Button";
 import { usePopperButton } from "../button";
 
@@ -71,17 +71,17 @@ const SortButton = ({ sortOptions, selectedSortData, dispatch }: Props) => {
 
   const arrowIcons = {
     asc: <HiArrowUp />,
-    desc: <HiArrowNarrowDown />,
+    desc: <HiArrowDown />,
   };
 
   return (
     <>
       <Button
-        color="var(--color-grey-bright)"
-        hoverColor="var(--color-white)"
-        backgroundColor="var(--color-grey-bright)"
-        backgroundHoverColor="var(--color-white)"
-        fill={false}
+        color="var(--color-primary-dark)"
+        hoverColor="var(--color-primary-dark)"
+        backgroundColor="var(--color-grey)"
+        backgroundHoverColor="var(--color-grey-bright)"
+        fill={true}
         reference={popperTools.setReferences.button}
         handleClick={popperTools.handleButtonClick}
         shadow={false}
@@ -91,6 +91,7 @@ const SortButton = ({ sortOptions, selectedSortData, dispatch }: Props) => {
         borderRadious={5}
         spaceChildren="space-between"
         padding="10px 20px"
+        margin="10px 0"
       >
         Sort by:&nbsp;
         {sortOptions[selectedSortData.index].title}
