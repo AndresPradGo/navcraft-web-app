@@ -22,7 +22,7 @@ const HtmlList = styled.ul<HtmlListProps>`
   border: ${(props) =>
     props.$expanded ? "1px groove var(--color-grey-bright)" : "none"};
   border-radius: 5px;
-  background-color: var(--color-primary-bright);
+  background-color: var(--color-primary-light);
 `;
 
 const HtmlListItem = styled.li`
@@ -34,7 +34,7 @@ const HtmlListItem = styled.li`
   transition: all 0.2s linear;
   min-width: calc(280px - 2px);
   color: var(--color-grey-bright);
-  background-color: var(--color-primary-bright);
+  background-color: var(--color-primary-light);
   padding: 10px 20px;
 
   &:hover,
