@@ -119,7 +119,6 @@ const Profile = () => {
   const [weightInKg, setWeightInKg] = useState(false);
 
   const { data: profileData, error, isLoading } = useProfileData();
-
   if (error) {
     if (error.response)
       toast.error(error.response.data.detail, {
@@ -135,51 +134,52 @@ const Profile = () => {
 
     throw new Error("");
   }
-
   if (isLoading) return <Loader />;
 
   return (
-    <WithSideBar sideBarContent={<SideBarContent />}>
-      <ContentLayout>
-        <HtmlContainer>
-          <HtmlTitleContainer>
-            <h1>{profileData?.name}</h1>
-            <p>{profileData?.email}</p>
-          </HtmlTitleContainer>
-          <HtmlWeightCardContainer>
-            <HtmlWeightCard>
-              <HtmlWeightCardFront $inKg={weightInKg}>
-                <h2>
-                  <WeightIcon />
-                  WEIGHT
-                </h2>
-                <p>
-                  <span>{profileData?.weight}</span>
-                  <span onClick={() => setWeightInKg(!weightInKg)}>Lb</span>
-                </p>
-              </HtmlWeightCardFront>
-              <HtmlWeightCardBack $inKg={weightInKg}>
-                <h2>
-                  <WeightIcon />
-                  WEIGHT
-                </h2>
-                <p>
-                  <span>
-                    {Math.round(
-                      (profileData ? profileData.weight : 0) * 0.4533
-                    )}
-                  </span>
-                  <span onClick={() => setWeightInKg(!weightInKg)}>Kg</span>
-                </p>
-              </HtmlWeightCardBack>
-            </HtmlWeightCard>
-          </HtmlWeightCardContainer>
-          <PassengersTable userId={profileData.id} />
-          <AerodromesTable userId={profileData.id} />
-          <WaypointsTable userId={profileData.id} />
-        </HtmlContainer>
-      </ContentLayout>
-    </WithSideBar>
+    <>
+      <WithSideBar sideBarContent={<SideBarContent />}>
+        <ContentLayout>
+          <HtmlContainer>
+            <HtmlTitleContainer>
+              <h1>{profileData?.name}</h1>
+              <p>{profileData?.email}</p>
+            </HtmlTitleContainer>
+            <HtmlWeightCardContainer>
+              <HtmlWeightCard>
+                <HtmlWeightCardFront $inKg={weightInKg}>
+                  <h2>
+                    <WeightIcon />
+                    WEIGHT
+                  </h2>
+                  <p>
+                    <span>{profileData?.weight}</span>
+                    <span onClick={() => setWeightInKg(!weightInKg)}>Lb</span>
+                  </p>
+                </HtmlWeightCardFront>
+                <HtmlWeightCardBack $inKg={weightInKg}>
+                  <h2>
+                    <WeightIcon />
+                    WEIGHT
+                  </h2>
+                  <p>
+                    <span>
+                      {Math.round(
+                        (profileData ? profileData.weight : 0) * 0.4533
+                      )}
+                    </span>
+                    <span onClick={() => setWeightInKg(!weightInKg)}>Kg</span>
+                  </p>
+                </HtmlWeightCardBack>
+              </HtmlWeightCard>
+            </HtmlWeightCardContainer>
+            <PassengersTable userId={profileData.id} />
+            <AerodromesTable userId={profileData.id} />
+            <WaypointsTable userId={profileData.id} />
+          </HtmlContainer>
+        </ContentLayout>
+      </WithSideBar>
+    </>
   );
 };
 

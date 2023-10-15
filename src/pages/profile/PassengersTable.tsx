@@ -45,7 +45,7 @@ const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
   margin-right: 5px;
   font-size: 25px;
   transform: rotate(${(props) => (props.$isOpen ? "0deg" : "-90deg")});
-  transition: 0.3s transform linear;
+  transition: 0.2s transform linear;
 
   &:hover,
   &:focus {
@@ -58,7 +58,7 @@ const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
 `;
 
 const HtmlTableContainer = styled.div<HtmlTagProps>`
-  transition: all 0.3s linear;
+  transition: padding 0.4s, max-height 0.2s, opacity 0.4s;
   border-bottom: 1px solid var(--color-grey);
   padding: ${(props) => (props.$isOpen ? "15px" : "0px 15px")};
   max-height: ${(props) => (props.$isOpen ? "10000vh" : "0px")};

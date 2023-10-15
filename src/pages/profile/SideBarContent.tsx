@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import Button from "../../components/common/button/index";
 import { useNavigate } from "react-router-dom";
+import { Modal, useModal } from "../../components/modal/";
 
 const HtmlButtonList = styled.div`
   margin-top: 50px;
@@ -46,6 +47,7 @@ const DeleteIcon = styled(RiDeleteBinLine)`
 const SideBarContent = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const deleteModal = useModal();
 
   const commonStyles = {
     color: "var(--color-white)",
@@ -113,18 +115,24 @@ const SideBarContent = () => {
         backgroundColor: "var(--color-warning)",
         backgroundHoverColor: "var(--color-warning-hover)",
       },
-      onClick: () => {},
+      onClick: deleteModal.handleOpen,
     },
   ];
+  console.log("in sidebar modal is open", deleteModal.isOpen);
   return (
-    <HtmlButtonList>
-      {buttons.map((button, index) => (
-        <Button key={index} {...button.styles} handleClick={button.onClick}>
-          {button.text}
-          {button.icon}
-        </Button>
-      ))}
-    </HtmlButtonList>
+    <>
+      <Modal isOpen={deleteModal.isOpen} setModalRef={deleteModal.setModalRef}>
+        Delete
+      </Modal>
+      <HtmlButtonList>
+        {buttons.map((button, index) => (
+          <Button key={index} {...button.styles} handleClick={button.onClick}>
+            {button.text}
+            {button.icon}
+          </Button>
+        ))}
+      </HtmlButtonList>
+    </>
   );
 };
 

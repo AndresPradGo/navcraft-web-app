@@ -18,7 +18,6 @@ html {
     --color-grey-dark: #292929;
     --color-grey: #707070;
     --color-grey-bright: #B8B8B8;
-    --color-shadow: rgb(112 112 112 / 60%);
     --color-white: #FFFFFF;
     --color-highlight: #50A5E2;
     --color-highlight-hover: #1D72AF;
@@ -26,6 +25,8 @@ html {
     --color-contrast-hover: #B48204;
     --color-warning: #F50000;
     --color-warning-hover: #8F0000;
+    --color-shadow: rgb(112 112 112 / 60%);
+    --color-modal-background: rgba(6, 10, 15, 0.7);
 }
   
 /* ------------------------- Typography ------------------------- */

@@ -13,7 +13,7 @@ interface HtmlNavBarContainerProps {
 }
 const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
   transition: all 0.2s linear;
-  z-index: 9999;
+  z-index: 8888;
   position: fixed;
   top: 0;
   left: 0;
