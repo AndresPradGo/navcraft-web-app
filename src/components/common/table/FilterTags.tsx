@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { Dispatch } from "react";
 
 import { FilterAction } from "./filtersReducer";
-import { FilterWithValueType } from "./filterButton";
+import { FilterWithValueType } from "./FilterButton";
 
 const HtmlContainer = styled.div`
   width: 98%;

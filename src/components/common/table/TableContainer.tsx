@@ -1,7 +1,7 @@
 import { useReducer, useState } from "react";
 import { styled } from "styled-components";
 
-import FilterButton, { FilterParametersType } from "./filterButton";
+import FilterButton, { FilterParametersType } from "./FilterButton";
 import Table, { Props as TableProps } from "./Table";
 import SearchBar, { SearchBarDataType } from "./SearchBar";
 import SortButton, { SortColumnType, SortDataType } from "./SortButton";

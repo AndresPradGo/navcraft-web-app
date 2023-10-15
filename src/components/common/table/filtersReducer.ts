@@ -1,4 +1,4 @@
-import {FilterWithValueType} from "./filterButton"
+import {FilterWithValueType} from "./FilterButton"
 interface ChangeAction {
     type: 'CHANGE';
     index: number;
