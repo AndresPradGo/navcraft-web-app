@@ -73,6 +73,7 @@ const HtmlForm = styled.form<FormProps>`
       flex-basis: 40px;
       height: 40px;
       padding: 5px;
+      margin-right: 15px;
     }
   }
 `;
