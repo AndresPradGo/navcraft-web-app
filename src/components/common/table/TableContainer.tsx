@@ -10,6 +10,7 @@ import Pagination from "./Pagination";
 import useProcessTableData from "./useProcessTableData";
 import sortReducer from "./sortReducer";
 import filtersReducer from "./filtersReducer";
+import FilterTags from "./FilterTags";
 
 const HtmlTableContainer = styled.div`
   display: flex;
@@ -139,6 +140,12 @@ const TableContainer = ({
             />
           )}
         </HtmlButtonContainer>
+      )}
+      {filterParameters && (
+        <FilterTags
+          filters={filters.filter((item) => item.selected)}
+          dispatch={dispatchFilters}
+        />
       )}
       <Table
         rows={processedData}
