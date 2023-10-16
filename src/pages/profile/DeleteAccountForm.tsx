@@ -20,6 +20,7 @@ const HtmlContainer = styled.div`
     padding: 10px 20px;
     margin: 0;
     font-size: 20px;
+    cursor: default;
   }
 `;
 
@@ -64,10 +65,16 @@ const DeleteAccountForm = ({ closeModal }: Props) => {
       </p>
       <HtmlButtons>
         <Button
+          color="var(--color-primary-dark)"
+          hoverColor="var(--color-primary-dark)"
+          backgroundColor="var(--color-grey)"
+          backgroundHoverColor="var(--color-grey-bright)"
           fontSize={15}
           margin="5px 0"
           borderRadious={4}
           handleClick={closeModal}
+          width="120px"
+          height="35px"
         >
           Cancel
         </Button>
@@ -80,6 +87,8 @@ const DeleteAccountForm = ({ closeModal }: Props) => {
           margin="5px 0"
           borderRadious={4}
           handleClick={handleDelete}
+          width="120px"
+          height="35px"
         >
           Delete
           <DeleteIcon />

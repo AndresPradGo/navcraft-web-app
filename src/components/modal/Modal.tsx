@@ -22,7 +22,7 @@ const HtmlBody = styled.div<HtmlProps>`
   z-index: ${(props) => (props.$isOpen ? "9999" : "-1")};
   background-color: var(--color-modal-background);
   opacity: ${(props) => (props.$isOpen ? "1" : "0")};
-  backdrop-filter: blur(5px) saturate(180%);
+  backdrop-filter: blur(3px) saturate(180%);
 `;
 
 const HtmlModal = styled.div<HtmlProps>`
@@ -33,6 +33,7 @@ const HtmlModal = styled.div<HtmlProps>`
   border: 1px solid var(--color-grey);
   border-radius: 8px;
   min-height: 200px;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

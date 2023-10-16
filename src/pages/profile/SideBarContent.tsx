@@ -9,6 +9,7 @@ import Button from "../../components/common/button/index";
 import { useNavigate } from "react-router-dom";
 import { Modal, useModal } from "../../components/modal/";
 import DeleteAccountForm from "./DeleteAccountForm";
+import ChangeEmailForm from "./ChangeEmailForm";
 
 const HtmlButtonList = styled.div`
   margin-top: 50px;
@@ -49,6 +50,7 @@ const SideBarContent = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const deleteModal = useModal();
+  const editEmailModal = useModal();
 
   const commonStyles = {
     color: "var(--color-white)",
@@ -78,7 +80,7 @@ const SideBarContent = () => {
       styles: {
         ...commonStyles,
       },
-      onClick: () => {},
+      onClick: editEmailModal.handleOpen,
     },
     {
       text: "Change Password",
@@ -124,6 +126,12 @@ const SideBarContent = () => {
     <>
       <Modal isOpen={deleteModal.isOpen} setModalRef={deleteModal.setModalRef}>
         <DeleteAccountForm closeModal={deleteModal.handleClose} />
+      </Modal>
+      <Modal
+        isOpen={editEmailModal.isOpen}
+        setModalRef={editEmailModal.setModalRef}
+      >
+        <ChangeEmailForm closeModal={editEmailModal.handleClose} />
       </Modal>
       <HtmlButtonList>
         {buttons.map((button, index) => (
