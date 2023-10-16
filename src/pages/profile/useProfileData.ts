@@ -1,23 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
-import APIClient, {APIClientError} from '../../services/apiClient';
+import {APIClientError} from '../../services/apiClient';
 import {ProfileDataFromAPI} from './entities'
 import useAuth from '../login/useAuth';
+import apiClient, {ProfileData} from './profileService'
 
-interface EditProfileData {
-    name: string,
-    weight_lb: number
-}
-
-interface ProfileData {
-    id: number,
-    name: string
-    email: string
-    weight: number
-}
-
-
-const apiClient = new APIClient<EditProfileData, ProfileData>("/users")
 
 const useProfileData = () => {
     const user = useAuth();
@@ -33,7 +20,7 @@ const useProfileData = () => {
                     email: data.email,
                     weight: data.weight_lb
                 }
-            } , "/me")
+            })
         }
     })
 }

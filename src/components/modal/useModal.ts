@@ -13,10 +13,10 @@ const useModal = (): ReturnType => {
     const [modalRef, setModalRef] = useState<HTMLElement | null>(null);
     
     useEffect(() => {
-        console.log(isOpen)
         return () => {
           document.removeEventListener("click", hadleClickOutside, true);
           document.removeEventListener("keydown", hadleEscapeKey, true);
+          document.body.style.overflow = 'auto';
         }
     }, [])
 
@@ -34,12 +34,14 @@ const useModal = (): ReturnType => {
         document.addEventListener("click", hadleClickOutside, true);
         document.addEventListener("keydown", hadleEscapeKey, true);
         setIsOpen(true);
+        document.body.style.overflow = 'hidden';
     };
     
     const handleClose = () => {
         document.removeEventListener("click", hadleClickOutside, true);
         document.removeEventListener("keydown", hadleEscapeKey, true);
         setIsOpen(false);
+        document.body.style.overflow = 'auto';
     };
 
     return {isOpen, handleOpen, handleClose, setModalRef}

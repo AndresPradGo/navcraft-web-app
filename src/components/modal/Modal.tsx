@@ -6,18 +6,23 @@ interface HtmlProps {
 }
 
 const HtmlBody = styled.div<HtmlProps>`
+  overflow-x: hidden;
+  overflow-y: hidden;
   transition: all 0.3s ease-out;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
   z-index: ${(props) => (props.$isOpen ? "9999" : "-1")};
   background-color: var(--color-modal-background);
   opacity: ${(props) => (props.$isOpen ? "1" : "0")};
+  backdrop-filter: blur(5px) saturate(180%);
 `;
 
 const HtmlModal = styled.div<HtmlProps>`
@@ -45,7 +50,6 @@ interface Props {
 }
 
 const Modal = ({ children, isOpen, setModalRef }: Props) => {
-  console.log("modal is open in Modal", isOpen);
   return (
     <HtmlBody $isOpen={isOpen}>
       <HtmlModal ref={setModalRef} $isOpen={isOpen}>

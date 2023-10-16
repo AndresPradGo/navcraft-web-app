@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Button from "../../components/common/button/index";
 import { useNavigate } from "react-router-dom";
 import { Modal, useModal } from "../../components/modal/";
+import DeleteAccountForm from "./DeleteAccountForm";
 
 const HtmlButtonList = styled.div`
   margin-top: 50px;
@@ -102,6 +103,7 @@ const SideBarContent = () => {
       onClick: () => {
         queryClient.clear();
         localStorage.removeItem("token");
+        localStorage.removeItem("token_type");
         navigate("/login");
       },
     },
@@ -118,11 +120,10 @@ const SideBarContent = () => {
       onClick: deleteModal.handleOpen,
     },
   ];
-  console.log("in sidebar modal is open", deleteModal.isOpen);
   return (
     <>
       <Modal isOpen={deleteModal.isOpen} setModalRef={deleteModal.setModalRef}>
-        Delete
+        <DeleteAccountForm closeModal={deleteModal.handleClose} />
       </Modal>
       <HtmlButtonList>
         {buttons.map((button, index) => (
