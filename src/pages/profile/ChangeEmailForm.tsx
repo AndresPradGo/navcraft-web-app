@@ -1,8 +1,12 @@
 import { AiOutlineSave } from "react-icons/ai";
 import { TbMail } from "react-icons/tb";
+import { useForm, FieldValues } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 import { styled } from "styled-components";
 import Button from "../../components/common/button/index";
+import useChangeEmail from "./useChangeEmail";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -15,6 +19,7 @@ const HtmlForm = styled.form`
 `;
 
 const HtmlInput = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -23,10 +28,13 @@ const HtmlInput = styled.div`
   padding: 10px 20px 0;
 
   & label {
+    position: absolute;
+    top: 0;
+    left: 0;
     font-size: 20px;
     display: flex;
     align-items: center;
-    transform: translateY(-37px);
+    transform: translate(17px, 47px);
     transition: transform 0.3s;
   }
 
@@ -45,12 +53,19 @@ const HtmlInput = styled.div`
     &:valid ~ label,
     &:focus ~ label {
       color: var(--color-white);
-      transform: translate(-10px, -75px) scale(0.8);
+      transform: translate(7px, 7px) scale(0.8);
     }
 
-    &:focus {
+    &:focus,
+    &:valid {
       border: 1px solid var(--color-white);
     }
+  }
+
+  & p {
+    font-size: 16px;
+    color: var(--color-warning);
+    margin: 10px;
   }
 `;
 
@@ -61,7 +76,7 @@ const HtmlButtons = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  padding: 0 20px 20px;
+  padding: 10px 20px 20px;
 `;
 
 const SaveIcon = styled(AiOutlineSave)`
@@ -78,10 +93,42 @@ interface Props {
 }
 
 const ChangeEmailForm = ({ closeModal }: Props) => {
+  const schema = z.object({
+    email: z.string().email(),
+  });
+  type FormDataType = z.infer<typeof schema>;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormDataType>({ resolver: zodResolver(schema) });
+
+  const changeEmail = useChangeEmail();
+
+  const handleCancel = () => {
+    closeModal();
+    reset({ email: "" });
+  };
+
+  const submitHandler = (data: FieldValues) => {
+    changeEmail.mutate({ email: data.email });
+    closeModal();
+    reset({ email: "" });
+  };
+
   return (
-    <HtmlForm>
+    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <HtmlInput>
-        <input id="email" type="text" autoComplete="off" required={true} />
+        <input
+          {...register("email")}
+          id="email"
+          type="text"
+          autoComplete="off"
+          required={true}
+        />
+        {errors.email ? <p>{errors.email.message}</p> : <p>&nbsp;</p>}
         <label htmlFor="email">
           <EmailIcon />
           New Email
@@ -96,7 +143,7 @@ const ChangeEmailForm = ({ closeModal }: Props) => {
           fontSize={15}
           margin="5px 0"
           borderRadious={4}
-          handleClick={closeModal}
+          handleClick={handleCancel}
           btnType="button"
           width="120px"
           height="35px"

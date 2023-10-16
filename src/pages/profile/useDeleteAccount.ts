@@ -5,8 +5,8 @@ import { APIClientError } from '../../services/apiClient';
 import apiClient from './profileService'
 
 const useDeleteAccount = (onDelete: () => void) => {
-    return useMutation<string, APIClientError, string>({
-        mutationFn: (JWT) => apiClient.delete(JWT),
+    return useMutation<string, APIClientError, undefined>({
+        mutationFn: () => apiClient.delete("/me"),
         onSuccess: () => {
             toast.info("Your Account has been deleted successfully...", {
                 position: "top-center",
@@ -17,20 +17,31 @@ const useDeleteAccount = (onDelete: () => void) => {
                 draggable: true,
                 progress: undefined,
                 theme: "dark",
-                });
+            });
             onDelete()
         },
-        onError: (error: APIClientError) => {
-            if(error.response && error.response.status === 400)
-                toast.error(error.response.data.detail, {
-                    position: "top-center",
-                    autoClose: 10000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
+        onError: (error) => {
+            if(error.response)
+                if (typeof error.response.data.detail === "string")
+                    toast.error(error.response.data.detail, {
+                        position: "top-center",
+                        autoClose: 10000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    });
+                else toast.error("Something went wrong, please try again later.", {
+                        position: "top-center",
+                        autoClose: 10000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
                     });
         }
     })

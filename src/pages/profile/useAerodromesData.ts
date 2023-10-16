@@ -2,8 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import APIClient, {APIClientError} from '../../services/apiClient';
 import {AerodromeDataFromAPI} from './entities'
-import useAuth from '../login/useAuth';
-
 interface EditAerodromeData {
     code: string,
     name: string,
@@ -33,12 +31,10 @@ interface AerodromeData {
 const apiClient = new APIClient<EditAerodromeData, AerodromeData>("/waypoints/aerodromes")
 
 const useWaypointsData = (userId: number) => {
-    const user = useAuth();
     return useQuery<AerodromeData[], APIClientError>({
         queryKey: ['profile', userId, 'aerodromes'],
         queryFn: () => {
             return apiClient.getAndPreProcessAll<AerodromeDataFromAPI>(
-                user? user.authorization: "",
                 (data: AerodromeDataFromAPI[]) => {
                     const privateAerodromes = data.filter(a => !a.registered)
                     return (privateAerodromes.map(a => ({

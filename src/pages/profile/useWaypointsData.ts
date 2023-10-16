@@ -2,8 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import APIClient, {APIClientError} from '../../services/apiClient';
 import {WaypointDataFromAPI} from './entities'
-import useAuth from '../login/useAuth';
-
 interface EditWaypointData {
     code: string,
     name: string,
@@ -30,12 +28,10 @@ interface WaypointData {
 const apiClient = new APIClient<EditWaypointData, WaypointData>("/waypoints/user")
 
 const useWaypointsData = (userId: number) => {
-    const user = useAuth();
     return useQuery<WaypointData[], APIClientError>({
         queryKey: ['profile', userId, 'waypoints'],
         queryFn: () => {
             return apiClient.getAndPreProcessAll<WaypointDataFromAPI>(
-                user? user.authorization: "",
                 (data: WaypointDataFromAPI[]) => (data.map(w => {
                     return ({
                         id: w.id,

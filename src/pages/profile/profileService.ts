@@ -13,6 +13,6 @@ export interface ProfileData {
     weight: number
 }
 
-const apiClient = new APIClient<EditProfileData, ProfileData>("/users/me")
+const apiClient = new APIClient<EditProfileData, ProfileData>("/users")
 
 export default apiClient
