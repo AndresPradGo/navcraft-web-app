@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import { ReactNode } from "react";
+import WithSideBar from "../../components/sidebar/WithSideBar";
 
 const HtmlMainContentContainer = styled.div`
   display: flex;
@@ -20,19 +21,30 @@ const HtmlMainContentContainerWithConstrain = styled(HtmlMainContentContainer)`
 
 interface Props {
   children: ReactNode;
+  sideBarContent?: ReactNode;
   truncateWidth?: boolean;
 }
 
-const ContentLayout = ({ children, truncateWidth = true }: Props) => {
+const ContentLayout = ({
+  children,
+  sideBarContent,
+  truncateWidth = true,
+}: Props) => {
   if (truncateWidth) {
     return (
-      <HtmlMainContentContainerWithConstrain>
-        {children}
-      </HtmlMainContentContainerWithConstrain>
+      <WithSideBar sideBarContent={sideBarContent ? sideBarContent : ""}>
+        <HtmlMainContentContainerWithConstrain>
+          {children}
+        </HtmlMainContentContainerWithConstrain>
+      </WithSideBar>
     );
   }
 
-  return <HtmlMainContentContainer>{children}</HtmlMainContentContainer>;
+  return (
+    <WithSideBar sideBarContent={sideBarContent ? sideBarContent : ""}>
+      <HtmlMainContentContainer>{children}</HtmlMainContentContainer>
+    </WithSideBar>
+  );
 };
 
 export default ContentLayout;

@@ -1,12 +1,7 @@
 import { ContentLayout } from "./layout";
-import WithSideBar from "../components/sidebar/WithSideBar";
 
 const Waypoints = () => {
-  return (
-    <WithSideBar sideBarContent="Sidebar">
-      <ContentLayout>waypoints</ContentLayout>
-    </WithSideBar>
-  );
+  return <ContentLayout sideBarContent="Sidebar">waypoints</ContentLayout>;
 };
 
 export default Waypoints;

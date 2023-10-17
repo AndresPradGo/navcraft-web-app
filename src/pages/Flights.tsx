@@ -1,5 +1,4 @@
 import { ContentLayout } from "./layout";
-import WithSideBar from "../components/sidebar/WithSideBar";
 import Table from "../components/common/table";
 
 const flights = () => {
@@ -71,20 +70,18 @@ const flights = () => {
   ];
 
   return (
-    <WithSideBar sideBarContent="Sidebar">
-      <ContentLayout>
-        <Table
-          tableData={{
-            keys: keys,
-            headers: headings,
-            rows: flights,
-            breakingPoint: 1000,
-          }}
-          sortColumnOptions={sortData}
-          emptyTableMessage="There are no saved flights..."
-        />
-      </ContentLayout>
-    </WithSideBar>
+    <ContentLayout sideBarContent="Sidebar">
+      <Table
+        tableData={{
+          keys: keys,
+          headers: headings,
+          rows: flights,
+          breakingPoint: 1000,
+        }}
+        sortColumnOptions={sortData}
+        emptyTableMessage="There are no saved flights..."
+      />
+    </ContentLayout>
   );
 };
 
