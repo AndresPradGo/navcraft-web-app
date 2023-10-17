@@ -17,7 +17,6 @@ const HtmlSideBarAndContentContainer = styled.div`
 `;
 
 const HtmlMainContainer = styled.main`
-  transition: all 0.3;
   overflow: hidden;
   transition: all 0.2s ease-out;
   display: flex;
@@ -39,14 +38,13 @@ const HtmlMainContainerWithSideBar = styled(
   HtmlMainContainer
 )<HtmlSideBarContainerProps>`
   max-width: ${(props) => (props.$sideBarIsExpanded ? "0px" : "100vw")};
-  transform: translate(
-    ${(props) => (props.$sideBarIsExpanded ? "100vw" : "0")}
-  );
+  transform: ${(props) =>
+    props.$sideBarIsExpanded ? "translate(100vw)" : "none"};
 
   @media screen and (min-width: 635px) {
     max-width: ${(props) =>
       props.$sideBarIsExpanded ? "calc(100vw - 300px)" : "100vw"};
-    transform: translate(0);
+    transform: none;
   }
 `;
 

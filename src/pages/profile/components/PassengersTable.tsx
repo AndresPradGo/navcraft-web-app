@@ -7,6 +7,8 @@ import usePassengersData from "../../../hooks/usePassengersData";
 import Table from "../../../components/common/table";
 import Loader from "../../../components/Loader";
 import Button from "../../../components/common/button/index";
+import { useModal, Modal } from "../../../components/common/modal";
+import PassengerForm from "../../../components/passengerForm";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -70,6 +72,8 @@ const PassengersTable = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { data: passengers, isLoading } = usePassengersData();
 
+  const passengerModal = useModal();
+
   const tableData = {
     keys: ["name", "weight"],
     headers: {
@@ -95,39 +99,48 @@ const PassengersTable = () => {
   ];
 
   return (
-    <HtmlContainer>
-      <HtmlTitleContainer>
-        <div>
-          <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
-          <h3>Frequent Passengers</h3>
-        </div>
-        <Button
-          borderRadious={100}
-          padding="5px"
-          height="30px"
-          backgroundColor="var(--color-grey)"
-          backgroundHoverColor="var(--color-white)"
-          color="var(--color-primary-dark)"
-          hoverColor="var(--color-primary-dark)"
-          margin="0 20px 0 0px"
-          fontSize={18}
-        >
-          <AiOutlinePlus />
-        </Button>
-      </HtmlTitleContainer>
-      <HtmlTableContainer $isOpen={isOpen}>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <Table
-            tableData={tableData}
-            sortColumnOptions={sortData}
-            pageSize={5}
-            emptyTableMessage="No Passengers saved..."
-          />
-        )}
-      </HtmlTableContainer>
-    </HtmlContainer>
+    <>
+      <Modal
+        isOpen={passengerModal.isOpen}
+        setModalRef={passengerModal.setModalRef}
+      >
+        <PassengerForm closeModal={passengerModal.handleClose} />
+      </Modal>
+      <HtmlContainer>
+        <HtmlTitleContainer>
+          <div>
+            <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
+            <h3>Frequent Passengers</h3>
+          </div>
+          <Button
+            borderRadious={100}
+            padding="5px"
+            height="30px"
+            backgroundColor="var(--color-grey)"
+            backgroundHoverColor="var(--color-white)"
+            color="var(--color-primary-dark)"
+            hoverColor="var(--color-primary-dark)"
+            margin="0 20px 0 0px"
+            fontSize={18}
+            handleClick={passengerModal.handleOpen}
+          >
+            <AiOutlinePlus />
+          </Button>
+        </HtmlTitleContainer>
+        <HtmlTableContainer $isOpen={isOpen}>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Table
+              tableData={tableData}
+              sortColumnOptions={sortData}
+              pageSize={5}
+              emptyTableMessage="No Passengers saved..."
+            />
+          )}
+        </HtmlTableContainer>
+      </HtmlContainer>
+    </>
   );
 };
 

@@ -8,11 +8,11 @@ interface EditPassengerData {
     weight: number
 }
 
-interface PassengerData extends EditPassengerData {
+export interface PassengerData extends EditPassengerData {
     id: number
 }
 
-const apiClient = new APIClient<EditPassengerData, PassengerData>("/users")
+const apiClient = new APIClient<EditPassengerData, PassengerData>("/users/passenger-profiles")
 
 const usePassengersData = () => {
     return useQuery<PassengerData[], APIClientError>({
@@ -23,8 +23,7 @@ const usePassengersData = () => {
                     id: passenger.id,
                     name: passenger.name,
                     weight: passenger.weight_lb
-                }))),
-                "/passenger-profiles"
+                })))
             )
         }
     })

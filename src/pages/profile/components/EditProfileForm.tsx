@@ -2,10 +2,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
 import { FaUser, FaWeightScale } from "react-icons/fa6";
 import { useForm, FieldValues } from "react-hook-form";
+import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { styled } from "styled-components";
 import Button from "../../../components/common/button/index";
 import useEditProfile from "../hooks/useEditProfile";
 import { ProfileData } from "../entities";
@@ -68,6 +68,8 @@ const HtmlInput = styled.div`
     font-size: 16px;
     color: var(--color-warning);
     margin: 10px;
+    margin: 5px;
+    text-wrap: wrap;
   }
 `;
 
@@ -146,13 +148,13 @@ const EditProfileForm = ({ closeModal }: Props) => {
       <HtmlInput>
         <input
           {...register("name")}
-          id="name"
+          id="profile_name"
           type="text"
           autoComplete="off"
           required={true}
         />
         {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-        <label htmlFor="name">
+        <label htmlFor="profile_name">
           <NameIcon />
           Name
         </label>
@@ -160,13 +162,13 @@ const EditProfileForm = ({ closeModal }: Props) => {
       <HtmlInput>
         <input
           {...register("weight_lb", { valueAsNumber: true })}
-          id="weight_lb"
+          id="profile_weight_lb"
           type="number"
           autoComplete="off"
           required={true}
         />
         {errors.weight_lb ? <p>{errors.weight_lb.message}</p> : <p>&nbsp;</p>}
-        <label htmlFor="weight_lb">
+        <label htmlFor="profile_weight_lb">
           <WeightIcon />
           Weight
         </label>

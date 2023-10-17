@@ -68,6 +68,8 @@ const HtmlInput = styled.div`
     font-size: 16px;
     color: var(--color-warning);
     margin: 10px;
+    margin: 5px;
+    text-wrap: wrap;
   }
 `;
 

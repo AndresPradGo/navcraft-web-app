@@ -19,9 +19,10 @@ const HtmlBody = styled.div<HtmlProps>`
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: ${(props) => (props.$isOpen ? "9999" : "-1")};
+  z-index: ${(props) => (props.$isOpen ? 999 : -1)};
   background-color: var(--color-modal-background);
-  opacity: ${(props) => (props.$isOpen ? "1" : "0")};
+  opacity: ${(props) => (props.$isOpen ? 1 : 0)};
+  pointer-events: ${(props) => (props.$isOpen ? "auto" : "none")};
   backdrop-filter: blur(3px) saturate(180%);
 `;
 
