@@ -2,19 +2,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import APIClient,{ APIClientError } from '../../services/apiClient';
-import {ProfileData} from './profileService'
-import { EditUserResponse } from './entities';
+import { EditUserResponse, ProfileData, ProfileDataWithJWT } from './entities';
 import {FormDataType as ChangeEmailBody} from './ChangeEmailForm'
 
 interface ChangeEmailContext {
     previusData?: ProfileData
 }
-
-interface ProfileDataWithJWT extends  ProfileData{
-    token: string,
-    tokenType: string
-}
-
 
 const apiClient = new APIClient<ChangeEmailBody, ProfileDataWithJWT>("/users/email/me")
 
@@ -25,7 +18,7 @@ const useChangeEmail = () => {
         mutationFn: (data: ChangeEmailBody) => {
             return (apiClient.editOtherAndPreProcessWithHeader<ChangeEmailBody, EditUserResponse>(
                 data,
-                (data: EditUserResponse, token: string, tokenType: string) => ({
+                (data, token, tokenType) => ({
                     id: data.id,
                     name: data.name,
                     email: data.email,
@@ -68,7 +61,7 @@ const useChangeEmail = () => {
             )
         },
         onError: (error, _, context) => {
-            if(error.response)
+            if(error.response) {
                 if (typeof error.response.data.detail === "string")
                     toast.error(error.response.data.detail, {
                         position: "top-center",
@@ -81,15 +74,16 @@ const useChangeEmail = () => {
                         theme: "dark",
                     });
                 else toast.error("Something went wrong, please try again later.", {
-                        position: "top-center",
-                        autoClose: 10000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                    });
+                    position: "top-center",
+                    autoClose: 10000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            }
             
             if (!context?.previusData) return
             queryClient.setQueryData<ProfileData>(

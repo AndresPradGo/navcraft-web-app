@@ -3,7 +3,9 @@ import { useForm, FieldValues } from "react-hook-form";
 import { useNavigate, Navigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdOutlineLogin } from "react-icons/md";
-import { TfiEmail, TfiLock } from "react-icons/tfi";
+import { TfiEmail } from "react-icons/tfi";
+import { TbLockOpen } from "react-icons/tb";
+
 import { z } from "zod";
 
 import { styled } from "styled-components";
@@ -245,7 +247,8 @@ const EmailIcon = styled(TfiEmail)`
   margin-right: 10px;
 `;
 
-const LockIcon = styled(TfiLock)`
+const LockIcon = styled(TbLockOpen)`
+  font-size: 22px;
   margin-right: 10px;
 `;
 
@@ -268,33 +271,33 @@ const HtmlRegisterLink = styled(Link)`
   }
 `;
 
+const passwordSchema = z
+  .string()
+  .min(8, { message: "Must be at least 8 characters long" })
+  .max(25, { message: "Must be at most 25 characters long" })
+  .refine((password) => !/\s/.test(password), {
+    message: "Cannot contain white spaces",
+  })
+  .refine((password) => /[0-9]/.test(password), {
+    message: "Must contain at least one number",
+  })
+  .refine((password) => /[a-z]/.test(password), {
+    message: "Must contain at least one lowercase letter",
+  })
+  .refine((password) => /[A-Z]/.test(password), {
+    message: "Must contain at least one uppercase letter",
+  });
+
+const schema = z.object({
+  email: z.string().email(),
+  password: passwordSchema,
+});
+
+type FormDataType = z.infer<typeof schema>;
+
 const LoginPage = () => {
   const userIsLogedin = useAuth();
   if (userIsLogedin) return <Navigate to="/flights" />;
-
-  const passwordSchema = z
-    .string()
-    .min(8, { message: "Must be at least 8 characters long" })
-    .max(25, { message: "Must be at most 25 characters long" })
-    .refine((password) => !/\s/.test(password), {
-      message: "Mannot contain white spaces",
-    })
-    .refine((password) => /[0-9]/.test(password), {
-      message: "Must contain at least one number",
-    })
-    .refine((password) => /[a-z]/.test(password), {
-      message: "Must contain at least one lowercase letter",
-    })
-    .refine((password) => /[A-Z]/.test(password), {
-      message: "Must contain at least one uppercase letter",
-    });
-
-  const schema = z.object({
-    email: z.string().email(),
-    password: passwordSchema,
-  });
-
-  type FormDataType = z.infer<typeof schema>;
 
   const {
     register,

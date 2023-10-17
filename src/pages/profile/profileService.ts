@@ -1,4 +1,5 @@
 import APIClient from '../../services/apiClient';
+import {ProfileData} from './entities'
 
 
 interface EditProfileData {
@@ -6,12 +7,6 @@ interface EditProfileData {
     weight_lb: number
 }
 
-export interface ProfileData {
-    id: number,
-    name: string
-    email: string
-    weight: number
-}
 
 const apiClient = new APIClient<EditProfileData, ProfileData>("/users")
 

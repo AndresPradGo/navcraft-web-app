@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import { useForm, FieldValues } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TfiEmail, TfiLock } from "react-icons/tfi";
+import { TfiEmail } from "react-icons/tfi";
+import { TbLock, TbLockCheck } from "react-icons/tb";
+
 import { AiOutlineForm } from "react-icons/ai";
 import { FaUser } from "react-icons/fa6";
 
@@ -250,7 +252,13 @@ const EmailIcon = styled(TfiEmail)`
   margin-right: 10px;
 `;
 
-const LockIcon = styled(TfiLock)`
+const LockIcon = styled(TbLock)`
+  font-size: 22px;
+  margin-right: 10px;
+`;
+
+const LockCheckIcon = styled(TbLockCheck)`
+  font-size: 22px;
   margin-right: 10px;
 `;
 
@@ -273,39 +281,38 @@ const HtmlRegisterLink = styled(Link)`
   }
 `;
 
-const RegisterPage = () => {
-  const passwordSchema = z
-    .string()
-    .min(8, { message: "Must be at least 8 characters long" })
-    .max(25, { message: "Must be at most 25 characters long" })
-    .refine((password) => !/\s/.test(password), {
-      message: "Mannot contain white spaces",
-    })
-    .refine((password) => /[0-9]/.test(password), {
-      message: "Must contain at least one number",
-    })
-    .refine((password) => /[a-z]/.test(password), {
-      message: "Must contain at least one lowercase letter",
-    })
-    .refine((password) => /[A-Z]/.test(password), {
-      message: "Must contain at least one uppercase letter",
-    });
-
-  const schema = z.object({
-    name: z
-      .string()
-      .min(2, { message: "Must be at least 2 characters long" })
-      .max(255, { message: "Must be at most 255 characters long" })
-      .regex(/^[a-zA-Z0-9\s']+$/, {
-        message: "Only letters, numbers, spaces and symbol '",
-      }),
-    email: z.string().email(),
-    password: passwordSchema,
-    confirmPassword: z.string(),
+const passwordSchema = z
+  .string()
+  .min(8, { message: "Must be at least 8 characters long" })
+  .max(25, { message: "Must be at most 25 characters long" })
+  .refine((password) => !/\s/.test(password), {
+    message: "Cannot contain white spaces",
+  })
+  .refine((password) => /[0-9]/.test(password), {
+    message: "Must contain at least one number",
+  })
+  .refine((password) => /[a-z]/.test(password), {
+    message: "Must contain at least one lowercase letter",
+  })
+  .refine((password) => /[A-Z]/.test(password), {
+    message: "Must contain at least one uppercase letter",
   });
 
-  type FormDataType = z.infer<typeof schema>;
+const schema = z.object({
+  name: z
+    .string()
+    .min(2, { message: "Must be at least 2 characters long" })
+    .max(255, { message: "Must be at most 255 characters long" })
+    .regex(/^[a-zA-Z0-9\s']+$/, {
+      message: "Only letters, numbers, spaces and symbol '",
+    }),
+  email: z.string().email(),
+  password: passwordSchema,
+  confirmPassword: z.string(),
+});
+type FormDataType = z.infer<typeof schema>;
 
+const RegisterPage = () => {
   const {
     register,
     handleSubmit,
@@ -387,7 +394,7 @@ const RegisterPage = () => {
               required="required"
             />
             <span>
-              <LockIcon />
+              <LockCheckIcon />
               Confirm Password
             </span>
             <i></i>

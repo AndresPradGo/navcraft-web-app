@@ -21,7 +21,7 @@ const useDeleteAccount = (onDelete: () => void) => {
             onDelete()
         },
         onError: (error) => {
-            if(error.response)
+            if(error.response) {
                 if (typeof error.response.data.detail === "string")
                     toast.error(error.response.data.detail, {
                         position: "top-center",
@@ -34,15 +34,16 @@ const useDeleteAccount = (onDelete: () => void) => {
                         theme: "dark",
                     });
                 else toast.error("Something went wrong, please try again later.", {
-                        position: "top-center",
-                        autoClose: 10000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                    });
+                    position: "top-center",
+                    autoClose: 10000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            }
         }
     })
 }

@@ -1,43 +1,40 @@
-import { useMutation } from '@tanstack/react-query';
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { useQueryClient } from '@tanstack/react-query';
 
-import apiClient from './profileService';
-import { APIClientError } from '../../services/apiClient';
-import { EditUserResponse, ProfileData } from './entities';
-import {FormDataType as EditProfileBody} from './EditProfileForm'
 
-interface EditProfileContext {
-    previusData?: ProfileData
+import APIClient, { APIClientError } from '../../services/apiClient';
+import { EditUserResponse, ProfileData, ProfileDataWithJWT } from './entities';
+
+
+interface ChangePasswordBody {
+    password: string;
+    current_password: string;
 }
 
-const useEditProfile = () => {
+const apiClient = new APIClient<ChangePasswordBody, ProfileDataWithJWT>("/users/password/me")
+
+
+const useChangePassword = () => {
     const queryClient = useQueryClient()
-    return useMutation<ProfileData, APIClientError, EditProfileBody, EditProfileContext>({
+    return useMutation<ProfileDataWithJWT, APIClientError, ChangePasswordBody>({
         mutationFn: (data) => {
-            return apiClient.editOtherAndPreProcess<EditProfileBody, EditUserResponse>(
+            return apiClient.editOtherAndPreProcessWithHeader<ChangePasswordBody, EditUserResponse>(
                 data, 
-                (preProcessedData) => ({
+                (preProcessedData, token , tokenType) => ({
                     id: preProcessedData.id,
                     name: preProcessedData.name,
                     email: preProcessedData.email,
                     weight: preProcessedData.weight_lb,
-                }),  
-                "/me"
+                    token: token,
+                    tokenType:tokenType
+                })
             )
-        },
-        onMutate: (newData: EditProfileBody) => {
-            const previusData = queryClient.getQueryData<ProfileData>(['profile'])
-            queryClient.setQueryData<ProfileData>(
-                ['profile'], 
-                currentData => (
-                    currentData ? {...currentData, name: newData.name, weight: newData.weight_lb} : undefined
-                )
-            )
-            return { previusData }
         },
         onSuccess: (data) => {
-            toast.success("Your Profile has been Updated.", {
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('token_type', data.tokenType)
+            toast.success("Your Password has been Updated.", {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
@@ -57,7 +54,7 @@ const useEditProfile = () => {
                 }
             )
         },
-        onError: (error, _, context) => {
+        onError: (error) => {
             if(error.response) {
                 if (typeof error.response.data.detail === "string")
                     toast.error(error.response.data.detail, {
@@ -81,15 +78,8 @@ const useEditProfile = () => {
                     theme: "dark",
                 });
             }
-            
-            if (!context?.previusData) return
-            queryClient.setQueryData<ProfileData>(
-                ['profile'], 
-                context.previusData
-            )
-
         }
     })
 }
 
-export default useEditProfile
+export default useChangePassword

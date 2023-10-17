@@ -11,6 +11,7 @@ import { Modal, useModal } from "../../components/modal/";
 import DeleteAccountForm from "./DeleteAccountForm";
 import ChangeEmailForm from "./ChangeEmailForm";
 import EditProfileForm from "./EditProfileForm";
+import ChangePasswordForm from "./ChangePasswordForm";
 
 const HtmlButtonList = styled.div`
   margin-top: 50px;
@@ -58,6 +59,7 @@ const SideBarContent = () => {
   const deleteModal = useModal();
   const ChangeEmailModal = useModal();
   const editProfileModal = useModal();
+  const ChangePasswordModal = useModal();
 
   const commonStyles = {
     color: "var(--color-white)",
@@ -95,7 +97,7 @@ const SideBarContent = () => {
       styles: {
         ...commonStyles,
       },
-      onClick: () => {},
+      onClick: ChangePasswordModal.handleOpen,
     },
     {
       text: "Logout",
@@ -145,6 +147,12 @@ const SideBarContent = () => {
         setModalRef={editProfileModal.setModalRef}
       >
         <EditProfileForm closeModal={editProfileModal.handleClose} />
+      </Modal>
+      <Modal
+        isOpen={ChangePasswordModal.isOpen}
+        setModalRef={ChangePasswordModal.setModalRef}
+      >
+        <ChangePasswordForm closeModal={ChangePasswordModal.handleClose} />
       </Modal>
       <HtmlButtonList>
         {buttons.map((button, index) => (

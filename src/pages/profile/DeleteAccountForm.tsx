@@ -5,7 +5,6 @@ import { styled } from "styled-components";
 
 import Button from "../../components/common/button/index";
 import useDeleteAccount from "./useDeleteAccount";
-import useAuth from "../login/useAuth";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -51,10 +50,9 @@ const DeleteAccountForm = ({ closeModal }: Props) => {
     localStorage.removeItem("token_type");
     navigate("/register");
   });
-  const user = useAuth();
 
   const handleDelete = () => {
-    deleteMutation.mutate(user ? user.authorization : "");
+    deleteMutation.mutate(undefined);
   };
 
   return (

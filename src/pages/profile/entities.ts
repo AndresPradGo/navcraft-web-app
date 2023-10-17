@@ -1,4 +1,9 @@
-
+export interface ProfileData {
+    id: number,
+    name: string
+    email: string
+    weight: number
+}
 
 export interface PassengerDataFromAPI {
     name: string;
@@ -61,4 +66,9 @@ export interface EditUserResponse {
     is_master: boolean;
     is_active: boolean;
     weight_lb: number;
+}
+
+export interface ProfileDataWithJWT extends  ProfileData{
+    token: string,
+    tokenType: string
 }
