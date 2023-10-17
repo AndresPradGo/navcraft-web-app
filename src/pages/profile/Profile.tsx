@@ -11,6 +11,7 @@ import Loader from "../../components/Loader";
 import PassengersTable from "./PassengersTable";
 import WaypointsTable from "./WaypointsTable";
 import AerodromesTable from "./AerodromessTable";
+import UserDataContext from "./userDataContext";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -137,7 +138,13 @@ const Profile = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <>
+    <UserDataContext.Provider
+      value={{
+        name: profileData.name,
+        weight: profileData.weight,
+        email: profileData.email,
+      }}
+    >
       <WithSideBar sideBarContent={<SideBarContent />}>
         <ContentLayout>
           <HtmlContainer>
@@ -179,7 +186,7 @@ const Profile = () => {
           </HtmlContainer>
         </ContentLayout>
       </WithSideBar>
-    </>
+    </UserDataContext.Provider>
   );
 };
 

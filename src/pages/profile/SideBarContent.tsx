@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal, useModal } from "../../components/modal/";
 import DeleteAccountForm from "./DeleteAccountForm";
 import ChangeEmailForm from "./ChangeEmailForm";
+import EditProfileForm from "./EditProfileForm";
 
 const HtmlButtonList = styled.div`
   margin-top: 50px;
@@ -46,11 +47,17 @@ const DeleteIcon = styled(RiDeleteBinLine)`
   margin-left: 5px;
 `;
 
+export interface Props {
+  username?: string;
+  userWeight?: number;
+}
+
 const SideBarContent = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const deleteModal = useModal();
-  const editEmailModal = useModal();
+  const ChangeEmailModal = useModal();
+  const editProfileModal = useModal();
 
   const commonStyles = {
     color: "var(--color-white)",
@@ -72,7 +79,7 @@ const SideBarContent = () => {
       styles: {
         ...commonStyles,
       },
-      onClick: () => {},
+      onClick: editProfileModal.handleOpen,
     },
     {
       text: "Change Email",
@@ -80,7 +87,7 @@ const SideBarContent = () => {
       styles: {
         ...commonStyles,
       },
-      onClick: editEmailModal.handleOpen,
+      onClick: ChangeEmailModal.handleOpen,
     },
     {
       text: "Change Password",
@@ -128,10 +135,16 @@ const SideBarContent = () => {
         <DeleteAccountForm closeModal={deleteModal.handleClose} />
       </Modal>
       <Modal
-        isOpen={editEmailModal.isOpen}
-        setModalRef={editEmailModal.setModalRef}
+        isOpen={ChangeEmailModal.isOpen}
+        setModalRef={ChangeEmailModal.setModalRef}
       >
-        <ChangeEmailForm closeModal={editEmailModal.handleClose} />
+        <ChangeEmailForm closeModal={ChangeEmailModal.handleClose} />
+      </Modal>
+      <Modal
+        isOpen={editProfileModal.isOpen}
+        setModalRef={editProfileModal.setModalRef}
+      >
+        <EditProfileForm closeModal={editProfileModal.handleClose} />
       </Modal>
       <HtmlButtonList>
         {buttons.map((button, index) => (

@@ -52,3 +52,13 @@ export interface AerodromeDataFromAPI extends WaypointDataFromAPI {
     registered: boolean;
     runways: RunwayDataFromAPI[];
 }
+
+export interface EditUserResponse {
+    email: string;
+    name: string;
+    id: number;
+    is_admin: boolean;
+    is_master: boolean;
+    is_active: boolean;
+    weight_lb: number;
+}
