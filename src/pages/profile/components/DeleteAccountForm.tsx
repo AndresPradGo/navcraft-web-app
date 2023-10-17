@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { IoWarningOutline } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
@@ -7,15 +8,40 @@ import Button from "../../../components/common/button";
 import useDeleteAccount from "../hooks/useDeleteAccount";
 
 const HtmlContainer = styled.div`
+width: 100%;
+min-height: 200px;
+display: flex;
+flex-direction: column;
+justify-content: space-evenly;
+align-items: flex-start;
+padding: 0;
+overflow: hidden;
+
+& h1 {
   width: 100%;
-  height: 200px;
+  margin: 0;
+  padding: 10px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
   align-items: center;
+  font-size: 25px;
+
+  @media screen and (min-width: 425px) {
+    padding: 10px;
+    font-size: 32px;
+  }
+
+  `;
+
+const BodyContainer = styled.div`
+  width: 100%;
+  overflow-y: auto;
+  padding: 20px 0;
+
+  border-top: 1px solid var(--color-grey);
+  border-bottom: 1px solid var(--color-grey);
 
   & p {
-    text-align: center;
+    text-align: start;
     padding: 10px 20px;
     margin: 0;
     font-size: 20px;
@@ -26,10 +52,11 @@ const HtmlContainer = styled.div`
 const HtmlButtons = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  padding: 20px 20px 10px;
+  padding: 10px 20px;
 `;
 
 const DeleteIcon = styled(RiDeleteBinLine)`
@@ -37,6 +64,17 @@ const DeleteIcon = styled(RiDeleteBinLine)`
   margin-left: 5px;
 `;
 
+const TitleIcon = styled(IoWarningOutline)`
+  font-size: 30px;
+  margin: 0 15px;
+  color: var(--color-white);
+  background-color: var(--color-warning);
+  padding: 0 5px 5px;
+
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+`;
 interface Props {
   closeModal: () => void;
 }
@@ -57,10 +95,16 @@ const DeleteAccountForm = ({ closeModal }: Props) => {
 
   return (
     <HtmlContainer>
-      <p>
-        All your saved data will be lost. Are you sure you want to delete your
-        account?
-      </p>
+      <h1>
+        <TitleIcon />
+        ARE YOU SURE?
+      </h1>
+      <BodyContainer>
+        <p>
+          Deleting your account is irreversible. All your saved data will be
+          lost permanently!!!
+        </p>
+      </BodyContainer>
       <HtmlButtons>
         <Button
           color="var(--color-primary-dark)"

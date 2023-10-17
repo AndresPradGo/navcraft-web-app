@@ -16,19 +16,30 @@ const HtmlForm = styled.form`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start;
-  padding: 10px;
+  padding: 0;
+  overflow: hidden;
 
   & h1 {
-    margin: 5px;
+    width: 100%;
+    margin: 0;
+    padding: 5px;
     display: flex;
     align-items: center;
     font-size: 25px;
 
     @media screen and (min-width: 425px) {
-      margin: 10px;
+      padding: 10px;
       font-size: 32px;
     }
-  }
+`;
+
+const HtmlInputContainer = styled.div`
+  width: 100%;
+  overflow-y: auto;
+  padding: 20px 0;
+
+  border-top: 1px solid var(--color-grey);
+  border-bottom: 1px solid var(--color-grey);
 `;
 
 const HtmlInput = styled.div`
@@ -71,14 +82,14 @@ const HtmlInput = styled.div`
 
     &:focus,
     &:valid {
-      border: 1px solid var(--color-white);
+      border: 1px solid var(--color-highlight);
     }
   }
 
   & p {
     font-size: 16px;
     color: var(--color-warning);
-    margin: 5px;
+    margin: 2px;
     text-wrap: wrap;
   }
 `;
@@ -90,7 +101,7 @@ const HtmlButtons = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  padding: 10px 20px 20px;
+  padding: 10px 20px;
 `;
 
 const SaveIcon = styled(AiOutlineSave)`
@@ -108,7 +119,6 @@ const WeightIcon = styled(FaWeightScale)`
 `;
 
 const PassengersIcon = styled(PiUsersFourFill)`
-  font-size: 25px;
   font-size: 30px;
   margin: 0 5px;
 
@@ -175,34 +185,36 @@ const PassengerForm = ({ passengerId, closeModal }: Props) => {
         <PassengersIcon />
         {`${passengerId ? "Edit" : "New"} Passenger`}
       </h1>
-      <HtmlInput>
-        <input
-          {...register("name")}
-          id="passenger_name"
-          type="text"
-          autoComplete="off"
-          required={true}
-        />
-        {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-        <label htmlFor="passenger_name">
-          <NameIcon />
-          Name
-        </label>
-      </HtmlInput>
-      <HtmlInput>
-        <input
-          {...register("weight_lb", { valueAsNumber: true })}
-          id="passenger_weight_lb"
-          type="number"
-          autoComplete="off"
-          required={true}
-        />
-        {errors.weight_lb ? <p>{errors.weight_lb.message}</p> : <p>&nbsp;</p>}
-        <label htmlFor="passenger_weight_lb">
-          <WeightIcon />
-          Weight
-        </label>
-      </HtmlInput>
+      <HtmlInputContainer>
+        <HtmlInput>
+          <input
+            {...register("name")}
+            id="passenger_name"
+            type="text"
+            autoComplete="off"
+            required={true}
+          />
+          {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
+          <label htmlFor="passenger_name">
+            <NameIcon />
+            Name
+          </label>
+        </HtmlInput>
+        <HtmlInput>
+          <input
+            {...register("weight_lb", { valueAsNumber: true })}
+            id="passenger_weight_lb"
+            type="number"
+            autoComplete="off"
+            required={true}
+          />
+          {errors.weight_lb ? <p>{errors.weight_lb.message}</p> : <p>&nbsp;</p>}
+          <label htmlFor="passenger_weight_lb">
+            <WeightIcon />
+            Weight
+          </label>
+        </HtmlInput>
+      </HtmlInputContainer>
       <HtmlButtons>
         <Button
           color="var(--color-primary-dark)"

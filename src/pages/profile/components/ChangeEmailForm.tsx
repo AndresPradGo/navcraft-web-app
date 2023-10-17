@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
-import { TbMail } from "react-icons/tb";
+import { TbMail, TbMailCog } from "react-icons/tb";
 import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,7 +17,30 @@ const HtmlForm = styled.form`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start;
-  padding: 10px;
+  padding: 0;
+  overflow: hidden;
+
+  & h1 {
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+
+    @media screen and (min-width: 425px) {
+      padding: 10px;
+      font-size: 32px;
+    }
+`;
+
+const HtmlInputContainer = styled.div`
+  width: 100%;
+  overflow-y: auto;
+  padding: 20px 0;
+
+  border-top: 1px solid var(--color-grey);
+  border-bottom: 1px solid var(--color-grey);
 `;
 
 const HtmlInput = styled.div`
@@ -54,21 +77,20 @@ const HtmlInput = styled.div`
 
     &:valid ~ label,
     &:focus ~ label {
-      color: var(--color-white);
+      color: var(--color-highlight);
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus,
     &:valid {
-      border: 1px solid var(--color-white);
+      border: 1px solid var(--color-highlight);
     }
   }
 
   & p {
     font-size: 16px;
     color: var(--color-warning);
-    margin: 10px;
-    margin: 5px;
+    margin: 2px;
     text-wrap: wrap;
   }
 `;
@@ -80,7 +102,7 @@ const HtmlButtons = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  padding: 10px 20px 20px;
+  padding: 10px 20px;
 `;
 
 const SaveIcon = styled(AiOutlineSave)`
@@ -90,6 +112,15 @@ const SaveIcon = styled(AiOutlineSave)`
 const EmailIcon = styled(TbMail)`
   font-size: 25px;
   margin: 0 10px;
+`;
+
+const TitleIcon = styled(TbMailCog)`
+  font-size: 30px;
+  margin: 0 5px;
+
+  @media screen and (min-width: 425px) {
+    margin: 0 10px;
+  }
 `;
 
 const schema = z.object({
@@ -129,20 +160,26 @@ const ChangeEmailForm = ({ closeModal }: Props) => {
 
   return (
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
-      <HtmlInput>
-        <input
-          {...register("email")}
-          id="email"
-          type="text"
-          autoComplete="off"
-          required={true}
-        />
-        {errors.email ? <p>{errors.email.message}</p> : <p>&nbsp;</p>}
-        <label htmlFor="email">
-          <EmailIcon />
-          New Email
-        </label>
-      </HtmlInput>
+      <h1>
+        <TitleIcon />
+        Change Email
+      </h1>
+      <HtmlInputContainer>
+        <HtmlInput>
+          <input
+            {...register("email")}
+            id="email"
+            type="text"
+            autoComplete="off"
+            required={true}
+          />
+          {errors.email ? <p>{errors.email.message}</p> : <p>&nbsp;</p>}
+          <label htmlFor="email">
+            <EmailIcon />
+            New Email
+          </label>
+        </HtmlInput>
+      </HtmlInputContainer>
       <HtmlButtons>
         <Button
           color="var(--color-primary-dark)"

@@ -30,11 +30,11 @@ const HtmlModal = styled.div<HtmlProps>`
   transition: all 0.3s ease-out;
   transform: ${(props) => (props.$isOpen ? "none" : "translate(0, -50px)")};
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   border: 1px solid var(--color-grey);
   border-radius: 8px;
   min-height: 200px;
-  max-height: 100vh;
+  max-height: 97vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

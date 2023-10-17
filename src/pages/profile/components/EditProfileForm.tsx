@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
-import { FaUser, FaWeightScale } from "react-icons/fa6";
+import { FaUser, FaWeightScale, FaUserPen } from "react-icons/fa6";
 import { useForm, FieldValues } from "react-hook-form";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +17,30 @@ const HtmlForm = styled.form`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start;
-  padding: 10px;
+  padding: 0;
+  overflow: hidden;
+
+  & h1 {
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+
+    @media screen and (min-width: 425px) {
+      padding: 10px;
+      font-size: 32px;
+    }
+`;
+
+const HtmlInputContainer = styled.div`
+  width: 100%;
+  overflow-y: auto;
+  padding: 20px 0;
+
+  border-top: 1px solid var(--color-grey);
+  border-bottom: 1px solid var(--color-grey);
 `;
 
 const HtmlInput = styled.div`
@@ -54,21 +77,20 @@ const HtmlInput = styled.div`
 
     &:valid ~ label,
     &:focus ~ label {
-      color: var(--color-white);
+      color: var(--color-highlight);
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus,
     &:valid {
-      border: 1px solid var(--color-white);
+      border: 1px solid var(--color-highlight);
     }
   }
 
   & p {
     font-size: 16px;
     color: var(--color-warning);
-    margin: 10px;
-    margin: 5px;
+    margin: 2px;
     text-wrap: wrap;
   }
 `;
@@ -80,7 +102,7 @@ const HtmlButtons = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  padding: 10px 20px 20px;
+  padding: 10px 20px;
 `;
 
 const SaveIcon = styled(AiOutlineSave)`
@@ -95,6 +117,15 @@ const NameIcon = styled(FaUser)`
 const WeightIcon = styled(FaWeightScale)`
   font-size: 25px;
   margin: 0 10px;
+`;
+
+const TitleIcon = styled(FaUserPen)`
+  font-size: 30px;
+  margin: 0 5px;
+
+  @media screen and (min-width: 425px) {
+    margin: 0 10px;
+  }
 `;
 
 const schema = z.object({
@@ -145,34 +176,40 @@ const EditProfileForm = ({ closeModal }: Props) => {
 
   return (
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
-      <HtmlInput>
-        <input
-          {...register("name")}
-          id="profile_name"
-          type="text"
-          autoComplete="off"
-          required={true}
-        />
-        {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-        <label htmlFor="profile_name">
-          <NameIcon />
-          Name
-        </label>
-      </HtmlInput>
-      <HtmlInput>
-        <input
-          {...register("weight_lb", { valueAsNumber: true })}
-          id="profile_weight_lb"
-          type="number"
-          autoComplete="off"
-          required={true}
-        />
-        {errors.weight_lb ? <p>{errors.weight_lb.message}</p> : <p>&nbsp;</p>}
-        <label htmlFor="profile_weight_lb">
-          <WeightIcon />
-          Weight
-        </label>
-      </HtmlInput>
+      <h1>
+        <TitleIcon />
+        Edit Profile
+      </h1>
+      <HtmlInputContainer>
+        <HtmlInput>
+          <input
+            {...register("name")}
+            id="profile_name"
+            type="text"
+            autoComplete="off"
+            required={true}
+          />
+          {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
+          <label htmlFor="profile_name">
+            <NameIcon />
+            Name
+          </label>
+        </HtmlInput>
+        <HtmlInput>
+          <input
+            {...register("weight_lb", { valueAsNumber: true })}
+            id="profile_weight_lb"
+            type="number"
+            autoComplete="off"
+            required={true}
+          />
+          {errors.weight_lb ? <p>{errors.weight_lb.message}</p> : <p>&nbsp;</p>}
+          <label htmlFor="profile_weight_lb">
+            <WeightIcon />
+            Weight
+          </label>
+        </HtmlInput>
+      </HtmlInputContainer>
       <HtmlButtons>
         <Button
           color="var(--color-primary-dark)"
