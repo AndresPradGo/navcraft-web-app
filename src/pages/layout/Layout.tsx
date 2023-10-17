@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 
 import NavBar from "../../components/navbar";
 import { SideBarProvider } from "../../components/sidebar";
-import useAuth from "../login/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 const HtmlLayoutContainer = styled.div`
   transition: all 0.5s ease-out;

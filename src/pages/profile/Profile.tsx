@@ -5,13 +5,12 @@ import { toast } from "react-toastify";
 
 import { ContentLayout } from "../layout";
 import WithSideBar from "../../components/sidebar/WithSideBar";
-import SideBarContent from "./SideBarContent";
-import useProfileData from "./useProfileData";
+import SideBarContent from "./components/SideBarContent";
+import useProfileData from "./hooks/useProfileData";
 import Loader from "../../components/Loader";
-import PassengersTable from "./PassengersTable";
-import WaypointsTable from "./WaypointsTable";
-import AerodromesTable from "./AerodromessTable";
-import UserDataContext from "./userDataContext";
+import PassengersTable from "./components/PassengersTable";
+import WaypointsTable from "./components/WaypointsTable";
+import AerodromesTable from "./components/AerodromessTable";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -138,55 +137,47 @@ const Profile = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <UserDataContext.Provider
-      value={{
-        name: profileData.name,
-        weight: profileData.weight,
-        email: profileData.email,
-      }}
-    >
-      <WithSideBar sideBarContent={<SideBarContent />}>
-        <ContentLayout>
-          <HtmlContainer>
-            <HtmlTitleContainer>
-              <h1>{profileData?.name}</h1>
-              <p>{profileData?.email}</p>
-            </HtmlTitleContainer>
-            <HtmlWeightCardContainer>
-              <HtmlWeightCard>
-                <HtmlWeightCardFront $inKg={weightInKg}>
-                  <h2>
-                    <WeightIcon />
-                    WEIGHT
-                  </h2>
-                  <p>
-                    <span>{profileData?.weight}</span>
-                    <span onClick={() => setWeightInKg(!weightInKg)}>Lb</span>
-                  </p>
-                </HtmlWeightCardFront>
-                <HtmlWeightCardBack $inKg={weightInKg}>
-                  <h2>
-                    <WeightIcon />
-                    WEIGHT
-                  </h2>
-                  <p>
-                    <span>
-                      {Math.round(
-                        (profileData ? profileData.weight : 0) * 0.4533
-                      )}
-                    </span>
-                    <span onClick={() => setWeightInKg(!weightInKg)}>Kg</span>
-                  </p>
-                </HtmlWeightCardBack>
-              </HtmlWeightCard>
-            </HtmlWeightCardContainer>
-            <PassengersTable userId={profileData.id} />
-            <AerodromesTable userId={profileData.id} />
-            <WaypointsTable userId={profileData.id} />
-          </HtmlContainer>
-        </ContentLayout>
-      </WithSideBar>
-    </UserDataContext.Provider>
+    <WithSideBar sideBarContent={<SideBarContent />}>
+      <ContentLayout>
+        <HtmlContainer>
+          <HtmlTitleContainer>
+            <h1>{profileData?.name}</h1>
+            <p>{profileData?.email}</p>
+          </HtmlTitleContainer>
+          <HtmlWeightCardContainer>
+            <HtmlWeightCard>
+              <HtmlWeightCardFront $inKg={weightInKg}>
+                <h2>
+                  <WeightIcon />
+                  WEIGHT
+                </h2>
+                <p>
+                  <span>{profileData?.weight}</span>
+                  <span onClick={() => setWeightInKg(!weightInKg)}>Lb</span>
+                </p>
+              </HtmlWeightCardFront>
+              <HtmlWeightCardBack $inKg={weightInKg}>
+                <h2>
+                  <WeightIcon />
+                  WEIGHT
+                </h2>
+                <p>
+                  <span>
+                    {Math.round(
+                      (profileData ? profileData.weight : 0) * 0.4533
+                    )}
+                  </span>
+                  <span onClick={() => setWeightInKg(!weightInKg)}>Kg</span>
+                </p>
+              </HtmlWeightCardBack>
+            </HtmlWeightCard>
+          </HtmlWeightCardContainer>
+          <PassengersTable />
+          <AerodromesTable />
+          <WaypointsTable />
+        </HtmlContainer>
+      </ContentLayout>
+    </WithSideBar>
   );
 };
 

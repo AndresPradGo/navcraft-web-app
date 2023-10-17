@@ -5,9 +5,9 @@ import { TbMailCog, TbLockCog } from "react-icons/tb";
 import { styled } from "styled-components";
 import { useQueryClient } from "@tanstack/react-query";
 
-import Button from "../../components/common/button/index";
+import Button from "../../../components/common/button";
 import { useNavigate } from "react-router-dom";
-import { Modal, useModal } from "../../components/modal/";
+import { Modal, useModal } from "../../../components/modal";
 import DeleteAccountForm from "./DeleteAccountForm";
 import ChangeEmailForm from "./ChangeEmailForm";
 import EditProfileForm from "./EditProfileForm";

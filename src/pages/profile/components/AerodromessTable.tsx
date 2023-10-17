@@ -3,10 +3,10 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
 
-import useAerodromesData from "./useAerodromesData";
-import Table from "../../components/common/table";
-import Loader from "../../components/Loader";
-import Button from "../../components/common/button/index";
+import useUserAerodromesData from "../hooks/useUserAerodromesData";
+import Table from "../../../components/common/table";
+import Loader from "../../../components/Loader";
+import Button from "../../../components/common/button";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -66,9 +66,9 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
   overflow: hidden;
 `;
 
-const AerodromesTable = ({ userId }: { userId: number }) => {
+const AerodromesTable = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { data: aerodromes, isLoading } = useAerodromesData(userId);
+  const { data: aerodromes, isLoading } = useUserAerodromesData();
 
   const tableData = {
     keys: [

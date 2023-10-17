@@ -1,14 +1,12 @@
-import { useContext } from "react";
 import { AiOutlineSave } from "react-icons/ai";
-import { TbMail } from "react-icons/tb";
+import { TbLock, TbLockCheck, TbLockOpen } from "react-icons/tb";
 import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { styled } from "styled-components";
-import Button from "../../components/common/button/index";
-import useChangeEmail from "./useChangeEmail";
-import userDataContext from "./userDataContext";
+import Button from "../../../components/common/button";
+import useChangePassword from "../hooks/useChangePassword";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -85,59 +83,145 @@ const SaveIcon = styled(AiOutlineSave)`
   font-size: 25px;
 `;
 
-const EmailIcon = styled(TbMail)`
+const LockIcon = styled(TbLock)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
+const LockCheckIcon = styled(TbLockCheck)`
+  font-size: 25px;
+  margin: 0 10px;
+`;
+
+const UnlockIcon = styled(TbLockOpen)`
+  font-size: 25px;
+  margin: 0 10px;
+`;
+
+const passwordSchema = z
+  .string()
+  .min(8, { message: "Must be at least 8 characters long" })
+  .max(25, { message: "Must be at most 25 characters long" })
+  .refine((password) => !/\s/.test(password), {
+    message: "Cannot contain white spaces",
+  })
+  .refine((password) => /[0-9]/.test(password), {
+    message: "Must contain at least one number",
+  })
+  .refine((password) => /[a-z]/.test(password), {
+    message: "Must contain at least one lowercase letter",
+  })
+  .refine((password) => /[A-Z]/.test(password), {
+    message: "Must contain at least one uppercase letter",
+  });
+
 const schema = z.object({
-  email: z.string().email(),
+  currentPassword: passwordSchema,
+  newPassword: passwordSchema,
+  confirmPassword: z.string(),
 });
-export type FormDataType = z.infer<typeof schema>;
+type FormDataType = z.infer<typeof schema>;
 
 interface Props {
   closeModal: () => void;
 }
 
-const ChangeEmailForm = ({ closeModal }: Props) => {
-  const userData = useContext(userDataContext);
-
+const ChangePasswordForm = ({ closeModal }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
+    setError,
   } = useForm<FormDataType>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      email: userData.email,
-    },
   });
 
-  const changeEmail = useChangeEmail();
+  const changePassword = useChangePassword();
 
   const handleCancel = () => {
+    reset({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
     closeModal();
   };
 
   const submitHandler = (data: FieldValues) => {
-    changeEmail.mutate({ email: data.email });
-    closeModal();
+    if (data.confirmPassword !== data.newPassword)
+      setError("confirmPassword", {
+        type: "manual",
+        message: "Password confirmation does not match",
+      });
+    else {
+      reset({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+      closeModal();
+      changePassword.mutate({
+        current_password: data.currentPassword,
+        password: data.newPassword,
+      });
+    }
   };
 
   return (
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <HtmlInput>
         <input
-          {...register("email")}
-          id="email"
-          type="text"
+          {...register("currentPassword")}
+          id="currentPassword"
+          type="password"
           autoComplete="off"
           required={true}
         />
-        {errors.email ? <p>{errors.email.message}</p> : <p>&nbsp;</p>}
-        <label htmlFor="email">
-          <EmailIcon />
-          New Email
+        {errors.currentPassword ? (
+          <p>{errors.currentPassword.message}</p>
+        ) : (
+          <p>&nbsp;</p>
+        )}
+        <label htmlFor="currentPassword">
+          <UnlockIcon />
+          Current Password
+        </label>
+      </HtmlInput>
+      <HtmlInput>
+        <input
+          {...register("newPassword")}
+          id="newPassword"
+          type="password"
+          autoComplete="off"
+          required={true}
+        />
+        {errors.newPassword ? (
+          <p>{errors.newPassword.message}</p>
+        ) : (
+          <p>&nbsp;</p>
+        )}
+        <label htmlFor="newPassword">
+          <LockIcon />
+          New Password
+        </label>
+      </HtmlInput>
+      <HtmlInput>
+        <input
+          {...register("confirmPassword")}
+          id="confirmPassword"
+          type="password"
+          autoComplete="off"
+          required={true}
+        />
+        {errors.confirmPassword ? (
+          <p>{errors.confirmPassword.message}</p>
+        ) : (
+          <p>&nbsp;</p>
+        )}
+        <label htmlFor="confirmPassword">
+          <LockCheckIcon />
+          Confirm Password
         </label>
       </HtmlInput>
       <HtmlButtons>
@@ -177,4 +261,4 @@ const ChangeEmailForm = ({ closeModal }: Props) => {
   );
 };
 
-export default ChangeEmailForm;
+export default ChangePasswordForm;

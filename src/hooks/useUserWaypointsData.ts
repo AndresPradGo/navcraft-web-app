@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import APIClient, {APIClientError} from '../../services/apiClient';
-import {WaypointDataFromAPI} from './entities'
+import APIClient, {APIClientError} from '../services/apiClient';
+import {WaypointDataFromAPI} from '../pages/profile/entities'
 interface EditWaypointData {
     code: string,
     name: string,
@@ -27,9 +27,9 @@ interface WaypointData {
 
 const apiClient = new APIClient<EditWaypointData, WaypointData>("/waypoints/user")
 
-const useWaypointsData = (userId: number) => {
+const useUserWaypointsData = () => {
     return useQuery<WaypointData[], APIClientError>({
-        queryKey: ['profile', userId, 'waypoints'],
+        queryKey: ['waypoints', 'user'],
         queryFn: () => {
             return apiClient.getAndPreProcessAll<WaypointDataFromAPI>(
                 (data: WaypointDataFromAPI[]) => (data.map(w => {
@@ -47,7 +47,7 @@ const useWaypointsData = (userId: number) => {
     })
 }
 
-export default useWaypointsData
+export default useUserWaypointsData
 
 
 

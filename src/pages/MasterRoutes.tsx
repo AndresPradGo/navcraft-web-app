@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-import { useAuth } from "./login";
+import useAuth from "../hooks/useAuth";
 
 const MasterRoutes = () => {
   const user = useAuth();

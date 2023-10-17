@@ -3,8 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 
-import APIClient, { APIClientError } from '../../services/apiClient';
-import { EditUserResponse, ProfileData, ProfileDataWithJWT } from './entities';
+import APIClient, { APIClientError } from '../../../services/apiClient';
+import { EditUserResponse, ProfileData, ProfileDataWithJWT } from '../entities';
 
 
 interface ChangePasswordBody {

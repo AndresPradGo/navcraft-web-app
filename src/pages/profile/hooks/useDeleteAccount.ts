@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
-import { APIClientError } from '../../services/apiClient';
-import apiClient from './profileService'
+import { APIClientError } from '../../../services/apiClient';
+import apiClient from '../profileService'
 
 const useDeleteAccount = (onDelete: () => void) => {
     return useMutation<string, APIClientError, undefined>({

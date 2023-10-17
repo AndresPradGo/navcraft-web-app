@@ -11,7 +11,7 @@ import { z } from "zod";
 import { styled } from "styled-components";
 import Button from "../../components/common/button/index";
 import useLogin from "./useLogin";
-import useAuth from "./useAuth";
+import useAuth from "../../hooks/useAuth";
 
 const HtmlPageContainer = styled.div`
   position: relative;

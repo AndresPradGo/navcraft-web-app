@@ -3,7 +3,7 @@ import WithSideBar from "../components/sidebar/WithSideBar";
 
 const Aircraft = () => {
   return (
-    <WithSideBar>
+    <WithSideBar sideBarContent="Sidebar">
       <ContentLayout>aircraft</ContentLayout>
     </WithSideBar>
   );

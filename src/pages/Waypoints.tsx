@@ -3,7 +3,7 @@ import WithSideBar from "../components/sidebar/WithSideBar";
 
 const Waypoints = () => {
   return (
-    <WithSideBar>
+    <WithSideBar sideBarContent="Sidebar">
       <ContentLayout>waypoints</ContentLayout>
     </WithSideBar>
   );

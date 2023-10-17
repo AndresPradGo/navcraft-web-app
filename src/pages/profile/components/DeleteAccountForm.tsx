@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
-import Button from "../../components/common/button/index";
-import useDeleteAccount from "./useDeleteAccount";
+import Button from "../../../components/common/button";
+import useDeleteAccount from "../hooks/useDeleteAccount";
 
 const HtmlContainer = styled.div`
   width: 100%;

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import APIClient, {APIClientError} from '../../services/apiClient';
-import {AerodromeDataFromAPI} from './entities'
+import APIClient, {APIClientError} from '../../../services/apiClient';
+import {AerodromeDataFromAPI} from '../entities'
 interface EditAerodromeData {
     code: string,
     name: string,
@@ -30,9 +30,9 @@ interface AerodromeData {
 
 const apiClient = new APIClient<EditAerodromeData, AerodromeData>("/waypoints/aerodromes")
 
-const useWaypointsData = (userId: number) => {
+const useUserAerodromesData = () => {
     return useQuery<AerodromeData[], APIClientError>({
-        queryKey: ['profile', userId, 'aerodromes'],
+        queryKey: ['waypoints', 'user', 'aerodromes'],
         queryFn: () => {
             return apiClient.getAndPreProcessAll<AerodromeDataFromAPI>(
                 (data: AerodromeDataFromAPI[]) => {
@@ -53,7 +53,7 @@ const useWaypointsData = (userId: number) => {
     })
 }
 
-export default useWaypointsData
+export default useUserAerodromesData
 
 
 

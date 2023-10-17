@@ -3,10 +3,10 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
 
-import useWaypointsData from "./useWaypointsData";
-import Table from "../../components/common/table";
-import Loader from "../../components/Loader";
-import Button from "../../components/common/button/index";
+import usePassengersData from "../../../hooks/usePassengersData";
+import Table from "../../../components/common/table";
+import Loader from "../../../components/Loader";
+import Button from "../../../components/common/button/index";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -66,22 +66,19 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
   overflow: hidden;
 `;
 
-const WaypointsTable = ({ userId }: { userId: number }) => {
+const PassengersTable = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { data: waypoints, isLoading } = useWaypointsData(userId);
+  const { data: passengers, isLoading } = usePassengersData();
 
   const tableData = {
-    keys: ["code", "name", "latitude", "longitude", "variation"],
+    keys: ["name", "weight"],
     headers: {
-      code: "Code",
       name: "Name",
-      latitude: "Latitude",
-      longitude: "Longitude",
-      variation: "Magnetic Var",
+      weight: "Weight [lb]",
     },
-    rows: waypoints
-      ? waypoints.map((waypoint) => ({
-          ...waypoint,
+    rows: passengers
+      ? passengers.map((passenger) => ({
+          ...passenger,
           handleEdit: () => {},
           handleDelete: () => {},
           permissions: "delete" as "delete",
@@ -91,10 +88,6 @@ const WaypointsTable = ({ userId }: { userId: number }) => {
   };
 
   const sortData = [
-    {
-      key: "code",
-      title: "Code",
-    },
     {
       key: "name",
       title: "Name",
@@ -106,7 +99,7 @@ const WaypointsTable = ({ userId }: { userId: number }) => {
       <HtmlTitleContainer>
         <div>
           <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
-          <h3>Saved Waypoints</h3>
+          <h3>Frequent Passengers</h3>
         </div>
         <Button
           borderRadious={100}
@@ -130,7 +123,7 @@ const WaypointsTable = ({ userId }: { userId: number }) => {
             tableData={tableData}
             sortColumnOptions={sortData}
             pageSize={5}
-            emptyTableMessage="No Waypoints saved..."
+            emptyTableMessage="No Passengers saved..."
           />
         )}
       </HtmlTableContainer>
@@ -138,4 +131,4 @@ const WaypointsTable = ({ userId }: { userId: number }) => {
   );
 };
 
-export default WaypointsTable;
+export default PassengersTable;

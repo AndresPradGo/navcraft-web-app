@@ -1,12 +1,14 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
-import { TbLock, TbLockCheck, TbLockOpen } from "react-icons/tb";
+import { FaUser, FaWeightScale } from "react-icons/fa6";
 import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { styled } from "styled-components";
-import Button from "../../components/common/button/index";
-import useChangePassword from "./useChangePassword";
+import Button from "../../../components/common/button/index";
+import useEditProfile from "../hooks/useEditProfile";
+import { ProfileData } from "../entities";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -83,145 +85,90 @@ const SaveIcon = styled(AiOutlineSave)`
   font-size: 25px;
 `;
 
-const LockIcon = styled(TbLock)`
+const NameIcon = styled(FaUser)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const LockCheckIcon = styled(TbLockCheck)`
+const WeightIcon = styled(FaWeightScale)`
   font-size: 25px;
   margin: 0 10px;
 `;
-
-const UnlockIcon = styled(TbLockOpen)`
-  font-size: 25px;
-  margin: 0 10px;
-`;
-
-const passwordSchema = z
-  .string()
-  .min(8, { message: "Must be at least 8 characters long" })
-  .max(25, { message: "Must be at most 25 characters long" })
-  .refine((password) => !/\s/.test(password), {
-    message: "Cannot contain white spaces",
-  })
-  .refine((password) => /[0-9]/.test(password), {
-    message: "Must contain at least one number",
-  })
-  .refine((password) => /[a-z]/.test(password), {
-    message: "Must contain at least one lowercase letter",
-  })
-  .refine((password) => /[A-Z]/.test(password), {
-    message: "Must contain at least one uppercase letter",
-  });
 
 const schema = z.object({
-  currentPassword: passwordSchema,
-  newPassword: passwordSchema,
-  confirmPassword: z.string(),
+  name: z
+    .string()
+    .min(2, { message: "Must be at least 2 characters long" })
+    .max(255, { message: "Must be at most 255 characters long" })
+    .regex(/^[a-zA-Z0-9\s']+$/, {
+      message: "Only letters, numbers, spaces and symbol '",
+    }),
+  weight_lb: z.number().nonnegative("Must be greater than or equal to 0"),
 });
-type FormDataType = z.infer<typeof schema>;
+export type FormDataType = z.infer<typeof schema>;
 
 interface Props {
   closeModal: () => void;
 }
 
-const ChangePasswordForm = ({ closeModal }: Props) => {
+const EditProfileForm = ({ closeModal }: Props) => {
+  const queryClient = useQueryClient();
+  const userData = queryClient.getQueryData<ProfileData>(["profile"]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-    setError,
   } = useForm<FormDataType>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      name: userData?.name,
+      weight_lb: userData?.weight,
+    },
   });
 
-  const changePassword = useChangePassword();
+  const editProfile = useEditProfile();
 
   const handleCancel = () => {
-    reset({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
     closeModal();
   };
 
   const submitHandler = (data: FieldValues) => {
-    if (data.confirmPassword !== data.newPassword)
-      setError("confirmPassword", {
-        type: "manual",
-        message: "Password confirmation does not match",
-      });
-    else {
-      reset({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
-      closeModal();
-      changePassword.mutate({
-        current_password: data.currentPassword,
-        password: data.newPassword,
-      });
-    }
+    editProfile.mutate({
+      name: data.name,
+      weight_lb: parseFloat(data.weight_lb),
+    });
+    closeModal();
   };
 
   return (
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <HtmlInput>
         <input
-          {...register("currentPassword")}
-          id="currentPassword"
-          type="password"
+          {...register("name")}
+          id="name"
+          type="text"
           autoComplete="off"
           required={true}
         />
-        {errors.currentPassword ? (
-          <p>{errors.currentPassword.message}</p>
-        ) : (
-          <p>&nbsp;</p>
-        )}
-        <label htmlFor="currentPassword">
-          <UnlockIcon />
-          Current Password
+        {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
+        <label htmlFor="name">
+          <NameIcon />
+          Name
         </label>
       </HtmlInput>
       <HtmlInput>
         <input
-          {...register("newPassword")}
-          id="newPassword"
-          type="password"
+          {...register("weight_lb", { valueAsNumber: true })}
+          id="weight_lb"
+          type="number"
           autoComplete="off"
           required={true}
         />
-        {errors.newPassword ? (
-          <p>{errors.newPassword.message}</p>
-        ) : (
-          <p>&nbsp;</p>
-        )}
-        <label htmlFor="newPassword">
-          <LockIcon />
-          New Password
-        </label>
-      </HtmlInput>
-      <HtmlInput>
-        <input
-          {...register("confirmPassword")}
-          id="confirmPassword"
-          type="password"
-          autoComplete="off"
-          required={true}
-        />
-        {errors.confirmPassword ? (
-          <p>{errors.confirmPassword.message}</p>
-        ) : (
-          <p>&nbsp;</p>
-        )}
-        <label htmlFor="confirmPassword">
-          <LockCheckIcon />
-          Confirm Password
+        {errors.weight_lb ? <p>{errors.weight_lb.message}</p> : <p>&nbsp;</p>}
+        <label htmlFor="weight_lb">
+          <WeightIcon />
+          Weight
         </label>
       </HtmlInput>
       <HtmlButtons>
@@ -261,4 +208,4 @@ const ChangePasswordForm = ({ closeModal }: Props) => {
   );
 };
 
-export default ChangePasswordForm;
+export default EditProfileForm;

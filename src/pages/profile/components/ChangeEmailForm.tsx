@@ -1,14 +1,14 @@
-import { useContext } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
-import { FaUser, FaWeightScale } from "react-icons/fa6";
+import { TbMail } from "react-icons/tb";
 import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { styled } from "styled-components";
-import Button from "../../components/common/button/index";
-import userDataContext from "./userDataContext";
-import useEditProfile from "./useEditProfile";
+import Button from "../../../components/common/button";
+import useChangeEmail from "../hooks/useChangeEmail";
+import { ProfileData } from "../entities";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -85,25 +85,13 @@ const SaveIcon = styled(AiOutlineSave)`
   font-size: 25px;
 `;
 
-const NameIcon = styled(FaUser)`
-  font-size: 25px;
-  margin: 0 10px;
-`;
-
-const WeightIcon = styled(FaWeightScale)`
+const EmailIcon = styled(TbMail)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
 const schema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(255, { message: "Must be at most 255 characters long" })
-    .regex(/^[a-zA-Z0-9\s']+$/, {
-      message: "Only letters, numbers, spaces and symbol '",
-    }),
-  weight_lb: z.number().nonnegative("Must be greater than or equal to 0"),
+  email: z.string().email(),
 });
 export type FormDataType = z.infer<typeof schema>;
 
@@ -111,8 +99,9 @@ interface Props {
   closeModal: () => void;
 }
 
-const EditProfileForm = ({ closeModal }: Props) => {
-  const userData = useContext(userDataContext);
+const ChangeEmailForm = ({ closeModal }: Props) => {
+  const queryClient = useQueryClient();
+  const userData = queryClient.getQueryData<ProfileData>(["profile"]);
 
   const {
     register,
@@ -121,22 +110,18 @@ const EditProfileForm = ({ closeModal }: Props) => {
   } = useForm<FormDataType>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: userData.name,
-      weight_lb: userData.weight,
+      email: userData?.email,
     },
   });
 
-  const editProfile = useEditProfile();
+  const changeEmail = useChangeEmail();
 
   const handleCancel = () => {
     closeModal();
   };
 
   const submitHandler = (data: FieldValues) => {
-    editProfile.mutate({
-      name: data.name,
-      weight_lb: parseFloat(data.weight_lb),
-    });
+    changeEmail.mutate({ email: data.email });
     closeModal();
   };
 
@@ -144,30 +129,16 @@ const EditProfileForm = ({ closeModal }: Props) => {
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <HtmlInput>
         <input
-          {...register("name")}
-          id="name"
+          {...register("email")}
+          id="email"
           type="text"
           autoComplete="off"
           required={true}
         />
-        {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-        <label htmlFor="name">
-          <NameIcon />
-          Name
-        </label>
-      </HtmlInput>
-      <HtmlInput>
-        <input
-          {...register("weight_lb", { valueAsNumber: true })}
-          id="weight_lb"
-          type="number"
-          autoComplete="off"
-          required={true}
-        />
-        {errors.weight_lb ? <p>{errors.weight_lb.message}</p> : <p>&nbsp;</p>}
-        <label htmlFor="weight_lb">
-          <WeightIcon />
-          Weight
+        {errors.email ? <p>{errors.email.message}</p> : <p>&nbsp;</p>}
+        <label htmlFor="email">
+          <EmailIcon />
+          New Email
         </label>
       </HtmlInput>
       <HtmlButtons>
@@ -207,4 +178,4 @@ const EditProfileForm = ({ closeModal }: Props) => {
   );
 };
 
-export default EditProfileForm;
+export default ChangeEmailForm;

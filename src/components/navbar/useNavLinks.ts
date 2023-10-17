@@ -1,7 +1,7 @@
 import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
 import { MdFlightTakeoff, MdAirplanemodeActive } from "react-icons/md";
 import { IconType } from "react-icons";
-import {useAuth} from '../../pages/login';
+import useAuth from '../../hooks/useAuth';
 
 interface NavLinkData {
   text: string;

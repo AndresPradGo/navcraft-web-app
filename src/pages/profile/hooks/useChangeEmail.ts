@@ -1,43 +1,46 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { useQueryClient } from '@tanstack/react-query';
 
-import apiClient from './profileService';
-import { APIClientError } from '../../services/apiClient';
-import { EditUserResponse, ProfileData } from './entities';
-import {FormDataType as EditProfileBody} from './EditProfileForm'
+import APIClient,{ APIClientError } from '../../../services/apiClient';
+import { EditUserResponse, ProfileData, ProfileDataWithJWT } from '../entities';
+import {FormDataType as ChangeEmailBody} from '../components/ChangeEmailForm'
 
-interface EditProfileContext {
+interface ChangeEmailContext {
     previusData?: ProfileData
 }
 
-const useEditProfile = () => {
+const apiClient = new APIClient<ChangeEmailBody, ProfileDataWithJWT>("/users/email/me")
+
+
+const useChangeEmail = () => {
     const queryClient = useQueryClient()
-    return useMutation<ProfileData, APIClientError, EditProfileBody, EditProfileContext>({
-        mutationFn: (data) => {
-            return apiClient.editOtherAndPreProcess<EditProfileBody, EditUserResponse>(
-                data, 
-                (preProcessedData) => ({
-                    id: preProcessedData.id,
-                    name: preProcessedData.name,
-                    email: preProcessedData.email,
-                    weight: preProcessedData.weight_lb,
-                }),  
-                "/me"
-            )
+    return useMutation<ProfileDataWithJWT, APIClientError, ChangeEmailBody, ChangeEmailContext>({
+        mutationFn: (data: ChangeEmailBody) => {
+            return (apiClient.editOtherAndPreProcessWithHeader<ChangeEmailBody, EditUserResponse>(
+                data,
+                (data, token, tokenType) => ({
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                    weight: data.weight_lb,
+                    token: token,
+                    tokenType:tokenType
+                })
+            ))
         },
-        onMutate: (newData: EditProfileBody) => {
+        onMutate: (newData: ChangeEmailBody) => {
             const previusData = queryClient.getQueryData<ProfileData>(['profile'])
             queryClient.setQueryData<ProfileData>(
                 ['profile'], 
-                currentData => (
-                    currentData ? {...currentData, name: newData.name, weight: newData.weight_lb} : undefined
-                )
+                currentData => (currentData? {...currentData, email: newData.email} : undefined)
             )
+
             return { previusData }
         },
         onSuccess: (data) => {
-            toast.success("Your Profile has been Updated.", {
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('token_type', data.tokenType)
+            toast.success("Your Email has been Updated.", {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
@@ -87,9 +90,8 @@ const useEditProfile = () => {
                 ['profile'], 
                 context.previusData
             )
-
         }
     })
 }
 
-export default useEditProfile
+export default useChangeEmail
