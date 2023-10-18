@@ -1,13 +1,14 @@
+import { useEffect } from "react";
 import { AiOutlineSave } from "react-icons/ai";
 import { FaUser, FaWeightScale } from "react-icons/fa6";
-import { PiUsersFourFill } from "react-icons/pi";
+import { PiUsersFourThin } from "react-icons/pi";
 import { useForm, FieldValues } from "react-hook-form";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../common/button";
-import useGetPassenger from "../../hooks/useGetPassenger";
+import useEditPassenger from "./useEditPassenger";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -118,7 +119,7 @@ const WeightIcon = styled(FaWeightScale)`
   margin: 0 10px;
 `;
 
-const PassengersIcon = styled(PiUsersFourFill)`
+const PassengersIcon = styled(PiUsersFourThin)`
   font-size: 30px;
   margin: 0 5px;
 
@@ -132,21 +133,24 @@ const schema = z.object({
     .string()
     .min(2, { message: "Must be at least 2 characters long" })
     .max(255, { message: "Must be at most 255 characters long" })
-    .regex(/^[a-zA-Z0-9\s']+$/, {
-      message: "Only letters, numbers, spaces and symbol '",
+    .regex(/^[A-Za-z0-9 .'-]+$/, {
+      message: "Only letters, numbers, spaces and symbols '.-",
     }),
   weight_lb: z.number().nonnegative("Must be greater than or equal to 0"),
 });
 export type FormDataType = z.infer<typeof schema>;
 
-interface Props {
-  passengerId?: number;
-  closeModal: () => void;
+interface PassengerDataFromForm extends FormDataType {
+  id: number;
 }
 
-const PassengerForm = ({ passengerId, closeModal }: Props) => {
-  const passengerData = useGetPassenger(passengerId);
+interface Props {
+  passengerData: PassengerDataFromForm;
+  closeModal: () => void;
+  isOpen: boolean;
+}
 
+const PassengerForm = ({ passengerData, closeModal, isOpen }: Props) => {
   const {
     register,
     handleSubmit,
@@ -156,34 +160,37 @@ const PassengerForm = ({ passengerId, closeModal }: Props) => {
     resolver: zodResolver(schema),
     defaultValues: {
       name: passengerData?.name,
-      weight_lb: passengerData?.weight,
+      weight_lb: passengerData?.weight_lb,
     },
   });
 
+  useEffect(() => {
+    reset({
+      name: passengerData.name,
+      weight_lb: passengerData.weight_lb,
+    });
+  }, [isOpen]);
+
+  const editPassengerMutation = useEditPassenger();
+
   const handleCancel = () => {
-    if (!passengerId)
-      reset({
-        weight_lb: NaN,
-        name: "",
-      });
     closeModal();
   };
 
   const submitHandler = (data: FieldValues) => {
-    if (!passengerId)
-      reset({
-        weight_lb: NaN,
-        name: "",
-      });
     closeModal();
-    console.log(data);
+    editPassengerMutation.mutate({
+      name: data.name,
+      weight_lb: data.weight_lb,
+      id: passengerData.id,
+    });
   };
 
   return (
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <h1>
         <PassengersIcon />
-        {`${passengerId ? "Edit" : "New"} Passenger`}
+        {`${passengerData.id !== 0 ? "Edit" : "New"} Passenger`}
       </h1>
       <HtmlInputContainer>
         <HtmlInput>

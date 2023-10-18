@@ -70,20 +70,25 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
 
 const PassengersTable = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [passengerId, setPassengerId] = useState<number>(0);
   const { data: passengers, isLoading } = usePassengersData();
-
   const passengerModal = useModal();
 
+  const passengerData = passengers?.find((item) => item.id === passengerId);
+
   const tableData = {
-    keys: ["name", "weight"],
+    keys: ["name", "weight_lb"],
     headers: {
       name: "Name",
-      weight: "Weight [lb]",
+      weight_lb: "Weight [lb]",
     },
     rows: passengers
       ? passengers.map((passenger) => ({
           ...passenger,
-          handleEdit: () => {},
+          handleEdit: () => {
+            setPassengerId(passenger.id);
+            passengerModal.handleOpen();
+          },
           handleDelete: () => {},
           permissions: "delete" as "delete",
         }))
@@ -98,13 +103,24 @@ const PassengersTable = () => {
     },
   ];
 
+  const handleAddNewClick = () => {
+    setPassengerId(0);
+    passengerModal.handleOpen();
+  };
+
   return (
     <>
       <Modal
         isOpen={passengerModal.isOpen}
         setModalRef={passengerModal.setModalRef}
       >
-        <PassengerForm closeModal={passengerModal.handleClose} />
+        <PassengerForm
+          closeModal={passengerModal.handleClose}
+          passengerData={
+            passengerData ? passengerData : { id: 0, name: "", weight_lb: NaN }
+          }
+          isOpen={passengerModal.isOpen}
+        />
       </Modal>
       <HtmlContainer>
         <HtmlTitleContainer>
@@ -122,7 +138,7 @@ const PassengersTable = () => {
             hoverColor="var(--color-primary-dark)"
             margin="0 20px 0 0px"
             fontSize={18}
-            handleClick={passengerModal.handleOpen}
+            handleClick={handleAddNewClick}
           >
             <AiOutlinePlus />
           </Button>

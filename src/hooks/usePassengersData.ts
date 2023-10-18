@@ -5,7 +5,7 @@ import {PassengerDataFromAPI} from '../pages/profile/entities'
 
 interface EditPassengerData {
     name: string
-    weight: number
+    weight_lb: number
 }
 
 export interface PassengerData extends EditPassengerData {
@@ -22,7 +22,7 @@ const usePassengersData = () => {
                 (data: PassengerDataFromAPI[]) => (data.map(passenger => ({
                     id: passenger.id,
                     name: passenger.name,
-                    weight: passenger.weight_lb
+                    weight_lb: passenger.weight_lb
                 })))
             )
         }
