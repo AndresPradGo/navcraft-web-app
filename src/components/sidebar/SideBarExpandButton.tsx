@@ -23,7 +23,7 @@ const Button = styled.button<ButtonProps>`
   cursor: pointer;
   transition: all 0.2s linear;
   color: var(--color-grey-light);
-  background-color: var(--color-primary-dark);
+  background-color: var(--color-primary-dark-opacity);
 
   &:last-of-type {
     max-width: 0px;

@@ -23,7 +23,7 @@ const HtmlBody = styled.div<HtmlProps>`
   background-color: var(--color-modal-background);
   opacity: ${(props) => (props.$isOpen ? 1 : 0)};
   pointer-events: ${(props) => (props.$isOpen ? "auto" : "none")};
-  backdrop-filter: blur(3px) saturate(180%);
+  backdrop-filter: blur(2px) saturate(180%);
 `;
 
 const HtmlModal = styled.div<HtmlProps>`

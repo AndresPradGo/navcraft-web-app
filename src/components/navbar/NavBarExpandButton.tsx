@@ -15,7 +15,7 @@ const Button = styled.button`
   cursor: pointer;
   transition: all 0.2s linear;
   color: var(--color-grey-bright);
-  background-color: var(--color-primary-dark);
+  background-color: transparent;
 
   &:hover,
   &:focus {
