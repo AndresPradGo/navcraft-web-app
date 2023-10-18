@@ -82,7 +82,7 @@ const useEditPassenger = () => {
                         progress: undefined,
                         theme: "dark",
                     });
-                else toast.error("Something went wrong, please try again later.", {
+            } else toast.error("Something went wrong, please try again later.", {
                     position: "top-center",
                     autoClose: 10000,
                     hideProgressBar: false,
@@ -92,7 +92,6 @@ const useEditPassenger = () => {
                     progress: undefined,
                     theme: "dark",
                 });
-            }
             
             if (!context?.previusData) return
             queryClient.setQueryData<PassengerDataInCache[]>(

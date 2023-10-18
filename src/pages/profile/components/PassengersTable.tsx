@@ -9,6 +9,7 @@ import Loader from "../../../components/Loader";
 import Button from "../../../components/common/button/index";
 import { useModal, Modal } from "../../../components/common/modal";
 import PassengerForm from "../../../components/passengerForm";
+import DeletePassengerForm from "./DeletePassengerForm";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -72,7 +73,8 @@ const PassengersTable = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [passengerId, setPassengerId] = useState<number>(0);
   const { data: passengers, isLoading } = usePassengersData();
-  const passengerModal = useModal();
+  const editModal = useModal();
+  const deleteModal = useModal();
 
   const passengerData = passengers?.find((item) => item.id === passengerId);
 
@@ -87,9 +89,12 @@ const PassengersTable = () => {
           ...passenger,
           handleEdit: () => {
             setPassengerId(passenger.id);
-            passengerModal.handleOpen();
+            editModal.handleOpen();
           },
-          handleDelete: () => {},
+          handleDelete: () => {
+            setPassengerId(passenger.id);
+            deleteModal.handleOpen();
+          },
           permissions: "delete" as "delete",
         }))
       : [],
@@ -105,21 +110,25 @@ const PassengersTable = () => {
 
   const handleAddNewClick = () => {
     setPassengerId(0);
-    passengerModal.handleOpen();
+    editModal.handleOpen();
   };
 
   return (
     <>
-      <Modal
-        isOpen={passengerModal.isOpen}
-        setModalRef={passengerModal.setModalRef}
-      >
+      <Modal isOpen={editModal.isOpen} setModalRef={editModal.setModalRef}>
         <PassengerForm
-          closeModal={passengerModal.handleClose}
+          closeModal={editModal.handleClose}
           passengerData={
             passengerData ? passengerData : { id: 0, name: "", weight_lb: NaN }
           }
-          isOpen={passengerModal.isOpen}
+          isOpen={editModal.isOpen}
+        />
+      </Modal>
+      <Modal isOpen={deleteModal.isOpen} setModalRef={deleteModal.setModalRef}>
+        <DeletePassengerForm
+          closeModal={deleteModal.handleClose}
+          name={passengerData?.name || ""}
+          id={passengerData?.id || 0}
         />
       </Modal>
       <HtmlContainer>

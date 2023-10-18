@@ -1,11 +1,10 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { IoWarningOutline } from "react-icons/io5";
+
 import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
 import Button from "../../../components/common/button";
-import useDeleteAccount from "../hooks/useDeleteAccount";
+import useDeletePassenger from "../hooks/useDeletePassenger";
 
 const HtmlContainer = styled.div`
 width: 100%;
@@ -18,9 +17,10 @@ padding: 0;
 overflow: hidden;
 
 & h1 {
+  text-wrap: wrap;
   width: 100%;
   margin: 0;
-  padding: 10px;
+  padding: 5px;
   display: flex;
   align-items: center;
   font-size: 25px;
@@ -34,9 +34,9 @@ overflow: hidden;
 
 const BodyContainer = styled.div`
   width: 100%;
-  overflow-y: auto;
   overflow-x: hidden;
   text-wrap: wrap;
+  overflow-y: auto;
   padding: 20px 0;
 
   border-top: 1px solid var(--color-grey);
@@ -68,45 +68,46 @@ const DeleteIcon = styled(RiDeleteBinLine)`
 
 const TitleIcon = styled(IoWarningOutline)`
   font-size: 30px;
-  margin: 0 15px;
+  margin: 0 7px;
   color: var(--color-white);
   background-color: var(--color-warning);
   padding: 0 5px 5px;
 
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
+
+  @media screen and (min-width: 425px) {
+    height: 50px;
+    width: 50px;
+    margin: 0 15px;
+  }
 `;
 interface Props {
   closeModal: () => void;
+  name: string;
+  id: number;
 }
 
-const DeleteAccountForm = ({ closeModal }: Props) => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const deleteMutation = useDeleteAccount(() => {
-    queryClient.clear();
-    localStorage.removeItem("token");
-    localStorage.removeItem("token_type");
-    navigate("/register");
-  });
+const DeletePassengerForm = ({ closeModal, name, id }: Props) => {
+  const deleteMutation = useDeletePassenger();
 
   const handleDelete = () => {
     closeModal();
-    deleteMutation.mutate(undefined);
+    deleteMutation.mutate({
+      id: id,
+      name: name,
+    });
   };
 
   return (
     <HtmlContainer>
       <h1>
         <TitleIcon />
-        ARE YOU SURE?
+        Delete Passenger
       </h1>
       <BodyContainer>
-        <p>
-          Deleting your account is irreversible. All your saved data will be
-          lost permanently!!!
-        </p>
+        <p>{`Are you sure you want to delete "${name}" from your passengers' list?`}</p>
       </BodyContainer>
       <HtmlButtons>
         <Button
@@ -143,4 +144,4 @@ const DeleteAccountForm = ({ closeModal }: Props) => {
   );
 };
 
-export default DeleteAccountForm;
+export default DeletePassengerForm;
