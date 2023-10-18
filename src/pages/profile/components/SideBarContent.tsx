@@ -152,7 +152,10 @@ const SideBarContent = () => {
         isOpen={ChangePasswordModal.isOpen}
         setModalRef={ChangePasswordModal.setModalRef}
       >
-        <ChangePasswordForm closeModal={ChangePasswordModal.handleClose} />
+        <ChangePasswordForm
+          closeModal={ChangePasswordModal.handleClose}
+          isOpen={ChangePasswordModal.isOpen}
+        />
       </Modal>
       <HtmlButtonList>
         {buttons.map((button, index) => (

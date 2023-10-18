@@ -7,6 +7,7 @@ import { z } from "zod";
 import { styled } from "styled-components";
 import Button from "../../../components/common/button";
 import useChangePassword from "../hooks/useChangePassword";
+import { useEffect } from "react";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -157,9 +158,10 @@ type FormDataType = z.infer<typeof schema>;
 
 interface Props {
   closeModal: () => void;
+  isOpen: boolean;
 }
 
-const ChangePasswordForm = ({ closeModal }: Props) => {
+const ChangePasswordForm = ({ closeModal, isOpen }: Props) => {
   const {
     register,
     handleSubmit,
@@ -170,14 +172,17 @@ const ChangePasswordForm = ({ closeModal }: Props) => {
     resolver: zodResolver(schema),
   });
 
-  const changePassword = useChangePassword();
-
-  const handleCancel = () => {
+  useEffect(() => {
     reset({
       currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     });
+  }, [isOpen]);
+
+  const changePassword = useChangePassword();
+
+  const handleCancel = () => {
     closeModal();
   };
 
@@ -188,11 +193,6 @@ const ChangePasswordForm = ({ closeModal }: Props) => {
         message: "Password confirmation does not match",
       });
     else {
-      reset({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
       closeModal();
       changePassword.mutate({
         current_password: data.currentPassword,
