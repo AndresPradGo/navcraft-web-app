@@ -27,7 +27,6 @@ const HtmlButton = styled.button<HtmlButtonProps>`
   min-width: ${(props) => props.$width};
   height: ${(props) => props.$height};
   font-size: ${(props) => props.$fontSize}px;
-  font-weight: lighter;
   letter-spacing: 2px;
   white-space: nowrap;
   border: ${(props) => props.$borderWidth}px solid
