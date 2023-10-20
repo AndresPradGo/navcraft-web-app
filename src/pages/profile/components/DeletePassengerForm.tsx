@@ -1,5 +1,5 @@
 import { IoWarningOutline } from "react-icons/io5";
-
+import { LiaTimesSolid } from "react-icons/lia";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
@@ -7,30 +7,35 @@ import Button from "../../../components/common/button";
 import useDeletePassenger from "../hooks/useDeletePassenger";
 
 const HtmlContainer = styled.div`
-width: 100%;
-min-height: 200px;
-display: flex;
-flex-direction: column;
-justify-content: space-evenly;
-align-items: flex-start;
-padding: 0;
-overflow: hidden;
-
-& h1 {
-  text-wrap: wrap;
   width: 100%;
-  margin: 0;
-  padding: 5px;
+  min-height: 200px;
   display: flex;
-  align-items: center;
-  font-size: 25px;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 0;
+  overflow: hidden;
 
-  @media screen and (min-width: 425px) {
-    padding: 10px;
-    font-size: 32px;
+  & h1 {
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 25px;
+
+    & div {
+      display: flex;
+      align-items: center;
+    }
+
+    @media screen and (min-width: 425px) {
+      padding: 10px;
+      font-size: 32px;
+    }
   }
-
-  `;
+`;
 
 const BodyContainer = styled.div`
   width: 100%;
@@ -68,21 +73,39 @@ const DeleteIcon = styled(RiDeleteBinLine)`
 
 const TitleIcon = styled(IoWarningOutline)`
   font-size: 30px;
-  margin: 0 7px;
+  margin: 0 5px;
   color: var(--color-white);
   background-color: var(--color-warning);
+  border-radius: 50%;
   padding: 0 5px 5px;
-
   height: 40px;
   width: 40px;
-  border-radius: 50%;
 
   @media screen and (min-width: 425px) {
+    padding: 0 5px 5px;
     height: 50px;
     width: 50px;
-    margin: 0 15px;
+    margin: 0 10px;
   }
 `;
+
+const CloseIcon = styled(LiaTimesSolid)`
+  font-size: 25px;
+  margin: 0 5px;
+  cursor: pointer;
+  color: var(--color-grey);
+
+  &:hover,
+  &:focus {
+    color: var(--color-white);
+  }
+
+  @media screen and (min-width: 425px) {
+    margin: 0 10px;
+    font-size: 30px;
+  }
+`;
+
 interface Props {
   closeModal: () => void;
   name: string;
@@ -103,8 +126,11 @@ const DeletePassengerForm = ({ closeModal, name, id }: Props) => {
   return (
     <HtmlContainer>
       <h1>
-        <TitleIcon />
-        Delete Passenger
+        <div>
+          <TitleIcon />
+          Delete Passenger
+        </div>
+        <CloseIcon onClick={closeModal} />
       </h1>
       <BodyContainer>
         <p>{`Are you sure you want to delete "${name}" from your passengers' list?`}</p>

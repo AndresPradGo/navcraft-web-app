@@ -21,10 +21,10 @@ html {
     --color-white: #FFFFFF;
     --color-highlight: #50A5E2;
     --color-highlight-hover: #1D72AF;
-    --color-contrast: #F0AD05;
-    --color-contrast-hover: #B48204;
-    --color-warning: #F50000;
-    --color-warning-hover: #8F0000;
+    --color-contrast: #DC9F04;
+    --color-contrast-hover: #FBC337;
+    --color-warning: #A30000;
+    --color-warning-hover: #E00000;
     --color-shadow: rgb(112 112 112 / 60%);
     --color-modal-background: rgba(6, 10, 15, 0.7);
 

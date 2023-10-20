@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { IoWarningOutline } from "react-icons/io5";
+import { LiaTimesSolid } from "react-icons/lia";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
@@ -8,29 +9,35 @@ import Button from "../../../components/common/button";
 import useDeleteAccount from "../hooks/useDeleteAccount";
 
 const HtmlContainer = styled.div`
-width: 100%;
-min-height: 200px;
-display: flex;
-flex-direction: column;
-justify-content: space-evenly;
-align-items: flex-start;
-padding: 0;
-overflow: hidden;
-
-& h1 {
   width: 100%;
-  margin: 0;
-  padding: 10px;
+  min-height: 200px;
   display: flex;
-  align-items: center;
-  font-size: 25px;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 0;
+  overflow: hidden;
 
-  @media screen and (min-width: 425px) {
-    padding: 10px;
-    font-size: 32px;
+  & h1 {
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 25px;
+
+    & div {
+      display: flex;
+      align-items: center;
+    }
+
+    @media screen and (min-width: 425px) {
+      padding: 10px;
+      font-size: 32px;
+    }
   }
-
-  `;
+`;
 
 const BodyContainer = styled.div`
   width: 100%;
@@ -68,15 +75,39 @@ const DeleteIcon = styled(RiDeleteBinLine)`
 
 const TitleIcon = styled(IoWarningOutline)`
   font-size: 30px;
-  margin: 0 15px;
+  margin: 0 5px;
   color: var(--color-white);
   background-color: var(--color-warning);
-  padding: 0 5px 5px;
-
-  height: 50px;
-  width: 50px;
   border-radius: 50%;
+  padding: 0 5px 5px;
+  height: 40px;
+  width: 40px;
+
+  @media screen and (min-width: 425px) {
+    padding: 0 5px 5px;
+    height: 50px;
+    width: 50px;
+    margin: 0 10px;
+  }
 `;
+
+const CloseIcon = styled(LiaTimesSolid)`
+  font-size: 25px;
+  margin: 0 5px;
+  cursor: pointer;
+  color: var(--color-grey);
+
+  &:hover,
+  &:focus {
+    color: var(--color-white);
+  }
+
+  @media screen and (min-width: 425px) {
+    margin: 0 10px;
+    font-size: 30px;
+  }
+`;
+
 interface Props {
   closeModal: () => void;
 }
@@ -99,8 +130,11 @@ const DeleteAccountForm = ({ closeModal }: Props) => {
   return (
     <HtmlContainer>
       <h1>
-        <TitleIcon />
-        ARE YOU SURE?
+        <div>
+          <TitleIcon />
+          ARE YOU SURE?
+        </div>
+        <CloseIcon onClick={closeModal} />
       </h1>
       <BodyContainer>
         <p>

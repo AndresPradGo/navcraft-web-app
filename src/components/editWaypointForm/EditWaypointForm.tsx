@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { AiOutlineSave } from "react-icons/ai";
-import { LiaMapSignsSolid } from "react-icons/lia";
+import { LiaMapSignsSolid, LiaTimesSolid } from "react-icons/lia";
 import { ImCompass2 } from "react-icons/im";
 import {
   TbMapPinCog,
@@ -31,8 +31,14 @@ const HtmlForm = styled.form`
     margin: 0;
     padding: 5px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     font-size: 25px;
+
+    & div {
+      display: flex;
+      align-items: center;
+    }
 
     @media screen and (min-width: 425px) {
       padding: 10px;
@@ -73,7 +79,12 @@ const HtmlInputGroup = styled.div`
   }
 `;
 
-const HtmlInputBase = styled.div`
+interface RequiredInputProps {
+  $accepted: boolean;
+  $hasValue: boolean;
+  $required: boolean;
+}
+const HtmlInput = styled.div<RequiredInputProps>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -83,17 +94,27 @@ const HtmlInputBase = styled.div`
   padding: 10px 20px 0;
 
   & label {
+    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
     position: absolute;
     top: 0;
     left: 0;
     font-size: 20px;
     display: flex;
     align-items: center;
-    transform: translate(17px, 47px);
+    transform: ${(props) =>
+      props.$hasValue
+        ? "translate(7px, 7px) scale(0.8)"
+        : "translate(17px, 47px)"};
+    color: ${(props) =>
+      props.$hasValue
+        ? props.$accepted
+          ? "var(--color-grey-bright)"
+          : "var(--color-highlight)"
+        : "var(--color-grey-bright)"};
     transition: transform 0.3s;
 
     & span {
-      margin: 0 10px;
+      margin: 0 15px;
     }
   }
 
@@ -105,9 +126,36 @@ const HtmlInputBase = styled.div`
     border-radius: 5px;
     background-color: var(--color-grey-dark);
     outline: none;
-    border: 1px solid var(--color-grey);
+    border: 1px solid
+      ${(props) =>
+        props.$hasValue
+          ? props.$accepted
+            ? "var(--color-grey)"
+            : "var(--color-highlight)"
+          : "var(--color-grey)"};
     color: var(--color-white);
     font-size: 20px;
+
+    &:focus ~ label {
+      cursor: default;
+      color: ${(props) =>
+        props.$accepted && (props.$hasValue || !props.$required)
+          ? "var(--color-white)"
+          : "var(--color-highlight)"};
+      transform: translate(7px, 7px) scale(0.8);
+    }
+
+    &:focus {
+      box-shadow: ${(props) =>
+        props.$accepted && (props.$hasValue || !props.$required)
+          ? "0"
+          : "0 0 6px 0 var(--color-highlight)"};
+      border: 1px solid
+        ${(props) =>
+          props.$accepted && (props.$hasValue || !props.$required)
+            ? "var(--color-white)"
+            : "var(--color-highlight)"};
+    }
   }
 
   & p {
@@ -118,59 +166,8 @@ const HtmlInputBase = styled.div`
   }
 `;
 
-const HtmlRequiredInput = styled(HtmlInputBase)`
-  & input {
-    &:focus ~ label {
-      color: var(--color-highlight);
-      transform: translate(7px, 7px) scale(0.8);
-    }
-
-    &:valid ~ label {
-      color: var(--color-white) !important;
-      transform: translate(7px, 7px) scale(0.8);
-    }
-
-    &:focus {
-      border: 1px solid var(--color-highlight);
-    }
-
-    &:valid {
-      border: 1px solid var(--color-white) !important;
-    }
-  }
-`;
-
-interface RequiredInputProps {
-  $isActive: boolean;
-}
-
-const HtmlInput = styled(HtmlInputBase)<RequiredInputProps>`
-  & input {
-    border: 1px solid
-      ${(props) =>
-        props.$isActive ? "var(--color-white)" : "var(--color-grey)"};
-
-    & ~ label {
-      color: ${(props) =>
-        props.$isActive ? "var(--color-white)" : "var(--color-grey-bright)"};
-      transform: ${(props) =>
-        props.$isActive
-          ? "translate(7px, 7px) scale(0.8)"
-          : "translate(17px, 47px) scale(1)"};
-    }
-
-    &:focus ~ label {
-      color: var(--color-white);
-      transform: translate(7px, 7px) scale(0.8);
-    }
-
-    &:focus {
-      border: 1px solid var(--color-white);
-    }
-  }
-`;
-
 const HtmlSelectElement = styled.select`
+  cursor: pointer;
   position: relative;
   appearance: none;
   width: 100%;
@@ -180,15 +177,16 @@ const HtmlSelectElement = styled.select`
   border-radius: 5px;
   background-color: var(--color-grey-dark);
   outline: none;
-  border: 1px solid var(--color-white);
-  color: var(--color-white);
+  border: 1px solid var(--color-grey);
+  color: var(--color-grey-bright);
   font-size: 20px;
 
-  &::after {
-    content: attr(value);
-    position: absolute;
-    right: 10px;
-    top: 50%;
+  &:focus {
+    border: 1px solid var(--color-white);
+  }
+
+  & option {
+    cursor: pointer;
   }
 `;
 
@@ -232,20 +230,39 @@ const CompassIcon = styled(ImCompass2)`
 `;
 
 const EditWaypointIcon = styled(TbMapPinCog)`
-  font-size: 30px;
+  font-size: 25px;
   margin: 0 5px;
 
   @media screen and (min-width: 425px) {
     margin: 0 10px;
+    font-size: 30px;
   }
 `;
 
 const AddWaypointIcon = styled(TbMapPinPlus)`
-  font-size: 30px;
+  font-size: 25px;
   margin: 0 5px;
 
   @media screen and (min-width: 425px) {
     margin: 0 10px;
+    font-size: 30px;
+  }
+`;
+
+const CloseIcon = styled(LiaTimesSolid)`
+  font-size: 25px;
+  margin: 0 5px;
+  cursor: pointer;
+  color: var(--color-grey);
+
+  &:hover,
+  &:focus {
+    color: var(--color-white);
+  }
+
+  @media screen and (min-width: 425px) {
+    margin: 0 10px;
+    font-size: 30px;
   }
 `;
 
@@ -296,7 +313,10 @@ const schema = z.object({
     .min(0, "Seconds must be bewteen 0 and 59")
     .max(59, "Seconds must be bewteen 0 and 59"),
   lon_direction: z.enum(["East", "West"]),
-  magnetic_variation: z.number().optional(),
+  magnetic_variation: z.union([
+    z.number({ invalid_type_error: "Enter a number" }).nullable(),
+    z.literal(null),
+  ]),
 });
 export type FormDataType = z.infer<typeof schema>;
 
@@ -318,6 +338,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
     reset,
     setError,
     watch,
+    clearErrors,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
   useEffect(() => {
@@ -335,6 +356,21 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
       magnetic_variation: waypointData.magnetic_variation,
     });
   }, [isOpen]);
+
+  useEffect(() => {
+    const badData = checkCoordinates({
+      lon_direction: watch("lon_direction"),
+      lon_degrees: watch("lon_degrees"),
+      lon_minutes: watch("lon_minutes"),
+      lon_seconds: watch("lon_seconds"),
+    });
+    if (!badData) clearErrors("lon_degrees");
+  }, [
+    watch("lon_direction"),
+    watch("lon_degrees"),
+    watch("lon_minutes"),
+    watch("lon_seconds"),
+  ]);
 
   const handleCancel = () => {
     closeModal();
@@ -357,22 +393,33 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
     return false;
   };
 
+  const handleMagneticVariationValue = (value: string): number | null => {
+    if (Number.isNaN(parseFloat(value))) return null;
+    return parseFloat(value);
+  };
+
   const submitHandler = (data: FieldValues) => {
     const badData = checkCoordinates(data);
     if (!badData) {
       closeModal();
-      console.log(data.lat_direction);
     }
   };
 
   return (
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <h1>
-        {waypointData.id !== 0 ? <EditWaypointIcon /> : <AddWaypointIcon />}
-        {`${waypointData.id !== 0 ? "Edit" : "Add"} Waypoint`}
+        <div>
+          {waypointData.id !== 0 ? <EditWaypointIcon /> : <AddWaypointIcon />}
+          {`${waypointData.id !== 0 ? "Edit" : "Add"} Waypoint`}
+        </div>
+        <CloseIcon onClick={handleCancel} />
       </h1>
       <HtmlInputContainer>
-        <HtmlRequiredInput>
+        <HtmlInput
+          $required={true}
+          $hasValue={!!watch("name")}
+          $accepted={!errors.name}
+        >
           <input
             {...register("name")}
             id="waypoint_name"
@@ -385,8 +432,12 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             <NameIcon />
             Name
           </label>
-        </HtmlRequiredInput>
-        <HtmlRequiredInput>
+        </HtmlInput>
+        <HtmlInput
+          $required={true}
+          $hasValue={!!watch("code")}
+          $accepted={!errors.code}
+        >
           <input
             {...register("code")}
             id="waypoint_code"
@@ -399,18 +450,21 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             <CodeIcon />
             Code
           </label>
-        </HtmlRequiredInput>
+        </HtmlInput>
         <HtmlInput
-          $isActive={
+          $required={false}
+          $hasValue={
             !!watch("magnetic_variation") || watch("magnetic_variation") === 0
           }
+          $accepted={!errors.magnetic_variation}
         >
           <input
-            {...register("magnetic_variation")}
+            {...register("magnetic_variation", {
+              setValueAs: handleMagneticVariationValue,
+            })}
             id="waypoint_magnetic_variation"
-            type="text"
+            type="number"
             autoComplete="off"
-            required={true}
           />
           {errors.magnetic_variation ? (
             <p>{errors.magnetic_variation.message}</p>
@@ -427,7 +481,11 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             <LatitudeIcon />
             Latitude
           </h2>
-          <HtmlRequiredInput>
+          <HtmlInput
+            $required={true}
+            $hasValue={!!watch("lat_direction")}
+            $accepted={!errors.lat_direction}
+          >
             <HtmlSelectElement
               {...register("lat_direction")}
               id="waypoint_lat_direction"
@@ -442,12 +500,16 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-          </HtmlRequiredInput>
-          <HtmlRequiredInput>
+          </HtmlInput>
+          <HtmlInput
+            $required={true}
+            $hasValue={!!watch("lat_degrees") || watch("lat_degrees") === 0}
+            $accepted={!errors.lat_degrees}
+          >
             <input
-              {...register("lat_degrees")}
+              {...register("lat_degrees", { valueAsNumber: true })}
               id="waypoint_lat_degrees"
-              type="text"
+              type="number"
               autoComplete="off"
               required={true}
             />
@@ -459,12 +521,16 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             <label htmlFor="waypoint_lat_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
-          </HtmlRequiredInput>
-          <HtmlRequiredInput>
+          </HtmlInput>
+          <HtmlInput
+            $required={true}
+            $hasValue={!!watch("lat_minutes") || watch("lat_minutes") === 0}
+            $accepted={!errors.lat_minutes}
+          >
             <input
-              {...register("lat_minutes")}
+              {...register("lat_minutes", { valueAsNumber: true })}
               id="waypoint_lat_minutes"
-              type="text"
+              type="number"
               autoComplete="off"
               required={true}
             />
@@ -476,12 +542,16 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             <label htmlFor="waypoint_lat_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
-          </HtmlRequiredInput>
-          <HtmlRequiredInput>
+          </HtmlInput>
+          <HtmlInput
+            $required={true}
+            $hasValue={!!watch("lat_seconds") || watch("lat_seconds") === 0}
+            $accepted={!errors.lat_seconds}
+          >
             <input
-              {...register("lat_seconds")}
+              {...register("lat_seconds", { valueAsNumber: true })}
               id="waypoint_lat_seconds"
-              type="text"
+              type="number"
               autoComplete="off"
               required={true}
             />
@@ -493,14 +563,18 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             <label htmlFor="waypoint_lat_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
-          </HtmlRequiredInput>
+          </HtmlInput>
         </HtmlInputGroup>
         <HtmlInputGroup>
           <h2>
             <LongitudeIcon />
             Longitude
           </h2>
-          <HtmlRequiredInput>
+          <HtmlInput
+            $required={true}
+            $hasValue={!!watch("lon_direction")}
+            $accepted={!errors.lon_direction}
+          >
             <HtmlSelectElement
               {...register("lon_direction")}
               id="waypoint_lon_direction"
@@ -515,12 +589,16 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-          </HtmlRequiredInput>
-          <HtmlRequiredInput>
+          </HtmlInput>
+          <HtmlInput
+            $required={true}
+            $hasValue={!!watch("lon_degrees") || watch("lon_degrees") === 0}
+            $accepted={!errors.lon_degrees}
+          >
             <input
-              {...register("lon_degrees")}
+              {...register("lon_degrees", { valueAsNumber: true })}
               id="waypoint_lon_degrees"
-              type="text"
+              type="number"
               autoComplete="off"
               required={true}
             />
@@ -532,12 +610,16 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             <label htmlFor="waypoint_lon_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
-          </HtmlRequiredInput>
-          <HtmlRequiredInput>
+          </HtmlInput>
+          <HtmlInput
+            $required={true}
+            $hasValue={!!watch("lon_minutes") || watch("lon_minutes") === 0}
+            $accepted={!errors.lon_minutes}
+          >
             <input
-              {...register("lon_minutes")}
+              {...register("lon_minutes", { valueAsNumber: true })}
               id="waypoint_lon_minutes"
-              type="text"
+              type="number"
               autoComplete="off"
               required={true}
             />
@@ -549,12 +631,16 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             <label htmlFor="waypoint_lon_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
-          </HtmlRequiredInput>
-          <HtmlRequiredInput>
+          </HtmlInput>
+          <HtmlInput
+            $required={true}
+            $hasValue={!!watch("lon_seconds") || watch("lon_seconds") === 0}
+            $accepted={!errors.lon_seconds}
+          >
             <input
-              {...register("lon_seconds")}
+              {...register("lon_seconds", { valueAsNumber: true })}
               id="waypoint_lon_seconds"
-              type="text"
+              type="number"
               autoComplete="off"
               required={true}
             />
@@ -566,7 +652,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             <label htmlFor="waypoint_lon_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
-          </HtmlRequiredInput>
+          </HtmlInput>
         </HtmlInputGroup>
       </HtmlInputContainer>
       <HtmlButtons>

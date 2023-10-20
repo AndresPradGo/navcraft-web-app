@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { AiOutlineSave } from "react-icons/ai";
 import { FaUser, FaWeightScale } from "react-icons/fa6";
 import { PiUsersFourThin } from "react-icons/pi";
+import { LiaTimesSolid } from "react-icons/lia";
 import { useForm, FieldValues } from "react-hook-form";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,13 +26,20 @@ const HtmlForm = styled.form`
     margin: 0;
     padding: 5px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     font-size: 25px;
+
+    & div {
+      display: flex;
+      align-items: center;
+    }
 
     @media screen and (min-width: 425px) {
       padding: 10px;
       font-size: 32px;
     }
+  }
 `;
 
 const HtmlInputContainer = styled.div`
@@ -43,7 +51,12 @@ const HtmlInputContainer = styled.div`
   border-bottom: 1px solid var(--color-grey);
 `;
 
-const HtmlInput = styled.div`
+interface RequiredInputProps {
+  $accepted: boolean;
+  $hasValue: boolean;
+  $required: boolean;
+}
+const HtmlInput = styled.div<RequiredInputProps>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -53,14 +66,28 @@ const HtmlInput = styled.div`
   padding: 10px 20px 0;
 
   & label {
+    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
     position: absolute;
     top: 0;
     left: 0;
     font-size: 20px;
     display: flex;
     align-items: center;
-    transform: translate(17px, 47px);
+    transform: ${(props) =>
+      props.$hasValue
+        ? "translate(7px, 7px) scale(0.8)"
+        : "translate(17px, 47px)"};
+    color: ${(props) =>
+      props.$hasValue
+        ? props.$accepted
+          ? "var(--color-grey-bright)"
+          : "var(--color-highlight)"
+        : "var(--color-grey-bright)"};
     transition: transform 0.3s;
+
+    & span {
+      margin: 0 15px;
+    }
   }
 
   & input {
@@ -71,19 +98,35 @@ const HtmlInput = styled.div`
     border-radius: 5px;
     background-color: var(--color-grey-dark);
     outline: none;
-    border: 1px solid var(--color-grey);
+    border: 1px solid
+      ${(props) =>
+        props.$hasValue
+          ? props.$accepted
+            ? "var(--color-grey)"
+            : "var(--color-highlight)"
+          : "var(--color-grey)"};
     color: var(--color-white);
     font-size: 20px;
 
-    &:valid ~ label,
     &:focus ~ label {
-      color: var(--color-highlight);
+      cursor: default;
+      color: ${(props) =>
+        props.$accepted && (props.$hasValue || !props.$required)
+          ? "var(--color-white)"
+          : "var(--color-highlight)"};
       transform: translate(7px, 7px) scale(0.8);
     }
 
-    &:focus,
-    &:valid {
-      border: 1px solid var(--color-highlight);
+    &:focus {
+      box-shadow: ${(props) =>
+        props.$accepted && (props.$hasValue || !props.$required)
+          ? "0"
+          : "0 0 6px 0 var(--color-highlight)"};
+      border: 1px solid
+        ${(props) =>
+          props.$accepted && (props.$hasValue || !props.$required)
+            ? "var(--color-white)"
+            : "var(--color-highlight)"};
     }
   }
 
@@ -128,6 +171,23 @@ const PassengersIcon = styled(PiUsersFourThin)`
   }
 `;
 
+const CloseIcon = styled(LiaTimesSolid)`
+  font-size: 25px;
+  margin: 0 5px;
+  cursor: pointer;
+  color: var(--color-grey);
+
+  &:hover,
+  &:focus {
+    color: var(--color-white);
+  }
+
+  @media screen and (min-width: 425px) {
+    margin: 0 10px;
+    font-size: 30px;
+  }
+`;
+
 const schema = z.object({
   name: z
     .string()
@@ -136,7 +196,9 @@ const schema = z.object({
     .regex(/^[A-Za-z0-9 .'-]+$/, {
       message: "Only letters, numbers, spaces and symbols '.-",
     }),
-  weight_lb: z.number().nonnegative("Must be greater than or equal to 0"),
+  weight_lb: z
+    .number({ invalid_type_error: "Enter a number" })
+    .nonnegative("Must be greater than or equal to 0"),
 });
 export type FormDataType = z.infer<typeof schema>;
 
@@ -156,13 +218,8 @@ const PassengerForm = ({ passengerData, closeModal, isOpen }: Props) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormDataType>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      name: passengerData?.name,
-      weight_lb: passengerData?.weight_lb,
-    },
-  });
+    watch,
+  } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
   useEffect(() => {
     reset({
@@ -189,11 +246,18 @@ const PassengerForm = ({ passengerData, closeModal, isOpen }: Props) => {
   return (
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <h1>
-        <PassengersIcon />
-        {`${passengerData.id !== 0 ? "Edit" : "New"} Passenger`}
+        <div>
+          <PassengersIcon />
+          {`${passengerData.id !== 0 ? "Edit" : "Add"} Passenger`}
+        </div>
+        <CloseIcon onClick={handleCancel} />
       </h1>
       <HtmlInputContainer>
-        <HtmlInput>
+        <HtmlInput
+          $hasValue={!!watch("name")}
+          $accepted={!errors.name}
+          $required={true}
+        >
           <input
             {...register("name")}
             id="passenger_name"
@@ -207,7 +271,11 @@ const PassengerForm = ({ passengerData, closeModal, isOpen }: Props) => {
             Name
           </label>
         </HtmlInput>
-        <HtmlInput>
+        <HtmlInput
+          $hasValue={!!watch("weight_lb") || watch("weight_lb") === 0}
+          $accepted={!errors.weight_lb}
+          $required={true}
+        >
           <input
             {...register("weight_lb", { valueAsNumber: true })}
             id="passenger_weight_lb"
