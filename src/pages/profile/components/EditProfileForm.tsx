@@ -133,7 +133,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
 
   & p {
     font-size: 16px;
-    color: var(--color-warning);
+    color: var(--color-warning-hover);
     margin: 2px;
     text-wrap: wrap;
   }

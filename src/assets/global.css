@@ -20,11 +20,11 @@ html {
     --color-grey-bright: #B8B8B8;
     --color-white: #FFFFFF;
     --color-highlight: #50A5E2;
-    --color-highlight-hover: #1D72AF;
+    --color-highlight-hover: #A7D2F1;
     --color-contrast: #DC9F04;
     --color-contrast-hover: #FBC337;
-    --color-warning: #A30000;
-    --color-warning-hover: #E00000;
+    --color-warning: #B80000;
+    --color-warning-hover: #FF1F1F;
     --color-shadow: rgb(112 112 112 / 60%);
     --color-modal-background: rgba(6, 10, 15, 0.7);
 

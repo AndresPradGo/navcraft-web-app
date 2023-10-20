@@ -160,7 +160,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
 
   & p {
     font-size: 16px;
-    color: var(--color-warning);
+    color: var(--color-warning-hover);
     margin: 2px;
     text-wrap: wrap;
   }
@@ -284,8 +284,8 @@ const schema = z.object({
   lat_degrees: z
     .number()
     .int("Coordinates must be round numbers.")
-    .min(0, "Latitude must be between S89 59 59 and N89 59 59")
-    .max(89, "Latitude must be between S89 59 59 and N89 59 59"),
+    .min(0, `Latitude must be between S 89° 59' 59" and N 89° 59' 59"`)
+    .max(89, `Latitude must be between S89° 59' 59" and N 89° 59' 59"`),
   lat_minutes: z
     .number()
     .int("Coordinates must be round numbers.")
@@ -300,8 +300,8 @@ const schema = z.object({
   lon_degrees: z
     .number()
     .int("Coordinates must be round numbers.")
-    .min(0, "Longitude must be between W179 59 59 and E180 0 0")
-    .max(180, "Longitude must be between W179 59 59 and E180 0 0"),
+    .min(0, `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`)
+    .max(180, `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`),
   lon_minutes: z
     .number()
     .int("Coordinates must be round numbers.")
@@ -386,7 +386,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
     ) {
       setError("lon_degrees", {
         type: "manual",
-        message: "Longitude must be between W179 59 59 and E180 0 0",
+        message: `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`,
       });
       return true;
     }
