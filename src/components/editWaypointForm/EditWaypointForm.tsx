@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../common/button";
+import useEditWaypoint from "./useEditWaypoint";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -320,7 +321,7 @@ const schema = z.object({
 });
 export type FormDataType = z.infer<typeof schema>;
 
-export interface WaypointDataFromForm extends FormDataType {
+interface WaypointDataFromForm extends FormDataType {
   id: number;
 }
 
@@ -331,6 +332,7 @@ interface Props {
 }
 
 const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
+  const mutation = useEditWaypoint();
   const {
     register,
     handleSubmit,
@@ -402,6 +404,20 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
     const badData = checkCoordinates(data);
     if (!badData) {
       closeModal();
+      mutation.mutate({
+        id: waypointData.id,
+        code: data.code,
+        name: data.name,
+        lat_degrees: data.lat_degrees,
+        lat_minutes: data.lat_minutes,
+        lat_seconds: data.lat_seconds,
+        lat_direction: data.lat_direction,
+        lon_degrees: data.lon_degrees,
+        lon_minutes: data.lon_minutes,
+        lon_seconds: data.lon_seconds,
+        lon_direction: data.lon_direction,
+        magnetic_variation: data.magnetic_variation,
+      });
     }
   };
 
@@ -415,24 +431,6 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
         <CloseIcon onClick={handleCancel} />
       </h1>
       <HtmlInputContainer>
-        <HtmlInput
-          $required={true}
-          $hasValue={!!watch("name")}
-          $accepted={!errors.name}
-        >
-          <input
-            {...register("name")}
-            id="waypoint_name"
-            type="text"
-            autoComplete="off"
-            required={true}
-          />
-          {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="waypoint_name">
-            <NameIcon />
-            Name
-          </label>
-        </HtmlInput>
         <HtmlInput
           $required={true}
           $hasValue={!!watch("code")}
@@ -449,6 +447,24 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           <label htmlFor="waypoint_code">
             <CodeIcon />
             Code
+          </label>
+        </HtmlInput>
+        <HtmlInput
+          $required={true}
+          $hasValue={!!watch("name")}
+          $accepted={!errors.name}
+        >
+          <input
+            {...register("name")}
+            id="waypoint_name"
+            type="text"
+            autoComplete="off"
+            required={true}
+          />
+          {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
+          <label htmlFor="waypoint_name">
+            <NameIcon />
+            Name
           </label>
         </HtmlInput>
         <HtmlInput

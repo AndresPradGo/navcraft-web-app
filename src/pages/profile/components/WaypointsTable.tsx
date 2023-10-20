@@ -180,7 +180,7 @@ const WaypointsTable = () => {
                   lon_minutes: 0,
                   lon_seconds: 0,
                   lon_direction: "West",
-                  magnetic_variation: 0,
+                  magnetic_variation: NaN,
                 }
           }
           isOpen={editModal.isOpen}

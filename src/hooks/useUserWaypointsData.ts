@@ -1,48 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
-import APIClient, {APIClientError} from '../services/apiClient';
-import {WaypointDataFromAPI} from '../pages/profile/entities'
-interface EditWaypointData {
-    code: string,
-    name: string,
-    lat_degrees: number,
-    lat_minutes: number,
-    lat_seconds: number,
-    lat_direction: string,
-    lon_degrees: number,
-    lon_minutes: number,
-    lon_seconds: number,
-    lon_direction: string,
-    magnetic_variation: number,
-}
+import {APIClientError} from '../services/apiClient';
+import apiClient, {WaypointDataFromAPI} from '../services/waypointClient'
 
-interface WaypointData {
-    id: number,
-    code: string,
-    name: string,
-    latitude: string,
-    longitude: string,
-    variation: string
-}
-
-const apiClient = new APIClient<EditWaypointData, WaypointData>("/waypoints/user")
 
 const useUserWaypointsData = () => {
-    return useQuery<WaypointData[], APIClientError>({
+    return useQuery<WaypointDataFromAPI[], APIClientError>({
         queryKey: ['waypoints', 'user'],
         queryFn: () => {
-            return apiClient.getAndPreProcessAll<WaypointDataFromAPI>(
-                (data: WaypointDataFromAPI[]) => (data.map(w => {
-                    return ({
-                        id: w.id,
-                        code: w.code,
-                        name: w.name,
-                        latitude: `${w.lat_direction}${w.lat_degrees}\u00B0${w.lat_minutes}'${w.lat_seconds}"`,
-                        longitude: `${w.lon_direction}${w.lon_degrees}\u00B0${w.lon_minutes}'${w.lon_seconds}"`,
-                        variation: `${Math.abs(w.magnetic_variation)}\u00B0${w.magnetic_variation < 0 ? "E" : "W"}`
-                    })
-                }))
-            )
+            return apiClient.getAll()
         }
     })
 }
