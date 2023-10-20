@@ -9,6 +9,7 @@ import Loader from "../../../components/Loader";
 import Button from "../../../components/common/button/index";
 import { useModal, Modal } from "../../../components/common/modal";
 import EditWaypointForm from "../../../components/editWaypointForm";
+import DeleteWaypointForm from "../../../components/deleteWaypointForm";
 import { WaypointDataFromAPI } from "../../../services/waypointClient";
 
 interface HtmlTagProps {
@@ -74,6 +75,7 @@ const WaypointsTable = () => {
   const [waypointId, setWaypointId] = useState<number>(0);
   const { data: waypoints, isLoading } = useUserWaypointsData();
   const editModal = useModal();
+  const deleteModal = useModal();
 
   const waypointData = waypoints?.find((item) => item.id === waypointId);
 
@@ -108,7 +110,10 @@ const WaypointsTable = () => {
             setWaypointId(w.id);
             editModal.handleOpen();
           },
-          handleDelete: () => {},
+          handleDelete: () => {
+            setWaypointId(w.id);
+            deleteModal.handleOpen();
+          },
           permissions: "delete" as "delete",
         }))
       : [],
@@ -184,6 +189,13 @@ const WaypointsTable = () => {
                 }
           }
           isOpen={editModal.isOpen}
+        />
+      </Modal>
+      <Modal isOpen={deleteModal.isOpen}>
+        <DeleteWaypointForm
+          closeModal={deleteModal.handleClose}
+          name={waypointData?.name || ""}
+          id={waypointData ? waypointData.id : 0}
         />
       </Modal>
       <HtmlContainer>
