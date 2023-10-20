@@ -115,7 +115,7 @@ const PassengersTable = () => {
 
   return (
     <>
-      <Modal isOpen={editModal.isOpen} setModalRef={editModal.setModalRef}>
+      <Modal isOpen={editModal.isOpen}>
         <PassengerForm
           closeModal={editModal.handleClose}
           passengerData={
@@ -124,7 +124,7 @@ const PassengersTable = () => {
           isOpen={editModal.isOpen}
         />
       </Modal>
-      <Modal isOpen={deleteModal.isOpen} setModalRef={deleteModal.setModalRef}>
+      <Modal isOpen={deleteModal.isOpen}>
         <DeletePassengerForm
           closeModal={deleteModal.handleClose}
           name={passengerData?.name || ""}

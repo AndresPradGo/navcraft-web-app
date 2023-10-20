@@ -64,8 +64,8 @@ const SideBarContent = () => {
   const commonStyles = {
     color: "var(--color-white)",
     hoverColor: "var(--color-white)",
-    backgroundColor: "var(--color-primary-light)",
-    backgroundHoverColor: "var(--color-primary-bright)",
+    backgroundColor: "var(--color-primary-bright)",
+    backgroundHoverColor: "var(--color-primary-light)",
     width: "100%",
     height: "40px",
     fontSize: 15,
@@ -133,25 +133,22 @@ const SideBarContent = () => {
   ];
   return (
     <>
-      <Modal isOpen={deleteModal.isOpen} setModalRef={deleteModal.setModalRef}>
+      <Modal isOpen={deleteModal.isOpen}>
         <DeleteAccountForm closeModal={deleteModal.handleClose} />
       </Modal>
-      <Modal
-        isOpen={ChangeEmailModal.isOpen}
-        setModalRef={ChangeEmailModal.setModalRef}
-      >
-        <ChangeEmailForm closeModal={ChangeEmailModal.handleClose} />
+      <Modal isOpen={ChangeEmailModal.isOpen}>
+        <ChangeEmailForm
+          closeModal={ChangeEmailModal.handleClose}
+          isOpen={ChangeEmailModal.isOpen}
+        />
       </Modal>
-      <Modal
-        isOpen={editProfileModal.isOpen}
-        setModalRef={editProfileModal.setModalRef}
-      >
-        <EditProfileForm closeModal={editProfileModal.handleClose} />
+      <Modal isOpen={editProfileModal.isOpen}>
+        <EditProfileForm
+          closeModal={editProfileModal.handleClose}
+          isOpen={editProfileModal.isOpen}
+        />
       </Modal>
-      <Modal
-        isOpen={ChangePasswordModal.isOpen}
-        setModalRef={ChangePasswordModal.setModalRef}
-      >
+      <Modal isOpen={ChangePasswordModal.isOpen}>
         <ChangePasswordForm
           closeModal={ChangePasswordModal.handleClose}
           isOpen={ChangePasswordModal.isOpen}

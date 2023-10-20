@@ -1,4 +1,4 @@
-import { ReactNode, Dispatch, SetStateAction } from "react";
+import { ReactNode } from "react";
 import { styled } from "styled-components";
 
 interface HtmlProps {
@@ -48,15 +48,12 @@ const HtmlModal = styled.div<HtmlProps>`
 interface Props {
   children: ReactNode;
   isOpen: boolean;
-  setModalRef: Dispatch<SetStateAction<HTMLElement | null>>;
 }
 
-const Modal = ({ children, isOpen, setModalRef }: Props) => {
+const Modal = ({ children, isOpen }: Props) => {
   return (
     <HtmlBody $isOpen={isOpen}>
-      <HtmlModal ref={setModalRef} $isOpen={isOpen}>
-        {children}
-      </HtmlModal>
+      <HtmlModal $isOpen={isOpen}>{children}</HtmlModal>
     </HtmlBody>
   );
 };
