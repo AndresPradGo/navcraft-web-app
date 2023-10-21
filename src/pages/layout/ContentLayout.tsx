@@ -14,7 +14,7 @@ const HtmlMainContentContainerWithConstrain = styled(HtmlMainContentContainer)`
   max-width: 1312px;
   padding: 40px 3%;
 
-  @media screen and (min-width: 533px) {
+  @media screen and (min-width: 667px) {
     padding: 40px 20px;
   }
 `;

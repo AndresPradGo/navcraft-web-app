@@ -23,7 +23,7 @@ const HtmlMainContainer = styled.main`
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  width: 100%;
+  flex-grow: 1;
   padding: 61px 0 0;
 
   @media screen and (min-width: 768px) {
@@ -38,12 +38,17 @@ const HtmlMainContainerWithSideBar = styled(
   HtmlMainContainer
 )<HtmlSideBarContainerProps>`
   max-width: ${(props) => (props.$sideBarIsExpanded ? "0px" : "100vw")};
+  overflow-y: ${(props) => (props.$sideBarIsExpanded ? "hidden" : "auto")};
+  max-height: ${(props) => (props.$sideBarIsExpanded ? "100vh" : "999999vh")};
+
   transform: ${(props) =>
     props.$sideBarIsExpanded ? "translate(100vw)" : "none"};
 
   @media screen and (min-width: 635px) {
+    max-height: 999999vh;
+    overflow-y: auto;
     max-width: ${(props) =>
-      props.$sideBarIsExpanded ? "calc(100vw - 300px)" : "100vw"};
+      props.$sideBarIsExpanded ? "calc(100vw - 315px)" : "calc(100vw)"};
     transform: none;
   }
 `;

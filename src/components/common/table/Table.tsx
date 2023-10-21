@@ -46,7 +46,7 @@ const HtmlTableHead = styled.thead<HtmlTagProps>`
     }
   }
 
-  @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {
+  @media screen and (min-width: ${(props) => props.$breakingPoint + 315}px) {
     position: relative;
     clip: auto;
     height: auto;
@@ -83,7 +83,7 @@ const HtmlTableBody = styled.tbody<HtmlTagProps>`
     }
   }
 
-  @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {
+  @media screen and (min-width: ${(props) => props.$breakingPoint + 315}px) {
     display: table-row-group;
 
     & tr th:first-of-type {
@@ -115,7 +115,7 @@ const HtmlTableRow = styled.tr<HtmlTagProps>`
     padding-bottom: ${(props) => (props.$sideBarIsExpanded ? "20" : "0")}px;
   }
 
-  @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {
+  @media screen and (min-width: ${(props) => props.$breakingPoint + 315}px) {
     display: table-row;
     padding-bottom: 0;
   }
@@ -143,7 +143,7 @@ const HtmlTableHeaderCell = styled.th<HtmlTagProps>`
     padding: ${(props) => (props.$sideBarIsExpanded ? "8px" : "16px 10px")};
   }
 
-  @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {
+  @media screen and (min-width: ${(props) => props.$breakingPoint + 315}px) {
     display: table-cell;
     padding: 16px 10px;
   }
@@ -164,7 +164,7 @@ const HtmlTableBodyHeaderCell = styled(HtmlTableHeaderCell)`
     }
   }
 
-  @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {
+  @media screen and (min-width: ${(props) => props.$breakingPoint + 315}px) {
     background-color: transparent;
     color: var(--color-white);
     text-align: left;
@@ -224,7 +224,7 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
     }
   }
 
-  @media screen and (min-width: ${(props) => props.$breakingPoint + 300}px) {
+  @media screen and (min-width: ${(props) => props.$breakingPoint + 315}px) {
     display: table-cell;
     text-align: center;
     padding: 16px 10px;

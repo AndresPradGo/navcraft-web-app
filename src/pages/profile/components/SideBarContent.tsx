@@ -15,7 +15,11 @@ const HtmlButtonList = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 25px;
+  padding: 25px 30px;
+
+  @media screen and (min-width: 1280px) {
+    padding: 25px 47px;
+  }
 `;
 
 const EditIcon = styled(FaUserPen)`
