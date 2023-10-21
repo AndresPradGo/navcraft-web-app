@@ -7,11 +7,6 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import Button from "../../../components/common/button";
 import { useNavigate } from "react-router-dom";
-import { Modal, useModal } from "../../../components/common/modal";
-import DeleteAccountForm from "./DeleteAccountForm";
-import ChangeEmailForm from "./ChangeEmailForm";
-import EditProfileForm from "./EditProfileForm";
-import ChangePasswordForm from "./ChangePasswordForm";
 
 const HtmlButtonList = styled.div`
   margin-top: 50px;
@@ -49,17 +44,20 @@ const DeleteIcon = styled(RiDeleteBinLine)`
 `;
 
 export interface Props {
-  username?: string;
-  userWeight?: number;
+  handleEditProfileOpen: () => void;
+  handleChangeEmailOpen: () => void;
+  handleChangePasswordOpen: () => void;
+  handleDeleteAccountOpen: () => void;
 }
 
-const SideBarContent = () => {
+const SideBarContent = ({
+  handleEditProfileOpen,
+  handleChangeEmailOpen,
+  handleChangePasswordOpen,
+  handleDeleteAccountOpen,
+}: Props) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const deleteModal = useModal();
-  const ChangeEmailModal = useModal();
-  const editProfileModal = useModal();
-  const ChangePasswordModal = useModal();
 
   const commonStyles = {
     color: "var(--color-white)",
@@ -81,7 +79,7 @@ const SideBarContent = () => {
       styles: {
         ...commonStyles,
       },
-      onClick: editProfileModal.handleOpen,
+      onClick: handleEditProfileOpen,
     },
     {
       text: "Change Email",
@@ -89,7 +87,7 @@ const SideBarContent = () => {
       styles: {
         ...commonStyles,
       },
-      onClick: ChangeEmailModal.handleOpen,
+      onClick: handleChangeEmailOpen,
     },
     {
       text: "Change Password",
@@ -97,7 +95,7 @@ const SideBarContent = () => {
       styles: {
         ...commonStyles,
       },
-      onClick: ChangePasswordModal.handleOpen,
+      onClick: handleChangePasswordOpen,
     },
     {
       text: "Logout",
@@ -128,41 +126,18 @@ const SideBarContent = () => {
         backgroundColor: "var(--color-warning)",
         backgroundHoverColor: "var(--color-warning-hover)",
       },
-      onClick: deleteModal.handleOpen,
+      onClick: handleDeleteAccountOpen,
     },
   ];
   return (
-    <>
-      <Modal isOpen={deleteModal.isOpen}>
-        <DeleteAccountForm closeModal={deleteModal.handleClose} />
-      </Modal>
-      <Modal isOpen={ChangeEmailModal.isOpen}>
-        <ChangeEmailForm
-          closeModal={ChangeEmailModal.handleClose}
-          isOpen={ChangeEmailModal.isOpen}
-        />
-      </Modal>
-      <Modal isOpen={editProfileModal.isOpen}>
-        <EditProfileForm
-          closeModal={editProfileModal.handleClose}
-          isOpen={editProfileModal.isOpen}
-        />
-      </Modal>
-      <Modal isOpen={ChangePasswordModal.isOpen}>
-        <ChangePasswordForm
-          closeModal={ChangePasswordModal.handleClose}
-          isOpen={ChangePasswordModal.isOpen}
-        />
-      </Modal>
-      <HtmlButtonList>
-        {buttons.map((button, index) => (
-          <Button key={index} {...button.styles} handleClick={button.onClick}>
-            {button.text}
-            {button.icon}
-          </Button>
-        ))}
-      </HtmlButtonList>
-    </>
+    <HtmlButtonList>
+      {buttons.map((button, index) => (
+        <Button key={index} {...button.styles} handleClick={button.onClick}>
+          {button.text}
+          {button.icon}
+        </Button>
+      ))}
+    </HtmlButtonList>
   );
 };
 

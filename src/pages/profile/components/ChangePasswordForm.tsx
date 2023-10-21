@@ -236,11 +236,13 @@ const ChangePasswordForm = ({ closeModal, isOpen }: Props) => {
   });
 
   useEffect(() => {
-    reset({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
+    if (isOpen) {
+      reset({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    }
   }, [isOpen]);
 
   useEffect(() => {

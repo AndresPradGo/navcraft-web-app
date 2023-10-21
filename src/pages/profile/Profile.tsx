@@ -10,6 +10,11 @@ import Loader from "../../components/Loader";
 import PassengersTable from "./components/PassengersTable";
 import WaypointsTable from "./components/WaypointsTable";
 import AerodromesTable from "./components/AerodromessTable";
+import { Modal, useModal } from "../../components/common/modal";
+import DeleteAccountForm from "./components/DeleteAccountForm";
+import ChangeEmailForm from "./components/ChangeEmailForm";
+import EditProfileForm from "./components/EditProfileForm";
+import ChangePasswordForm from "./components/ChangePasswordForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -116,6 +121,10 @@ const WeightIcon = styled(FaWeightScale)`
 
 const Profile = () => {
   const [weightInKg, setWeightInKg] = useState(false);
+  const deleteAccountModal = useModal();
+  const changeEmailModal = useModal();
+  const editProfileModal = useModal();
+  const changePasswordModal = useModal();
 
   const { data: profileData, error, isLoading } = useProfileData();
   if (error) {
@@ -136,43 +145,80 @@ const Profile = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <ContentLayout sideBarContent={<SideBarContent />}>
-      <HtmlContainer>
-        <HtmlTitleContainer>
-          <h1>{profileData?.name}</h1>
-          <p>{profileData?.email}</p>
-        </HtmlTitleContainer>
-        <HtmlWeightCardContainer>
-          <HtmlWeightCard>
-            <HtmlWeightCardFront $inKg={weightInKg}>
-              <h2>
-                <WeightIcon />
-                WEIGHT
-              </h2>
-              <p>
-                <span>{profileData?.weight}</span>
-                <span onClick={() => setWeightInKg(!weightInKg)}>Lb</span>
-              </p>
-            </HtmlWeightCardFront>
-            <HtmlWeightCardBack $inKg={weightInKg}>
-              <h2>
-                <WeightIcon />
-                WEIGHT
-              </h2>
-              <p>
-                <span>
-                  {Math.round((profileData ? profileData.weight : 0) * 0.4533)}
-                </span>
-                <span onClick={() => setWeightInKg(!weightInKg)}>Kg</span>
-              </p>
-            </HtmlWeightCardBack>
-          </HtmlWeightCard>
-        </HtmlWeightCardContainer>
-        <PassengersTable />
-        <AerodromesTable />
-        <WaypointsTable />
-      </HtmlContainer>
-    </ContentLayout>
+    <>
+      <Modal isOpen={deleteAccountModal.isOpen}>
+        <DeleteAccountForm closeModal={deleteAccountModal.handleClose} />
+      </Modal>
+      <Modal isOpen={deleteAccountModal.isOpen}>
+        <DeleteAccountForm closeModal={deleteAccountModal.handleClose} />
+      </Modal>
+      <Modal isOpen={changeEmailModal.isOpen}>
+        <ChangeEmailForm
+          closeModal={changeEmailModal.handleClose}
+          isOpen={changeEmailModal.isOpen}
+        />
+      </Modal>
+      <Modal isOpen={editProfileModal.isOpen}>
+        <EditProfileForm
+          closeModal={editProfileModal.handleClose}
+          isOpen={editProfileModal.isOpen}
+        />
+      </Modal>
+      <Modal isOpen={changePasswordModal.isOpen}>
+        <ChangePasswordForm
+          closeModal={changePasswordModal.handleClose}
+          isOpen={changePasswordModal.isOpen}
+        />
+      </Modal>
+      <ContentLayout
+        sideBarContent={
+          <SideBarContent
+            handleEditProfileOpen={editProfileModal.handleOpen}
+            handleChangeEmailOpen={changeEmailModal.handleOpen}
+            handleChangePasswordOpen={changePasswordModal.handleOpen}
+            handleDeleteAccountOpen={deleteAccountModal.handleOpen}
+          />
+        }
+      >
+        <HtmlContainer>
+          <HtmlTitleContainer>
+            <h1>{profileData?.name}</h1>
+            <p>{profileData?.email}</p>
+          </HtmlTitleContainer>
+          <HtmlWeightCardContainer>
+            <HtmlWeightCard>
+              <HtmlWeightCardFront $inKg={weightInKg}>
+                <h2>
+                  <WeightIcon />
+                  WEIGHT
+                </h2>
+                <p>
+                  <span>{profileData?.weight}</span>
+                  <span onClick={() => setWeightInKg(!weightInKg)}>Lb</span>
+                </p>
+              </HtmlWeightCardFront>
+              <HtmlWeightCardBack $inKg={weightInKg}>
+                <h2>
+                  <WeightIcon />
+                  WEIGHT
+                </h2>
+                <p>
+                  <span>
+                    {Math.round(
+                      (profileData ? profileData.weight : 0) * 0.4533
+                    )}
+                  </span>
+                  <span onClick={() => setWeightInKg(!weightInKg)}>Kg</span>
+                </p>
+              </HtmlWeightCardBack>
+            </HtmlWeightCard>
+          </HtmlWeightCardContainer>
+          <PassengersTable />
+          <AerodromesTable />
+          <WaypointsTable />
+        </HtmlContainer>
+      </ContentLayout>
+    </>
   );
 };
 

@@ -344,19 +344,21 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
   useEffect(() => {
-    reset({
-      code: waypointData.code,
-      name: waypointData.name,
-      lat_degrees: waypointData.lat_degrees,
-      lat_minutes: waypointData.lat_minutes,
-      lat_seconds: waypointData.lat_seconds,
-      lat_direction: waypointData.lat_direction,
-      lon_degrees: waypointData.lon_degrees,
-      lon_minutes: waypointData.lon_minutes,
-      lon_seconds: waypointData.lon_seconds,
-      lon_direction: waypointData.lon_direction,
-      magnetic_variation: waypointData.magnetic_variation,
-    });
+    if (isOpen) {
+      reset({
+        code: waypointData.code,
+        name: waypointData.name,
+        lat_degrees: waypointData.lat_degrees,
+        lat_minutes: waypointData.lat_minutes,
+        lat_seconds: waypointData.lat_seconds,
+        lat_direction: waypointData.lat_direction,
+        lon_degrees: waypointData.lon_degrees,
+        lon_minutes: waypointData.lon_minutes,
+        lon_seconds: waypointData.lon_seconds,
+        lon_direction: waypointData.lon_direction,
+        magnetic_variation: waypointData.magnetic_variation,
+      });
+    }
   }, [isOpen]);
 
   useEffect(() => {

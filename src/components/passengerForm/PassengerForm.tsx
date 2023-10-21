@@ -222,10 +222,12 @@ const PassengerForm = ({ passengerData, closeModal, isOpen }: Props) => {
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
   useEffect(() => {
-    reset({
-      name: passengerData.name,
-      weight_lb: passengerData.weight_lb,
-    });
+    if (isOpen) {
+      reset({
+        name: passengerData.name,
+        weight_lb: passengerData.weight_lb,
+      });
+    }
   }, [isOpen]);
 
   const editPassengerMutation = useEditPassenger();

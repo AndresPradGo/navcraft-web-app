@@ -211,10 +211,12 @@ const EditProfileForm = ({ closeModal, isOpen }: Props) => {
   const userData = queryClient.getQueryData<ProfileData>(["profile"]);
 
   useEffect(() => {
-    reset({
-      name: userData?.name,
-      weight_lb: userData?.weight,
-    });
+    if (isOpen) {
+      reset({
+        name: userData?.name,
+        weight_lb: userData?.weight,
+      });
+    }
   }, [isOpen]);
 
   const {

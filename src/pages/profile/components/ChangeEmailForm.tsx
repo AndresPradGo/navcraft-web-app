@@ -199,9 +199,11 @@ const ChangeEmailForm = ({ closeModal, isOpen }: Props) => {
   const userData = queryClient.getQueryData<ProfileData>(["profile"]);
 
   useEffect(() => {
-    reset({
-      email: userData?.email,
-    });
+    if (isOpen) {
+      reset({
+        email: userData?.email,
+      });
+    }
   }, [isOpen]);
 
   const {
