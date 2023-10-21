@@ -125,6 +125,9 @@ const Profile = () => {
   const changeEmailModal = useModal();
   const editProfileModal = useModal();
   const changePasswordModal = useModal();
+  const editPassengerModal = useModal();
+  const editAerodromeModal = useModal();
+  const editWaypointModal = useModal();
 
   const { data: profileData, error, isLoading } = useProfileData();
   if (error) {
@@ -177,6 +180,9 @@ const Profile = () => {
             handleChangeEmailOpen={changeEmailModal.handleOpen}
             handleChangePasswordOpen={changePasswordModal.handleOpen}
             handleDeleteAccountOpen={deleteAccountModal.handleOpen}
+            handleAddPassenger={editPassengerModal.handleOpen}
+            handleAddAerodrome={editAerodromeModal.handleOpen}
+            handleAddWaypoint={editWaypointModal.handleOpen}
           />
         }
       >
@@ -213,9 +219,9 @@ const Profile = () => {
               </HtmlWeightCardBack>
             </HtmlWeightCard>
           </HtmlWeightCardContainer>
-          <PassengersTable />
+          <PassengersTable editModal={editPassengerModal} />
           <AerodromesTable />
-          <WaypointsTable />
+          <WaypointsTable editModal={editWaypointModal} />
         </HtmlContainer>
       </ContentLayout>
     </>

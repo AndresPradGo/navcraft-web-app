@@ -1,25 +1,40 @@
+import { BsPersonFillAdd } from "react-icons/bs";
 import { FaUserPen } from "react-icons/fa6";
-import { MdOutlineLogout } from "react-icons/md";
+import { MdOutlineLogout, MdOutlineConnectingAirports } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { TbMailCog, TbLockCog } from "react-icons/tb";
+import { TbMailCog, TbLockCog, TbMapPinPlus } from "react-icons/tb";
 import { styled } from "styled-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import Button from "../../../components/common/button";
 import { useNavigate } from "react-router-dom";
+import { useSideBar } from "../../../components/sidebar";
 
-const HtmlButtonList = styled.div`
-  margin-top: 50px;
+const HtmlContainer = styled.div`
+  margin: 15px 0;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 25px 30px;
+  padding: 0 15px;
+`;
+
+const HtmlButtonList = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 15px;
 
   @media screen and (min-width: 1280px) {
-    padding: 25px 47px;
+    padding: 15px 47px;
   }
+`;
+
+const HtmlButtonListWithBorder = styled(HtmlButtonList)`
+  border-top: 1px solid var(--color-grey);
 `;
 
 const EditIcon = styled(FaUserPen)`
@@ -47,11 +62,29 @@ const DeleteIcon = styled(RiDeleteBinLine)`
   margin-left: 5px;
 `;
 
+const AddPassengerIcon = styled(BsPersonFillAdd)`
+  font-size: 20px;
+  margin-left: 5px;
+`;
+
+const AddAerodromeIcon = styled(MdOutlineConnectingAirports)`
+  font-size: 30px;
+  margin-left: 5px;
+`;
+
+const AddWaypointIcon = styled(TbMapPinPlus)`
+  font-size: 20px;
+  margin-left: 5px;
+`;
+
 export interface Props {
   handleEditProfileOpen: () => void;
   handleChangeEmailOpen: () => void;
   handleChangePasswordOpen: () => void;
   handleDeleteAccountOpen: () => void;
+  handleAddPassenger: () => void;
+  handleAddAerodrome: () => void;
+  handleAddWaypoint: () => void;
 }
 
 const SideBarContent = ({
@@ -59,9 +92,13 @@ const SideBarContent = ({
   handleChangeEmailOpen,
   handleChangePasswordOpen,
   handleDeleteAccountOpen,
+  handleAddPassenger,
+  handleAddAerodrome,
+  handleAddWaypoint,
 }: Props) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { handleExpandSideBar } = useSideBar();
 
   const commonStyles = {
     color: "var(--color-white)",
@@ -83,7 +120,10 @@ const SideBarContent = ({
       styles: {
         ...commonStyles,
       },
-      onClick: handleEditProfileOpen,
+      onClick: () => {
+        handleExpandSideBar(false);
+        handleEditProfileOpen();
+      },
     },
     {
       text: "Change Email",
@@ -91,7 +131,10 @@ const SideBarContent = ({
       styles: {
         ...commonStyles,
       },
-      onClick: handleChangeEmailOpen,
+      onClick: () => {
+        handleExpandSideBar(false);
+        handleChangeEmailOpen();
+      },
     },
     {
       text: "Change Password",
@@ -99,8 +142,50 @@ const SideBarContent = ({
       styles: {
         ...commonStyles,
       },
-      onClick: handleChangePasswordOpen,
+      onClick: () => {
+        handleExpandSideBar(false);
+        handleChangePasswordOpen();
+      },
     },
+  ];
+
+  const tableButtons = [
+    {
+      text: "Add Passenger",
+      icon: <AddPassengerIcon />,
+      styles: {
+        ...commonStyles,
+      },
+      onClick: () => {
+        handleExpandSideBar(false);
+        handleAddPassenger();
+      },
+    },
+    {
+      text: "Add Aerodrome",
+      icon: <AddAerodromeIcon />,
+      styles: {
+        ...commonStyles,
+      },
+      onClick: () => {
+        handleExpandSideBar(false);
+        handleAddAerodrome();
+      },
+    },
+    {
+      text: "Add Waypoint",
+      icon: <AddWaypointIcon />,
+      styles: {
+        ...commonStyles,
+      },
+      onClick: () => {
+        handleExpandSideBar(false);
+        handleAddWaypoint();
+      },
+    },
+  ];
+
+  const exitButtons = [
     {
       text: "Logout",
       icon: <LogoutIcon />,
@@ -111,7 +196,6 @@ const SideBarContent = ({
         backgroundColor: "var(--color-grey)",
         backgroundHoverColor: "var(--color-white)",
         fill: false,
-        margin: "30px 0 5px",
       },
       onClick: () => {
         queryClient.clear();
@@ -130,18 +214,40 @@ const SideBarContent = ({
         backgroundColor: "var(--color-warning)",
         backgroundHoverColor: "var(--color-warning-hover)",
       },
-      onClick: handleDeleteAccountOpen,
+      onClick: () => {
+        handleExpandSideBar(false);
+        handleDeleteAccountOpen();
+      },
     },
   ];
+
   return (
-    <HtmlButtonList>
-      {buttons.map((button, index) => (
-        <Button key={index} {...button.styles} handleClick={button.onClick}>
-          {button.text}
-          {button.icon}
-        </Button>
-      ))}
-    </HtmlButtonList>
+    <HtmlContainer>
+      <HtmlButtonList>
+        {buttons.map((button, index) => (
+          <Button key={index} {...button.styles} handleClick={button.onClick}>
+            {button.text}
+            {button.icon}
+          </Button>
+        ))}
+      </HtmlButtonList>
+      <HtmlButtonListWithBorder>
+        {tableButtons.map((button, index) => (
+          <Button key={index} {...button.styles} handleClick={button.onClick}>
+            {button.text}
+            {button.icon}
+          </Button>
+        ))}
+      </HtmlButtonListWithBorder>
+      <HtmlButtonListWithBorder>
+        {exitButtons.map((button, index) => (
+          <Button key={index} {...button.styles} handleClick={button.onClick}>
+            {button.text}
+            {button.icon}
+          </Button>
+        ))}
+      </HtmlButtonListWithBorder>
+    </HtmlContainer>
   );
 };
 

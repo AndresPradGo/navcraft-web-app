@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { AiOutlineSave } from "react-icons/ai";
 import { FaUser, FaWeightScale } from "react-icons/fa6";
-import { PiUsersFourThin } from "react-icons/pi";
+import { BsPersonFillAdd, BsPersonFillGear } from "react-icons/bs";
 import { LiaTimesSolid } from "react-icons/lia";
 import { useForm, FieldValues } from "react-hook-form";
 import { styled } from "styled-components";
@@ -162,7 +162,16 @@ const WeightIcon = styled(FaWeightScale)`
   margin: 0 10px;
 `;
 
-const PassengersIcon = styled(PiUsersFourThin)`
+const AddPassengerIcon = styled(BsPersonFillAdd)`
+  font-size: 30px;
+  margin: 0 5px;
+
+  @media screen and (min-width: 425px) {
+    margin: 0 10px;
+  }
+`;
+
+const EditPassengerIcon = styled(BsPersonFillGear)`
   font-size: 30px;
   margin: 0 5px;
 
@@ -249,7 +258,11 @@ const PassengerForm = ({ passengerData, closeModal, isOpen }: Props) => {
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <h1>
         <div>
-          <PassengersIcon />
+          {passengerData.id !== 0 ? (
+            <EditPassengerIcon />
+          ) : (
+            <AddPassengerIcon />
+          )}
           {`${passengerData.id !== 0 ? "Edit" : "Add"} Passenger`}
         </div>
         <CloseIcon onClick={handleCancel} />

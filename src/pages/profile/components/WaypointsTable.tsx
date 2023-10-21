@@ -7,7 +7,11 @@ import useUserWaypointsData from "../../../hooks/useUserWaypointsData";
 import Table from "../../../components/common/table";
 import Loader from "../../../components/Loader";
 import Button from "../../../components/common/button/index";
-import { useModal, Modal } from "../../../components/common/modal";
+import {
+  useModal,
+  Modal,
+  UseModalType,
+} from "../../../components/common/modal";
 import EditWaypointForm from "../../../components/editWaypointForm";
 import DeleteWaypointForm from "../../../components/deleteWaypointForm";
 import { WaypointDataFromAPI } from "../../../services/waypointClient";
@@ -16,7 +20,7 @@ interface HtmlTagProps {
   $isOpen: boolean;
 }
 const HtmlContainer = styled.div`
-  margin-top: 100px;
+  margin: 100px 0;
   width: 100%;
 `;
 
@@ -70,11 +74,15 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
   overflow: hidden;
 `;
 
-const WaypointsTable = () => {
+interface Props {
+  editModal: UseModalType;
+}
+
+const WaypointsTable = ({ editModal }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
   const [waypointId, setWaypointId] = useState<number>(0);
   const { data: waypoints, isLoading } = useUserWaypointsData();
-  const editModal = useModal();
+
   const deleteModal = useModal();
 
   const waypointData = waypoints?.find((item) => item.id === waypointId);

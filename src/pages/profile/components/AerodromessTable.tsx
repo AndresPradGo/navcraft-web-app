@@ -12,7 +12,7 @@ interface HtmlTagProps {
   $isOpen: boolean;
 }
 const HtmlContainer = styled.div`
-  margin-top: 100px;
+  margin: 100px 0 50px;
   width: 100%;
 `;
 

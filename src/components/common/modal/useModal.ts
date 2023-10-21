@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 
-interface ReturnType {
+export interface ReturnType {
     isOpen: boolean;
     handleOpen: () => void;
     handleClose: () => void;

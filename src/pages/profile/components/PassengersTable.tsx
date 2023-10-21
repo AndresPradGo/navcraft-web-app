@@ -7,7 +7,11 @@ import usePassengersData from "../../../hooks/usePassengersData";
 import Table from "../../../components/common/table";
 import Loader from "../../../components/Loader";
 import Button from "../../../components/common/button/index";
-import { useModal, Modal } from "../../../components/common/modal";
+import {
+  useModal,
+  Modal,
+  UseModalType,
+} from "../../../components/common/modal";
 import PassengerForm from "../../../components/passengerForm";
 import DeletePassengerForm from "./DeletePassengerForm";
 
@@ -15,7 +19,7 @@ interface HtmlTagProps {
   $isOpen: boolean;
 }
 const HtmlContainer = styled.div`
-  margin-top: 100px;
+  margin: 100px 0 50px;
   width: 100%;
 `;
 
@@ -69,11 +73,14 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
   overflow: hidden;
 `;
 
-const PassengersTable = () => {
+interface Props {
+  editModal: UseModalType;
+}
+
+const PassengersTable = ({ editModal }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
   const [passengerId, setPassengerId] = useState<number>(0);
   const { data: passengers, isLoading } = usePassengersData();
-  const editModal = useModal();
   const deleteModal = useModal();
 
   const passengerData = passengers?.find((item) => item.id === passengerId);
