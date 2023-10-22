@@ -301,7 +301,7 @@ const PassengerForm = ({ passengerData, closeModal, isOpen }: Props) => {
           {errors.weight_lb ? <p>{errors.weight_lb.message}</p> : <p>&nbsp;</p>}
           <label htmlFor="passenger_weight_lb">
             <WeightIcon />
-            Weight
+            {"Weight [lb]"}
           </label>
         </HtmlInput>
       </HtmlInputContainer>

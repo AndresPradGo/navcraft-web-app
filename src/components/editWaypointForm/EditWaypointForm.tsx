@@ -283,33 +283,33 @@ const schema = z.object({
       message: "Only letters, numbers, spaces and symbols '.-",
     }),
   lat_degrees: z
-    .number()
+    .number({ invalid_type_error: "Enter a number" })
     .int("Coordinates must be round numbers.")
     .min(0, `Latitude must be between S 89° 59' 59" and N 89° 59' 59"`)
     .max(89, `Latitude must be between S89° 59' 59" and N 89° 59' 59"`),
   lat_minutes: z
-    .number()
+    .number({ invalid_type_error: "Enter a number" })
     .int("Coordinates must be round numbers.")
     .min(0, "Minutes must be bewteen 0 and 59")
     .max(59, "Minutes must be bewteen 0 and 59"),
   lat_seconds: z
-    .number()
+    .number({ invalid_type_error: "Enter a number" })
     .int("Coordinates must be round numbers.")
     .min(0, "Seconds must be bewteen 0 and 59")
     .max(59, "Seconds must be bewteen 0 and 59"),
   lat_direction: z.enum(["North", "South"]),
   lon_degrees: z
-    .number()
+    .number({ invalid_type_error: "Enter a number" })
     .int("Coordinates must be round numbers.")
     .min(0, `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`)
     .max(180, `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`),
   lon_minutes: z
-    .number()
+    .number({ invalid_type_error: "Enter a number" })
     .int("Coordinates must be round numbers.")
     .min(0, "Minutes must be bewteen 0 and 59")
     .max(59, "Minutes must be bewteen 0 and 59"),
   lon_seconds: z
-    .number()
+    .number({ invalid_type_error: "Enter a number" })
     .int("Coordinates must be round numbers.")
     .min(0, "Seconds must be bewteen 0 and 59")
     .max(59, "Seconds must be bewteen 0 and 59"),
