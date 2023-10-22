@@ -8,6 +8,7 @@ interface HtmlSideBarContainerProps {
 }
 
 const HtmlSideBar = styled.div<HtmlSideBarContainerProps>`
+  z-index: 99;
   min-height: 100%;
   background-color: var(--color-primary-dark);
   transition: all 0.2s ease-out;
@@ -29,6 +30,7 @@ const HtmlSideBar = styled.div<HtmlSideBarContainerProps>`
 `;
 
 const HtmlWraper = styled.div<HtmlSideBarContainerProps>`
+  z-index: 99;
   transition: all 0.2s ease-out;
   position: fixed;
   display: flex;

@@ -2,20 +2,16 @@ import { useEffect } from "react";
 import { AiOutlineSave } from "react-icons/ai";
 import { LiaMapSignsSolid, LiaTimesSolid } from "react-icons/lia";
 import { ImCompass2 } from "react-icons/im";
-import {
-  TbMapPinCog,
-  TbMapPinPlus,
-  TbMapSearch,
-  TbWorldLatitude,
-  TbWorldLongitude,
-} from "react-icons/tb";
+import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
+import { MdOutlineConnectingAirports } from "react-icons/md";
+
 import { useForm, FieldValues } from "react-hook-form";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../common/button";
-import useEditWaypoint from "./useEditWaypoint";
+import useEditPrivateAerodrome from "./useEditUserAerodrome";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -230,23 +226,13 @@ const CompassIcon = styled(ImCompass2)`
   margin: 0 10px;
 `;
 
-const EditWaypointIcon = styled(TbMapPinCog)`
-  font-size: 25px;
+const AddAerodromeIcon = styled(MdOutlineConnectingAirports)`
+  font-size: 35px;
   margin: 0 5px;
 
   @media screen and (min-width: 425px) {
     margin: 0 10px;
-    font-size: 30px;
-  }
-`;
-
-const AddWaypointIcon = styled(TbMapPinPlus)`
-  font-size: 25px;
-  margin: 0 5px;
-
-  @media screen and (min-width: 425px) {
-    margin: 0 10px;
-    font-size: 30px;
+    font-size: 40px;
   }
 `;
 
@@ -314,6 +300,7 @@ const schema = z.object({
     .min(0, "Seconds must be bewteen 0 and 59")
     .max(59, "Seconds must be bewteen 0 and 59"),
   lon_direction: z.enum(["East", "West"]),
+  elevation_ft: z.number({ invalid_type_error: "Enter a number" }),
   magnetic_variation: z.union([
     z.number({ invalid_type_error: "Enter a number" }).nullable(),
     z.literal(null),
@@ -321,18 +308,23 @@ const schema = z.object({
 });
 type FormDataType = z.infer<typeof schema>;
 
-export interface WaypointDataFromForm extends FormDataType {
+export interface AerodromeDataFromForm extends FormDataType {
   id: number;
+  status: number;
 }
 
 interface Props {
-  waypointData: WaypointDataFromForm;
+  aerodromeData: AerodromeDataFromForm;
   closeModal: () => void;
   isOpen: boolean;
 }
 
-const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
-  const mutation = useEditWaypoint();
+const EditUserAerodromeForm = ({
+  aerodromeData,
+  closeModal,
+  isOpen,
+}: Props) => {
+  const mutation = useEditPrivateAerodrome();
   const {
     register,
     handleSubmit,
@@ -346,17 +338,18 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
   useEffect(() => {
     if (isOpen) {
       reset({
-        code: waypointData.code,
-        name: waypointData.name,
-        lat_degrees: waypointData.lat_degrees,
-        lat_minutes: waypointData.lat_minutes,
-        lat_seconds: waypointData.lat_seconds,
-        lat_direction: waypointData.lat_direction,
-        lon_degrees: waypointData.lon_degrees,
-        lon_minutes: waypointData.lon_minutes,
-        lon_seconds: waypointData.lon_seconds,
-        lon_direction: waypointData.lon_direction,
-        magnetic_variation: waypointData.magnetic_variation,
+        code: aerodromeData.code,
+        name: aerodromeData.name,
+        lat_degrees: aerodromeData.lat_degrees,
+        lat_minutes: aerodromeData.lat_minutes,
+        lat_seconds: aerodromeData.lat_seconds,
+        lat_direction: aerodromeData.lat_direction,
+        lon_degrees: aerodromeData.lon_degrees,
+        lon_minutes: aerodromeData.lon_minutes,
+        lon_seconds: aerodromeData.lon_seconds,
+        lon_direction: aerodromeData.lon_direction,
+        magnetic_variation: aerodromeData.magnetic_variation,
+        elevation_ft: aerodromeData.elevation_ft,
       });
     }
   }, [isOpen]);
@@ -407,7 +400,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
     if (!badData) {
       closeModal();
       mutation.mutate({
-        id: waypointData.id,
+        id: aerodromeData.id,
         code: data.code,
         name: data.name,
         lat_degrees: data.lat_degrees,
@@ -419,6 +412,8 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
         lon_seconds: data.lon_seconds,
         lon_direction: data.lon_direction,
         magnetic_variation: data.magnetic_variation,
+        elevation_ft: data.elevation_ft,
+        status: aerodromeData.status,
       });
     }
   };
@@ -427,8 +422,8 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <h1>
         <div>
-          {waypointData.id !== 0 ? <EditWaypointIcon /> : <AddWaypointIcon />}
-          {`${waypointData.id !== 0 ? "Edit" : "Add"} Waypoint`}
+          <AddAerodromeIcon />
+          {`${aerodromeData.id !== 0 ? "Edit" : "Add"} Aerodrome`}
         </div>
         <CloseIcon onClick={handleCancel} />
       </h1>
@@ -440,13 +435,13 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
         >
           <input
             {...register("code")}
-            id="waypoint_code"
+            id="aerodrome_code"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.code ? <p>{errors.code.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="waypoint_code">
+          <label htmlFor="aerodrome_code">
             <CodeIcon />
             Code
           </label>
@@ -458,15 +453,36 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
         >
           <input
             {...register("name")}
-            id="waypoint_name"
+            id="aerodrome_name"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="waypoint_name">
+          <label htmlFor="aerodrome_name">
             <NameIcon />
             Name
+          </label>
+        </HtmlInput>
+        <HtmlInput
+          $required={true}
+          $hasValue={!!watch("elevation_ft") || watch("elevation_ft") === 0}
+          $accepted={!errors.elevation_ft}
+        >
+          <input
+            {...register("elevation_ft", { valueAsNumber: true })}
+            id="aerodrome_elevation_ft"
+            type="number"
+            autoComplete="off"
+          />
+          {errors.elevation_ft ? (
+            <p>{errors.elevation_ft.message}</p>
+          ) : (
+            <p>&nbsp;</p>
+          )}
+          <label htmlFor="aerodrome_magnetic_variation">
+            <CompassIcon />
+            {"Elevation [ft]"}
           </label>
         </HtmlInput>
         <HtmlInput
@@ -480,7 +496,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             {...register("magnetic_variation", {
               setValueAs: handleMagneticVariationValue,
             })}
-            id="waypoint_magnetic_variation"
+            id="aerodrome_magnetic_variation"
             type="number"
             autoComplete="off"
           />
@@ -489,7 +505,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="waypoint_magnetic_variation">
+          <label htmlFor="aerodrome_magnetic_variation">
             <CompassIcon />
             Magnetic Variation
           </label>
@@ -506,7 +522,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <HtmlSelectElement
               {...register("lat_direction")}
-              id="waypoint_lat_direction"
+              id="aerodrome_lat_direction"
               autoComplete="off"
               required={true}
             >
@@ -526,7 +542,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lat_degrees", { valueAsNumber: true })}
-              id="waypoint_lat_degrees"
+              id="aerodrome_lat_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -536,7 +552,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_degrees">
+            <label htmlFor="aerodrome_lat_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -547,7 +563,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lat_minutes", { valueAsNumber: true })}
-              id="waypoint_lat_minutes"
+              id="aerodrome_lat_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -557,7 +573,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_minutes">
+            <label htmlFor="aerodrome_lat_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -568,7 +584,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lat_seconds", { valueAsNumber: true })}
-              id="waypoint_lat_seconds"
+              id="aerodrome_lat_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -578,7 +594,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_seconds">
+            <label htmlFor="aerodrome_lat_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>
@@ -595,7 +611,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <HtmlSelectElement
               {...register("lon_direction")}
-              id="waypoint_lon_direction"
+              id="aerodrome_lon_direction"
               autoComplete="off"
               required={true}
             >
@@ -615,7 +631,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lon_degrees", { valueAsNumber: true })}
-              id="waypoint_lon_degrees"
+              id="aerodrome_lon_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -625,7 +641,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_degrees">
+            <label htmlFor="aerodrome_lon_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -636,7 +652,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lon_minutes", { valueAsNumber: true })}
-              id="waypoint_lon_minutes"
+              id="aerodrome_lon_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -646,7 +662,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_minutes">
+            <label htmlFor="aerodrome_lon_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -657,7 +673,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lon_seconds", { valueAsNumber: true })}
-              id="waypoint_lon_seconds"
+              id="aerodrome_lon_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -667,7 +683,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_seconds">
+            <label htmlFor="aerodrome_lon_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>
@@ -710,4 +726,4 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
   );
 };
 
-export default EditWaypointForm;
+export default EditUserAerodromeForm;

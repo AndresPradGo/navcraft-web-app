@@ -9,7 +9,7 @@ import useProfileData from "./hooks/useProfileData";
 import Loader from "../../components/Loader";
 import PassengersTable from "./components/PassengersTable";
 import WaypointsTable from "./components/WaypointsTable";
-import AerodromesTable from "./components/AerodromessTable";
+import AerodromesTable from "./components/AerodromesTable";
 import { Modal, useModal } from "../../components/common/modal";
 import DeleteAccountForm from "./components/DeleteAccountForm";
 import ChangeEmailForm from "./components/ChangeEmailForm";
@@ -220,7 +220,7 @@ const Profile = () => {
             </HtmlWeightCard>
           </HtmlWeightCardContainer>
           <PassengersTable editModal={editPassengerModal} />
-          <AerodromesTable />
+          <AerodromesTable editModal={editAerodromeModal} />
           <WaypointsTable editModal={editWaypointModal} />
         </HtmlContainer>
       </ContentLayout>
