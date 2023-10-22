@@ -8,6 +8,7 @@ import Table from "../../../components/common/table";
 import Loader from "../../../components/Loader";
 import Button from "../../../components/common/button";
 import EditUserAerodromeForm from "../../../components/editUserAerodromeForm";
+import DeleteUserAerodromeForm from "../../../components/deleteUserAerodromeForm";
 import {
   useModal,
   Modal,
@@ -78,6 +79,8 @@ interface Props {
 
 const AerodromesTable = ({ editModal }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
+  const [aerodromeId, setAerodromeId] = useState<number>(0);
+  const deleteModal = useModal();
   const { data: aerodromes, isLoading } = useUserAerodromesData();
   const aerodromeData = {
     id: 0,
@@ -143,7 +146,10 @@ const AerodromesTable = ({ editModal }: Props) => {
             )
             .join(", "),
           handleEdit: () => {},
-          handleDelete: () => {},
+          handleDelete: () => {
+            setAerodromeId(a.id);
+            deleteModal.handleOpen();
+          },
           permissions: "delete" as "delete",
         }))
       : [],
@@ -168,6 +174,13 @@ const AerodromesTable = ({ editModal }: Props) => {
           closeModal={editModal.handleClose}
           aerodromeData={aerodromeData}
           isOpen={editModal.isOpen}
+        />
+      </Modal>
+      <Modal isOpen={deleteModal.isOpen}>
+        <DeleteUserAerodromeForm
+          closeModal={deleteModal.handleClose}
+          name={aerodromes?.find((item) => item.id === aerodromeId)?.name || ""}
+          id={aerodromeId}
         />
       </Modal>
       <HtmlContainer>
