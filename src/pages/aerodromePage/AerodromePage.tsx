@@ -12,8 +12,11 @@ import { styled } from "styled-components";
 import { ContentLayout } from "../layout";
 import useAerodromeData from "./useAerodromeData";
 import Loader from "../../components/Loader";
+import RunwaysTable from "./RunwaysTable";
+import { useModal } from "../../components/common/modal";
 
 const HtmlContainer = styled.div`
+  max-width: 100%;
   min-height: 100vh;
   display: flex;
   flex-wrap: wrap;
@@ -27,25 +30,24 @@ const HtmlTitleContainer = styled.div`
   & h1:first-of-type {
     display: flex;
     align-items: center;
-    margin: 0;
+    margin: 10px 0;
     font-size: 25px;
     text-wrap: wrap;
     line-height: 0.98;
 
     & svg {
-        flex-shrink: 0;
-        font-size: 40px;
-        margin: 0 5px 0 0;
+      flex-shrink: 0;
+      font-size: 40px;
+      margin: 0 5px 0 0;
     }
 
     @media screen and (min-width: 425px) {
-        margin: margin: 0 10px 0 0;
-        font-size: 35px;
+      font-size: 35px;
 
-        & svg {
-            margin: margin: 0 10px 0 0;
-            font-size: 50px;
-        }
+      & svg {
+        margin: 0 10px 0 0;
+        font-size: 50px;
+      }
     }
   }
 
@@ -64,22 +66,23 @@ const HtmlTitleContainer = styled.div`
       align-items: center;
 
       & i {
-        padding: 0 10px 0 0;
+        padding: 0;
       }
 
       & svg {
         border-left: 1px solid var(--color-grey);
         font-size: 25px;
-        margin: 0 10px 0 2px;
+        margin: 0 10px;
       }
-
     }
-    
+
     & span:last-of-type {
-        & i:last-of-type {
-            color: var(--color-grey-bright);
-            padding: 0;
-        }
+      flex-wrap: wrap;
+      & i:last-of-type {
+        color: var(--color-grey-bright);
+        padding: 0 0 0 10px;
+        text-wrap: wrap;
+      }
     }
   }
 `;
@@ -160,6 +163,7 @@ const StatusIcon = styled(SlBadge)`
 
 const AerodromePage = () => {
   const { id } = useParams();
+  const editRunwayModal = useModal();
 
   const {
     data: aerodromeData,
@@ -262,6 +266,10 @@ const AerodromePage = () => {
             );
           })}
         </HtmlDataList>
+        <RunwaysTable
+          editModal={editRunwayModal}
+          runwaysData={aerodromeData.runways}
+        />
       </HtmlContainer>
     </ContentLayout>
   );

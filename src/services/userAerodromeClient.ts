@@ -1,7 +1,7 @@
 import APIClient from './apiClient'
 
 
-interface RunwayDataFromAPI {
+export interface RunwayDataFromAPI {
     id: number;
     number: number;
     position?: string;
