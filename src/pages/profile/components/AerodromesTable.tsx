@@ -81,7 +81,7 @@ const AerodromesTable = ({ editModal }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
   const [aerodromeId, setAerodromeId] = useState<number>(0);
   const deleteModal = useModal();
-  const { data: aerodromes, isLoading } = useUserAerodromesData();
+  const { data: aerodromes, isLoading, error } = useUserAerodromesData();
   const aerodromeData = {
     id: 0,
     code: "",
@@ -118,41 +118,42 @@ const AerodromesTable = ({ editModal }: Props) => {
       runways: "Runways",
       variation: "Magnetic Var",
     },
-    rows: aerodromes
-      ? aerodromes.map((a) => ({
-          id: a.id,
-          code: a.code,
-          name: a.name,
-          latitude: `${a.lat_direction}${a.lat_degrees}\u00B0${a.lat_minutes}'${a.lat_seconds}"`,
-          longitude: `${a.lon_direction}${a.lon_degrees}\u00B0${a.lon_minutes}'${a.lon_seconds}"`,
-          variation: `${Math.abs(
-            a.magnetic_variation ? a.magnetic_variation : 0
-          )}\u00B0${
-            a.magnetic_variation
-              ? a.magnetic_variation < 0
-                ? "E"
-                : a.magnetic_variation > 0
-                ? "W"
+    rows:
+      !error && aerodromes
+        ? aerodromes.map((a) => ({
+            id: a.id,
+            code: a.code,
+            name: a.name,
+            latitude: `${a.lat_direction}${a.lat_degrees}\u00B0${a.lat_minutes}'${a.lat_seconds}"`,
+            longitude: `${a.lon_direction}${a.lon_degrees}\u00B0${a.lon_minutes}'${a.lon_seconds}"`,
+            variation: `${Math.abs(
+              a.magnetic_variation ? a.magnetic_variation : 0
+            )}\u00B0${
+              a.magnetic_variation
+                ? a.magnetic_variation < 0
+                  ? "E"
+                  : a.magnetic_variation > 0
+                  ? "W"
+                  : ""
                 : ""
-              : ""
-          }`,
-          elevation_ft: a.elevation_ft,
-          runways: a.runways
-            .map(
-              (r) =>
-                `${r.number.toString().padStart(2, "0")}${
-                  r.position ? r.position : ""
-                }`
-            )
-            .join(", "),
-          handleEdit: () => {},
-          handleDelete: () => {
-            setAerodromeId(a.id);
-            deleteModal.handleOpen();
-          },
-          permissions: "delete" as "delete",
-        }))
-      : [],
+            }`,
+            elevation_ft: a.elevation_ft,
+            runways: a.runways
+              .map(
+                (r) =>
+                  `${r.number.toString().padStart(2, "0")}${
+                    r.position ? r.position : ""
+                  }`
+              )
+              .join(", "),
+            handleEdit: `/waypoints/private-aerodrome/${a.id}`,
+            handleDelete: () => {
+              setAerodromeId(a.id);
+              deleteModal.handleOpen();
+            },
+            permissions: "delete" as "delete",
+          }))
+        : [],
     breakingPoint: 1000,
   };
 

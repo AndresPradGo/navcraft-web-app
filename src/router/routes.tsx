@@ -10,6 +10,7 @@ import ErrorPage from "../pages/ErrorPage";
 import LoginPage from "../pages/login";
 import MasterRoutes from "../pages/MasterRoutes";
 import RegisterPage from "../pages/register/index";
+import AerodromePage from "../pages/aerodromePage";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "waypoints", element: <Waypoints /> },
       { path: "aircraft", element: <Aircraft /> },
       { path: "profile", element: <Profile /> },
+      { path: "waypoints/private-aerodrome/:id", element: <AerodromePage /> },
     ],
   },
   {

@@ -81,7 +81,7 @@ interface Props {
 const WaypointsTable = ({ editModal }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
   const [waypointId, setWaypointId] = useState<number>(0);
-  const { data: waypoints, isLoading } = useUserWaypointsData();
+  const { data: waypoints, isLoading, error } = useUserWaypointsData();
 
   const deleteModal = useModal();
 
@@ -96,35 +96,36 @@ const WaypointsTable = ({ editModal }: Props) => {
       longitude: "Longitude",
       variation: "Magnetic Var",
     },
-    rows: waypoints
-      ? waypoints.map((w) => ({
-          id: w.id,
-          code: w.code,
-          name: w.name,
-          latitude: `${w.lat_direction}${w.lat_degrees}\u00B0${w.lat_minutes}'${w.lat_seconds}"`,
-          longitude: `${w.lon_direction}${w.lon_degrees}\u00B0${w.lon_minutes}'${w.lon_seconds}"`,
-          variation: `${Math.abs(
-            w.magnetic_variation ? w.magnetic_variation : 0
-          )}\u00B0${
-            w.magnetic_variation
-              ? w.magnetic_variation < 0
-                ? "E"
-                : w.magnetic_variation > 0
-                ? "W"
+    rows:
+      !error && waypoints
+        ? waypoints.map((w) => ({
+            id: w.id,
+            code: w.code,
+            name: w.name,
+            latitude: `${w.lat_direction}${w.lat_degrees}\u00B0${w.lat_minutes}'${w.lat_seconds}"`,
+            longitude: `${w.lon_direction}${w.lon_degrees}\u00B0${w.lon_minutes}'${w.lon_seconds}"`,
+            variation: `${Math.abs(
+              w.magnetic_variation ? w.magnetic_variation : 0
+            )}\u00B0${
+              w.magnetic_variation
+                ? w.magnetic_variation < 0
+                  ? "E"
+                  : w.magnetic_variation > 0
+                  ? "W"
+                  : ""
                 : ""
-              : ""
-          }`,
-          handleEdit: () => {
-            setWaypointId(w.id);
-            editModal.handleOpen();
-          },
-          handleDelete: () => {
-            setWaypointId(w.id);
-            deleteModal.handleOpen();
-          },
-          permissions: "delete" as "delete",
-        }))
-      : [],
+            }`,
+            handleEdit: () => {
+              setWaypointId(w.id);
+              editModal.handleOpen();
+            },
+            handleDelete: () => {
+              setWaypointId(w.id);
+              deleteModal.handleOpen();
+            },
+            permissions: "delete" as "delete",
+          }))
+        : [],
     breakingPoint: 0,
   };
 

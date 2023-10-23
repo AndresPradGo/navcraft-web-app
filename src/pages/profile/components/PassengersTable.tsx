@@ -80,7 +80,7 @@ interface Props {
 const PassengersTable = ({ editModal }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
   const [passengerId, setPassengerId] = useState<number>(0);
-  const { data: passengers, isLoading } = usePassengersData();
+  const { data: passengers, isLoading, error } = usePassengersData();
   const deleteModal = useModal();
 
   const passengerData = passengers?.find((item) => item.id === passengerId);
@@ -91,20 +91,21 @@ const PassengersTable = ({ editModal }: Props) => {
       name: "Name",
       weight_lb: "Weight [lb]",
     },
-    rows: passengers
-      ? passengers.map((passenger) => ({
-          ...passenger,
-          handleEdit: () => {
-            setPassengerId(passenger.id);
-            editModal.handleOpen();
-          },
-          handleDelete: () => {
-            setPassengerId(passenger.id);
-            deleteModal.handleOpen();
-          },
-          permissions: "delete" as "delete",
-        }))
-      : [],
+    rows:
+      !error && passengers
+        ? passengers.map((passenger) => ({
+            ...passenger,
+            handleEdit: () => {
+              setPassengerId(passenger.id);
+              editModal.handleOpen();
+            },
+            handleDelete: () => {
+              setPassengerId(passenger.id);
+              deleteModal.handleOpen();
+            },
+            permissions: "delete" as "delete",
+          }))
+        : [],
     breakingPoint: 0,
   };
 

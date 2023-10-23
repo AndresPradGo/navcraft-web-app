@@ -1,6 +1,10 @@
 import { useEffect } from "react";
 import { AiOutlineSave } from "react-icons/ai";
-import { LiaMapSignsSolid, LiaTimesSolid } from "react-icons/lia";
+import {
+  LiaMapSignsSolid,
+  LiaTimesSolid,
+  LiaMountainSolid,
+} from "react-icons/lia";
 import { ImCompass2 } from "react-icons/im";
 import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { MdOutlineConnectingAirports } from "react-icons/md";
@@ -226,6 +230,11 @@ const CompassIcon = styled(ImCompass2)`
   margin: 0 10px;
 `;
 
+const TerrainIcon = styled(LiaMountainSolid)`
+  font-size: 30px;
+  margin: 0 10px;
+`;
+
 const AddAerodromeIcon = styled(MdOutlineConnectingAirports)`
   font-size: 35px;
   margin: 0 5px;
@@ -264,7 +273,7 @@ const schema = z.object({
   name: z
     .string()
     .min(2, { message: "Must be at least 2 characters long" })
-    .max(255, { message: "Must be at most 255 characters long" })
+    .max(50, { message: "Must be at most 255 characters long" })
     .regex(/^[A-Za-z0-9 .'-]+$/, {
       message: "Only letters, numbers, spaces and symbols '.-",
     }),
@@ -481,7 +490,7 @@ const EditUserAerodromeForm = ({
             <p>&nbsp;</p>
           )}
           <label htmlFor="aerodrome_magnetic_variation">
-            <CompassIcon />
+            <TerrainIcon />
             {"Elevation [ft]"}
           </label>
         </HtmlInput>

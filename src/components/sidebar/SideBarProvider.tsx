@@ -4,6 +4,7 @@ import { animateScroll as scroll } from "react-scroll";
 import SideBarContext from "./sideBarContext";
 import { usePathList } from "../../router";
 import useScroll from "../../hooks/useScroll";
+import useAuth from "../../hooks/useAuth";
 
 interface Props {
   children: ReactNode;
@@ -12,20 +13,28 @@ interface Props {
 const SideBarProvider = ({ children }: Props) => {
   const pathsWithSideBar = [
     {
-      path: "flights",
-      minLength: 1,
+      path: ["profile"],
+      needsAdmin: false,
     },
     {
-      path: "profile",
-      minLength: 1,
+      path: ["waypoints", "private-aerodrome"],
+      needsAdmin: false,
     },
   ];
 
+  const user = useAuth();
+
   const pathname = usePathList();
 
-  const hasSideBar = pathsWithSideBar.find(
-    (item) => item.path === pathname[0] && pathname.length >= item.minLength
-  )
+  const hasSideBar = pathsWithSideBar.find((item) => {
+    if (item.needsAdmin && !user?.is_admin) return false;
+    for (let i = 0; i < item.path.length; i++) {
+      if (item.path[i] !== pathname[i]) {
+        return false;
+      }
+    }
+    return true;
+  })
     ? true
     : false;
 
