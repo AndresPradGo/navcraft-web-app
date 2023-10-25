@@ -12,11 +12,11 @@ import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { RunwayDataFromAPI } from "../../services/userAerodromeClient";
 import Button from "../../components/common/button";
 import DataList from "../../components/common/datalist";
 import useRunwaySurfaces from "../../hooks/useRunwaySurfaces";
 import Loader from "../../components/Loader";
+import useEditRunway from "./useEditRunway";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -260,7 +260,8 @@ const schema = z.object({
 });
 type FormDataType = z.infer<typeof schema>;
 
-export interface RunwayDataType extends RunwayDataFromAPI {
+export interface RunwayDataType extends FormDataType {
+  id: number;
   aerodromeId: number;
 }
 
@@ -282,28 +283,20 @@ const EditRunwayForm = ({ runwayData, closeModal, isOpen }: Props) => {
     setValue,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
   const { data: surfaces, isLoading } = useRunwaySurfaces();
+  const mutation = useEditRunway();
 
   useEffect(() => {
     register("position");
-    register("surface", { valueAsNumber: true });
+    register("surface");
   }, []);
 
   useEffect(() => {
     if (isOpen) {
       reset({
         number: runwayData.number,
-        position:
-          runwayData.position === "R"
-            ? "Right"
-            : runwayData.position === "L"
-            ? "Left"
-            : runwayData.position === "C"
-            ? "Center"
-            : "",
+        position: runwayData.position,
         length_ft: runwayData.length_ft,
-        thld_displ: runwayData.landing_length_ft
-          ? runwayData.length_ft - runwayData.landing_length_ft
-          : runwayData.landing_length_ft,
+        thld_displ: runwayData.thld_displ,
         intersection_departure_length_ft:
           runwayData.intersection_departure_length_ft,
         surface: runwayData.surface,
@@ -313,16 +306,18 @@ const EditRunwayForm = ({ runwayData, closeModal, isOpen }: Props) => {
 
   useEffect(() => {
     const wrongIntxnDep = checkIntersectionDeparture({
-      lon_direction: watch("intersection_departure_length_ft"),
-      lon_degrees: watch("length_ft"),
+      intersection_departure_length_ft: watch(
+        "intersection_departure_length_ft"
+      ),
+      length_ft: watch("length_ft"),
     });
     if (!wrongIntxnDep) clearErrors("intersection_departure_length_ft");
   }, [watch("intersection_departure_length_ft"), watch("length_ft")]);
 
   useEffect(() => {
     const wrongThldDispl = checkThresholdDisplacement({
-      lon_direction: watch("thld_displ"),
-      lon_degrees: watch("length_ft"),
+      thld_displ: watch("thld_displ"),
+      length_ft: watch("length_ft"),
     });
     if (!wrongThldDispl) clearErrors("thld_displ");
   }, [watch("thld_displ"), watch("length_ft")]);
@@ -376,7 +371,29 @@ const EditRunwayForm = ({ runwayData, closeModal, isOpen }: Props) => {
 
     if (!wrongThldDispl && !wrongIntxnDep) {
       closeModal();
-      console.log(data);
+      const pos = data.position;
+      const surface_id =
+        surfaces?.find((item) => item.surface === data.surface)?.id || 1;
+      mutation.mutate({
+        id: runwayData.id,
+        aerodrome_id: runwayData.aerodromeId,
+        number: data.number,
+        position:
+          pos === "Right"
+            ? "R"
+            : pos === "Left"
+            ? "L"
+            : pos === "Center"
+            ? "C"
+            : undefined,
+        length_ft: data.length_ft,
+        landing_length_ft: data.thld_displ
+          ? data.length_ft - data.thld_displ
+          : undefined,
+        intersection_departure_length_ft: data.intersection_departure_length_ft,
+        surface: data.surface,
+        surface_id: surface_id,
+      });
     }
   };
 
@@ -427,6 +444,8 @@ const EditRunwayForm = ({ runwayData, closeModal, isOpen }: Props) => {
               options={["Right", "Left", "Center"]}
               setValue={(value: string) => setValue("position", value)}
               name="runway_position"
+              formIsOpen={isOpen}
+              resetValue={runwayData.position ? runwayData.position : ""}
             >
               <PositionIcon /> Parallel Position
             </DataList>
@@ -445,6 +464,8 @@ const EditRunwayForm = ({ runwayData, closeModal, isOpen }: Props) => {
               options={surfaces ? surfaces.map((item) => item.surface) : []}
               setValue={(value: string) => setValue("surface", value)}
               name="runway_surface"
+              formIsOpen={isOpen}
+              resetValue={runwayData.surface ? runwayData.surface : ""}
             >
               <SurfaceIcon /> Surface
             </DataList>

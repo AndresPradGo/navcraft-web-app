@@ -77,25 +77,46 @@ const RunwaysTable = ({ editModal, runwaysData, aerodromeId }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
   const [runwayId, setRunwayId] = useState<number>(0);
   const deleteModal = useModal();
-  const runwayData = runwayId
-    ? { ...runwaysData[runwayId], aerodromeId }
-    : ({
+  const runwayInCache = runwaysData.find((item) => item.id === runwayId);
+  const runwayData = runwayInCache
+    ? {
+        id: runwayId,
         aerodromeId,
+        number: runwayInCache.number,
+        position:
+          runwayInCache.position === "R"
+            ? "Right"
+            : runwayInCache.position === "L"
+            ? "Left"
+            : runwayInCache.position === "C"
+            ? "Center"
+            : "",
+        length_ft: runwayInCache.length_ft,
+        thld_displ: runwayInCache.landing_length_ft
+          ? runwayInCache.length_ft - runwayInCache.landing_length_ft
+          : null,
+        intersection_departure_length_ft:
+          runwayInCache.intersection_departure_length_ft
+            ? runwayInCache.intersection_departure_length_ft
+            : null,
+        surface: runwayInCache.surface,
+      }
+    : ({
         id: 0,
+        aerodromeId,
         number: NaN,
-        position: undefined,
+        position: "",
         length_ft: NaN,
-        landing_length_ft: undefined,
-        intersection_departure_length_ft: undefined,
+        thld_displ: NaN,
+        intersection_departure_length_ft: NaN,
         surface: "",
-        surface_id: 0,
       } as RunwayDataType);
 
   const tableData = {
     keys: [
       "runway",
       "length_ft",
-      "thld_dislp",
+      "thld_displ",
       "intersection_departure_length_ft",
       "surface",
     ],
@@ -110,11 +131,15 @@ const RunwaysTable = ({ editModal, runwaysData, aerodromeId }: Props) => {
       id: r.id,
       runway: `${r.number < 10 ? "0" : ""}${r.number}${r.position || ""}`,
       length_ft: r.length_ft,
-      thld_displ: r.landing_length_ft ? r.length_ft - r.landing_length_ft : 0,
-      intersection_departure_length_ft:
-        `${r.intersection_departure_length_ft}` || "",
+      thld_displ: r.landing_length_ft ? r.length_ft - r.landing_length_ft : "-",
+      intersection_departure_length_ft: `${
+        r.intersection_departure_length_ft || "-"
+      }`,
       surface: r.surface,
-      handleEdit: () => {},
+      handleEdit: () => {
+        setRunwayId(r.id);
+        editModal.handleOpen();
+      },
       handleDelete: () => {
         setRunwayId(r.id);
         deleteModal.handleOpen();
@@ -165,7 +190,10 @@ const RunwaysTable = ({ editModal, runwaysData, aerodromeId }: Props) => {
             hoverColor="var(--color-primary-dark)"
             margin="0 20px 0 0px"
             fontSize={18}
-            handleClick={editModal.handleOpen}
+            handleClick={() => {
+              setRunwayId(0);
+              editModal.handleOpen();
+            }}
           >
             <AiOutlinePlus />
           </Button>

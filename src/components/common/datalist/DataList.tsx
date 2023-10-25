@@ -5,6 +5,7 @@ import {
   ChangeEvent,
   FocusEvent,
   useReducer,
+  useEffect,
 } from "react";
 import { styled } from "styled-components";
 
@@ -140,6 +141,7 @@ const HtmlListItem = styled.li`
 
 interface Props {
   value: string;
+  resetValue: string;
   setValue: (value: string) => void;
   hasError: boolean;
   errorMessage: string;
@@ -149,6 +151,7 @@ interface Props {
   children: ReactNode;
   name: string;
   required: boolean;
+  formIsOpen: boolean;
 }
 
 const DataList = ({
@@ -162,9 +165,18 @@ const DataList = ({
   setError,
   clearErrors,
   options,
+  formIsOpen,
+  resetValue,
 }: Props) => {
   const positionPopperTools = usePopperInput();
   const [filteredOptions, dispatch] = useReducer(dataListReducer, options);
+
+  useEffect(() => {
+    if (formIsOpen && positionPopperTools.inputRef) {
+      positionPopperTools.inputRef.value = resetValue;
+      dispatch({ type: "FILTER", value: resetValue, options });
+    }
+  }, [formIsOpen]);
 
   const handleListItemClick = (index: number) => {
     positionPopperTools.closeExpandible();

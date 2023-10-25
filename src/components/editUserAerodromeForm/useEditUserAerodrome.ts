@@ -59,9 +59,9 @@ const useEditUserAerodrome = () => {
                         registered: false,
                     } as AerodromeDataFromAPI
                     if(newData.id !== 0){
-                        const currentWaypoint = currentData?.find(item => item.id == newData.id)
-                        newAerodromeInCacheFormat.created_at_utc = currentWaypoint?.created_at_utc || utcNow
-                        newAerodromeInCacheFormat.runways = currentWaypoint?.runways || []
+                        const currentAerodrome = currentData?.find(item => item.id == newData.id)
+                        newAerodromeInCacheFormat.created_at_utc = currentAerodrome?.created_at_utc || utcNow
+                        newAerodromeInCacheFormat.runways = currentAerodrome?.runways || []
                         return currentData?.map(item => {
                             if (item.id === newData.id)
                                 return newAerodromeInCacheFormat
