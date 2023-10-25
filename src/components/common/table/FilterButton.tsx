@@ -16,7 +16,8 @@ const HtmlForm = styled.ul<HtmlFormProps>`
   transition: all 0.2s ease-out;
   max-height: ${(props) => (props.$expanded ? "500px" : "0")};
   max-width: 280px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
   z-index: 10;
   margin: 0;
   padding: ${(props) => (props.$expanded ? "5px 0" : "0")};

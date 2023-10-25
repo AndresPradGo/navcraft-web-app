@@ -15,6 +15,8 @@ import { z } from "zod";
 import { RunwayDataFromAPI } from "../../services/userAerodromeClient";
 import Button from "../../components/common/button";
 import DataList from "../../components/common/datalist";
+import useRunwaySurfaces from "../../hooks/useRunwaySurfaces";
+import Loader from "../../components/Loader";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -279,6 +281,7 @@ const EditRunwayForm = ({ runwayData, closeModal, isOpen }: Props) => {
     clearErrors,
     setValue,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
+  const { data: surfaces, isLoading } = useRunwaySurfaces();
 
   useEffect(() => {
     register("position");
@@ -386,162 +389,172 @@ const EditRunwayForm = ({ runwayData, closeModal, isOpen }: Props) => {
         </div>
         <CloseIcon onClick={handleCancel} />
       </h1>
-      <HtmlInputContainer>
-        <HtmlInput
-          $hasValue={!!watch("number") || watch("number") === 0}
-          $accepted={!errors.number}
-          $required={true}
-        >
-          <input
-            {...register("number", { valueAsNumber: true })}
-            id="runway_number"
-            type="number"
-            autoComplete="off"
-            required={true}
-          />
-          {errors.number ? <p>{errors.number.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="runway_number">
-            <NumberIcon />
-            Runway Number
-          </label>
-        </HtmlInput>
-        <DataList
-          setError={(message) =>
-            setError("position", {
-              type: "manual",
-              message: message,
-            })
-          }
-          clearErrors={() => clearErrors("position")}
-          required={false}
-          value={watch("position") || ""}
-          hasError={!!errors.position}
-          errorMessage={errors.position?.message || ""}
-          options={["Right", "Left", "Center"]}
-          setValue={(value: string) => setValue("position", value)}
-          name="runway_position"
-        >
-          <PositionIcon /> Parallel Position
-        </DataList>
-        <DataList
-          setError={(message) =>
-            setError("surface", {
-              type: "manual",
-              message: message,
-            })
-          }
-          clearErrors={() => clearErrors("surface")}
-          required={true}
-          value={watch("surface")}
-          hasError={!!errors.surface}
-          errorMessage={errors.surface?.message || ""}
-          options={["Right", "Left", "Center"]}
-          setValue={(value: string) => setValue("surface", value)}
-          name="runway_surface"
-        >
-          <SurfaceIcon /> Surface
-        </DataList>
-        <HtmlInput
-          $hasValue={!!watch("length_ft") || watch("length_ft") === 0}
-          $accepted={!errors.length_ft}
-          $required={true}
-        >
-          <input
-            {...register("length_ft", { valueAsNumber: true })}
-            id="runway_length_ft"
-            type="number"
-            autoComplete="off"
-            required={true}
-          />
-          {errors.length_ft ? <p>{errors.length_ft.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="runway_length_ft">
-            <LengthIcon />
-            {"Length [ft]"}
-          </label>
-        </HtmlInput>
-        <HtmlInput
-          $required={false}
-          $hasValue={!!watch("thld_displ") || watch("thld_displ") === 0}
-          $accepted={!errors.thld_displ}
-        >
-          <input
-            {...register("thld_displ", {
-              setValueAs: handleOptionalLengthValues,
-            })}
-            id="runway_thld_displ"
-            type="number"
-            autoComplete="off"
-          />
-          {errors.thld_displ ? (
-            <p>{errors.thld_displ.message}</p>
-          ) : (
-            <p>&nbsp;</p>
-          )}
-          <label htmlFor="runway_thld_displ">
-            <DisplacementIcon />
-            {"Thld Displ [ft]"}
-          </label>
-        </HtmlInput>
-        <HtmlInput
-          $required={false}
-          $hasValue={
-            !!watch("intersection_departure_length_ft") ||
-            watch("intersection_departure_length_ft") === 0
-          }
-          $accepted={!errors.intersection_departure_length_ft}
-        >
-          <input
-            {...register("intersection_departure_length_ft", {
-              setValueAs: handleOptionalLengthValues,
-            })}
-            id="runway_intersection_departure_length_ft"
-            type="number"
-            autoComplete="off"
-          />
-          {errors.intersection_departure_length_ft ? (
-            <p>{errors.intersection_departure_length_ft.message}</p>
-          ) : (
-            <p>&nbsp;</p>
-          )}
-          <label htmlFor="runway_intersection_departure_length_ft">
-            <IntersectionIcon />
-            {"Intxn Dep [ft]"}
-          </label>
-        </HtmlInput>
-      </HtmlInputContainer>
-      <HtmlButtons>
-        <Button
-          color="var(--color-primary-dark)"
-          hoverColor="var(--color-primary-dark)"
-          backgroundColor="var(--color-grey)"
-          backgroundHoverColor="var(--color-grey-bright)"
-          fontSize={15}
-          margin="5px 0"
-          borderRadious={4}
-          handleClick={handleCancel}
-          btnType="button"
-          width="120px"
-          height="35px"
-        >
-          Cancel
-        </Button>
-        <Button
-          color="var(--color-primary-dark)"
-          hoverColor="var(--color-primary-dark)"
-          backgroundColor="var(--color-contrast)"
-          backgroundHoverColor="var(--color-contrast-hover)"
-          fontSize={15}
-          margin="5px 0"
-          borderRadious={4}
-          btnType="submit"
-          width="120px"
-          height="35px"
-          spaceChildren="space-evenly"
-        >
-          Save
-          <SaveIcon />
-        </Button>
-      </HtmlButtons>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <HtmlInputContainer>
+            <HtmlInput
+              $hasValue={!!watch("number") || watch("number") === 0}
+              $accepted={!errors.number}
+              $required={true}
+            >
+              <input
+                {...register("number", { valueAsNumber: true })}
+                id="runway_number"
+                type="number"
+                autoComplete="off"
+                required={true}
+              />
+              {errors.number ? <p>{errors.number.message}</p> : <p>&nbsp;</p>}
+              <label htmlFor="runway_number">
+                <NumberIcon />
+                Runway Number
+              </label>
+            </HtmlInput>
+            <DataList
+              setError={(message) =>
+                setError("position", {
+                  type: "manual",
+                  message: message,
+                })
+              }
+              clearErrors={() => clearErrors("position")}
+              required={false}
+              value={watch("position") || ""}
+              hasError={!!errors.position}
+              errorMessage={errors.position?.message || ""}
+              options={["Right", "Left", "Center"]}
+              setValue={(value: string) => setValue("position", value)}
+              name="runway_position"
+            >
+              <PositionIcon /> Parallel Position
+            </DataList>
+            <DataList
+              setError={(message) =>
+                setError("surface", {
+                  type: "manual",
+                  message: message,
+                })
+              }
+              clearErrors={() => clearErrors("surface")}
+              required={true}
+              value={watch("surface")}
+              hasError={!!errors.surface}
+              errorMessage={errors.surface?.message || ""}
+              options={surfaces ? surfaces.map((item) => item.surface) : []}
+              setValue={(value: string) => setValue("surface", value)}
+              name="runway_surface"
+            >
+              <SurfaceIcon /> Surface
+            </DataList>
+            <HtmlInput
+              $hasValue={!!watch("length_ft") || watch("length_ft") === 0}
+              $accepted={!errors.length_ft}
+              $required={true}
+            >
+              <input
+                {...register("length_ft", { valueAsNumber: true })}
+                id="runway_length_ft"
+                type="number"
+                autoComplete="off"
+                required={true}
+              />
+              {errors.length_ft ? (
+                <p>{errors.length_ft.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="runway_length_ft">
+                <LengthIcon />
+                {"Length [ft]"}
+              </label>
+            </HtmlInput>
+            <HtmlInput
+              $required={false}
+              $hasValue={!!watch("thld_displ") || watch("thld_displ") === 0}
+              $accepted={!errors.thld_displ}
+            >
+              <input
+                {...register("thld_displ", {
+                  setValueAs: handleOptionalLengthValues,
+                })}
+                id="runway_thld_displ"
+                type="number"
+                autoComplete="off"
+              />
+              {errors.thld_displ ? (
+                <p>{errors.thld_displ.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="runway_thld_displ">
+                <DisplacementIcon />
+                {"Thld Displ [ft]"}
+              </label>
+            </HtmlInput>
+            <HtmlInput
+              $required={false}
+              $hasValue={
+                !!watch("intersection_departure_length_ft") ||
+                watch("intersection_departure_length_ft") === 0
+              }
+              $accepted={!errors.intersection_departure_length_ft}
+            >
+              <input
+                {...register("intersection_departure_length_ft", {
+                  setValueAs: handleOptionalLengthValues,
+                })}
+                id="runway_intersection_departure_length_ft"
+                type="number"
+                autoComplete="off"
+              />
+              {errors.intersection_departure_length_ft ? (
+                <p>{errors.intersection_departure_length_ft.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="runway_intersection_departure_length_ft">
+                <IntersectionIcon />
+                {"Intxn Dep [ft]"}
+              </label>
+            </HtmlInput>
+          </HtmlInputContainer>
+          <HtmlButtons>
+            <Button
+              color="var(--color-primary-dark)"
+              hoverColor="var(--color-primary-dark)"
+              backgroundColor="var(--color-grey)"
+              backgroundHoverColor="var(--color-grey-bright)"
+              fontSize={15}
+              margin="5px 0"
+              borderRadious={4}
+              handleClick={handleCancel}
+              btnType="button"
+              width="120px"
+              height="35px"
+            >
+              Cancel
+            </Button>
+            <Button
+              color="var(--color-primary-dark)"
+              hoverColor="var(--color-primary-dark)"
+              backgroundColor="var(--color-contrast)"
+              backgroundHoverColor="var(--color-contrast-hover)"
+              fontSize={15}
+              margin="5px 0"
+              borderRadious={4}
+              btnType="submit"
+              width="120px"
+              height="35px"
+              spaceChildren="space-evenly"
+            >
+              Save
+              <SaveIcon />
+            </Button>
+          </HtmlButtons>
+        </>
+      )}
     </HtmlForm>
   );
 };

@@ -107,8 +107,9 @@ interface HtmlListProps {
 const HtmlList = styled.ul<HtmlListProps>`
   width: calc(100% - 40px);
   transition: all 0.2s ease-out;
-  max-height: ${(props) => (props.$expanded ? "100vh" : "0")};
-  overflow: hidden;
+  max-height: ${(props) => (props.$expanded ? "200px" : "0")};
+  overflow-x: hidden;
+  overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
   z-index: 10;
   margin: 0;
   padding: ${(props) => (props.$expanded ? "5px 0" : "0")};
@@ -126,7 +127,6 @@ const HtmlListItem = styled.li`
   align-items: center;
   cursor: pointer;
   transition: all 0.2s linear;
-  min-width: calc(280px - 2px);
   color: var(--color-grey-bright);
   background-color: var(--color-grey-dark);
   padding: 10px 20px;
@@ -172,6 +172,7 @@ const DataList = ({
       positionPopperTools.inputRef.value = filteredOptions[index];
     }
     setValue(filteredOptions[index]);
+    clearErrors();
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -197,7 +198,7 @@ const DataList = ({
       ).length
     ) {
       setError("Select a valid option");
-    }
+    } else clearErrors();
     positionPopperTools.closeExpandible;
   };
 

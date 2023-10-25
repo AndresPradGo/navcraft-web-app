@@ -17,7 +17,9 @@ const dataListReducer = (_: string[] | [], action: SortAction): string[] | [] =>
         case 'RESET':
             return action.options
         case 'FILTER':
-            return action.options.filter(option => option.toLowerCase().startsWith(action.value.toLowerCase()))
+            return action.options.filter(
+                option => option.trim().toLowerCase().includes(action.value.trim().toLowerCase())
+            )
     }
 
 }
