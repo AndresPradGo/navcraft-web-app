@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useParams } from "react-router-dom";
-import { PiArrowRightThin } from "react-icons/pi";
+import { MdOutlineStart } from "react-icons/md";
 import { SlBadge } from "react-icons/sl";
 import { LiaMapSignsSolid, LiaMountainSolid } from "react-icons/lia";
 import { ImCompass2 } from "react-icons/im";
@@ -16,7 +16,7 @@ import RunwaysTable from "./RunwaysTable";
 import { useModal } from "../../components/common/modal";
 
 const HtmlContainer = styled.div`
-  max-width: 100%;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-wrap: wrap;
@@ -70,7 +70,6 @@ const HtmlTitleContainer = styled.div`
       }
 
       & svg {
-        border-left: 1px solid var(--color-grey);
         font-size: 25px;
         margin: 0 10px;
       }
@@ -170,7 +169,8 @@ const AerodromePage = () => {
     error,
     isLoading,
   } = useAerodromeData(parseInt(id || "0") || 0);
-  if (error || aerodromeData?.registered) throw new Error("notFound");
+  if ((error && error.message !== "Network Error") || aerodromeData?.registered)
+    throw new Error("notFound");
   if (isLoading) return <Loader />;
 
   interface AerodromeDataDisplay {
@@ -185,43 +185,45 @@ const AerodromePage = () => {
       key: "code",
       title: "Code",
       icon: <CodeIcon />,
-      data: aerodromeData.code,
+      data: aerodromeData?.code,
     },
     {
       key: "name",
       title: "Name",
       icon: <NameIcon />,
-      data: aerodromeData.name,
+      data: aerodromeData?.name,
     },
     {
       key: "latitude",
       title: "Latitude",
       icon: <LatitudeIcon />,
-      data: `${aerodromeData.lat_direction} ${aerodromeData.lat_degrees}\u00B0 ${aerodromeData.lat_minutes}' ${aerodromeData.lat_seconds}"`,
+      data: `${aerodromeData?.lat_direction} ${aerodromeData?.lat_degrees}\u00B0 ${aerodromeData?.lat_minutes}' ${aerodromeData?.lat_seconds}"`,
     },
     {
       key: "longitude",
       title: "Longitude",
       icon: <LongitudeIcon />,
-      data: `${aerodromeData.lon_direction} ${aerodromeData.lon_degrees}\u00B0 ${aerodromeData.lon_minutes}' ${aerodromeData.lon_seconds}"`,
+      data: `${aerodromeData?.lon_direction} ${aerodromeData?.lon_degrees}\u00B0 ${aerodromeData?.lon_minutes}' ${aerodromeData?.lon_seconds}"`,
     },
     {
       key: "elevation_ft",
       title: "Elevation [ft]",
       icon: <TerrainIcon />,
-      data: aerodromeData.elevation_ft,
+      data: aerodromeData?.elevation_ft,
     },
     {
       key: "magnetic_variation",
       title: "Magnetic Var",
       icon: <CompassIcon />,
       data: `${Math.abs(
-        aerodromeData.magnetic_variation ? aerodromeData.magnetic_variation : 0
+        aerodromeData?.magnetic_variation
+          ? aerodromeData?.magnetic_variation
+          : 0
       )}\u00B0${
-        aerodromeData.magnetic_variation
-          ? aerodromeData.magnetic_variation < 0
+        aerodromeData?.magnetic_variation
+          ? aerodromeData?.magnetic_variation < 0
             ? "E"
-            : aerodromeData.magnetic_variation > 0
+            : aerodromeData?.magnetic_variation > 0
             ? "W"
             : ""
           : ""
@@ -231,7 +233,7 @@ const AerodromePage = () => {
       key: "status",
       title: "Status",
       icon: <StatusIcon />,
-      data: aerodromeData.status,
+      data: aerodromeData?.status,
     },
   ] as AerodromeDataDisplay[];
 
@@ -241,7 +243,7 @@ const AerodromePage = () => {
         <HtmlTitleContainer>
           <div>
             <span>
-              <i>Waypoints</i> <PiArrowRightThin />
+              <i>Waypoints</i> <MdOutlineStart />
             </span>
             <span>
               <i>Private Aerodrome:</i>
@@ -268,7 +270,8 @@ const AerodromePage = () => {
         </HtmlDataList>
         <RunwaysTable
           editModal={editRunwayModal}
-          runwaysData={aerodromeData.runways}
+          runwaysData={aerodromeData?.runways || []}
+          aerodromeId={aerodromeData?.id || 0}
         />
       </HtmlContainer>
     </ContentLayout>

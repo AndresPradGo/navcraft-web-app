@@ -7,6 +7,7 @@ import Table from "../../components/common/table";
 import Button from "../../components/common/button";
 import { RunwayDataFromAPI } from "../../services/userAerodromeClient";
 import { useModal, Modal, UseModalType } from "../../components/common/modal";
+import EditRunwayForm, { RunwayDataType } from "./EditRunwayForm";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -69,38 +70,40 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
 interface Props {
   editModal: UseModalType;
   runwaysData: RunwayDataFromAPI[] | [];
+  aerodromeId: number;
 }
 
-const RunwaysTable = ({ editModal, runwaysData }: Props) => {
+const RunwaysTable = ({ editModal, runwaysData, aerodromeId }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
   const [runwayId, setRunwayId] = useState<number>(0);
   const deleteModal = useModal();
   const runwayData = runwayId
-    ? runwaysData[runwayId]
+    ? { ...runwaysData[runwayId], aerodromeId }
     : ({
+        aerodromeId,
         id: 0,
         number: NaN,
-        position: "",
-        length_ft: 0,
+        position: undefined,
+        length_ft: NaN,
         landing_length_ft: undefined,
-        interception_departure_length_ft: undefined,
+        intersection_departure_length_ft: undefined,
         surface: "",
         surface_id: 0,
-      } as RunwayDataFromAPI);
+      } as RunwayDataType);
 
   const tableData = {
     keys: [
       "runway",
       "length_ft",
       "thld_dislp",
-      "interception_departure_length_ft",
+      "intersection_departure_length_ft",
       "surface",
     ],
     headers: {
       runway: "Runway",
       length_ft: "Length [ft]",
       thld_displ: "Thld Displ [ft]",
-      interception_departure_length_ft: "Intxn Dep [ft]",
+      intersection_departure_length_ft: "Intxn Dep [ft]",
       surface: "Surface",
     },
     rows: runwaysData.map((r) => ({
@@ -108,8 +111,8 @@ const RunwaysTable = ({ editModal, runwaysData }: Props) => {
       runway: `${r.number < 10 ? "0" : ""}${r.number}${r.position || ""}`,
       length_ft: r.length_ft,
       thld_displ: r.landing_length_ft ? r.length_ft - r.landing_length_ft : 0,
-      interception_departure_length_ft:
-        `${r.interception_departure_length_ft}` || "",
+      intersection_departure_length_ft:
+        `${r.intersection_departure_length_ft}` || "",
       surface: r.surface,
       handleEdit: () => {},
       handleDelete: () => {
@@ -138,7 +141,13 @@ const RunwaysTable = ({ editModal, runwaysData }: Props) => {
 
   return (
     <>
-      <Modal isOpen={editModal.isOpen}>edit form</Modal>
+      <Modal isOpen={editModal.isOpen}>
+        <EditRunwayForm
+          isOpen={editModal.isOpen}
+          closeModal={editModal.handleClose}
+          runwayData={runwayData}
+        />
+      </Modal>
       <Modal isOpen={deleteModal.isOpen}>delete form</Modal>
       <HtmlContainer>
         <HtmlTitleContainer>

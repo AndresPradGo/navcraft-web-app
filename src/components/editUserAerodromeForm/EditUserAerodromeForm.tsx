@@ -8,7 +8,6 @@ import {
 import { ImCompass2 } from "react-icons/im";
 import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { MdOutlineConnectingAirports } from "react-icons/md";
-
 import { useForm, FieldValues } from "react-hook-form";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -364,13 +363,13 @@ const EditUserAerodromeForm = ({
   }, [isOpen]);
 
   useEffect(() => {
-    const badData = checkCoordinates({
+    const wrongCoordinates = checkCoordinates({
       lon_direction: watch("lon_direction"),
       lon_degrees: watch("lon_degrees"),
       lon_minutes: watch("lon_minutes"),
       lon_seconds: watch("lon_seconds"),
     });
-    if (!badData) clearErrors("lon_degrees");
+    if (!wrongCoordinates) clearErrors("lon_degrees");
   }, [
     watch("lon_direction"),
     watch("lon_degrees"),
@@ -405,8 +404,8 @@ const EditUserAerodromeForm = ({
   };
 
   const submitHandler = (data: FieldValues) => {
-    const badData = checkCoordinates(data);
-    if (!badData) {
+    const wrongCoordinates = checkCoordinates(data);
+    if (!wrongCoordinates) {
       closeModal();
       mutation.mutate({
         id: aerodromeData.id,

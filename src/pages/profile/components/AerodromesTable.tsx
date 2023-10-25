@@ -138,14 +138,16 @@ const AerodromesTable = ({ editModal }: Props) => {
                 : ""
             }`,
             elevation_ft: a.elevation_ft,
-            runways: a.runways
-              .map(
-                (r) =>
-                  `${r.number.toString().padStart(2, "0")}${
-                    r.position ? r.position : ""
-                  }`
-              )
-              .join(", "),
+            runways: a.runways.length
+              ? a.runways
+                  .map(
+                    (r) =>
+                      `${r.number.toString().padStart(2, "0")}${
+                        r.position ? r.position : ""
+                      }`
+                  )
+                  .join(", ")
+              : "-",
             handleEdit: `/waypoints/private-aerodrome/${a.id}`,
             handleDelete: () => {
               setAerodromeId(a.id);

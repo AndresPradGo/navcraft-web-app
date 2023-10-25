@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { HiArrowUp, HiArrowDown } from "react-icons/hi";
+
 import Button from "../button/Button";
 import { usePopperButton } from "../button";
-
 import { SortAction } from "./sortReducer";
 
 interface HtmlListProps {

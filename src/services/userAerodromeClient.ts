@@ -4,10 +4,10 @@ import APIClient from './apiClient'
 export interface RunwayDataFromAPI {
     id: number;
     number: number;
-    position?: string;
+    position?: "R" | "L" | "C";
     length_ft: number;
     landing_length_ft?: number;
-    interception_departure_length_ft?: number;
+    intersection_departure_length_ft?: number;
     surface: string;
     surface_id: number;
 }
