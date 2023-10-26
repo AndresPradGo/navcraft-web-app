@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import useSideBar from '../../sidebar/useSideBar';
 
 export interface ReturnType {
     isOpen: boolean;
@@ -9,6 +10,7 @@ export interface ReturnType {
 
 const useModal = (): ReturnType => {
     const [isOpen, setIsOpen] = useState(false);
+    const {hasSideBar, handleExpandSideBar} = useSideBar()
     
     useEffect(() => {
         return () => {
@@ -22,6 +24,7 @@ const useModal = (): ReturnType => {
     };
     
     const handleOpen = () => {
+        if(hasSideBar) handleExpandSideBar(false)
         document.addEventListener("keydown", hadleEscapeKey, true);
         setIsOpen(true);
         document.body.style.overflow = 'hidden';

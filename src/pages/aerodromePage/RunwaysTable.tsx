@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
@@ -72,11 +72,18 @@ interface Props {
   editModal: UseModalType;
   runwaysData: RunwayDataFromAPI[] | [];
   aerodromeId: number;
+  runwayId: number;
+  setRunwayId: Dispatch<SetStateAction<number>>;
 }
 
-const RunwaysTable = ({ editModal, runwaysData, aerodromeId }: Props) => {
+const RunwaysTable = ({
+  editModal,
+  runwaysData,
+  aerodromeId,
+  runwayId,
+  setRunwayId,
+}: Props) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [runwayId, setRunwayId] = useState<number>(0);
   const deleteModal = useModal();
   const runwayInCache = runwaysData.find((item) => item.id === runwayId);
   const runwayData = runwayInCache

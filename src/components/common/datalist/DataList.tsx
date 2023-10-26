@@ -101,19 +101,18 @@ const HtmlInput = styled.div<RequiredInputProps>`
 
 interface HtmlListProps {
   ref: Dispatch<SetStateAction<HTMLElement | null>>;
-  $required: boolean;
   $expanded: boolean;
 }
 
 const HtmlList = styled.ul<HtmlListProps>`
+  z-index: 2000;
   width: calc(100% - 40px);
+  position: absolute;
   transition: all 0.2s ease-out;
   max-height: ${(props) => (props.$expanded ? "200px" : "0")};
-  overflow-x: hidden;
   overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
-  z-index: 10;
   margin: 0;
-  padding: ${(props) => (props.$expanded ? "5px 0" : "0")};
+  padding: ${(props) => (props.$expanded ? "0 0" : "0")};
   list-style-type: none;
   border: ${(props) =>
     props.$expanded ? "1px groove var(--color-grey)" : "none"};
@@ -122,6 +121,8 @@ const HtmlList = styled.ul<HtmlListProps>`
 `;
 
 const HtmlListItem = styled.li`
+  width: 100%;
+  height: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -130,7 +131,7 @@ const HtmlListItem = styled.li`
   transition: all 0.2s linear;
   color: var(--color-grey-bright);
   background-color: var(--color-grey-dark);
-  padding: 10px 20px;
+  padding: 0 20px;
 
   &:hover,
   &:focus {
@@ -174,16 +175,18 @@ const DataList = ({
   useEffect(() => {
     if (formIsOpen && positionPopperTools.inputRef) {
       positionPopperTools.inputRef.value = resetValue;
-      dispatch({ type: "FILTER", value: resetValue, options });
+
+      if (resetValue === "") dispatch({ type: "RESET", options });
+      else dispatch({ type: "FILTER", value: resetValue, options });
     }
   }, [formIsOpen]);
 
-  const handleListItemClick = (index: number) => {
+  const handleListItemClick = (value: string) => {
     positionPopperTools.closeExpandible();
     if (positionPopperTools.inputRef) {
-      positionPopperTools.inputRef.value = filteredOptions[index];
+      positionPopperTools.inputRef.value = value;
     }
-    setValue(filteredOptions[index]);
+    setValue(value);
     clearErrors();
   };
 
@@ -201,7 +204,15 @@ const DataList = ({
     else dispatch({ type: "FILTER", value: currentValue, options });
   };
 
+  const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
+    const currentValue = event.target.value;
+    if (currentValue === "") dispatch({ type: "RESET", options });
+    else dispatch({ type: "FILTER", value: currentValue, options });
+    positionPopperTools.handleInputClick();
+  };
+
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    positionPopperTools.closeExpandible();
     const currentValue = event.target.value;
     if (
       required &&
@@ -222,7 +233,7 @@ const DataList = ({
         required={required}
         autoComplete="off"
         ref={positionPopperTools.setReferences.input}
-        onFocus={positionPopperTools.handleInputClick}
+        onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
       />
@@ -230,13 +241,12 @@ const DataList = ({
         <HtmlList
           ref={positionPopperTools.setReferences.popper}
           $expanded={positionPopperTools.isExpanded}
-          $required={required}
           style={positionPopperTools.styles}
         >
-          {filteredOptions.map((option, index) => (
+          {filteredOptions.map((option) => (
             <HtmlListItem
               key={option}
-              onClick={() => handleListItemClick((index = index))}
+              onMouseDown={() => handleListItemClick(option)}
             >
               {option}
             </HtmlListItem>

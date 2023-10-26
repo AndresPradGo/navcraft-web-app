@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MdOutlineStart } from "react-icons/md";
 import { SlBadge } from "react-icons/sl";
@@ -13,7 +13,9 @@ import { ContentLayout } from "../layout";
 import useAerodromeData from "./useAerodromeData";
 import Loader from "../../components/Loader";
 import RunwaysTable from "./RunwaysTable";
-import { useModal } from "../../components/common/modal";
+import { Modal, useModal } from "../../components/common/modal";
+import SideBarContent from "./SideBarContent";
+import DeleteUserAerodromeForm from "../../components/deleteUserAerodromeForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -161,8 +163,10 @@ const StatusIcon = styled(SlBadge)`
 `;
 
 const AerodromePage = () => {
+  const [runwayId, setRunwayId] = useState<number>(0);
   const { id } = useParams();
   const editRunwayModal = useModal();
+  const deleteModal = useModal();
 
   const {
     data: aerodromeData,
@@ -238,43 +242,64 @@ const AerodromePage = () => {
   ] as AerodromeDataDisplay[];
 
   return (
-    <ContentLayout sideBarContent="Sidebar">
-      <HtmlContainer>
-        <HtmlTitleContainer>
-          <div>
-            <span>
-              <i>Waypoints</i> <MdOutlineStart />
-            </span>
-            <span>
-              <i>Private Aerodrome:</i>
-              <i>{aerodromeData?.code}</i>
-            </span>
-          </div>
-          <h1>
-            <MdOutlineConnectingAirports />
-            {aerodromeData?.name}
-          </h1>
-        </HtmlTitleContainer>
-        <HtmlDataList>
-          {aerodromeDataList.map((item) => {
-            return (
-              <li key={item.key}>
-                <h3>
-                  {item.icon}
-                  {item.title}
-                </h3>
-                <span>{item.data}</span>
-              </li>
-            );
-          })}
-        </HtmlDataList>
-        <RunwaysTable
-          editModal={editRunwayModal}
-          runwaysData={aerodromeData?.runways || []}
-          aerodromeId={aerodromeData?.id || 0}
+    <>
+      <Modal isOpen={deleteModal.isOpen}>
+        <DeleteUserAerodromeForm
+          closeModal={deleteModal.handleClose}
+          name={aerodromeData?.name || ""}
+          id={aerodromeData?.id || 0}
         />
-      </HtmlContainer>
-    </ContentLayout>
+      </Modal>
+      <ContentLayout
+        sideBarContent={
+          <SideBarContent
+            handleDeleteAerodrome={deleteModal.handleOpen}
+            handleAddRunway={() => {
+              setRunwayId(0);
+              editRunwayModal.handleOpen();
+            }}
+          />
+        }
+      >
+        <HtmlContainer>
+          <HtmlTitleContainer>
+            <div>
+              <span>
+                <i>Waypoints</i> <MdOutlineStart />
+              </span>
+              <span>
+                <i>Private Aerodrome:</i>
+                <i>{aerodromeData?.code}</i>
+              </span>
+            </div>
+            <h1>
+              <MdOutlineConnectingAirports />
+              {aerodromeData?.name}
+            </h1>
+          </HtmlTitleContainer>
+          <HtmlDataList>
+            {aerodromeDataList.map((item) => {
+              return (
+                <li key={item.key}>
+                  <h3>
+                    {item.icon}
+                    {item.title}
+                  </h3>
+                  <span>{item.data}</span>
+                </li>
+              );
+            })}
+          </HtmlDataList>
+          <RunwaysTable
+            editModal={editRunwayModal}
+            runwaysData={aerodromeData?.runways || []}
+            aerodromeId={aerodromeData?.id || 0}
+            runwayId={runwayId}
+            setRunwayId={setRunwayId}
+          />
+        </HtmlContainer>
+      </ContentLayout>
+    </>
   );
 };
 

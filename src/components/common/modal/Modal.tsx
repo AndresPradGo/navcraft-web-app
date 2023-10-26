@@ -39,6 +39,7 @@ const HtmlModal = styled.div<HtmlProps>`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  pointer-events: ${(props) => (props.$isOpen ? "auto" : "none")};
   background-color: var(--color-primary);
   margin: 10px;
   flex-basis: 600px;

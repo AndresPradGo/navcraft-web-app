@@ -8,7 +8,6 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import Button from "../../../components/common/button";
 import { useNavigate } from "react-router-dom";
-import { useSideBar } from "../../../components/sidebar";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -98,7 +97,6 @@ const SideBarContent = ({
 }: Props) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { handleExpandSideBar } = useSideBar();
 
   const commonStyles = {
     color: "var(--color-white)",
@@ -121,7 +119,6 @@ const SideBarContent = ({
         ...commonStyles,
       },
       onClick: () => {
-        handleExpandSideBar(false);
         handleEditProfileOpen();
       },
     },
@@ -132,7 +129,6 @@ const SideBarContent = ({
         ...commonStyles,
       },
       onClick: () => {
-        handleExpandSideBar(false);
         handleChangeEmailOpen();
       },
     },
@@ -143,7 +139,6 @@ const SideBarContent = ({
         ...commonStyles,
       },
       onClick: () => {
-        handleExpandSideBar(false);
         handleChangePasswordOpen();
       },
     },
@@ -157,7 +152,6 @@ const SideBarContent = ({
         ...commonStyles,
       },
       onClick: () => {
-        handleExpandSideBar(false);
         handleAddPassenger();
       },
     },
@@ -168,7 +162,6 @@ const SideBarContent = ({
         ...commonStyles,
       },
       onClick: () => {
-        handleExpandSideBar(false);
         handleAddAerodrome();
       },
     },
@@ -179,7 +172,6 @@ const SideBarContent = ({
         ...commonStyles,
       },
       onClick: () => {
-        handleExpandSideBar(false);
         handleAddWaypoint();
       },
     },
@@ -215,7 +207,6 @@ const SideBarContent = ({
         backgroundHoverColor: "var(--color-warning-hover)",
       },
       onClick: () => {
-        handleExpandSideBar(false);
         handleDeleteAccountOpen();
       },
     },
