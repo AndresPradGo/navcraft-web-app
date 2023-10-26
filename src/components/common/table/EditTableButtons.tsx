@@ -35,7 +35,7 @@ export type EditButtonsPropsTypeUnion =
 export interface Props {
   handleEdit: string | (() => void);
   handleDelete: () => void;
-  permissions?: "open" | "edit" | "delete";
+  permissions?: "open" | "edit" | "delete" | "open-delete";
 }
 
 const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
@@ -51,6 +51,33 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
         >
           EDIT
           <EditIcon />
+        </Button>
+        <Button
+          color="var(--color-white)"
+          hoverColor="var(--color-white)"
+          backgroundColor="var(--color-warning)"
+          backgroundHoverColor="var(--color-warning-hover)"
+          height="24px"
+          margin="10px"
+          borderRadious={40}
+          handleClick={handleDelete}
+        >
+          DELETE
+          <DeleteIcon />
+        </Button>
+      </HtmlButtonGroup>
+    );
+  if (permissions === "open-delete")
+    return (
+      <HtmlButtonGroup>
+        <Button
+          href={typeof handleEdit === "string" ? handleEdit : undefined}
+          handleClick={typeof handleEdit !== "string" ? handleEdit : undefined}
+          height="24px"
+          borderRadious={40}
+        >
+          DETAILS
+          <OpenIcon />
         </Button>
         <Button
           color="var(--color-white)"

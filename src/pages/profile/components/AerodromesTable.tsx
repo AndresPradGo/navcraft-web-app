@@ -153,7 +153,7 @@ const AerodromesTable = ({ editModal }: Props) => {
               setAerodromeId(a.id);
               deleteModal.handleOpen();
             },
-            permissions: "delete" as "delete",
+            permissions: "open-delete" as "open-delete",
           }))
         : [],
     breakingPoint: 1000,
