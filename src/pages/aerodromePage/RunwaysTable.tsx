@@ -8,6 +8,7 @@ import Button from "../../components/common/button";
 import { RunwayDataFromAPI } from "../../services/userAerodromeClient";
 import { useModal, Modal, UseModalType } from "../../components/common/modal";
 import EditRunwayForm, { RunwayDataType } from "./EditRunwayForm";
+import DeleteRunwayForm from "./DeleteRunwayForm";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -173,7 +174,20 @@ const RunwaysTable = ({ editModal, runwaysData, aerodromeId }: Props) => {
           runwayData={runwayData}
         />
       </Modal>
-      <Modal isOpen={deleteModal.isOpen}>delete form</Modal>
+      <Modal isOpen={deleteModal.isOpen}>
+        <DeleteRunwayForm
+          closeModal={deleteModal.handleClose}
+          name={
+            runwayInCache
+              ? `${runwayInCache.number < 10 ? "0" : ""}${
+                  runwayInCache.number
+                }${runwayInCache.position || ""}`
+              : ""
+          }
+          id={runwayId}
+          aerodromeId={aerodromeId}
+        />
+      </Modal>
       <HtmlContainer>
         <HtmlTitleContainer>
           <div>

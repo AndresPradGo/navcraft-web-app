@@ -30,7 +30,7 @@ interface AerodromeContext {
     previusData?: AerodromeDataFromAPI
 }
 
-const apiClient = new APIClient<EditRunwayData, RunwayData>("/runways")
+export const apiClient = new APIClient<EditRunwayData, RunwayData>("/runways")
 
 const useEditRunway = () => {
     const queryClient = useQueryClient()
