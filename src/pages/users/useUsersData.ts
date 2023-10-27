@@ -1,23 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-import APIClient, {APIClientError} from '../../services/apiClient';
+import {APIClientError} from '../../services/apiClient';
+import apiClient, {UserDataFromAPI} from './userService'
 
-interface UserDataFromAPI {
-    id: number;
-    email: string;
-    name: string;
-    is_admin: boolean;
-    is_master: boolean;
-    is_active: boolean;
-    weight_lb: number;
-}
-
-interface EditUserData {
-    make_admin: boolean;
-    activate: boolean;
-}
-
-const apiClient = new APIClient<EditUserData, UserDataFromAPI>("/users")
 
 const useUsersData = () => {
     return useQuery<UserDataFromAPI[], APIClientError>({

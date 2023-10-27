@@ -5,6 +5,7 @@ import { LiaTimesSolid } from "react-icons/lia";
 import { styled } from "styled-components";
 
 import Button from "../../components/common/button";
+import useEditUser from "./useEditUser";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -136,6 +137,7 @@ const CloseIcon = styled(LiaTimesSolid)`
 `;
 
 interface UserDataFromForm {
+  id: number;
   is_admin: boolean;
   is_active: boolean;
 }
@@ -148,6 +150,7 @@ interface Props {
 
 const EditUserForm = ({ userData, closeModal, isOpen }: Props) => {
   const [userState, setUserState] = useState(userData);
+  const editUserMutation = useEditUser();
 
   useEffect(() => {
     if (isOpen) setUserState(userData);
@@ -163,6 +166,12 @@ const EditUserForm = ({ userData, closeModal, isOpen }: Props) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    closeModal();
+    editUserMutation.mutate({
+      id: userData.id,
+      make_admin: userState.is_admin,
+      activate: userState.is_active,
+    });
   };
 
   return (

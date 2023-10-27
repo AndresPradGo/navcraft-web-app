@@ -64,11 +64,11 @@ const Users = () => {
   const editModal = useModal();
 
   const tableData = {
-    keys: ["id", "email", "name", "level", "is_active", "weight_lb"],
+    keys: ["name", "id", "email", "level", "is_active", "weight_lb"],
     headers: {
+      name: "Name",
       id: "ID",
       email: "Email",
-      name: "Name",
       level: "Level",
       is_active: "Active",
       weight_lb: "Weight [lb]",
@@ -165,10 +165,11 @@ const Users = () => {
           userData={
             selectedUser
               ? {
+                  id: userId,
                   is_active: selectedUser.is_active,
                   is_admin: selectedUser.is_admin,
                 }
-              : { is_active: false, is_admin: false }
+              : { id: 0, is_active: false, is_admin: false }
           }
           isOpen={editModal.isOpen}
         />
