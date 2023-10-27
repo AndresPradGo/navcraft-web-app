@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
@@ -75,11 +75,12 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
 
 interface Props {
   editModal: UseModalType;
+  passengerId: number;
+  setPassengerId: Dispatch<SetStateAction<number>>;
 }
 
-const PassengersTable = ({ editModal }: Props) => {
+const PassengersTable = ({ editModal, passengerId, setPassengerId }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [passengerId, setPassengerId] = useState<number>(0);
   const { data: passengers, isLoading, error } = usePassengersData();
   const deleteModal = useModal();
 

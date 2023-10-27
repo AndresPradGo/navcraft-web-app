@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
@@ -76,11 +76,12 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
 
 interface Props {
   editModal: UseModalType;
+  waypointId: number;
+  setWaypointId: Dispatch<SetStateAction<number>>;
 }
 
-const WaypointsTable = ({ editModal }: Props) => {
+const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [waypointId, setWaypointId] = useState<number>(0);
   const { data: waypoints, isLoading, error } = useUserWaypointsData();
 
   const deleteModal = useModal();

@@ -121,6 +121,9 @@ const WeightIcon = styled(FaWeightScale)`
 
 const Profile = () => {
   const [weightInKg, setWeightInKg] = useState(false);
+  const [passengerId, setPassengerId] = useState<number>(0);
+  const [waypointId, setWaypointId] = useState<number>(0);
+
   const deleteAccountModal = useModal();
   const changeEmailModal = useModal();
   const editProfileModal = useModal();
@@ -146,6 +149,16 @@ const Profile = () => {
     throw new Error("");
   }
   if (isLoading) return <Loader />;
+
+  const handleAddPassenger = () => {
+    setPassengerId(0);
+    editPassengerModal.handleOpen();
+  };
+
+  const handleAddWaypoint = () => {
+    setWaypointId(0);
+    editWaypointModal.handleOpen();
+  };
 
   return (
     <>
@@ -180,9 +193,9 @@ const Profile = () => {
             handleChangeEmailOpen={changeEmailModal.handleOpen}
             handleChangePasswordOpen={changePasswordModal.handleOpen}
             handleDeleteAccountOpen={deleteAccountModal.handleOpen}
-            handleAddPassenger={editPassengerModal.handleOpen}
+            handleAddPassenger={handleAddPassenger}
             handleAddAerodrome={editAerodromeModal.handleOpen}
-            handleAddWaypoint={editWaypointModal.handleOpen}
+            handleAddWaypoint={handleAddWaypoint}
           />
         }
       >
@@ -219,9 +232,17 @@ const Profile = () => {
               </HtmlWeightCardBack>
             </HtmlWeightCard>
           </HtmlWeightCardContainer>
-          <PassengersTable editModal={editPassengerModal} />
+          <PassengersTable
+            editModal={editPassengerModal}
+            passengerId={passengerId}
+            setPassengerId={setPassengerId}
+          />
           <AerodromesTable editModal={editAerodromeModal} />
-          <WaypointsTable editModal={editWaypointModal} />
+          <WaypointsTable
+            editModal={editWaypointModal}
+            waypointId={waypointId}
+            setWaypointId={setWaypointId}
+          />
         </HtmlContainer>
       </ContentLayout>
     </>
