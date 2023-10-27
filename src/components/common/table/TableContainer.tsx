@@ -142,10 +142,7 @@ const TableContainer = ({
         </HtmlButtonContainer>
       )}
       {filterParameters && (
-        <FilterTags
-          filters={filters.filter((item) => item.selected)}
-          dispatch={dispatchFilters}
-        />
+        <FilterTags filters={filters} dispatch={dispatchFilters} />
       )}
       <Table
         rows={processedData}

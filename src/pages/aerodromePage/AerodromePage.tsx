@@ -6,7 +6,6 @@ import { LiaMapSignsSolid, LiaMountainSolid } from "react-icons/lia";
 import { ImCompass2 } from "react-icons/im";
 import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { MdOutlineConnectingAirports } from "react-icons/md";
-
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";

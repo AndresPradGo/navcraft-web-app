@@ -50,15 +50,16 @@ interface Props {
 const FilterTags = ({ filters, dispatch }: Props) => {
   return (
     <HtmlContainer>
-      {filters.map((filter, idx) => (
-        <HtmlFilterTag
-          key={filter.key}
-          onClick={() => dispatch({ type: "CHANGE", index: idx })}
-        >
-          <span>{filter.title}</span>
-          <LiaTimesSolid />
-        </HtmlFilterTag>
-      ))}
+      {filters.map((filter, idx) =>
+        filter.selected ? (
+          <HtmlFilterTag key={`${filter.key}-${filter.value}`}>
+            <span>{filter.title}</span>
+            <LiaTimesSolid
+              onClick={() => dispatch({ type: "CHANGE", index: idx })}
+            />
+          </HtmlFilterTag>
+        ) : null
+      )}
     </HtmlContainer>
   );
 };

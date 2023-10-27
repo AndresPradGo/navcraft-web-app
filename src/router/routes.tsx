@@ -4,7 +4,7 @@ import Aircraft from "../pages/Aircraft";
 import Flights from "../pages/Flights";
 import Layout from "../pages/layout";
 import Profile from "../pages/profile";
-import Users from "../pages/Users";
+import Users from "../pages/users/Users";
 import Waypoints from "../pages/Waypoints";
 import ErrorPage from "../pages/ErrorPage";
 import LoginPage from "../pages/login";
