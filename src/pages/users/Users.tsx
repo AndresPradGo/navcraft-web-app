@@ -10,6 +10,7 @@ import Table from "../../components/common/table";
 import { Modal, useModal } from "../../components/common/modal";
 import useUsersData from "./useUsersData";
 import EditUserForm from "./EditUserForm";
+import DeleteUserForm from "./DeleteUserForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -172,6 +173,13 @@ const Users = () => {
               : { id: 0, is_active: false, is_admin: false }
           }
           isOpen={editModal.isOpen}
+        />
+      </Modal>
+      <Modal isOpen={deleteModal.isOpen}>
+        <DeleteUserForm
+          closeModal={deleteModal.handleClose}
+          id={userId}
+          name={selectedUser?.name || ""}
         />
       </Modal>
       <ContentLayout>
