@@ -61,6 +61,7 @@ const Users = () => {
 
   const [userId, setUserId] = useState<number>(0);
   const { data: users, isLoading, error } = useUsersData();
+  if (error) throw new Error("");
   const deleteModal = useModal();
   const editModal = useModal();
 

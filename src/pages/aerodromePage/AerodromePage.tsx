@@ -174,6 +174,7 @@ const AerodromePage = () => {
   } = useAerodromeData(parseInt(id || "0") || 0);
   if ((error && error.message !== "Network Error") || aerodromeData?.registered)
     throw new Error("notFound");
+  else if (error && error.message === "Network Error") throw new Error("");
   if (isLoading) return <Loader />;
 
   interface AerodromeDataDisplay {
