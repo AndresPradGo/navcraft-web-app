@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
 import { FaUsersGear } from "react-icons/fa6";
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
-import useAuth from "../../hooks/useAuth";
 import Loader from "../../components/Loader";
 import Table from "../../components/common/table";
 import { Modal, useModal } from "../../components/common/modal";
@@ -55,10 +53,6 @@ const HtmlTableContainer = styled.div`
 `;
 
 const Users = () => {
-  const user = useAuth();
-  const userIsMaster = user && user.is_master;
-  if (!userIsMaster) return <Navigate to="/flights" />;
-
   const [userId, setUserId] = useState<number>(0);
   const { data: users, isLoading, error } = useUsersData();
   if (error) throw new Error("");
