@@ -9,6 +9,7 @@ import Loader from "../../components/Loader";
 import Table from "../../components/common/table";
 import { Modal, useModal } from "../../components/common/modal";
 import useUsersData from "./useUsersData";
+import EditUserForm from "./EditUserForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -89,7 +90,7 @@ const Users = () => {
               setUserId(user.id);
               deleteModal.handleOpen();
             },
-            permissions: "delete" as "delete",
+            permissions: user.is_master ? undefined : ("delete" as "delete"),
           }))
         : [],
     breakingPoint: 0,
@@ -154,31 +155,49 @@ const Users = () => {
     ],
   };
 
+  const selectedUser = users?.find((user) => user.id === userId);
+
   return (
-    <ContentLayout>
-      <HtmlContainer>
-        <HtmlTitleContainer>
-          <h1>
-            <FaUsersGear />
-            Users
-          </h1>
-        </HtmlTitleContainer>
-        <HtmlTableContainer>
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <Table
-              tableData={tableData}
-              sortColumnOptions={sortData}
-              pageSize={100}
-              searchBarParameters={searchBarParameters}
-              filterParameters={filterParameters}
-              emptyTableMessage="No Users..."
-            />
-          )}
-        </HtmlTableContainer>
-      </HtmlContainer>
-    </ContentLayout>
+    <>
+      <Modal isOpen={editModal.isOpen}>
+        <EditUserForm
+          closeModal={editModal.handleClose}
+          userData={
+            selectedUser
+              ? {
+                  is_active: selectedUser.is_active,
+                  is_admin: selectedUser.is_admin,
+                }
+              : { is_active: false, is_admin: false }
+          }
+          isOpen={editModal.isOpen}
+        />
+      </Modal>
+      <ContentLayout>
+        <HtmlContainer>
+          <HtmlTitleContainer>
+            <h1>
+              <FaUsersGear />
+              Users
+            </h1>
+          </HtmlTitleContainer>
+          <HtmlTableContainer>
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <Table
+                tableData={tableData}
+                sortColumnOptions={sortData}
+                pageSize={100}
+                searchBarParameters={searchBarParameters}
+                filterParameters={filterParameters}
+                emptyTableMessage="No Users..."
+              />
+            )}
+          </HtmlTableContainer>
+        </HtmlContainer>
+      </ContentLayout>
+    </>
   );
 };
 
