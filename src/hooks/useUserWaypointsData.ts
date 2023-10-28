@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import {APIClientError} from '../services/apiClient';
-import apiClient, {WaypointDataFromAPI} from '../services/waypointClient'
+import apiClient, {WaypointDataFromAPI} from '../services/userWaypointClient'
 
 
 const useUserWaypointsData = () => {

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { HiArrowUp, HiArrowDown } from "react-icons/hi";
 
-import Button from "../button/Button";
+import Button from "../button";
 import { usePopperButton } from "../button";
 import { SortAction } from "./sortReducer";
 

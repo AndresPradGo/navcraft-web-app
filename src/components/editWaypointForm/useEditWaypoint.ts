@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../services/apiClient';
 import {WaypointDataFromForm} from './EditWaypointForm';
-import apiClient, {EditWaypointData, WaypointDataFromAPI} from '../../services/waypointClient';
+import apiClient, {EditWaypointData, WaypointDataFromAPI} from '../../services/userWaypointClient';
 import getUTCNowString from '../../utils/getUTCNowString'
 
 

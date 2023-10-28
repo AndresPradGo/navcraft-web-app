@@ -14,7 +14,7 @@ import {
 } from "../../../components/common/modal";
 import EditWaypointForm from "../../../components/editWaypointForm";
 import DeleteWaypointForm from "../../../components/deleteWaypointForm";
-import { WaypointDataFromAPI } from "../../../services/waypointClient";
+import { WaypointDataFromAPI } from "../../../services/userWaypointClient";
 
 interface HtmlTagProps {
   $isOpen: boolean;

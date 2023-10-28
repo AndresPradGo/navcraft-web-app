@@ -2,7 +2,7 @@ import { useMutation, useQueryClient} from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../services/apiClient';
-import apiClient, {WaypointDataFromAPI} from '../../services/waypointClient'
+import apiClient, {WaypointDataFromAPI} from '../../services/userWaypointClient'
 
 
 interface DeleteWaypointData {

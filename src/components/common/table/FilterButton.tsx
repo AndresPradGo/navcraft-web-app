@@ -153,7 +153,12 @@ const FilterButton = ({ text, filters, dispatch }: Props) => {
         ref={popperTools.setReferences.popper}
         style={popperTools.styles}
       >
-        <button onClick={() => dispatch({ type: "CLEAR" })}>
+        <button
+          onClick={() => {
+            dispatch({ type: "CLEAR" });
+            popperTools.closeExpandible();
+          }}
+        >
           Clear all <TbFilterOff />
         </button>
         {filters.map((filter, idx) => (

@@ -8,12 +8,12 @@ interface RunwaySurfaceData {
 }
 
 
-const apiClient = new APIClient<string, RunwaySurfaceData>("/runways/surface")
+const apiClient = new APIClient<string, RunwaySurfaceData>("/runways/surfaces")
 
 const useRunwaySurfaces = () => {
     return useQuery<RunwaySurfaceData[], APIClientError>({
         queryKey: ['runwaySurface'],
-        queryFn: () => apiClient.getAll("s")
+        queryFn: () => apiClient.getAll()
     })
 }
 

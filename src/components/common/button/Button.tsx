@@ -11,7 +11,7 @@ interface HtmlButtonProps {
   $shadow: boolean;
   $width: string;
   $height: string;
-  $spaceChildren: "center" | "space-between" | "space-evenly";
+  $spaceChildren: "center" | "space-between" | "space-evenly" | "flex-start";
   $fontSize: number;
   $borderRadious: number;
   $borderWidth: number;
@@ -100,7 +100,7 @@ interface Props {
   shadow?: boolean;
   width?: string;
   height?: string;
-  spaceChildren?: "center" | "space-between" | "space-evenly";
+  spaceChildren?: "center" | "space-between" | "space-evenly" | "flex-start";
   fontSize?: number;
   borderRadious?: number;
   borderWidth?: number;
@@ -167,7 +167,7 @@ const Button = ({
         $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
         $fontSize={fontSize ? fontSize : 12}
         $borderRadious={borderRadious ? borderRadious : 10}
-        $borderWidth={borderWidth ? borderWidth : 2}
+        $borderWidth={borderWidth ? borderWidth : 0}
         $margin={margin ? margin : "0px"}
         $padding={padding ? padding : "5px 10px"}
         onClick={handleClick ? handleClick : () => {}}
