@@ -14,7 +14,7 @@ interface DeleteWaypointContext {
     previusData?: WaypointDataFromAPI[]
 }
 
-const useDeleteWaypoint = () => {
+const useDeleteUserWaypoint = () => {
     const queryClient = useQueryClient()
     return useMutation<string, APIClientError, DeleteWaypointData, DeleteWaypointContext>({
         mutationFn: (data: DeleteWaypointData) => apiClient.delete(`/${data.id}`),
@@ -74,4 +74,4 @@ const useDeleteWaypoint = () => {
     })
 }
 
-export default useDeleteWaypoint
+export default useDeleteUserWaypoint

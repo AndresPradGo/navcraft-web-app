@@ -17,7 +17,12 @@ import useGetTableStructure from "./useGetTableStructure";
 import useAerodromesData from "../../hooks/useAerodromesData";
 import useRunwaysData from "./useRunwaysData";
 import Table from "../../components/common/table";
-import { useModal } from "../../components/common/modal";
+import { useModal, Modal } from "../../components/common/modal";
+import EditUserWaypointForm from "../../components/editUserWaypointForm";
+import EditVfrWaypointForm from "../../components/editVfrWaypointForm";
+import { WaypointDataFromAPI } from "../../services/userWaypointClient";
+import DeleteUserWaypointForm from "../../components/deleteUserWaypointForm";
+import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -92,6 +97,14 @@ const Waypoints = () => {
 
   const [tableIndex, setTableIndex] = useState<number>(0);
   const [rowToEditId, setRowToEditId] = useState<number>(0);
+  const [typeItemToEdit, setTypeItemToEdit] = useState<
+    | "vfrWaypoint"
+    | "userWaypoint"
+    | "officialAerodrome"
+    | "userAerodrome"
+    | "runway"
+    | null
+  >(null);
 
   const editModal = useModal();
   const deleteModal = useModal();
@@ -198,10 +211,12 @@ const Waypoints = () => {
               }`,
               posted: !vw.hidden ? "Yes" : "No",
               handleEdit: () => {
+                setTypeItemToEdit("vfrWaypoint");
                 setRowToEditId(vw.id);
                 editModal.handleOpen();
               },
               handleDelete: () => {
+                setTypeItemToEdit("vfrWaypoint");
                 setRowToEditId(vw.id);
                 deleteModal.handleOpen();
               },
@@ -227,10 +242,12 @@ const Waypoints = () => {
               }`,
               posted: "Yes",
               handleEdit: () => {
+                setTypeItemToEdit("userWaypoint");
                 setRowToEditId(uw.id);
                 editModal.handleOpen();
               },
               handleDelete: () => {
+                setTypeItemToEdit("userWaypoint");
                 setRowToEditId(uw.id);
                 deleteModal.handleOpen();
               },
@@ -273,6 +290,8 @@ const Waypoints = () => {
               ? `/waypoints/aerodrome/${a.id}`
               : `/waypoints/private-aerodrome/${a.id}`,
             handleDelete: () => {
+              if (a.registered) setTypeItemToEdit("officialAerodrome");
+              else setTypeItemToEdit("userAerodrome");
               setRowToEditId(a.id);
               deleteModal.handleOpen();
             },
@@ -300,10 +319,12 @@ const Waypoints = () => {
             }`,
             surface: r.surface,
             handleEdit: () => {
+              setTypeItemToEdit("runway");
               setRowToEditId(r.id);
               editModal.handleOpen();
             },
             handleDelete: () => {
+              setTypeItemToEdit("runway");
               setRowToEditId(r.id);
               deleteModal.handleOpen();
             },
@@ -318,28 +339,144 @@ const Waypoints = () => {
     else setTableIndex(tableIndex + 1);
   };
 
+  type LatitudeDirections = "North" | "South";
+  const latitudeDirectionConverter = (
+    waypoint?: WaypointDataFromAPI
+  ): LatitudeDirections => {
+    const direction = waypoint?.lat_direction === "S" ? "South" : "North";
+    return direction;
+  };
+
+  type LongitudeDirections = "East" | "West";
+  const longitudeDirectionConverter = (
+    waypoint?: WaypointDataFromAPI
+  ): LongitudeDirections => {
+    const direction = waypoint?.lon_direction === "E" ? "East" : "West";
+    return direction;
+  };
+
+  const vfrWaypointData = vfrWaypoints?.find((item) => item.id === rowToEditId);
+  const userWaypointData = userWaypoints?.find(
+    (item) => item.id === rowToEditId
+  );
+
   return (
-    <ContentLayout sideBarContent={<SideBarContent />}>
-      <HtmlContainer>
-        <HtmlTitleContainer>
-          <h1>
-            {tableOptions[tableIndex].icon}
-            {tableOptions[tableIndex].title}
-          </h1>
-          <ChangeIcon onClick={handleChangeTable} />
-        </HtmlTitleContainer>
-        <HtmlTableContainer>
-          <Table
-            tableData={tableData}
-            sortColumnOptions={sortData}
-            pageSize={10}
-            searchBarParameters={searchBarParameters}
-            filterParameters={filterParameters}
-            emptyTableMessage={`No ${tableOptions[tableIndex].title}...`}
+    <>
+      <Modal isOpen={editModal.isOpen}>
+        {typeItemToEdit === "vfrWaypoint" ? (
+          <EditVfrWaypointForm
+            closeModal={editModal.handleClose}
+            waypointData={
+              vfrWaypointData
+                ? {
+                    id: vfrWaypointData.id,
+                    code: vfrWaypointData.code,
+                    name: vfrWaypointData.name,
+                    lat_degrees: vfrWaypointData.lat_degrees,
+                    lat_minutes: vfrWaypointData.lat_minutes,
+                    lat_seconds: vfrWaypointData.lat_seconds,
+                    lat_direction: latitudeDirectionConverter(vfrWaypointData),
+                    lon_degrees: vfrWaypointData.lon_degrees,
+                    lon_minutes: vfrWaypointData.lon_minutes,
+                    lon_seconds: vfrWaypointData.lon_seconds,
+                    lon_direction: longitudeDirectionConverter(vfrWaypointData),
+                    magnetic_variation: vfrWaypointData.magnetic_variation,
+                    hide: vfrWaypointData.hidden,
+                  }
+                : {
+                    id: 0,
+                    code: "",
+                    name: "",
+                    lat_degrees: 0,
+                    lat_minutes: 0,
+                    lat_seconds: 0,
+                    lat_direction: "North",
+                    lon_degrees: 0,
+                    lon_minutes: 0,
+                    lon_seconds: 0,
+                    lon_direction: "West",
+                    magnetic_variation: NaN,
+                    hide: false,
+                  }
+            }
+            isOpen={editModal.isOpen}
           />
-        </HtmlTableContainer>
-      </HtmlContainer>
-    </ContentLayout>
+        ) : typeItemToEdit === "userWaypoint" ? (
+          <EditUserWaypointForm
+            closeModal={editModal.handleClose}
+            waypointData={
+              userWaypointData
+                ? {
+                    id: userWaypointData.id,
+                    code: userWaypointData.code,
+                    name: userWaypointData.name,
+                    lat_degrees: userWaypointData.lat_degrees,
+                    lat_minutes: userWaypointData.lat_minutes,
+                    lat_seconds: userWaypointData.lat_seconds,
+                    lat_direction: latitudeDirectionConverter(userWaypointData),
+                    lon_degrees: userWaypointData.lon_degrees,
+                    lon_minutes: userWaypointData.lon_minutes,
+                    lon_seconds: userWaypointData.lon_seconds,
+                    lon_direction:
+                      longitudeDirectionConverter(userWaypointData),
+                    magnetic_variation: userWaypointData.magnetic_variation,
+                  }
+                : {
+                    id: 0,
+                    code: "",
+                    name: "",
+                    lat_degrees: 0,
+                    lat_minutes: 0,
+                    lat_seconds: 0,
+                    lat_direction: "North",
+                    lon_degrees: 0,
+                    lon_minutes: 0,
+                    lon_seconds: 0,
+                    lon_direction: "West",
+                    magnetic_variation: NaN,
+                  }
+            }
+            isOpen={editModal.isOpen}
+          />
+        ) : null}
+      </Modal>
+      <Modal isOpen={deleteModal.isOpen}>
+        {typeItemToEdit === "userWaypoint" ? (
+          <DeleteUserWaypointForm
+            closeModal={deleteModal.handleClose}
+            name={userWaypointData ? userWaypointData.name : ""}
+            id={userWaypointData ? userWaypointData.id : 0}
+          />
+        ) : typeItemToEdit === "vfrWaypoint" ? (
+          <DeleteVfrWaypointForm
+            closeModal={deleteModal.handleClose}
+            name={vfrWaypointData ? vfrWaypointData.name : ""}
+            id={vfrWaypointData ? vfrWaypointData.id : 0}
+          />
+        ) : null}
+      </Modal>
+      <ContentLayout sideBarContent={<SideBarContent />}>
+        <HtmlContainer>
+          <HtmlTitleContainer>
+            <h1>
+              {tableOptions[tableIndex].icon}
+              {tableOptions[tableIndex].title}
+            </h1>
+            <ChangeIcon onClick={handleChangeTable} />
+          </HtmlTitleContainer>
+          <HtmlTableContainer>
+            <Table
+              tableData={tableData}
+              sortColumnOptions={sortData}
+              pageSize={10}
+              searchBarParameters={searchBarParameters}
+              filterParameters={filterParameters}
+              emptyTableMessage={`No ${tableOptions[tableIndex].title}...`}
+            />
+          </HtmlTableContainer>
+        </HtmlContainer>
+      </ContentLayout>
+    </>
   );
 };
 

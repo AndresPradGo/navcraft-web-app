@@ -52,6 +52,7 @@ interface TableDataType {
 }
 
 const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): TableDataType[] | [] => {
+    
     const waypointsKeys = ["code", "name", "type", "latitude", "longitude", "variation"]
     const waypointsHeaders = {
         code: "Code",
@@ -76,7 +77,7 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         columnKeys: ["code", "name"]
     }
     const waypointsFilterParameters = {
-        text: "Filter Wypoints",
+        text: "Filter Waypoints",
         filters: [
             {
                 key: "type",
@@ -132,7 +133,7 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         columnKeys: ["code", "name"]
     }
     const aerodromesFilterParameters = {
-        text: "Filter Wypoints",
+        text: "Filter Aerodromes",
         filters: [
             {
                 key: "type",
@@ -154,8 +155,6 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
 
     const runwaysKeys = [
         "aerodrome",
-        "aerodrome_name",
-        "aerodrome_status",
         "runway",
         "length_ft",
         "thld_displ",
@@ -194,7 +193,7 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         
     }
     const runwaysFilterParameters = {
-        text: "Filter Wypoints",
+        text: "Filter Runways",
         filters: aerodromeStatus.map(item => ({
             key: "status",
             title: `${item} Aerodrome`,

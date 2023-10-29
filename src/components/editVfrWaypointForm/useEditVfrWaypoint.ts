@@ -2,18 +2,18 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../services/apiClient';
-import {WaypointDataFromForm} from './EditWaypointForm';
-import apiClient, {EditWaypointData, WaypointDataFromAPI} from '../../services/userWaypointClient';
+import {WaypointDataFromForm} from './EditVfrWaypointForm';
+import apiClient, {EditVfrWaypointData, VfrWaypointDataFromAPI} from '../../services/vfrWaypointClient';
 import getUTCNowString from '../../utils/getUTCNowString'
 
 
 interface WaypointContext {
-    previusData?: WaypointDataFromAPI[]
+    previusData?: VfrWaypointDataFromAPI[]
 }
 
-const useEditWaypoint = () => {
+const useEditVfrWaypoint = () => {
     const queryClient = useQueryClient()
-    return useMutation<WaypointDataFromAPI, APIClientError, WaypointDataFromForm, WaypointContext>({
+    return useMutation<VfrWaypointDataFromAPI, APIClientError, WaypointDataFromForm, WaypointContext>({
         mutationFn: (data) => {
             const waypointData = {
                 code: data.code,
@@ -27,15 +27,15 @@ const useEditWaypoint = () => {
                 lon_seconds: data.lon_seconds,
                 lon_direction: data.lon_direction === "East" ? "E" : "W",
                 magnetic_variation: data.magnetic_variation ? data.magnetic_variation : undefined,
-            } as EditWaypointData
-            if (data.id !== 0) return apiClient.edit(waypointData, `/${data.id}`)
-            return apiClient.post(waypointData)
+                hidden: data.hide
+            } as EditVfrWaypointData
+            if (data.id !== 0) return apiClient.edit(waypointData, `admin-waypoints/vfr/${data.id}`)
+            return apiClient.post(waypointData, 'admin-waypoints/vfr')
         },
         onMutate: (newData) => {
-            const previusData = queryClient.getQueryData<WaypointDataFromAPI[]>(['waypoints', 'user'])
-
-            queryClient.setQueryData<WaypointDataFromAPI[]>(
-                ['waypoints', 'user'], 
+            const previusData = queryClient.getQueryData<VfrWaypointDataFromAPI[]>(['waypoints', 'vfr'])
+            queryClient.setQueryData<VfrWaypointDataFromAPI[]>(
+                ['waypoints', 'vfr'], 
                 currentData => {
                     const utcNow = getUTCNowString()
                     const newWaypointInCacheFormat = {
@@ -52,7 +52,8 @@ const useEditWaypoint = () => {
                         lon_direction: newData.lon_direction === "East" ? "E" : "W",
                         magnetic_variation: newData.magnetic_variation,
                         last_updated_utc: utcNow,
-                    } as WaypointDataFromAPI
+                        hidden: newData.hide
+                    } as VfrWaypointDataFromAPI
                     if(newData.id !== 0){
                         const currentWaypoint = currentData?.find(item => item.id == newData.id)
                         newWaypointInCacheFormat.created_at_utc = currentWaypoint?.created_at_utc || utcNow
@@ -83,8 +84,8 @@ const useEditWaypoint = () => {
                 theme: "dark",
             });
 
-            queryClient.setQueryData<WaypointDataFromAPI[]>(
-                ['waypoints', 'user'], 
+            queryClient.setQueryData<VfrWaypointDataFromAPI[]>(
+                ['waypoints', 'vfr'], 
                 (waypoints) => ( waypoints?.map(item => {
                     if (item.id === savedData.id || newData.id === item.id)
                         return savedData
@@ -117,12 +118,12 @@ const useEditWaypoint = () => {
                 });
             
             if (!context?.previusData) return
-            queryClient.setQueryData<WaypointDataFromAPI[]>(
-                ['waypoints', 'user'], 
+            queryClient.setQueryData<VfrWaypointDataFromAPI[]>(
+                ['waypoints', 'vfr'], 
                 context.previusData
             )
         }
     })
 }
 
-export default useEditWaypoint
+export default useEditVfrWaypoint

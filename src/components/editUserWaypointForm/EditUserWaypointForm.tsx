@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../common/button";
-import useEditWaypoint from "./useEditWaypoint";
+import useEditUserWaypoint from "./useEditUserWaypoint";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -331,8 +331,8 @@ interface Props {
   isOpen: boolean;
 }
 
-const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
-  const mutation = useEditWaypoint();
+const EditUserWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
+  const mutation = useEditUserWaypoint();
   const {
     register,
     handleSubmit,
@@ -428,7 +428,7 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
       <h1>
         <div>
           {waypointData.id !== 0 ? <EditWaypointIcon /> : <AddWaypointIcon />}
-          {`${waypointData.id !== 0 ? "Edit" : "Add"} Waypoint`}
+          {`${waypointData.id !== 0 ? "Edit" : "Add"} User Waypoint`}
         </div>
         <CloseIcon onClick={handleCancel} />
       </h1>
@@ -710,4 +710,4 @@ const EditWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
   );
 };
 
-export default EditWaypointForm;
+export default EditUserWaypointForm;

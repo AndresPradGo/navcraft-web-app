@@ -4,7 +4,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
 import Button from "../common/button";
-import useDeleteWaypoint from "./useDeleteWaypoint";
+import useDeleteUserWaypoint from "./useDeleteUserWaypoint";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -80,6 +80,7 @@ const TitleIcon = styled(IoWarningOutline)`
   padding: 0 5px 5px;
   height: 40px;
   width: 40px;
+  flex-shrink: 0;
 
   @media screen and (min-width: 425px) {
     padding: 0 5px 5px;
@@ -112,8 +113,8 @@ interface Props {
   id: number;
 }
 
-const DeleteWaypointForm = ({ closeModal, name, id }: Props) => {
-  const deleteMutation = useDeleteWaypoint();
+const DeleteUserWaypointForm = ({ closeModal, name, id }: Props) => {
+  const deleteMutation = useDeleteUserWaypoint();
 
   const handleDelete = () => {
     closeModal();
@@ -128,7 +129,7 @@ const DeleteWaypointForm = ({ closeModal, name, id }: Props) => {
       <h1>
         <div>
           <TitleIcon />
-          Delete Waypoint
+          Delete User Waypoint
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
@@ -170,4 +171,4 @@ const DeleteWaypointForm = ({ closeModal, name, id }: Props) => {
   );
 };
 
-export default DeleteWaypointForm;
+export default DeleteUserWaypointForm;

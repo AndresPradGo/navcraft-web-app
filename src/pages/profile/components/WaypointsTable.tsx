@@ -12,8 +12,8 @@ import {
   Modal,
   UseModalType,
 } from "../../../components/common/modal";
-import EditWaypointForm from "../../../components/editWaypointForm";
-import DeleteWaypointForm from "../../../components/deleteWaypointForm";
+import EditUserWaypointForm from "../../../components/editUserWaypointForm";
+import DeleteUserWaypointForm from "../../../components/deleteUserWaypointForm";
 import { WaypointDataFromAPI } from "../../../services/userWaypointClient";
 
 interface HtmlTagProps {
@@ -165,7 +165,7 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
   return (
     <>
       <Modal isOpen={editModal.isOpen}>
-        <EditWaypointForm
+        <EditUserWaypointForm
           closeModal={editModal.handleClose}
           waypointData={
             waypointData
@@ -202,7 +202,7 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
         />
       </Modal>
       <Modal isOpen={deleteModal.isOpen}>
-        <DeleteWaypointForm
+        <DeleteUserWaypointForm
           closeModal={deleteModal.handleClose}
           name={waypointData?.name || ""}
           id={waypointData ? waypointData.id : 0}
