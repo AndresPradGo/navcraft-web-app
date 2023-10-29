@@ -38,9 +38,10 @@ const HtmlForm = styled.form`
     & div {
       display: flex;
       align-items: center;
+      text-wrap: wrap;
     }
 
-    @media screen and (min-width: 425px) {
+    @media screen and (min-width: 510px) {
       padding: 10px;
       font-size: 32px;
     }
@@ -235,16 +236,17 @@ const TerrainIcon = styled(LiaMountainSolid)`
 `;
 
 const AddAerodromeIcon = styled(MdOutlineConnectingAirports)`
+  flex-shrink: 0;
   font-size: 35px;
-  margin: 0 5px;
+  margin: 0 10px;
 
-  @media screen and (min-width: 425px) {
-    margin: 0 10px;
+  @media screen and (min-width: 510px) {
     font-size: 40px;
   }
 `;
 
 const CloseIcon = styled(LiaTimesSolid)`
+  flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
   cursor: pointer;
@@ -255,7 +257,7 @@ const CloseIcon = styled(LiaTimesSolid)`
     color: var(--color-white);
   }
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 510px) {
     margin: 0 10px;
     font-size: 30px;
   }

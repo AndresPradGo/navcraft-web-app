@@ -40,9 +40,10 @@ const HtmlForm = styled.form`
     & div {
       display: flex;
       align-items: center;
+      text-wrap: wrap;
     }
 
-    @media screen and (min-width: 425px) {
+    @media screen and (min-width: 510px) {
       padding: 10px;
       font-size: 32px;
     }
@@ -77,7 +78,7 @@ const HtmlInputGroup = styled.div`
     align-items: center;
     font-size: 20px;
 
-    @media screen and (min-width: 425px) {
+    @media screen and (min-width: 510px) {
       font-size: 27px;
     }
   }
@@ -277,26 +278,27 @@ const HideIcon = styled(BiHide)`
 `;
 
 const EditWaypointIcon = styled(TbMapPinCog)`
+  flex-shrink: 0;
   font-size: 25px;
-  margin: 0 5px;
+  margin: 0 10px;
 
-  @media screen and (min-width: 425px) {
-    margin: 0 10px;
+  @media screen and (min-width: 510px) {
     font-size: 30px;
   }
 `;
 
 const AddWaypointIcon = styled(TbMapPinPlus)`
+  flex-shrink: 0;
   font-size: 25px;
-  margin: 0 5px;
+  margin: 0 10px;
 
-  @media screen and (min-width: 425px) {
-    margin: 0 10px;
+  @media screen and (min-width: 510px) {
     font-size: 30px;
   }
 `;
 
 const CloseIcon = styled(LiaTimesSolid)`
+  flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
   cursor: pointer;
@@ -307,7 +309,7 @@ const CloseIcon = styled(LiaTimesSolid)`
     color: var(--color-white);
   }
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 510px) {
     margin: 0 10px;
     font-size: 30px;
   }

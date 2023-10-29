@@ -28,9 +28,10 @@ const HtmlContainer = styled.div`
     & div {
       display: flex;
       align-items: center;
+      text-wrap: wrap;
     }
 
-    @media screen and (min-width: 425px) {
+    @media screen and (min-width: 510px) {
       padding: 10px;
       font-size: 32px;
     }
@@ -72,8 +73,9 @@ const DeleteIcon = styled(RiDeleteBinLine)`
 `;
 
 const TitleIcon = styled(IoWarningOutline)`
-  font-size: 30px;
-  margin: 0 5px;
+  flex-shrink: 0;
+  font-size: 25px;
+  margin: 0 10px;
   color: var(--color-white);
   background-color: var(--color-warning);
   border-radius: 50%;
@@ -81,15 +83,15 @@ const TitleIcon = styled(IoWarningOutline)`
   height: 40px;
   width: 40px;
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 510px) {
     padding: 0 5px 5px;
     height: 50px;
     width: 50px;
-    margin: 0 10px;
   }
 `;
 
 const CloseIcon = styled(LiaTimesSolid)`
+  flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
   cursor: pointer;
@@ -100,7 +102,7 @@ const CloseIcon = styled(LiaTimesSolid)`
     color: var(--color-white);
   }
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 510px) {
     margin: 0 10px;
     font-size: 30px;
   }
