@@ -78,7 +78,7 @@ const TableContainer = ({
     dispatchFilters({ type: "CLEAR" });
     dispatchSort({ type: "RESET" });
     dispatchPage({ type: "RESET" });
-  }, [emptyTableMessage, ...tableData.keys]);
+  }, [emptyTableMessage, tableData.keys.length, tableData.keys[0]]);
 
   const { processedData, numPages } = useProcessTableData({
     data: tableData.rows,
