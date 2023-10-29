@@ -46,7 +46,7 @@ const useProcessTableData = ({
     // Variable to store the processed data
     let processedData = data
 
-    // Filter data according to search-bar text
+    // Apply search-bar filter
     if (searchParams) {
         processedData = processedData.filter((row): boolean => {
             return searchParams.columnKeys.map((key):boolean => {
@@ -54,7 +54,8 @@ const useProcessTableData = ({
             }).some(bool => bool === true)
         })
     }
-
+  
+    // Apply filters
     if (filterParams.length) {
         processedData = processedData.filter(row => (
             filterParams.some(filter => (

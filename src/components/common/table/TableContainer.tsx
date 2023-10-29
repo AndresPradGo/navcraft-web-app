@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer, useState, useEffect } from "react";
 import { styled } from "styled-components";
 
 import FilterButton, { FilterParametersType } from "./FilterButton";
@@ -63,21 +63,22 @@ const TableContainer = ({
 }: Props) => {
   const [searchText, setSearchText] = useState("");
   const [page, dispatchPage] = useReducer(pageReducer, 1);
-  const [filters, dispatchFilters] = useReducer(
-    filtersReducer,
-    filterParameters
-      ? filterParameters.filters.map((filter) => ({
-          key: filter.key,
-          value: filter.value,
-          title: filter.title,
-          selected: false,
-        }))
-      : []
-  );
+  const [filters, dispatchFilters] = useReducer(filtersReducer, []);
   const [sort, dispatchSort] = useReducer(sortReducer, {
     index: 0,
     order: "asc",
   } as SortDataType);
+
+  useEffect(() => {
+    dispatchPage({ type: "RESET" });
+  }, [searchText, filters.length]);
+
+  useEffect(() => {
+    setSearchText("");
+    dispatchFilters({ type: "CLEAR" });
+    dispatchSort({ type: "RESET" });
+    dispatchPage({ type: "RESET" });
+  }, [emptyTableMessage, ...tableData.keys]);
 
   const { processedData, numPages } = useProcessTableData({
     data: tableData.rows,
@@ -99,12 +100,13 @@ const TableContainer = ({
           text: searchText,
         }
       : undefined,
-    filterParams: filters
-      .filter((item) => item.selected)
-      .map((item) => ({
-        key: item.key,
-        value: item.value,
-      })),
+    filterParams:
+      (filters.map((idx) => filterParameters?.filters[idx]) || []).map(
+        (item) => ({
+          key: item?.key || "",
+          value: item?.value || "",
+        })
+      ) || [],
   });
 
   if (tableData.rows.length === 0)
@@ -135,14 +137,19 @@ const TableContainer = ({
           {filterParameters && (
             <FilterButton
               text={filterParameters.text}
-              filters={filters}
+              filters={filterParameters.filters}
+              appliedFilters={filters}
               dispatch={dispatchFilters}
             />
           )}
         </HtmlButtonContainer>
       )}
       {filterParameters && (
-        <FilterTags filters={filters} dispatch={dispatchFilters} />
+        <FilterTags
+          filters={filterParameters.filters}
+          selectedFilters={filters}
+          dispatch={dispatchFilters}
+        />
       )}
       <Table
         rows={processedData}

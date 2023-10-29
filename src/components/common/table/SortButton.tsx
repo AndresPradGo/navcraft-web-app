@@ -13,7 +13,7 @@ interface HtmlListProps {
 
 const HtmlList = styled.ul<HtmlListProps>`
   transition: all 0.2s ease-out;
-  max-height: ${(props) => (props.$expanded ? "500px" : "0")};
+  max-height: ${(props) => (props.$expanded ? "300px" : "0")};
   overflow-x: hidden;
   overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
   z-index: 10;

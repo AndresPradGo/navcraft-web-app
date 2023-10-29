@@ -14,7 +14,7 @@ interface HtmlFormProps {
 
 const HtmlForm = styled.ul<HtmlFormProps>`
   transition: all 0.2s ease-out;
-  max-height: ${(props) => (props.$expanded ? "500px" : "0")};
+  max-height: ${(props) => (props.$expanded ? "300px" : "0")};
   max-width: 280px;
   overflow-x: hidden;
   overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
@@ -100,10 +100,6 @@ export interface FiltersType {
   title: string;
 }
 
-export interface FilterWithValueType extends FiltersType {
-  selected: boolean;
-}
-
 export interface FilterParametersType {
   text: string;
   filters: FiltersType[];
@@ -112,14 +108,16 @@ export interface FilterParametersType {
 interface Props {
   text: string;
   dispatch: Dispatch<FilterAction>;
-  filters: FilterWithValueType[];
+  filters: FiltersType[];
+  appliedFilters: number[];
 }
 
-const FilterButton = ({ text, filters, dispatch }: Props) => {
+const FilterButton = ({ text, filters, appliedFilters, dispatch }: Props) => {
   const popperTools = usePopperButton();
 
-  const handleSelectItem = (index: number) => {
-    dispatch({ type: "CHANGE", index: index });
+  const handleSelectItem = (index: number, remove: boolean) => {
+    if (remove) dispatch({ type: "REMOVE", index: index });
+    else dispatch({ type: "ADD", index: index });
   };
 
   return (
@@ -142,11 +140,7 @@ const FilterButton = ({ text, filters, dispatch }: Props) => {
         margin="10px 0"
       >
         {text}
-        {filters.some((item) => item.selected) ? (
-          <FilterFilledIcon />
-        ) : (
-          <FilterIcon />
-        )}
+        {appliedFilters.length ? <FilterFilledIcon /> : <FilterIcon />}
       </Button>
       <HtmlForm
         $expanded={popperTools.isExpanded}
@@ -161,17 +155,22 @@ const FilterButton = ({ text, filters, dispatch }: Props) => {
         >
           Clear all <TbFilterOff />
         </button>
-        {filters.map((filter, idx) => (
-          <HtmlCheckbox key={`checkbox-${idx}`} htmlFor={`checkbox-${idx}`}>
-            <input
-              type="checkbox"
-              id={`checkbox-${idx}`}
-              onChange={() => handleSelectItem(idx)}
-              checked={filter.selected}
-            />
-            <span>{filter.title}</span>
-          </HtmlCheckbox>
-        ))}
+        {filters.map((filter, idx) => {
+          const selected =
+            !!appliedFilters.find((i) => i === idx) ||
+            appliedFilters.find((i) => i === idx) === 0;
+          return (
+            <HtmlCheckbox key={`checkbox-${idx}`} htmlFor={`checkbox-${idx}`}>
+              <input
+                type="checkbox"
+                id={`checkbox-${idx}`}
+                onChange={() => handleSelectItem(idx, selected)}
+                checked={selected}
+              />
+              <span>{filter.title}</span>
+            </HtmlCheckbox>
+          );
+        })}
       </HtmlForm>
     </>
   );

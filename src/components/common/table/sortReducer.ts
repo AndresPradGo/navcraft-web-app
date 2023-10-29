@@ -1,7 +1,7 @@
 import {SortDataType} from "./SortButton"
 
 interface ChangeOrder {
-    type: 'SWAP';
+    type: 'SWAP' | 'RESET';
 }
 
 interface ChangeIndex {
@@ -23,7 +23,11 @@ const sortReducer = (sort: SortDataType, action: SortAction): SortDataType => {
                 index: sort.index,
                 order: sort.order === "asc" ? "desc" : "asc"
             }
-            
+        case 'RESET':
+            return {
+                index: 0,
+                order: "asc"
+            }  
     }
 
 }

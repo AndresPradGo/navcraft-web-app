@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { Dispatch } from "react";
 
 import { FilterAction } from "./filtersReducer";
-import { FilterWithValueType } from "./FilterButton";
+import { FiltersType } from "./FilterButton";
 
 const HtmlContainer = styled.div`
   width: 98%;
@@ -43,23 +43,25 @@ const HtmlFilterTag = styled.div`
 `;
 
 interface Props {
-  filters: FilterWithValueType[];
+  selectedFilters: number[];
+  filters: FiltersType[];
   dispatch: Dispatch<FilterAction>;
 }
 
-const FilterTags = ({ filters, dispatch }: Props) => {
+const FilterTags = ({ filters, selectedFilters, dispatch }: Props) => {
   return (
     <HtmlContainer>
-      {filters.map((filter, idx) =>
-        filter.selected ? (
+      {selectedFilters.map((idx) => {
+        const filter = filters[idx];
+        return (
           <HtmlFilterTag key={`${filter.key}-${filter.value}`}>
             <span>{filter.title}</span>
             <LiaTimesSolid
-              onClick={() => dispatch({ type: "CHANGE", index: idx })}
+              onClick={() => dispatch({ type: "REMOVE", index: idx })}
             />
           </HtmlFilterTag>
-        ) : null
-      )}
+        );
+      })}
     </HtmlContainer>
   );
 };

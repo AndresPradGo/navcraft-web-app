@@ -1,6 +1,5 @@
-import {FilterWithValueType} from "./FilterButton"
 interface ChangeAction {
-    type: 'CHANGE';
+    type: 'ADD' | 'REMOVE';
     index: number;
 }
 
@@ -10,17 +9,15 @@ interface ClearAction {
 
 export type FilterAction = ChangeAction | ClearAction;
 
-const filtersReducer = (filters: FilterWithValueType[], action: FilterAction): FilterWithValueType[] | [] => {
+const filtersReducer = (filters: number[] | [], action: FilterAction): number[] | [] => {
 
     switch (action.type) {
-        case 'CHANGE':
-           return filters.map((val,idx) => {
-                if (idx === action.index)
-                    return {...val, selected: !val.selected}
-                return val
-            })
+        case 'ADD':
+           return  [...filters, action.index]
+        case 'REMOVE':
+            return filters.filter(item => item !== action.index)
         case 'CLEAR':
-            return filters.map(filter => ({...filter, selected: false}))
+            return []
 
     }
 }
