@@ -3,7 +3,6 @@ import { AiOutlineSwap } from "react-icons/ai";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { GiRoad } from "react-icons/gi";
 import { MdOutlineConnectingAirports } from "react-icons/md";
-
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
@@ -20,7 +19,6 @@ import Table from "../../components/common/table";
 import { useModal, Modal } from "../../components/common/modal";
 import EditUserWaypointForm from "../../components/editUserWaypointForm";
 import EditVfrWaypointForm from "../../components/editVfrWaypointForm";
-import { WaypointDataFromAPI } from "../../services/userWaypointClient";
 import DeleteUserWaypointForm from "../../components/deleteUserWaypointForm";
 import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm";
 
@@ -339,22 +337,6 @@ const Waypoints = () => {
     else setTableIndex(tableIndex + 1);
   };
 
-  type LatitudeDirections = "North" | "South";
-  const latitudeDirectionConverter = (
-    waypoint?: WaypointDataFromAPI
-  ): LatitudeDirections => {
-    const direction = waypoint?.lat_direction === "S" ? "South" : "North";
-    return direction;
-  };
-
-  type LongitudeDirections = "East" | "West";
-  const longitudeDirectionConverter = (
-    waypoint?: WaypointDataFromAPI
-  ): LongitudeDirections => {
-    const direction = waypoint?.lon_direction === "E" ? "East" : "West";
-    return direction;
-  };
-
   const vfrWaypointData = vfrWaypoints?.find((item) => item.id === rowToEditId);
   const userWaypointData = userWaypoints?.find(
     (item) => item.id === rowToEditId
@@ -375,11 +357,13 @@ const Waypoints = () => {
                     lat_degrees: vfrWaypointData.lat_degrees,
                     lat_minutes: vfrWaypointData.lat_minutes,
                     lat_seconds: vfrWaypointData.lat_seconds,
-                    lat_direction: latitudeDirectionConverter(vfrWaypointData),
+                    lat_direction:
+                      vfrWaypointData.lat_direction === "S" ? "South" : "North",
                     lon_degrees: vfrWaypointData.lon_degrees,
                     lon_minutes: vfrWaypointData.lon_minutes,
                     lon_seconds: vfrWaypointData.lon_seconds,
-                    lon_direction: longitudeDirectionConverter(vfrWaypointData),
+                    lon_direction:
+                      vfrWaypointData.lon_direction === "E" ? "East" : "West",
                     magnetic_variation: vfrWaypointData.magnetic_variation,
                     hide: vfrWaypointData.hidden,
                   }
@@ -413,12 +397,15 @@ const Waypoints = () => {
                     lat_degrees: userWaypointData.lat_degrees,
                     lat_minutes: userWaypointData.lat_minutes,
                     lat_seconds: userWaypointData.lat_seconds,
-                    lat_direction: latitudeDirectionConverter(userWaypointData),
+                    lat_direction:
+                      userWaypointData.lat_direction === "S"
+                        ? "South"
+                        : "North",
                     lon_degrees: userWaypointData.lon_degrees,
                     lon_minutes: userWaypointData.lon_minutes,
                     lon_seconds: userWaypointData.lon_seconds,
                     lon_direction:
-                      longitudeDirectionConverter(userWaypointData),
+                      userWaypointData.lon_direction === "E" ? "East" : "West",
                     magnetic_variation: userWaypointData.magnetic_variation,
                   }
                 : {

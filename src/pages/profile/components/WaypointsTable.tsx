@@ -14,7 +14,6 @@ import {
 } from "../../../components/common/modal";
 import EditUserWaypointForm from "../../../components/editUserWaypointForm";
 import DeleteUserWaypointForm from "../../../components/deleteUserWaypointForm";
-import { WaypointDataFromAPI } from "../../../services/userWaypointClient";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -146,22 +145,6 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
     editModal.handleOpen();
   };
 
-  type LatitudeDirections = "North" | "South";
-  const latitudeDirectionConverter = (
-    waypoint?: WaypointDataFromAPI
-  ): LatitudeDirections => {
-    const direction = waypoint?.lat_direction === "S" ? "South" : "North";
-    return direction;
-  };
-
-  type LongitudeDirections = "East" | "West";
-  const longitudeDirectionConverter = (
-    waypoint?: WaypointDataFromAPI
-  ): LongitudeDirections => {
-    const direction = waypoint?.lon_direction === "E" ? "East" : "West";
-    return direction;
-  };
-
   return (
     <>
       <Modal isOpen={editModal.isOpen}>
@@ -176,11 +159,13 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
                   lat_degrees: waypointData.lat_degrees,
                   lat_minutes: waypointData.lat_minutes,
                   lat_seconds: waypointData.lat_seconds,
-                  lat_direction: latitudeDirectionConverter(waypointData),
+                  lat_direction:
+                    waypointData.lat_direction === "S" ? "South" : "North",
                   lon_degrees: waypointData.lon_degrees,
                   lon_minutes: waypointData.lon_minutes,
                   lon_seconds: waypointData.lon_seconds,
-                  lon_direction: longitudeDirectionConverter(waypointData),
+                  lon_direction:
+                    waypointData.lon_direction === "E" ? "East" : "West",
                   magnetic_variation: waypointData.magnetic_variation,
                 }
               : {

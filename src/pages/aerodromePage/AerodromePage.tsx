@@ -15,6 +15,7 @@ import RunwaysTable from "./RunwaysTable";
 import { Modal, useModal } from "../../components/common/modal";
 import SideBarContent from "./SideBarContent";
 import DeleteUserAerodromeForm from "../../components/deleteUserAerodromeForm";
+import EditUserAerodromeForm from "../../components/editUserAerodromeForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -165,6 +166,7 @@ const AerodromePage = () => {
   const [runwayId, setRunwayId] = useState<number>(0);
   const { id } = useParams();
   const editRunwayModal = useModal();
+  const editModal = useModal();
   const deleteModal = useModal();
 
   const {
@@ -243,6 +245,50 @@ const AerodromePage = () => {
 
   return (
     <>
+      <Modal isOpen={editModal.isOpen}>
+        <EditUserAerodromeForm
+          queryKey={"user"}
+          closeModal={editModal.handleClose}
+          aerodromeData={
+            aerodromeData
+              ? {
+                  id: aerodromeData.id,
+                  code: aerodromeData.code,
+                  name: aerodromeData.name,
+                  lat_degrees: aerodromeData.lat_degrees,
+                  lat_minutes: aerodromeData.lat_minutes,
+                  lat_seconds: aerodromeData.lat_seconds,
+                  lat_direction:
+                    aerodromeData.lat_direction === "S" ? "South" : "North",
+                  lon_degrees: aerodromeData.lon_degrees,
+                  lon_minutes: aerodromeData.lon_minutes,
+                  lon_seconds: aerodromeData.lon_seconds,
+                  lon_direction:
+                    aerodromeData.lon_direction === "E" ? "East" : "West",
+                  elevation_ft: aerodromeData.elevation_ft,
+                  magnetic_variation: aerodromeData.magnetic_variation,
+                  status: 6,
+                }
+              : {
+                  id: 0,
+                  code: "",
+                  name: "",
+                  lat_degrees: 0,
+                  lat_minutes: 0,
+                  lat_seconds: 0,
+                  lat_direction: "North",
+                  lon_degrees: 0,
+                  lon_minutes: 0,
+                  lon_seconds: 0,
+                  lon_direction: "West",
+                  elevation_ft: 0,
+                  magnetic_variation: 0,
+                  status: 6,
+                }
+          }
+          isOpen={editModal.isOpen}
+        />
+      </Modal>
       <Modal isOpen={deleteModal.isOpen}>
         <DeleteUserAerodromeForm
           closeModal={deleteModal.handleClose}
@@ -258,6 +304,7 @@ const AerodromePage = () => {
               setRunwayId(0);
               editRunwayModal.handleOpen();
             }}
+            handleEditAerodrome={editModal.handleOpen}
           />
         }
       >

@@ -1,4 +1,4 @@
-import { MdAddRoad } from "react-icons/md";
+import { MdAddRoad, MdOutlineConnectingAirports } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 import { styled } from "styled-components";
@@ -35,6 +35,11 @@ const AddRunwayIcon = styled(MdAddRoad)`
   margin-left: 5px;
 `;
 
+const AerodromeIcon = styled(MdOutlineConnectingAirports)`
+  font-size: 25px;
+  margin-left: 5px;
+`;
+
 const DeleteIcon = styled(RiDeleteBinLine)`
   font-size: 20px;
   margin-left: 5px;
@@ -43,9 +48,14 @@ const DeleteIcon = styled(RiDeleteBinLine)`
 export interface Props {
   handleDeleteAerodrome: () => void;
   handleAddRunway: () => void;
+  handleEditAerodrome: () => void;
 }
 
-const SideBarContent = ({ handleDeleteAerodrome, handleAddRunway }: Props) => {
+const SideBarContent = ({
+  handleDeleteAerodrome,
+  handleAddRunway,
+  handleEditAerodrome,
+}: Props) => {
   const commonStyles = {
     width: "100%",
     height: "40px",
@@ -57,6 +67,20 @@ const SideBarContent = ({ handleDeleteAerodrome, handleAddRunway }: Props) => {
   };
 
   const buttons = [
+    {
+      text: "Edit Aerodrome",
+      icon: <AerodromeIcon />,
+      styles: {
+        ...commonStyles,
+        color: "var(--color-white)",
+        hoverColor: "var(--color-white)",
+        backgroundColor: "var(--color-primary-bright)",
+        backgroundHoverColor: "var(--color-primary-light)",
+      },
+      onClick: () => {
+        handleEditAerodrome();
+      },
+    },
     {
       text: "Add Runway",
       icon: <AddRunwayIcon />,

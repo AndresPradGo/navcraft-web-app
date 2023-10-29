@@ -7,10 +7,11 @@ import apiClient, {EditAerodromeData, AerodromeDataFromAPI} from '../../services
 import getUTCNowString from '../../utils/getUTCNowString'
 
 interface AerodromeContext {
-    previusData?: AerodromeDataFromAPI[]
+    previusData?: AerodromeDataFromAPI
+    previusDataArray?: AerodromeDataFromAPI[]
 }
 
-const useEditUserAerodrome = () => {
+const useEditUserAerodrome = (key: "user" | "all") => {
     const queryClient = useQueryClient()
     return useMutation<AerodromeDataFromAPI, APIClientError, AerodromeDataFromForm, AerodromeContext>({
         mutationFn: (data) => {
@@ -33,48 +34,56 @@ const useEditUserAerodrome = () => {
             return apiClient.post(aerodromeData, "/private-aerodrome")
         },
         onMutate: (newData) => {
-            const previusData = queryClient.getQueryData<AerodromeDataFromAPI[]>(['aerodromes', 'user'])
+            const aerodromeId = newData.id
+            const previusData = newData.id 
+                ? queryClient.getQueryData<AerodromeDataFromAPI>(['aerodrome', aerodromeId]) 
+                : undefined
+            const previusDataArray = newData.id 
+                ? undefined
+                : queryClient.getQueryData<AerodromeDataFromAPI[]>(['aerodromes', key])
+         
+            const utcNow = getUTCNowString()
+            const newAerodromeInCacheFormat = {
+                id: newData.id,
+                code: newData.code,
+                name: newData.name, 
+                lat_degrees: newData.lat_degrees,
+                lat_minutes: newData.lat_minutes,
+                lat_seconds: newData.lat_seconds,
+                lat_direction: newData.lat_direction === "South" ? "S" : "N",
+                lon_degrees: newData.lon_degrees,
+                lon_minutes: newData.lon_minutes,
+                lon_seconds: newData.lon_seconds,
+                lon_direction: newData.lon_direction === "East" ? "E" : "W",
+                magnetic_variation: newData.magnetic_variation,
+                last_updated_utc: utcNow,
+                elevation_ft: newData.elevation_ft,
+                hidden: false,
+                status: "Private",
+                registered: false,
+            } as AerodromeDataFromAPI
 
-            queryClient.setQueryData<AerodromeDataFromAPI[]>(
-                ['aerodromes', 'user'], 
-                currentData => {
-                    const utcNow = getUTCNowString()
-                    const newAerodromeInCacheFormat = {
-                        id: newData.id,
-                        code: newData.code,
-                        name: newData.name, 
-                        lat_degrees: newData.lat_degrees,
-                        lat_minutes: newData.lat_minutes,
-                        lat_seconds: newData.lat_seconds,
-                        lat_direction: newData.lat_direction === "South" ? "S" : "N",
-                        lon_degrees: newData.lon_degrees,
-                        lon_minutes: newData.lon_minutes,
-                        lon_seconds: newData.lon_seconds,
-                        lon_direction: newData.lon_direction === "East" ? "E" : "W",
-                        magnetic_variation: newData.magnetic_variation,
-                        last_updated_utc: utcNow,
-                        elevation_ft: newData.elevation_ft,
-                        hidden: false,
-                        status: "Private",
-                        registered: false,
-                    } as AerodromeDataFromAPI
-                    if(newData.id !== 0){
-                        const currentAerodrome = currentData?.find(item => item.id == newData.id)
-                        newAerodromeInCacheFormat.created_at_utc = currentAerodrome?.created_at_utc || utcNow
-                        newAerodromeInCacheFormat.runways = currentAerodrome?.runways || []
-                        return currentData?.map(item => {
-                            if (item.id === newData.id)
-                                return newAerodromeInCacheFormat
-                            return item
-                        })
+            if (aerodromeId !== 0) {
+                queryClient.setQueryData<AerodromeDataFromAPI>(
+                    ['aerodrome', aerodromeId],
+                    currentData => {
+                        newAerodromeInCacheFormat.created_at_utc = currentData?.created_at_utc || utcNow
+                        newAerodromeInCacheFormat.runways = currentData?.runways || []
+                        return newAerodromeInCacheFormat
                     }
-                    newAerodromeInCacheFormat.created_at_utc = utcNow
-                    newAerodromeInCacheFormat.runways = []
-                    return [ newAerodromeInCacheFormat, ...(currentData || []) ]
-                }
-            )
+                )
+            } else {
+                queryClient.setQueryData<AerodromeDataFromAPI[]>(
+                    ['aerodromes', key], 
+                    currentData => {
+                        newAerodromeInCacheFormat.created_at_utc = utcNow
+                        newAerodromeInCacheFormat.runways = []
+                        return [ newAerodromeInCacheFormat, ...(currentData || []) ]
+                    }
+                )
+            }
 
-            return { previusData }
+            return { previusData, previusDataArray  }
         },
         onSuccess: (savedData, newData) => {
             toast.success(newData.id !== 0 
@@ -90,21 +99,33 @@ const useEditUserAerodrome = () => {
                 theme: "dark",
             });
 
-            queryClient.setQueryData<AerodromeDataFromAPI[]>(
-                ['aerodromes', 'user'], 
-                (aerodromes) => ( aerodromes?.map(item => {
-                    if (item.id === savedData.id || newData.id === item.id) {
-                        return {
-                            ...savedData,
-                            hidden: item.hidden,
-                            runways: item.runways
+            if (newData.id !== 0) {
+                queryClient.setQueryData<AerodromeDataFromAPI>(
+                    ['aerodrome', savedData.id], 
+                    (aerodrome) => ({
+                                ...savedData,
+                                hidden: !!aerodrome?.hidden,
+                                runways: aerodrome?.runways || []
+                            })
+                )
+            } else {
+                queryClient.setQueryData<AerodromeDataFromAPI[]>(
+                    ['aerodromes', key], 
+                    (aerodromes) => ( aerodromes?.map(item => {
+                        if (item.id === savedData.id || newData.id === item.id) {
+                            return {
+                                ...savedData,
+                                hidden: item.hidden,
+                                runways: item.runways
+                            }
                         }
-                    }
-                    return item
-                }))
-            )
+                        return item
+                    }))
+                )
+            }
+
         },
-        onError: (error, _, context) => {
+        onError: (error, newData, context) => {
             if(error.response) {
                 if (typeof error.response.data.detail === "string")
                     toast.error(error.response.data.detail, {
@@ -128,11 +149,17 @@ const useEditUserAerodrome = () => {
                     theme: "dark",
                 });
             
-            if (!context?.previusData) return
-            queryClient.setQueryData<AerodromeDataFromAPI[]>(
-                ['aerodromes', 'user'], 
-                context.previusData
-            )
+            if (newData.id !== 0 && context?.previusData) {
+                queryClient.setQueryData<AerodromeDataFromAPI>(
+                    ['aerodrome', newData.id], 
+                    context.previusData
+                )
+            } else if (context?.previusDataArray) {
+                queryClient.setQueryData<AerodromeDataFromAPI[]>(
+                    ['aerodromes', key], 
+                    context.previusDataArray
+                )
+            }
         }
     })
 }

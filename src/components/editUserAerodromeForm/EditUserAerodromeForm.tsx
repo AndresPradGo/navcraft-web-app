@@ -325,14 +325,16 @@ interface Props {
   aerodromeData: AerodromeDataFromForm;
   closeModal: () => void;
   isOpen: boolean;
+  queryKey: "user" | "all";
 }
 
 const EditUserAerodromeForm = ({
   aerodromeData,
   closeModal,
   isOpen,
+  queryKey,
 }: Props) => {
-  const mutation = useEditPrivateAerodrome();
+  const mutation = useEditPrivateAerodrome(queryKey);
   const {
     register,
     handleSubmit,

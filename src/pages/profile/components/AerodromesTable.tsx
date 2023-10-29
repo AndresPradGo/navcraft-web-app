@@ -174,6 +174,7 @@ const AerodromesTable = ({ editModal }: Props) => {
     <>
       <Modal isOpen={editModal.isOpen}>
         <EditUserAerodromeForm
+          queryKey={"user"}
           closeModal={editModal.handleClose}
           aerodromeData={aerodromeData}
           isOpen={editModal.isOpen}
