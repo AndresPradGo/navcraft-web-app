@@ -4,7 +4,9 @@ import { MdOutlineStart } from "react-icons/md";
 import { SlBadge } from "react-icons/sl";
 import { LiaMapSignsSolid, LiaMountainSolid } from "react-icons/lia";
 import { ImCompass2 } from "react-icons/im";
+import { PiEyeBold } from "react-icons/pi";
 import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
+import { GiWindsock } from "react-icons/gi";
 import { MdOutlineConnectingAirports } from "react-icons/md";
 import { styled } from "styled-components";
 
@@ -16,6 +18,10 @@ import { Modal, useModal } from "../../components/common/modal";
 import SideBarContent from "./SideBarContent";
 import DeleteUserAerodromeForm from "../../components/deleteUserAerodromeForm";
 import EditUserAerodromeForm from "../../components/editUserAerodromeForm";
+import useAuth from "../../hooks/useAuth";
+import usePathList from "../../router/usePathList";
+import EditOfficialAerodromeForm from "../../components/editOfficialAerodromeForm";
+import useAerodromeStatusList from "../../hooks/useAerodromeStatusList";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -162,7 +168,23 @@ const StatusIcon = styled(SlBadge)`
   margin: 0 10px 0 0;
 `;
 
+const VisibleIcon = styled(PiEyeBold)`
+  font-size: 30px;
+  margin: 0 10px 0 0;
+`;
+
+const WeatherIcon = styled(GiWindsock)`
+  font-size: 30px;
+  margin: 0 10px 0 0;
+`;
+
 const AerodromePage = () => {
+  const user = useAuth();
+  const pathname = usePathList();
+
+  const privateEndpoint = pathname[1] === "private-aerodrome";
+  const adminUser = !!user?.is_admin;
+
   const [runwayId, setRunwayId] = useState<number>(0);
   const { id } = useParams();
   const editRunwayModal = useModal();
@@ -170,14 +192,29 @@ const AerodromePage = () => {
   const deleteModal = useModal();
 
   const {
+    data: statusList,
+    isLoading: statusListIsLoading,
+    error: statusListError,
+  } = useAerodromeStatusList();
+
+  if (statusListError) throw new Error("");
+
+  const {
     data: aerodromeData,
     error,
     isLoading,
   } = useAerodromeData(parseInt(id || "0") || 0);
-  if ((error && error.message !== "Network Error") || aerodromeData?.registered)
+  const isPrivateData = !aerodromeData?.registered;
+  if (
+    (error && error.message !== "Network Error") ||
+    (isPrivateData !== privateEndpoint && aerodromeData !== undefined)
+  )
     throw new Error("notFound");
-  else if (error && error.message === "Network Error") throw new Error("");
-  if (isLoading) return <Loader />;
+  else if ((error && error.message === "Network Error") || statusListError)
+    throw new Error("");
+  if (isLoading || statusListIsLoading) return <Loader />;
+
+  const userCanEdit = adminUser || isPrivateData;
 
   interface AerodromeDataDisplay {
     key: string;
@@ -243,69 +280,164 @@ const AerodromePage = () => {
     },
   ] as AerodromeDataDisplay[];
 
+  if (!isPrivateData) {
+    aerodromeDataList.push({
+      key: "weather",
+      title: "Available Weather",
+      icon: <WeatherIcon />,
+      data: aerodromeData?.has_taf
+        ? `TAF${(aerodromeData?.has_metar && ", METAR") || ""}${
+            (aerodromeData?.has_fds && ", FDs") || ""
+          }`
+        : aerodromeData?.has_metar
+        ? `METAR${(aerodromeData?.has_fds && ", FDs") || ""}`
+        : aerodromeData?.has_fds
+        ? "FDs"
+        : "-",
+    });
+    if (adminUser) {
+      aerodromeDataList.push({
+        key: "visible",
+        title: "Visible",
+        icon: <VisibleIcon />,
+        data: aerodromeData.hidden ? "No" : "Yes",
+      });
+    }
+  }
+
   return (
     <>
-      <Modal isOpen={editModal.isOpen}>
-        <EditUserAerodromeForm
-          queryKey={"user"}
-          closeModal={editModal.handleClose}
-          aerodromeData={
-            aerodromeData
-              ? {
-                  id: aerodromeData.id,
-                  code: aerodromeData.code,
-                  name: aerodromeData.name,
-                  lat_degrees: aerodromeData.lat_degrees,
-                  lat_minutes: aerodromeData.lat_minutes,
-                  lat_seconds: aerodromeData.lat_seconds,
-                  lat_direction:
-                    aerodromeData.lat_direction === "S" ? "South" : "North",
-                  lon_degrees: aerodromeData.lon_degrees,
-                  lon_minutes: aerodromeData.lon_minutes,
-                  lon_seconds: aerodromeData.lon_seconds,
-                  lon_direction:
-                    aerodromeData.lon_direction === "E" ? "East" : "West",
-                  elevation_ft: aerodromeData.elevation_ft,
-                  magnetic_variation: aerodromeData.magnetic_variation,
-                  status: 6,
+      {userCanEdit ? (
+        <>
+          <Modal isOpen={editModal.isOpen}>
+            {!isPrivateData ? (
+              <EditOfficialAerodromeForm
+                closeModal={editModal.handleClose}
+                statusList={statusList}
+                aerodromeData={
+                  aerodromeData
+                    ? {
+                        id: aerodromeData.id,
+                        code: aerodromeData.code,
+                        name: aerodromeData.name,
+                        lat_degrees: aerodromeData.lat_degrees,
+                        lat_minutes: aerodromeData.lat_minutes,
+                        lat_seconds: aerodromeData.lat_seconds,
+                        lat_direction:
+                          aerodromeData.lat_direction === "S"
+                            ? "South"
+                            : "North",
+                        lon_degrees: aerodromeData.lon_degrees,
+                        lon_minutes: aerodromeData.lon_minutes,
+                        lon_seconds: aerodromeData.lon_seconds,
+                        lon_direction:
+                          aerodromeData.lon_direction === "E" ? "East" : "West",
+                        elevation_ft: aerodromeData.elevation_ft,
+                        magnetic_variation: aerodromeData.magnetic_variation,
+                        status: aerodromeData.status,
+                        status_id:
+                          statusList.find(
+                            (item) => aerodromeData.status === item.status
+                          )?.id || 3,
+                        hide: aerodromeData.hidden,
+                        has_taf: aerodromeData.has_taf,
+                        has_metar: aerodromeData.has_metar,
+                        has_fds: aerodromeData.has_fds,
+                      }
+                    : {
+                        id: 0,
+                        code: "",
+                        name: "",
+                        lat_degrees: 0,
+                        lat_minutes: 0,
+                        lat_seconds: 0,
+                        lat_direction: "North",
+                        lon_degrees: 0,
+                        lon_minutes: 0,
+                        lon_seconds: 0,
+                        lon_direction: "West",
+                        elevation_ft: 0,
+                        magnetic_variation: 0,
+                        status: "Unknown",
+                        status_id: 3,
+                        hide: true,
+                        has_taf: false,
+                        has_metar: false,
+                        has_fds: false,
+                      }
                 }
-              : {
-                  id: 0,
-                  code: "",
-                  name: "",
-                  lat_degrees: 0,
-                  lat_minutes: 0,
-                  lat_seconds: 0,
-                  lat_direction: "North",
-                  lon_degrees: 0,
-                  lon_minutes: 0,
-                  lon_seconds: 0,
-                  lon_direction: "West",
-                  elevation_ft: 0,
-                  magnetic_variation: 0,
-                  status: 6,
+                isOpen={editModal.isOpen}
+              />
+            ) : (
+              <EditUserAerodromeForm
+                queryKey={"all"}
+                closeModal={editModal.handleClose}
+                aerodromeData={
+                  aerodromeData
+                    ? {
+                        id: aerodromeData.id,
+                        code: aerodromeData.code,
+                        name: aerodromeData.name,
+                        lat_degrees: aerodromeData.lat_degrees,
+                        lat_minutes: aerodromeData.lat_minutes,
+                        lat_seconds: aerodromeData.lat_seconds,
+                        lat_direction:
+                          aerodromeData.lat_direction === "S"
+                            ? "South"
+                            : "North",
+                        lon_degrees: aerodromeData.lon_degrees,
+                        lon_minutes: aerodromeData.lon_minutes,
+                        lon_seconds: aerodromeData.lon_seconds,
+                        lon_direction:
+                          aerodromeData.lon_direction === "E" ? "East" : "West",
+                        elevation_ft: aerodromeData.elevation_ft,
+                        magnetic_variation: aerodromeData.magnetic_variation,
+                        status: 6,
+                      }
+                    : {
+                        id: 0,
+                        code: "",
+                        name: "",
+                        lat_degrees: 0,
+                        lat_minutes: 0,
+                        lat_seconds: 0,
+                        lat_direction: "North",
+                        lon_degrees: 0,
+                        lon_minutes: 0,
+                        lon_seconds: 0,
+                        lon_direction: "West",
+                        elevation_ft: 0,
+                        magnetic_variation: 0,
+                        status: 6,
+                      }
                 }
-          }
-          isOpen={editModal.isOpen}
-        />
-      </Modal>
-      <Modal isOpen={deleteModal.isOpen}>
-        <DeleteUserAerodromeForm
-          closeModal={deleteModal.handleClose}
-          name={aerodromeData?.name || ""}
-          id={aerodromeData?.id || 0}
-        />
-      </Modal>
+                isOpen={editModal.isOpen}
+              />
+            )}
+          </Modal>
+          <Modal isOpen={deleteModal.isOpen}>
+            <DeleteUserAerodromeForm
+              closeModal={deleteModal.handleClose}
+              name={aerodromeData?.name || ""}
+              id={aerodromeData?.id || 0}
+            />
+          </Modal>
+        </>
+      ) : null}
       <ContentLayout
         sideBarContent={
-          <SideBarContent
-            handleDeleteAerodrome={deleteModal.handleOpen}
-            handleAddRunway={() => {
-              setRunwayId(0);
-              editRunwayModal.handleOpen();
-            }}
-            handleEditAerodrome={editModal.handleOpen}
-          />
+          userCanEdit ? (
+            <SideBarContent
+              handleDeleteAerodrome={deleteModal.handleOpen}
+              handleAddRunway={() => {
+                setRunwayId(0);
+                editRunwayModal.handleOpen();
+              }}
+              handleEditAerodrome={editModal.handleOpen}
+            />
+          ) : (
+            ""
+          )
         }
       >
         <HtmlContainer>

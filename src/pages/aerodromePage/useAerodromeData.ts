@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 
 import {APIClientError} from '../../services/apiClient';
-import apiClient, {AerodromeDataFromAPI} from '../../services/userAerodromeClient';
+import apiClient, {OfficialAerodromeDataFromAPI} from '../../services/officialAerodromeClient';
 
 
 const useAerodromeData = (aerodromeId: number) => {
-    return useQuery<AerodromeDataFromAPI, APIClientError>({
+    return useQuery<OfficialAerodromeDataFromAPI, APIClientError>({
         queryKey: ['aerodrome', aerodromeId],
         queryFn: () => {
-            return apiClient.getAndPreProcess<AerodromeDataFromAPI[]>(
+            return apiClient.getAndPreProcess<OfficialAerodromeDataFromAPI[]>(
                 (preData) => preData[0],
-                `/aerodromes?aerodrome_id=${aerodromeId}`
+                `/waypoints/aerodromes?aerodrome_id=${aerodromeId}`
             )
         }
     })

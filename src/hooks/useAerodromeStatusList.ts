@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import APIClient, {APIClientError} from '../services/apiClient';
 
-interface AerodromeStatus {
+export interface AerodromeStatus {
     status: string
     id: number
 }

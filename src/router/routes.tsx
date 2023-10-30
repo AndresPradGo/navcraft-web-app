@@ -24,6 +24,7 @@ const router = createBrowserRouter([
       { path: "aircraft", element: <Aircraft /> },
       { path: "profile", element: <Profile /> },
       { path: "waypoints/private-aerodrome/:id", element: <AerodromePage /> },
+      { path: "waypoints/aerodrome/:id", element: <AerodromePage /> },
     ],
   },
   {

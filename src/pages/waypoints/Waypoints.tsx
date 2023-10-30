@@ -207,7 +207,7 @@ const Waypoints = () => {
                     : ""
                   : ""
               }`,
-              posted: !vw.hidden ? "Yes" : "No",
+              visible: !vw.hidden ? "Yes" : "No",
               handleEdit: () => {
                 setTypeItemToEdit("vfrWaypoint");
                 setRowToEditId(vw.id);
@@ -238,7 +238,7 @@ const Waypoints = () => {
                     : ""
                   : ""
               }`,
-              posted: "Yes",
+              visible: "Yes",
               handleEdit: () => {
                 setTypeItemToEdit("userWaypoint");
                 setRowToEditId(uw.id);
@@ -283,7 +283,19 @@ const Waypoints = () => {
                   )
                   .join(", ")
               : "-",
-            posted: !a.hidden ? "Yes" : "No",
+            weather: a.has_taf
+              ? `TAF${(a.has_metar && ", METAR") || ""}${
+                  (a.has_fds && ", FDs") || ""
+                }`
+              : a.has_metar
+              ? `METAR${(a.has_fds && ", FDs") || ""}`
+              : a.has_fds
+              ? "FDs"
+              : "-",
+            visible: !a.hidden ? "Yes" : "No",
+            has_taf: a.has_taf ? "Yes" : "No",
+            has_metar: a.has_metar ? "Yes" : "No",
+            has_fds: a.has_fds ? "Yes" : "No",
             handleEdit: a.registered
               ? `/waypoints/aerodrome/${a.id}`
               : `/waypoints/private-aerodrome/${a.id}`,
@@ -380,7 +392,7 @@ const Waypoints = () => {
                     lon_seconds: 0,
                     lon_direction: "West",
                     magnetic_variation: NaN,
-                    hide: false,
+                    hide: true,
                   }
             }
             isOpen={editModal.isOpen}

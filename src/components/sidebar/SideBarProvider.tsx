@@ -21,6 +21,10 @@ const SideBarProvider = ({ children }: Props) => {
       needsAdmin: false,
     },
     {
+      path: ["waypoints", "aerodrome"],
+      needsAdmin: true,
+    },
+    {
       path: ["waypoints"],
       needsAdmin: false,
     },
@@ -32,6 +36,7 @@ const SideBarProvider = ({ children }: Props) => {
 
   const hasSideBar = pathsWithSideBar.find((item) => {
     if (item.needsAdmin && !user?.is_admin) return false;
+    if (item.path.length !== pathname.length) return false;
     for (let i = 0; i < item.path.length; i++) {
       if (item.path[i] !== pathname[i]) {
         return false;

@@ -6,7 +6,7 @@ interface WaypointHeaders {
     latitude: string;
     longitude: string;
     variation: string;
-    posted?: string;
+    visible?: string;
 }
 
 interface AerodromeHeaders extends WaypointHeaders {
@@ -101,7 +101,8 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         "longitude",
         "elevation_ft",
         "runways",
-        "variation"
+        "variation",
+        "weather"
     ]
     const aerodromesHeaders = {
         code: "Code",
@@ -113,6 +114,7 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         elevation_ft: "Elevation [ft]",
         runways: "Runways",
         variation: "Magnetic Var",
+        weather: "Available Weather"
     } as AerodromeHeaders
     const aerodromesSortData = [
         {
@@ -144,6 +146,21 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
                 key: "type",
                 title: "User Added",
                 value: "User Added"
+            },
+            {
+                key: "has_taf",
+                title: "With TAF",
+                value: "Yes"
+            },
+            {
+                key: "has_metar",
+                title: "With METAR",
+                value: "Yes"
+            },
+            {
+                key: "has_fds",
+                title: "With FDs",
+                value: "Yes"
             },
             ...aerodromeStatus.map(item => ({
                 key: "status",
@@ -202,29 +219,29 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
     }
 
     if (isAdmin) {
-        waypointsKeys.push("posted")
-        waypointsHeaders.posted = "Posted"
+        waypointsKeys.push("visible")
+        waypointsHeaders.visible = "Visible"
         waypointsFilterParameters.filters.push({
-            key: "posted",
-            title: "Posted",
+            key: "visible",
+            title: "Visible",
             value: "Yes"
         })
         waypointsFilterParameters.filters.push({
-            key: "posted",
-            title: "Not Posted",
+            key: "visible",
+            title: "Not Visible",
             value: "No"
         })
 
-        aerodromesKeys.push("posted")
-        aerodromesHeaders.posted = "Posted"
+        aerodromesKeys.push("visible")
+        aerodromesHeaders.visible = "Visible"
         aerodromesFilterParameters.filters.push({
-            key: "posted",
-            title: "Posted",
+            key: "visible",
+            title: "Visible",
             value: "Yes"
         })
         aerodromesFilterParameters.filters.push({
-            key: "posted",
-            title: "Not Posted",
+            key: "visible",
+            title: "Not Visible",
             value: "No"
         })
     }

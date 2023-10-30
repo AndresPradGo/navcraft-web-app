@@ -1,22 +1,25 @@
 import { useEffect } from "react";
 import { AiOutlineSave } from "react-icons/ai";
 import { BiHide } from "react-icons/bi";
-import { LiaMapSignsSolid, LiaTimesSolid } from "react-icons/lia";
-import { ImCompass2 } from "react-icons/im";
 import {
-  TbMapPinCog,
-  TbMapPinPlus,
-  TbMapSearch,
-  TbWorldLatitude,
-  TbWorldLongitude,
-} from "react-icons/tb";
+  LiaMapSignsSolid,
+  LiaTimesSolid,
+  LiaMountainSolid,
+} from "react-icons/lia";
+import { ImCompass2 } from "react-icons/im";
+import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
+import { GiWindsock } from "react-icons/gi";
+import { MdOutlineConnectingAirports } from "react-icons/md";
+import { SlBadge } from "react-icons/sl";
 import { useForm, FieldValues } from "react-hook-form";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../common/button";
-import useEditVfrWaypoint from "./useEditVfrWaypoint";
+import useEditOfficialAerodrome from "./useEditOfficialAerodrome";
+import DataList from "../../components/common/datalist";
+import { AerodromeStatus } from "../../hooks/useAerodromeStatusList";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -78,7 +81,7 @@ const HtmlInputGroup = styled.div`
     align-items: center;
     font-size: 20px;
 
-    @media screen and (min-width: 510px) {
+    @media screen and (min-width: 425px) {
       font-size: 27px;
     }
   }
@@ -206,7 +209,7 @@ const HtmlCheckbox = styled.label`
   transition: all 0.2s linear;
 
   color: var(--color-grey-bright);
-  padding: 10px;
+  padding: 10px 0 0 10px;
   cursor: pointer;
   flex-grow: 0;
 
@@ -233,6 +236,17 @@ const HtmlCheckbox = styled.label`
   }
 `;
 
+const HtmlGroupCheckbox = styled(HtmlCheckbox)`
+  width: 123px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  align-self: flex-start;
+
+  & span {
+    margin-left: 10px;
+  }
+`;
+
 const HtmlButtons = styled.div`
   display: flex;
   flex-direction: row;
@@ -241,6 +255,11 @@ const HtmlButtons = styled.div`
   align-items: center;
   width: 100%;
   padding: 10px 20px;
+`;
+
+const HideIcon = styled(BiHide)`
+  font-size: 25px;
+  margin: 0 10px;
 `;
 
 const SaveIcon = styled(AiOutlineSave)`
@@ -254,6 +273,16 @@ const CodeIcon = styled(TbMapSearch)`
 
 const NameIcon = styled(LiaMapSignsSolid)`
   font-size: 25px;
+  margin: 0 10px;
+`;
+
+const StatusIcon = styled(SlBadge)`
+  font-size: 25px;
+  margin: 0 10px;
+`;
+
+const WeatherIcon = styled(GiWindsock)`
+  font-size: 30px;
   margin: 0 10px;
 `;
 
@@ -272,28 +301,18 @@ const CompassIcon = styled(ImCompass2)`
   margin: 0 10px;
 `;
 
-const HideIcon = styled(BiHide)`
-  font-size: 25px;
+const TerrainIcon = styled(LiaMountainSolid)`
+  font-size: 30px;
   margin: 0 10px;
 `;
 
-const EditWaypointIcon = styled(TbMapPinCog)`
+const AddAerodromeIcon = styled(MdOutlineConnectingAirports)`
   flex-shrink: 0;
-  font-size: 25px;
+  font-size: 35px;
   margin: 0 10px;
 
   @media screen and (min-width: 510px) {
-    font-size: 30px;
-  }
-`;
-
-const AddWaypointIcon = styled(TbMapPinPlus)`
-  flex-shrink: 0;
-  font-size: 25px;
-  margin: 0 10px;
-
-  @media screen and (min-width: 510px) {
-    font-size: 30px;
+    font-size: 40px;
   }
 `;
 
@@ -326,7 +345,7 @@ const schema = z.object({
   name: z
     .string()
     .min(2, { message: "Must be at least 2 characters long" })
-    .max(255, { message: "Must be at most 255 characters long" })
+    .max(50, { message: "Must be at most 255 characters long" })
     .regex(/^[A-Za-z0-9 .'-]+$/, {
       message: "Only letters, numbers, spaces and symbols '.-",
     }),
@@ -362,26 +381,44 @@ const schema = z.object({
     .min(0, "Seconds must be bewteen 0 and 59")
     .max(59, "Seconds must be bewteen 0 and 59"),
   lon_direction: z.enum(["East", "West"]),
+  elevation_ft: z.number({ invalid_type_error: "Enter a number" }),
   magnetic_variation: z.union([
     z.number({ invalid_type_error: "Enter a number" }).nullable(),
     z.literal(null),
   ]),
   hide: z.boolean(),
+  has_taf: z.boolean(),
+  has_metar: z.boolean(),
+  has_fds: z.boolean(),
+  status: z
+    .string()
+    .min(2, { message: "Must be at least 2 characters long" })
+    .max(50, { message: "Must be at most 50 characters long" })
+    .regex(/^[-a-zA-Z ']+$/, {
+      message: "Only letters, spaces and symbols ' -",
+    }),
 });
 type FormDataType = z.infer<typeof schema>;
 
-export interface WaypointDataFromForm extends FormDataType {
+export interface AerodromeDataFromForm extends FormDataType {
   id: number;
+  status_id: number;
 }
 
 interface Props {
-  waypointData: WaypointDataFromForm;
+  aerodromeData: AerodromeDataFromForm;
   closeModal: () => void;
   isOpen: boolean;
+  statusList: AerodromeStatus[];
 }
 
-const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
-  const mutation = useEditVfrWaypoint();
+const EditOfficialAerodromeForm = ({
+  aerodromeData,
+  closeModal,
+  isOpen,
+  statusList,
+}: Props) => {
+  const mutation = useEditOfficialAerodrome();
   const {
     register,
     handleSubmit,
@@ -390,35 +427,41 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
     setError,
     watch,
     clearErrors,
+    setValue,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
   useEffect(() => {
     if (isOpen) {
       reset({
-        code: waypointData.code,
-        name: waypointData.name,
-        lat_degrees: waypointData.lat_degrees,
-        lat_minutes: waypointData.lat_minutes,
-        lat_seconds: waypointData.lat_seconds,
-        lat_direction: waypointData.lat_direction,
-        lon_degrees: waypointData.lon_degrees,
-        lon_minutes: waypointData.lon_minutes,
-        lon_seconds: waypointData.lon_seconds,
-        lon_direction: waypointData.lon_direction,
-        magnetic_variation: waypointData.magnetic_variation,
-        hide: waypointData.hide,
+        code: aerodromeData.code,
+        name: aerodromeData.name,
+        lat_degrees: aerodromeData.lat_degrees,
+        lat_minutes: aerodromeData.lat_minutes,
+        lat_seconds: aerodromeData.lat_seconds,
+        lat_direction: aerodromeData.lat_direction,
+        lon_degrees: aerodromeData.lon_degrees,
+        lon_minutes: aerodromeData.lon_minutes,
+        lon_seconds: aerodromeData.lon_seconds,
+        lon_direction: aerodromeData.lon_direction,
+        magnetic_variation: aerodromeData.magnetic_variation,
+        elevation_ft: aerodromeData.elevation_ft,
+        hide: aerodromeData.hide,
+        has_taf: aerodromeData.has_taf,
+        has_metar: aerodromeData.has_metar,
+        has_fds: aerodromeData.has_fds,
+        status: aerodromeData.status,
       });
     }
   }, [isOpen]);
 
   useEffect(() => {
-    const badData = checkCoordinates({
+    const wrongCoordinates = checkCoordinates({
       lon_direction: watch("lon_direction"),
       lon_degrees: watch("lon_degrees"),
       lon_minutes: watch("lon_minutes"),
       lon_seconds: watch("lon_seconds"),
     });
-    if (!badData) clearErrors("lon_degrees");
+    if (!wrongCoordinates) clearErrors("lon_degrees");
   }, [
     watch("lon_direction"),
     watch("lon_degrees"),
@@ -453,11 +496,14 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
   };
 
   const submitHandler = (data: FieldValues) => {
-    const badData = checkCoordinates(data);
-    if (!badData) {
+    const wrongCoordinates = checkCoordinates(data);
+    if (!wrongCoordinates) {
+      const statusId = statusList.find(
+        (item) => item.status === data.status
+      )?.id;
       closeModal();
       mutation.mutate({
-        id: waypointData.id,
+        id: aerodromeData.id,
         code: data.code,
         name: data.name,
         lat_degrees: data.lat_degrees,
@@ -469,7 +515,13 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
         lon_seconds: data.lon_seconds,
         lon_direction: data.lon_direction,
         magnetic_variation: data.magnetic_variation,
+        elevation_ft: data.elevation_ft,
         hide: data.hide,
+        has_taf: data.has_taf,
+        has_metar: data.has_metar,
+        has_fds: data.has_fds,
+        status: data.status,
+        status_id: statusId || 3,
       });
     }
   };
@@ -478,8 +530,8 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <h1>
         <div>
-          {waypointData.id !== 0 ? <EditWaypointIcon /> : <AddWaypointIcon />}
-          {`${waypointData.id !== 0 ? "Edit" : "Add"} VFR Waypoint`}
+          <AddAerodromeIcon />
+          {`${aerodromeData.id !== 0 ? "Edit" : "Add"} Aerodrome`}
         </div>
         <CloseIcon onClick={handleCancel} />
       </h1>
@@ -498,13 +550,13 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
         >
           <input
             {...register("code")}
-            id="waypoint_code"
+            id="aerodrome_code"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.code ? <p>{errors.code.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="waypoint_code">
+          <label htmlFor="aerodrome_code">
             <CodeIcon />
             Code
           </label>
@@ -516,15 +568,36 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
         >
           <input
             {...register("name")}
-            id="waypoint_name"
+            id="aerodrome_name"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="waypoint_name">
+          <label htmlFor="aerodrome_name">
             <NameIcon />
             Name
+          </label>
+        </HtmlInput>
+        <HtmlInput
+          $required={true}
+          $hasValue={!!watch("elevation_ft") || watch("elevation_ft") === 0}
+          $accepted={!errors.elevation_ft}
+        >
+          <input
+            {...register("elevation_ft", { valueAsNumber: true })}
+            id="aerodrome_elevation_ft"
+            type="number"
+            autoComplete="off"
+          />
+          {errors.elevation_ft ? (
+            <p>{errors.elevation_ft.message}</p>
+          ) : (
+            <p>&nbsp;</p>
+          )}
+          <label htmlFor="aerodrome_magnetic_variation">
+            <TerrainIcon />
+            {"Elevation [ft]"}
           </label>
         </HtmlInput>
         <HtmlInput
@@ -538,7 +611,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             {...register("magnetic_variation", {
               setValueAs: handleMagneticVariationValue,
             })}
-            id="waypoint_magnetic_variation"
+            id="aerodrome_magnetic_variation"
             type="number"
             autoComplete="off"
           />
@@ -547,11 +620,49 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="waypoint_magnetic_variation">
+          <label htmlFor="aerodrome_magnetic_variation">
             <CompassIcon />
             Magnetic Variation
           </label>
         </HtmlInput>
+        <DataList
+          setError={(message) =>
+            setError("status", {
+              type: "manual",
+              message: message,
+            })
+          }
+          clearErrors={() => clearErrors("status")}
+          required={true}
+          value={watch("status")}
+          hasError={!!errors.status}
+          errorMessage={errors.status?.message || ""}
+          options={statusList ? statusList.map((item) => item.status) : []}
+          setValue={(value: string) => setValue("status", value)}
+          name="status"
+          formIsOpen={isOpen}
+          resetValue={aerodromeData.status}
+        >
+          <StatusIcon /> Status
+        </DataList>
+        <HtmlInputGroup>
+          <h2>
+            <WeatherIcon />
+            Weather
+          </h2>
+          <HtmlGroupCheckbox htmlFor="taf">
+            <input {...register("has_taf")} type="checkbox" id="taf" />
+            <span>Has TAF</span>
+          </HtmlGroupCheckbox>
+          <HtmlGroupCheckbox htmlFor="metar">
+            <input {...register("has_metar")} type="checkbox" id="metar" />
+            <span>Has METAR</span>
+          </HtmlGroupCheckbox>
+          <HtmlGroupCheckbox htmlFor="fds">
+            <input {...register("has_fds")} type="checkbox" id="fds" />
+            <span>Has FDs</span>
+          </HtmlGroupCheckbox>
+        </HtmlInputGroup>
         <HtmlInputGroup>
           <h2>
             <LatitudeIcon />
@@ -564,7 +675,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <HtmlSelectElement
               {...register("lat_direction")}
-              id="waypoint_lat_direction"
+              id="aerodrome_lat_direction"
               autoComplete="off"
               required={true}
             >
@@ -584,7 +695,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lat_degrees", { valueAsNumber: true })}
-              id="waypoint_lat_degrees"
+              id="aerodrome_lat_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -594,7 +705,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_degrees">
+            <label htmlFor="aerodrome_lat_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -605,7 +716,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lat_minutes", { valueAsNumber: true })}
-              id="waypoint_lat_minutes"
+              id="aerodrome_lat_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -615,7 +726,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_minutes">
+            <label htmlFor="aerodrome_lat_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -626,7 +737,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lat_seconds", { valueAsNumber: true })}
-              id="waypoint_lat_seconds"
+              id="aerodrome_lat_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -636,7 +747,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_seconds">
+            <label htmlFor="aerodrome_lat_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>
@@ -653,7 +764,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <HtmlSelectElement
               {...register("lon_direction")}
-              id="waypoint_lon_direction"
+              id="aerodrome_lon_direction"
               autoComplete="off"
               required={true}
             >
@@ -673,7 +784,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lon_degrees", { valueAsNumber: true })}
-              id="waypoint_lon_degrees"
+              id="aerodrome_lon_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -683,7 +794,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_degrees">
+            <label htmlFor="aerodrome_lon_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -694,7 +805,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lon_minutes", { valueAsNumber: true })}
-              id="waypoint_lon_minutes"
+              id="aerodrome_lon_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -704,7 +815,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_minutes">
+            <label htmlFor="aerodrome_lon_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -715,7 +826,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lon_seconds", { valueAsNumber: true })}
-              id="waypoint_lon_seconds"
+              id="aerodrome_lon_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -725,7 +836,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_seconds">
+            <label htmlFor="aerodrome_lon_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>
@@ -768,4 +879,4 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
   );
 };
 
-export default EditVfrWaypointForm;
+export default EditOfficialAerodromeForm;
