@@ -3,7 +3,7 @@ import { LiaTimesSolid } from "react-icons/lia";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
-import Button from "../../components/common/button";
+import Button from "../common/button";
 import useDeleterunway from "./useDeleterunway";
 
 const HtmlContainer = styled.div`
@@ -111,10 +111,19 @@ interface Props {
   name: string;
   id: number;
   aerodromeId: number;
+  aerodromeName: string;
+  fromAerodrome: boolean;
 }
 
-const DeleteRunwayForm = ({ closeModal, name, id, aerodromeId }: Props) => {
-  const mutation = useDeleterunway();
+const DeleteRunwayForm = ({
+  closeModal,
+  name,
+  id,
+  aerodromeId,
+  aerodromeName,
+  fromAerodrome,
+}: Props) => {
+  const mutation = useDeleterunway(fromAerodrome);
   const handleDelete = () => {
     closeModal();
     mutation.mutate({
@@ -134,7 +143,7 @@ const DeleteRunwayForm = ({ closeModal, name, id, aerodromeId }: Props) => {
         <CloseIcon onClick={closeModal} />
       </h1>
       <BodyContainer>
-        <p>{`Are you sure you want to delete runway "${name}"?`}</p>
+        <p>{`Are you sure you want to delete runway "${name}" from ${aerodromeName}?`}</p>
       </BodyContainer>
       <HtmlButtons>
         <Button

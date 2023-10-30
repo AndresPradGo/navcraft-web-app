@@ -22,6 +22,8 @@ import EditVfrWaypointForm from "../../components/editVfrWaypointForm";
 import DeleteUserWaypointForm from "../../components/deleteUserWaypointForm";
 import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm";
 import DeleteUserAerodromeForm from "../../components/deleteUserAerodromeForm/index";
+import EditRunwayForm from "../../components/editRunwayForm/index";
+import DeleteRunwayForm from "../../components/deleteRunwayForm/index";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -107,6 +109,7 @@ const Waypoints = () => {
 
   const editModal = useModal();
   const deleteModal = useModal();
+  const editRunwayModal = useModal();
 
   const {
     data: statusList,
@@ -332,7 +335,7 @@ const Waypoints = () => {
             handleEdit: () => {
               setTypeItemToEdit("runway");
               setRowToEditId(r.id);
-              editModal.handleOpen();
+              editRunwayModal.handleOpen();
             },
             handleDelete: () => {
               setTypeItemToEdit("runway");
@@ -354,7 +357,8 @@ const Waypoints = () => {
   const userWaypointData = userWaypoints?.find(
     (item) => item.id === rowToEditId
   );
-  const aerodrome = aerodromes?.find((item) => item.id === rowToEditId);
+  const aerodromeData = aerodromes?.find((item) => item.id === rowToEditId);
+  const runwayData = runways?.find((item) => item.id === rowToEditId);
 
   return (
     <>
@@ -441,6 +445,52 @@ const Waypoints = () => {
           />
         ) : null}
       </Modal>
+      <Modal isOpen={editRunwayModal.isOpen}>
+        <EditRunwayForm
+          fromAerodrome={false}
+          closeModal={editRunwayModal.handleClose}
+          aerodromeName={
+            aerodromes?.find((item) => item.id === runwayData?.aerodrome_id)
+              ?.code || ""
+          }
+          runwayData={
+            runwayData
+              ? {
+                  id: runwayData.id,
+                  aerodromeId: runwayData.aerodrome_id,
+                  number: runwayData.number,
+                  position:
+                    runwayData.position === "R"
+                      ? "Right"
+                      : runwayData.position === "L"
+                      ? "Left"
+                      : runwayData.position === "C"
+                      ? "Center"
+                      : "",
+                  length_ft: runwayData.length_ft,
+                  thld_displ: runwayData.landing_length_ft
+                    ? runwayData.length_ft - runwayData.landing_length_ft
+                    : null,
+                  intersection_departure_length_ft:
+                    runwayData.intersection_departure_length_ft
+                      ? runwayData.intersection_departure_length_ft
+                      : null,
+                  surface: runwayData.surface,
+                }
+              : {
+                  id: 0,
+                  aerodromeId: 0,
+                  number: NaN,
+                  position: "",
+                  length_ft: NaN,
+                  thld_displ: NaN,
+                  intersection_departure_length_ft: NaN,
+                  surface: "",
+                }
+          }
+          isOpen={editRunwayModal.isOpen}
+        />
+      </Modal>
       <Modal isOpen={deleteModal.isOpen}>
         {typeItemToEdit === "userWaypoint" ? (
           <DeleteUserWaypointForm
@@ -457,16 +507,34 @@ const Waypoints = () => {
         ) : typeItemToEdit === "officialAerodrome" && userIsAdmin ? (
           <DeleteVfrWaypointForm
             closeModal={deleteModal.handleClose}
-            name={aerodrome ? aerodrome.name : ""}
-            id={aerodrome ? aerodrome.id : 0}
+            name={aerodromeData ? aerodromeData.name : ""}
+            id={aerodromeData ? aerodromeData.id : 0}
             isAerodrome={true}
           />
         ) : typeItemToEdit === "userAerodrome" ? (
           <DeleteUserAerodromeForm
             closeModal={deleteModal.handleClose}
-            name={aerodrome ? aerodrome.name : ""}
-            id={aerodrome ? aerodrome.id : 0}
+            name={aerodromeData ? aerodromeData.name : ""}
+            id={aerodromeData ? aerodromeData.id : 0}
             queryKey="all"
+          />
+        ) : typeItemToEdit === "runway" ? (
+          <DeleteRunwayForm
+            fromAerodrome={false}
+            aerodromeName={
+              aerodromes?.find((item) => item.id === runwayData?.aerodrome_id)
+                ?.code || ""
+            }
+            closeModal={deleteModal.handleClose}
+            name={
+              runwayData
+                ? `${runwayData.number < 10 ? "0" : ""}${runwayData.number}${
+                    runwayData.position || ""
+                  }`
+                : ""
+            }
+            id={rowToEditId}
+            aerodromeId={runwayData ? runwayData.aerodrome_id : 0}
           />
         ) : null}
       </Modal>

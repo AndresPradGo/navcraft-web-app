@@ -5,17 +5,21 @@ import { CgMoveUp } from "react-icons/cg";
 import { FaLinesLeaning } from "react-icons/fa6";
 import { GiConcreteBag } from "react-icons/gi";
 import { LiaTimesSolid } from "react-icons/lia";
-import { MdAddRoad, MdEditRoad } from "react-icons/md";
+import {
+  MdAddRoad,
+  MdEditRoad,
+  MdOutlineConnectingAirports,
+} from "react-icons/md";
 import { TfiRuler } from "react-icons/tfi";
 import { styled } from "styled-components";
 import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import Button from "../../components/common/button";
-import DataList from "../../components/common/datalist";
+import Button from "../common/button";
+import DataList from "../common/datalist";
 import useRunwaySurfaces from "../../hooks/useRunwaySurfaces";
-import Loader from "../../components/Loader";
+import Loader from "../Loader";
 import useEditRunway from "./useEditRunway";
 
 const HtmlForm = styled.form`
@@ -56,6 +60,14 @@ const HtmlInputContainer = styled.div`
 
   border-top: 1px solid var(--color-grey);
   border-bottom: 1px solid var(--color-grey);
+
+  & h2 {
+    margin: 20px;
+    border-bottom: 1px solid var(--color-grey-bright);
+    display: flex;
+    align-items: center;
+    text-wrap: wrap;
+  }
 `;
 
 interface RequiredInputProps {
@@ -153,6 +165,12 @@ const HtmlButtons = styled.div`
   align-items: center;
   width: 100%;
   padding: 10px 20px;
+`;
+
+const AerodromeIcon = styled(MdOutlineConnectingAirports)`
+  font-size: 35px;
+  margin: 0 10px;
+  flex-shrink: 0;
 `;
 
 const NumberIcon = styled(AiOutlineFieldNumber)`
@@ -269,9 +287,17 @@ interface Props {
   runwayData: RunwayDataType;
   closeModal: () => void;
   isOpen: boolean;
+  aerodromeName: string;
+  fromAerodrome: boolean;
 }
 
-const EditRunwayForm = ({ runwayData, closeModal, isOpen }: Props) => {
+const EditRunwayForm = ({
+  runwayData,
+  closeModal,
+  isOpen,
+  aerodromeName,
+  fromAerodrome,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -283,7 +309,7 @@ const EditRunwayForm = ({ runwayData, closeModal, isOpen }: Props) => {
     setValue,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
   const { data: surfaces, isLoading } = useRunwaySurfaces();
-  const mutation = useEditRunway();
+  const mutation = useEditRunway(fromAerodrome);
 
   useEffect(() => {
     register("position");
@@ -411,6 +437,10 @@ const EditRunwayForm = ({ runwayData, closeModal, isOpen }: Props) => {
       ) : (
         <>
           <HtmlInputContainer>
+            <h2>
+              <AerodromeIcon />
+              {aerodromeName}
+            </h2>
             <HtmlInput
               $hasValue={!!watch("number") || watch("number") === 0}
               $accepted={!errors.number}

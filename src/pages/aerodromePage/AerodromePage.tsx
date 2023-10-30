@@ -483,6 +483,7 @@ const AerodromePage = () => {
             })}
           </HtmlDataList>
           <RunwaysTable
+            aerodromeName={aerodromeData?.code || ""}
             canEdit={userCanEdit}
             editModal={editRunwayModal}
             runwaysData={aerodromeData?.runways || []}

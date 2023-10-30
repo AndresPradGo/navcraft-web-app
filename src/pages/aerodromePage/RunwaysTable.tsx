@@ -7,8 +7,10 @@ import Table from "../../components/common/table";
 import Button from "../../components/common/button";
 import { RunwayDataFromAPI } from "../../services/userAerodromeClient";
 import { useModal, Modal, UseModalType } from "../../components/common/modal";
-import EditRunwayForm, { RunwayDataType } from "./EditRunwayForm";
-import DeleteRunwayForm from "./DeleteRunwayForm";
+import EditRunwayForm, {
+  RunwayDataType,
+} from "../../components/editRunwayForm/EditRunwayForm";
+import DeleteRunwayForm from "../../components/deleteRunwayForm/DeleteRunwayForm";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -75,12 +77,14 @@ interface Props {
   runwayId: number;
   setRunwayId: Dispatch<SetStateAction<number>>;
   canEdit: boolean;
+  aerodromeName: string;
 }
 
 const RunwaysTable = ({
   editModal,
   runwaysData,
   aerodromeId,
+  aerodromeName,
   runwayId,
   setRunwayId,
   canEdit,
@@ -184,6 +188,8 @@ const RunwaysTable = ({
         <>
           <Modal isOpen={editModal.isOpen}>
             <EditRunwayForm
+              fromAerodrome={true}
+              aerodromeName={aerodromeName}
               isOpen={editModal.isOpen}
               closeModal={editModal.handleClose}
               runwayData={runwayData}
@@ -191,6 +197,8 @@ const RunwaysTable = ({
           </Modal>
           <Modal isOpen={deleteModal.isOpen}>
             <DeleteRunwayForm
+              fromAerodrome={true}
+              aerodromeName={aerodromeName}
               closeModal={deleteModal.handleClose}
               name={
                 runwayInCache

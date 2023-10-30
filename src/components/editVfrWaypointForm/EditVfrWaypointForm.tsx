@@ -319,14 +319,14 @@ const schema = z.object({
   code: z
     .string()
     .min(2, { message: "Must be at least 2 characters long" })
-    .max(50, { message: "Must be at most 50 characters long" })
+    .max(12, { message: "Must be at most 50 characters long" })
     .regex(/^[-A-Za-z0-9]+$/, {
       message: "Only letters, numbers and symbol -",
     }),
   name: z
     .string()
     .min(2, { message: "Must be at least 2 characters long" })
-    .max(255, { message: "Must be at most 255 characters long" })
+    .max(50, { message: "Must be at most 255 characters long" })
     .regex(/^[A-Za-z0-9 .'-]+$/, {
       message: "Only letters, numbers, spaces and symbols '.-",
     }),
