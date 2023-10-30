@@ -74,6 +74,7 @@ interface Props {
   aerodromeId: number;
   runwayId: number;
   setRunwayId: Dispatch<SetStateAction<number>>;
+  canEdit: boolean;
 }
 
 const RunwaysTable = ({
@@ -82,6 +83,7 @@ const RunwaysTable = ({
   aerodromeId,
   runwayId,
   setRunwayId,
+  canEdit,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
   const deleteModal = useModal();
@@ -145,14 +147,18 @@ const RunwaysTable = ({
       }`,
       surface: r.surface,
       handleEdit: () => {
-        setRunwayId(r.id);
-        editModal.handleOpen();
+        if (canEdit) {
+          setRunwayId(r.id);
+          editModal.handleOpen();
+        }
       },
       handleDelete: () => {
-        setRunwayId(r.id);
-        deleteModal.handleOpen();
+        if (canEdit) {
+          setRunwayId(r.id);
+          deleteModal.handleOpen();
+        }
       },
-      permissions: "delete" as "delete",
+      permissions: canEdit ? ("delete" as "delete") : undefined,
     })),
     breakingPoint: 1000,
   };
@@ -174,50 +180,56 @@ const RunwaysTable = ({
 
   return (
     <>
-      <Modal isOpen={editModal.isOpen}>
-        <EditRunwayForm
-          isOpen={editModal.isOpen}
-          closeModal={editModal.handleClose}
-          runwayData={runwayData}
-        />
-      </Modal>
-      <Modal isOpen={deleteModal.isOpen}>
-        <DeleteRunwayForm
-          closeModal={deleteModal.handleClose}
-          name={
-            runwayInCache
-              ? `${runwayInCache.number < 10 ? "0" : ""}${
-                  runwayInCache.number
-                }${runwayInCache.position || ""}`
-              : ""
-          }
-          id={runwayId}
-          aerodromeId={aerodromeId}
-        />
-      </Modal>
+      {canEdit ? (
+        <>
+          <Modal isOpen={editModal.isOpen}>
+            <EditRunwayForm
+              isOpen={editModal.isOpen}
+              closeModal={editModal.handleClose}
+              runwayData={runwayData}
+            />
+          </Modal>
+          <Modal isOpen={deleteModal.isOpen}>
+            <DeleteRunwayForm
+              closeModal={deleteModal.handleClose}
+              name={
+                runwayInCache
+                  ? `${runwayInCache.number < 10 ? "0" : ""}${
+                      runwayInCache.number
+                    }${runwayInCache.position || ""}`
+                  : ""
+              }
+              id={runwayId}
+              aerodromeId={aerodromeId}
+            />
+          </Modal>
+        </>
+      ) : null}
       <HtmlContainer>
         <HtmlTitleContainer>
           <div>
             <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
             <h3>Runways</h3>
           </div>
-          <Button
-            borderRadious={100}
-            padding="5px"
-            height="30px"
-            backgroundColor="var(--color-grey)"
-            backgroundHoverColor="var(--color-white)"
-            color="var(--color-primary-dark)"
-            hoverColor="var(--color-primary-dark)"
-            margin="0 20px 0 0px"
-            fontSize={18}
-            handleClick={() => {
-              setRunwayId(0);
-              editModal.handleOpen();
-            }}
-          >
-            <AiOutlinePlus />
-          </Button>
+          {canEdit ? (
+            <Button
+              borderRadious={100}
+              padding="5px"
+              height="30px"
+              backgroundColor="var(--color-grey)"
+              backgroundHoverColor="var(--color-white)"
+              color="var(--color-primary-dark)"
+              hoverColor="var(--color-primary-dark)"
+              margin="0 20px 0 0px"
+              fontSize={18}
+              handleClick={() => {
+                setRunwayId(0);
+                editModal.handleOpen();
+              }}
+            >
+              <AiOutlinePlus />
+            </Button>
+          ) : null}
         </HtmlTitleContainer>
         <HtmlTableContainer $isOpen={isOpen}>
           <Table

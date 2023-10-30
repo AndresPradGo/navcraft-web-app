@@ -470,6 +470,7 @@ const AerodromePage = () => {
             })}
           </HtmlDataList>
           <RunwaysTable
+            canEdit={userCanEdit}
             editModal={editRunwayModal}
             runwaysData={aerodromeData?.runways || []}
             aerodromeId={aerodromeData?.id || 0}
