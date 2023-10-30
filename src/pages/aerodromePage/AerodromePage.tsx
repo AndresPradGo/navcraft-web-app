@@ -22,6 +22,7 @@ import useAuth from "../../hooks/useAuth";
 import usePathList from "../../router/usePathList";
 import EditOfficialAerodromeForm from "../../components/editOfficialAerodromeForm";
 import useAerodromeStatusList from "../../hooks/useAerodromeStatusList";
+import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm/index";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -416,11 +417,23 @@ const AerodromePage = () => {
             )}
           </Modal>
           <Modal isOpen={deleteModal.isOpen}>
-            <DeleteUserAerodromeForm
-              closeModal={deleteModal.handleClose}
-              name={aerodromeData?.name || ""}
-              id={aerodromeData?.id || 0}
-            />
+            {!isPrivateData ? (
+              <DeleteVfrWaypointForm
+                closeModal={deleteModal.handleClose}
+                name={aerodromeData?.name || ""}
+                id={aerodromeData?.id || 0}
+                isAerodrome={true}
+                redirect={true}
+              />
+            ) : (
+              <DeleteUserAerodromeForm
+                closeModal={deleteModal.handleClose}
+                name={aerodromeData?.name || ""}
+                id={aerodromeData?.id || 0}
+                redirect={true}
+                queryKey="all"
+              />
+            )}
           </Modal>
         </>
       ) : null}

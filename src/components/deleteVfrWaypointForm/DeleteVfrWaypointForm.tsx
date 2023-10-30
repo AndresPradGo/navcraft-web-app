@@ -4,7 +4,9 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
 import Button from "../common/button";
-import useDeleteUserWaypoint from "./useDeleteVfrWaypoint";
+import useDeleteVfrWaypoint from "./useDeleteVfrWaypoint";
+import useDeleteOfficialAerodrome from "./useDeleteOfficialAerodrome";
+import { useNavigate } from "react-router-dom";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -113,17 +115,28 @@ interface Props {
   closeModal: () => void;
   name: string;
   id: number;
+  redirect?: boolean;
+  isAerodrome?: boolean;
 }
 
-const DeleteVfrWaypointForm = ({ closeModal, name, id }: Props) => {
-  const deleteMutation = useDeleteUserWaypoint();
+const DeleteVfrWaypointForm = ({
+  closeModal,
+  name,
+  id,
+  isAerodrome,
+  redirect,
+}: Props) => {
+  const navigate = useNavigate();
+  const deleteMutation = useDeleteVfrWaypoint();
+  const deleteAerodromeMutation = useDeleteOfficialAerodrome(() => {
+    if (redirect) navigate("/waypoints");
+  });
 
   const handleDelete = () => {
     closeModal();
-    deleteMutation.mutate({
-      id: id,
-      name: name,
-    });
+    const mutationOBJ = { id: id, name: name };
+    if (isAerodrome) deleteAerodromeMutation.mutate(mutationOBJ);
+    else deleteMutation.mutate(mutationOBJ);
   };
 
   return (
@@ -131,12 +144,16 @@ const DeleteVfrWaypointForm = ({ closeModal, name, id }: Props) => {
       <h1>
         <div>
           <TitleIcon />
-          Delete VFR Waypoint
+          {`Delete ${isAerodrome ? "Registered Aerodrome" : "VFR Waypoint"}`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
       <BodyContainer>
-        <p>{`Are you sure you want to delete "${name}" from the official VFR waypoints' list?`}</p>
+        {isAerodrome ? (
+          <p>{`Are you sure you want to delete "${name}" from the registered aerodromes' list?`}</p>
+        ) : (
+          <p>{`Are you sure you want to delete "${name}" from the official VFR waypoints' list?`}</p>
+        )}
       </BodyContainer>
       <HtmlButtons>
         <Button

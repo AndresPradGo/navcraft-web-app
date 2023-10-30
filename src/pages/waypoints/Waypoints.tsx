@@ -21,6 +21,7 @@ import EditUserWaypointForm from "../../components/editUserWaypointForm";
 import EditVfrWaypointForm from "../../components/editVfrWaypointForm";
 import DeleteUserWaypointForm from "../../components/deleteUserWaypointForm";
 import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm";
+import DeleteUserAerodromeForm from "../../components/deleteUserAerodromeForm/index";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -353,11 +354,12 @@ const Waypoints = () => {
   const userWaypointData = userWaypoints?.find(
     (item) => item.id === rowToEditId
   );
+  const aerodrome = aerodromes?.find((item) => item.id === rowToEditId);
 
   return (
     <>
       <Modal isOpen={editModal.isOpen}>
-        {typeItemToEdit === "vfrWaypoint" ? (
+        {typeItemToEdit === "vfrWaypoint" && userIsAdmin ? (
           <EditVfrWaypointForm
             closeModal={editModal.handleClose}
             waypointData={
@@ -446,11 +448,25 @@ const Waypoints = () => {
             name={userWaypointData ? userWaypointData.name : ""}
             id={userWaypointData ? userWaypointData.id : 0}
           />
-        ) : typeItemToEdit === "vfrWaypoint" ? (
+        ) : typeItemToEdit === "vfrWaypoint" && userIsAdmin ? (
           <DeleteVfrWaypointForm
             closeModal={deleteModal.handleClose}
             name={vfrWaypointData ? vfrWaypointData.name : ""}
             id={vfrWaypointData ? vfrWaypointData.id : 0}
+          />
+        ) : typeItemToEdit === "officialAerodrome" && userIsAdmin ? (
+          <DeleteVfrWaypointForm
+            closeModal={deleteModal.handleClose}
+            name={aerodrome ? aerodrome.name : ""}
+            id={aerodrome ? aerodrome.id : 0}
+            isAerodrome={true}
+          />
+        ) : typeItemToEdit === "userAerodrome" ? (
+          <DeleteUserAerodromeForm
+            closeModal={deleteModal.handleClose}
+            name={aerodrome ? aerodrome.name : ""}
+            id={aerodrome ? aerodrome.id : 0}
+            queryKey="all"
           />
         ) : null}
       </Modal>

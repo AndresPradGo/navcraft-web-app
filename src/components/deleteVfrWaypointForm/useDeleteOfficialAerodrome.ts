@@ -2,7 +2,7 @@ import { useMutation, useQueryClient} from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../services/apiClient';
-import apiClient, {AerodromeDataFromAPI} from '../../services/userAerodromeClient'
+import apiClient, {OfficialAerodromeDataFromAPI} from '../../services/officialAerodromeClient'
 
 
 interface DeleteAerodromeData {
@@ -11,17 +11,17 @@ interface DeleteAerodromeData {
 }
 
 interface DeleteAerodromeContext {
-    previusData?: AerodromeDataFromAPI[]
+    previusData?: OfficialAerodromeDataFromAPI[]
 }
 
-const useDeleteUserAerodrome = (onDelete: () => void, key: "user" | "all") => {
+const useDeleteOfficialAerodrome = (onDelete: () => void) => {
     const queryClient = useQueryClient()
     return useMutation<string, APIClientError, DeleteAerodromeData, DeleteAerodromeContext>({
-        mutationFn: (data: DeleteAerodromeData) => apiClient.delete(`/user/${data.id}`),
+        mutationFn: (data: DeleteAerodromeData) => apiClient.delete(`admin-waypoints/registered/${data.id}`),
         onMutate: (data) => {
-            const previusData = queryClient.getQueryData<AerodromeDataFromAPI[]>(['aerodromes', key])
-            queryClient.setQueryData<AerodromeDataFromAPI[]>(
-                ['aerodromes', key], 
+            const previusData = queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>(['aerodromes', 'all'])
+            queryClient.setQueryData<OfficialAerodromeDataFromAPI[]>(
+                ['aerodromes', 'all'], 
                 currentData => (
                     currentData ? currentData.filter(item => item.id !== data.id) : []
                 )
@@ -29,8 +29,8 @@ const useDeleteUserAerodrome = (onDelete: () => void, key: "user" | "all") => {
             return { previusData }
         },
         onSuccess: (_, data) => {
-            queryClient.invalidateQueries({queryKey: ['aerodromes', key]})
-            toast.info(`"${data.name}" has been deleted from your private aerodromes' list.`, {
+            queryClient.invalidateQueries({queryKey: ['aerodromes', 'all']})
+            toast.info(`"${data.name}" has been deleted from the official aerodromes' list.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
@@ -67,12 +67,12 @@ const useDeleteUserAerodrome = (onDelete: () => void, key: "user" | "all") => {
             });
 
             if (!context) return
-            queryClient.setQueryData<AerodromeDataFromAPI[]>(
-                ['aerodromes', key], 
+            queryClient.setQueryData<OfficialAerodromeDataFromAPI[]>(
+                ['aerodromes', 'all'], 
                 context.previusData
             )
         }
     })
 }
 
-export default useDeleteUserAerodrome
+export default useDeleteOfficialAerodrome

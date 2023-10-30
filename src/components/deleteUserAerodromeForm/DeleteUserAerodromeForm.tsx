@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 
 import Button from "../common/button";
 import useDeleteUserAerodrome from "./useDeleteUserAerodrome";
+import { useNavigate } from "react-router-dom";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -112,10 +113,21 @@ interface Props {
   closeModal: () => void;
   name: string;
   id: number;
+  queryKey: "user" | "all";
+  redirect?: boolean;
 }
 
-const DeleteUserAerodromeForm = ({ closeModal, name, id }: Props) => {
-  const deleteMutation = useDeleteUserAerodrome();
+const DeleteUserAerodromeForm = ({
+  closeModal,
+  name,
+  id,
+  queryKey,
+  redirect,
+}: Props) => {
+  const navigate = useNavigate();
+  const deleteMutation = useDeleteUserAerodrome(() => {
+    if (redirect) navigate("/waypoints");
+  }, queryKey);
 
   const handleDelete = () => {
     closeModal();
@@ -130,7 +142,7 @@ const DeleteUserAerodromeForm = ({ closeModal, name, id }: Props) => {
       <h1>
         <div>
           <TitleIcon />
-          Delete Aerodrome
+          Delete User Aerodrome
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>

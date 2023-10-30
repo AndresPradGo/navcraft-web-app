@@ -185,6 +185,7 @@ const AerodromesTable = ({ editModal }: Props) => {
           closeModal={deleteModal.handleClose}
           name={aerodromes?.find((item) => item.id === aerodromeId)?.name || ""}
           id={aerodromeId}
+          queryKey="user"
         />
       </Modal>
       <HtmlContainer>
