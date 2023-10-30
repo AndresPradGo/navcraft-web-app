@@ -312,7 +312,11 @@ const schema = z.object({
   lon_direction: z.enum(["East", "West"]),
   elevation_ft: z.number({ invalid_type_error: "Enter a number" }),
   magnetic_variation: z.union([
-    z.number({ invalid_type_error: "Enter a number" }).nullable(),
+    z
+      .number({ invalid_type_error: "Enter a number" })
+      .max(99.94, { message: "Must be less than 99.95" })
+      .min(-99.94, { message: "Must be greater than 99.95" })
+      .nullable(),
     z.literal(null),
   ]),
 });
@@ -508,6 +512,7 @@ const EditUserAerodromeForm = ({
             {...register("magnetic_variation", {
               setValueAs: handleMagneticVariationValue,
             })}
+            step="any"
             id="aerodrome_magnetic_variation"
             type="number"
             autoComplete="off"

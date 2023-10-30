@@ -196,7 +196,10 @@ const schema = z.object({
     .regex(/^[a-zA-Z0-9\s']+$/, {
       message: "Only letters, numbers, spaces and symbol '",
     }),
-  weight_lb: z.number().nonnegative("Must be greater than or equal to 0"),
+  weight_lb: z
+    .number()
+    .nonnegative("Must be greater than or equal to 0")
+    .max(999.94, { message: "Must be less than 999.95" }),
 });
 export type FormDataType = z.infer<typeof schema>;
 
@@ -281,6 +284,7 @@ const EditProfileForm = ({ closeModal, isOpen }: Props) => {
         >
           <input
             {...register("weight_lb", { valueAsNumber: true })}
+            step="any"
             id="profile_weight_lb"
             type="number"
             autoComplete="off"

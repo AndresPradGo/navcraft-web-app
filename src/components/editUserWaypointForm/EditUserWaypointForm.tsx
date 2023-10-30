@@ -317,7 +317,11 @@ const schema = z.object({
     .max(59, "Seconds must be bewteen 0 and 59"),
   lon_direction: z.enum(["East", "West"]),
   magnetic_variation: z.union([
-    z.number({ invalid_type_error: "Enter a number" }).nullable(),
+    z
+      .number({ invalid_type_error: "Enter a number" })
+      .max(99.94, { message: "Must be less than 99.95" })
+      .min(-99.94, { message: "Must be greater than 99.95" })
+      .nullable(),
     z.literal(null),
   ]),
 });
@@ -482,6 +486,7 @@ const EditUserWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             {...register("magnetic_variation", {
               setValueAs: handleMagneticVariationValue,
             })}
+            step="any"
             id="waypoint_magnetic_variation"
             type="number"
             autoComplete="off"

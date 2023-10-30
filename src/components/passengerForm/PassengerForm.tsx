@@ -204,7 +204,8 @@ const schema = z.object({
     }),
   weight_lb: z
     .number({ invalid_type_error: "Enter a number" })
-    .nonnegative("Must be greater than or equal to 0"),
+    .nonnegative("Must be greater than or equal to 0")
+    .max(999.94, { message: "Must be less than 999.95" }),
 });
 export type FormDataType = z.infer<typeof schema>;
 
@@ -291,6 +292,7 @@ const PassengerForm = ({ passengerData, closeModal, isOpen }: Props) => {
           <input
             {...register("weight_lb", { valueAsNumber: true })}
             id="passenger_weight_lb"
+            step="any"
             type="number"
             autoComplete="off"
             required={true}
