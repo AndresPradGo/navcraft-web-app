@@ -193,8 +193,8 @@ const schema = z.object({
     .string()
     .min(2, { message: "Must be at least 2 characters long" })
     .max(255, { message: "Must be at most 255 characters long" })
-    .regex(/^[a-zA-Z0-9\s']+$/, {
-      message: "Only letters, numbers, spaces and symbol '",
+    .regex(/^[A-Za-z0-9 /.'-]+$/, {
+      message: "Only letters, numbers, spaces and symbols /'.-",
     }),
   weight_lb: z
     .number()
