@@ -329,6 +329,7 @@ interface Props {
   closeModal: () => void;
   isOpen: boolean;
   queryKey: "user" | "all";
+  isAdmin: boolean;
 }
 
 const EditUserAerodromeForm = ({
@@ -336,6 +337,7 @@ const EditUserAerodromeForm = ({
   closeModal,
   isOpen,
   queryKey,
+  isAdmin,
 }: Props) => {
   const mutation = useEditPrivateAerodrome(queryKey);
   const {
@@ -436,7 +438,9 @@ const EditUserAerodromeForm = ({
       <h1>
         <div>
           <AddAerodromeIcon />
-          {`${aerodromeData.id !== 0 ? "Edit" : "Add"} Aerodrome`}
+          {`${aerodromeData.id !== 0 ? "Edit" : "Add"}${
+            isAdmin ? " User " : " "
+          }Aerodrome`}
         </div>
         <CloseIcon onClick={handleCancel} />
       </h1>

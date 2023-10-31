@@ -114,6 +114,7 @@ interface Props {
   name: string;
   id: number;
   queryKey: "user" | "all";
+  isAdmin: boolean;
   redirect?: boolean;
 }
 
@@ -123,6 +124,7 @@ const DeleteUserAerodromeForm = ({
   id,
   queryKey,
   redirect,
+  isAdmin,
 }: Props) => {
   const navigate = useNavigate();
   const deleteMutation = useDeleteUserAerodrome(() => {
@@ -142,7 +144,7 @@ const DeleteUserAerodromeForm = ({
       <h1>
         <div>
           <TitleIcon />
-          Delete User Aerodrome
+          {`Delete${isAdmin ? " User " : " "}Aerodrome`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>

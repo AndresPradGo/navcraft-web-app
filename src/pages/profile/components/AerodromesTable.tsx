@@ -4,6 +4,7 @@ import { BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
 
 import useUserAerodromesData from "../hooks/useUserAerodromesData";
+import useAuth from "../../../hooks/useAuth";
 import Table from "../../../components/common/table";
 import Loader from "../../../components/Loader";
 import Button from "../../../components/common/button";
@@ -78,6 +79,9 @@ interface Props {
 }
 
 const AerodromesTable = ({ editModal }: Props) => {
+  const user = useAuth();
+  const userIsAdmin = user && user.is_active && user.is_admin;
+
   const [isOpen, setIsOpen] = useState(true);
   const [aerodromeId, setAerodromeId] = useState<number>(0);
   const deleteModal = useModal();
@@ -174,6 +178,7 @@ const AerodromesTable = ({ editModal }: Props) => {
     <>
       <Modal isOpen={editModal.isOpen}>
         <EditUserAerodromeForm
+          isAdmin={!!userIsAdmin}
           queryKey={"user"}
           closeModal={editModal.handleClose}
           aerodromeData={aerodromeData}
@@ -182,6 +187,7 @@ const AerodromesTable = ({ editModal }: Props) => {
       </Modal>
       <Modal isOpen={deleteModal.isOpen}>
         <DeleteUserAerodromeForm
+          isAdmin={!!userIsAdmin}
           closeModal={deleteModal.handleClose}
           name={aerodromes?.find((item) => item.id === aerodromeId)?.name || ""}
           id={aerodromeId}

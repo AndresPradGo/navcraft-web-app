@@ -184,7 +184,7 @@ const AerodromePage = () => {
   const pathname = usePathList();
 
   const privateEndpoint = pathname[1] === "private-aerodrome";
-  const adminUser = !!user?.is_admin;
+  const userIsAdmin = !!user?.is_admin;
 
   const [runwayId, setRunwayId] = useState<number>(0);
   const { id } = useParams();
@@ -215,7 +215,7 @@ const AerodromePage = () => {
     throw new Error("");
   if (isLoading || statusListIsLoading) return <Loader />;
 
-  const userCanEdit = adminUser || isPrivateData;
+  const userCanEdit = userIsAdmin || isPrivateData;
 
   interface AerodromeDataDisplay {
     key: string;
@@ -296,7 +296,7 @@ const AerodromePage = () => {
         ? "FDs"
         : "-",
     });
-    if (adminUser) {
+    if (userIsAdmin) {
       aerodromeDataList.push({
         key: "visible",
         title: "Visible",
@@ -371,6 +371,7 @@ const AerodromePage = () => {
               />
             ) : (
               <EditUserAerodromeForm
+                isAdmin={!!userIsAdmin}
                 queryKey={"all"}
                 closeModal={editModal.handleClose}
                 aerodromeData={
@@ -427,6 +428,7 @@ const AerodromePage = () => {
               />
             ) : (
               <DeleteUserAerodromeForm
+                isAdmin={!!userIsAdmin}
                 closeModal={deleteModal.handleClose}
                 name={aerodromeData?.name || ""}
                 id={aerodromeData?.id || 0}

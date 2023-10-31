@@ -113,9 +113,10 @@ interface Props {
   closeModal: () => void;
   name: string;
   id: number;
+  isAdmin: boolean;
 }
 
-const DeleteUserWaypointForm = ({ closeModal, name, id }: Props) => {
+const DeleteUserWaypointForm = ({ closeModal, name, id, isAdmin }: Props) => {
   const deleteMutation = useDeleteUserWaypoint();
 
   const handleDelete = () => {
@@ -131,7 +132,7 @@ const DeleteUserWaypointForm = ({ closeModal, name, id }: Props) => {
       <h1>
         <div>
           <TitleIcon />
-          Delete User Waypoint
+          {`Delete${isAdmin ? " User " : " "}Waypoint`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>

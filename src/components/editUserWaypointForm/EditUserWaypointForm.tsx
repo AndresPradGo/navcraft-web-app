@@ -332,9 +332,15 @@ interface Props {
   waypointData: WaypointDataFromForm;
   closeModal: () => void;
   isOpen: boolean;
+  isAdmin: boolean;
 }
 
-const EditUserWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
+const EditUserWaypointForm = ({
+  waypointData,
+  closeModal,
+  isOpen,
+  isAdmin,
+}: Props) => {
   const mutation = useEditUserWaypoint();
   const {
     register,
@@ -431,7 +437,9 @@ const EditUserWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
       <h1>
         <div>
           {waypointData.id !== 0 ? <EditWaypointIcon /> : <AddWaypointIcon />}
-          {`${waypointData.id !== 0 ? "Edit" : "Add"} User Waypoint`}
+          {`${waypointData.id !== 0 ? "Edit" : "Add"}${
+            isAdmin ? " User " : " "
+          }Waypoint`}
         </div>
         <CloseIcon onClick={handleCancel} />
       </h1>

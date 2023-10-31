@@ -4,6 +4,7 @@ import { BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
 
 import useUserWaypointsData from "../../../hooks/useUserWaypointsData";
+import useAuth from "../../../hooks/useAuth";
 import Table from "../../../components/common/table";
 import Loader from "../../../components/Loader";
 import Button from "../../../components/common/button/index";
@@ -80,6 +81,9 @@ interface Props {
 }
 
 const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
+  const user = useAuth();
+  const userIsAdmin = user && user.is_active && user.is_admin;
+
   const [isOpen, setIsOpen] = useState(true);
   const { data: waypoints, isLoading, error } = useUserWaypointsData();
 
@@ -149,6 +153,7 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
     <>
       <Modal isOpen={editModal.isOpen}>
         <EditUserWaypointForm
+          isAdmin={!!userIsAdmin}
           closeModal={editModal.handleClose}
           waypointData={
             waypointData
@@ -188,6 +193,7 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
       </Modal>
       <Modal isOpen={deleteModal.isOpen}>
         <DeleteUserWaypointForm
+          isAdmin={!!userIsAdmin}
           closeModal={deleteModal.handleClose}
           name={waypointData?.name || ""}
           id={waypointData ? waypointData.id : 0}
