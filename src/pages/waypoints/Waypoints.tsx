@@ -24,6 +24,8 @@ import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm";
 import DeleteUserAerodromeForm from "../../components/deleteUserAerodromeForm/index";
 import EditRunwayForm from "../../components/editRunwayForm/index";
 import DeleteRunwayForm from "../../components/deleteRunwayForm/index";
+import EditOfficialAerodromeForm from "../../components/editOfficialAerodromeForm";
+import EditUserAerodromeForm from "../../components/editUserAerodromeForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -405,6 +407,7 @@ const Waypoints = () => {
           />
         ) : typeItemToEdit === "userWaypoint" ? (
           <EditUserWaypointForm
+            isAdmin={!!userIsAdmin}
             closeModal={editModal.handleClose}
             waypointData={
               userWaypointData
@@ -443,57 +446,112 @@ const Waypoints = () => {
             }
             isOpen={editModal.isOpen}
           />
+        ) : typeItemToEdit === "officialAerodrome" && userIsAdmin ? (
+          <EditOfficialAerodromeForm
+            closeModal={editModal.handleClose}
+            isOpen={editModal.isOpen}
+            statusList={statusList}
+            aerodromeData={{
+              id: 0,
+              code: "",
+              name: "",
+              lat_degrees: 0,
+              lat_minutes: 0,
+              lat_seconds: 0,
+              lat_direction: "North",
+              lon_degrees: 0,
+              lon_minutes: 0,
+              lon_seconds: 0,
+              lon_direction: "West",
+              elevation_ft: 0,
+              magnetic_variation: NaN,
+              hide: true,
+              has_taf: false,
+              has_metar: false,
+              has_fds: false,
+              status:
+                statusList.find((status) => status.id === 3)?.status ||
+                "Unknown",
+              status_id: 3,
+            }}
+          />
+        ) : typeItemToEdit === "userAerodrome" ? (
+          <EditUserAerodromeForm
+            isAdmin={!!userIsAdmin}
+            closeModal={editModal.handleClose}
+            isOpen={editModal.isOpen}
+            queryKey="all"
+            aerodromeData={{
+              id: 0,
+              code: "",
+              name: "",
+              lat_degrees: 0,
+              lat_minutes: 0,
+              lat_seconds: 0,
+              lat_direction: "North",
+              lon_degrees: 0,
+              lon_minutes: 0,
+              lon_seconds: 0,
+              lon_direction: "West",
+              elevation_ft: 0,
+              magnetic_variation: NaN,
+              status: 3,
+            }}
+          />
         ) : null}
       </Modal>
-      <Modal isOpen={editRunwayModal.isOpen}>
-        <EditRunwayForm
-          fromAerodrome={false}
-          closeModal={editRunwayModal.handleClose}
-          aerodromeName={
-            aerodromes?.find((item) => item.id === runwayData?.aerodrome_id)
-              ?.code || ""
-          }
-          runwayData={
-            runwayData
-              ? {
-                  id: runwayData.id,
-                  aerodromeId: runwayData.aerodrome_id,
-                  number: runwayData.number,
-                  position:
-                    runwayData.position === "R"
-                      ? "Right"
-                      : runwayData.position === "L"
-                      ? "Left"
-                      : runwayData.position === "C"
-                      ? "Center"
-                      : "",
-                  length_ft: runwayData.length_ft,
-                  thld_displ: runwayData.landing_length_ft
-                    ? runwayData.length_ft - runwayData.landing_length_ft
-                    : null,
-                  intersection_departure_length_ft:
-                    runwayData.intersection_departure_length_ft
-                      ? runwayData.intersection_departure_length_ft
+      {userIsAdmin ? (
+        <Modal isOpen={editRunwayModal.isOpen}>
+          <EditRunwayForm
+            fromAerodrome={false}
+            closeModal={editRunwayModal.handleClose}
+            aerodromeName={
+              aerodromes?.find((item) => item.id === runwayData?.aerodrome_id)
+                ?.code || ""
+            }
+            runwayData={
+              runwayData
+                ? {
+                    id: runwayData.id,
+                    aerodromeId: runwayData.aerodrome_id,
+                    number: runwayData.number,
+                    position:
+                      runwayData.position === "R"
+                        ? "Right"
+                        : runwayData.position === "L"
+                        ? "Left"
+                        : runwayData.position === "C"
+                        ? "Center"
+                        : "",
+                    length_ft: runwayData.length_ft,
+                    thld_displ: runwayData.landing_length_ft
+                      ? runwayData.length_ft - runwayData.landing_length_ft
                       : null,
-                  surface: runwayData.surface,
-                }
-              : {
-                  id: 0,
-                  aerodromeId: 0,
-                  number: NaN,
-                  position: "",
-                  length_ft: NaN,
-                  thld_displ: NaN,
-                  intersection_departure_length_ft: NaN,
-                  surface: "",
-                }
-          }
-          isOpen={editRunwayModal.isOpen}
-        />
-      </Modal>
+                    intersection_departure_length_ft:
+                      runwayData.intersection_departure_length_ft
+                        ? runwayData.intersection_departure_length_ft
+                        : null,
+                    surface: runwayData.surface,
+                  }
+                : {
+                    id: 0,
+                    aerodromeId: 0,
+                    number: NaN,
+                    position: "",
+                    length_ft: NaN,
+                    thld_displ: NaN,
+                    intersection_departure_length_ft: NaN,
+                    surface: "",
+                  }
+            }
+            isOpen={editRunwayModal.isOpen}
+          />
+        </Modal>
+      ) : null}
       <Modal isOpen={deleteModal.isOpen}>
         {typeItemToEdit === "userWaypoint" ? (
           <DeleteUserWaypointForm
+            isAdmin={!!userIsAdmin}
             closeModal={deleteModal.handleClose}
             name={userWaypointData ? userWaypointData.name : ""}
             id={userWaypointData ? userWaypointData.id : 0}
@@ -513,6 +571,7 @@ const Waypoints = () => {
           />
         ) : typeItemToEdit === "userAerodrome" ? (
           <DeleteUserAerodromeForm
+            isAdmin={!!userIsAdmin}
             closeModal={deleteModal.handleClose}
             name={aerodromeData ? aerodromeData.name : ""}
             id={aerodromeData ? aerodromeData.id : 0}
@@ -538,7 +597,51 @@ const Waypoints = () => {
           />
         ) : null}
       </Modal>
-      <ContentLayout sideBarContent={<SideBarContent />}>
+      <ContentLayout
+        sideBarContent={
+          <SideBarContent
+            handleAddUserAerodrome={() => {
+              setTypeItemToEdit("userAerodrome");
+              setRowToEditId(0);
+              editModal.handleOpen();
+            }}
+            handleAddUserWaypoint={() => {
+              setTypeItemToEdit("userWaypoint");
+              setRowToEditId(0);
+              editModal.handleOpen();
+            }}
+            handleAddOfficialAerodrome={() => {
+              setTypeItemToEdit("officialAerodrome");
+              setRowToEditId(0);
+              editModal.handleOpen();
+            }}
+            handleAddVFRWaypoint={() => {
+              setTypeItemToEdit("vfrWaypoint");
+              setRowToEditId(0);
+              editModal.handleOpen();
+            }}
+            handleManageAerodromes={() => {
+              editModal.handleOpen();
+            }}
+            handleManageWaypoints={() => {
+              editModal.handleOpen();
+            }}
+            handleManageRunways={() => {
+              editModal.handleOpen();
+            }}
+            handleDownloadAerodromes={() => {
+              editModal.handleOpen();
+            }}
+            handleDownloadWaypoints={() => {
+              editModal.handleOpen();
+            }}
+            handleDownloadRunways={() => {
+              editModal.handleOpen();
+            }}
+            isAdmin={!!userIsAdmin}
+          />
+        }
+      >
         <HtmlContainer>
           <HtmlTitleContainer>
             <h1>
