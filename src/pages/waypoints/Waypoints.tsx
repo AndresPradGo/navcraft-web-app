@@ -629,15 +629,6 @@ const Waypoints = () => {
             handleManageRunways={() => {
               editModal.handleOpen();
             }}
-            handleDownloadAerodromes={() => {
-              editModal.handleOpen();
-            }}
-            handleDownloadWaypoints={() => {
-              editModal.handleOpen();
-            }}
-            handleDownloadRunways={() => {
-              editModal.handleOpen();
-            }}
             isAdmin={!!userIsAdmin}
           />
         }

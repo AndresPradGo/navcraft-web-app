@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, {AxiosResponse} from 'axios'
 import useAuth from '../hooks/useAuth';
 
 const axiosInstance = axios.create({
@@ -56,6 +56,18 @@ class APIClient<TPost, TGet> {
     ): Promise<TGet> => {
         this._setAuthHeader()
         return axiosInstance.get<TFromAPI>(this._getEndpoint(endpointPostfix)).then(res => handlePreProcess(res.data))
+    }
+
+    getCsvFile = (endpointPostfix?: string): Promise<AxiosResponse<TGet>> => {
+        this._setAuthHeader()
+        return axiosInstance.get<TGet>(this._getEndpoint(endpointPostfix))
+    }
+
+    getZip = (endpointPostfix?: string): Promise<AxiosResponse<Blob>> => {
+        this._setAuthHeader()
+        return axiosInstance.get<Blob>(this._getEndpoint(endpointPostfix), {
+            responseType: 'arraybuffer'
+          })
     }
 
     post = (data: TPost, endpointPostfix?: string): Promise<TGet> => {

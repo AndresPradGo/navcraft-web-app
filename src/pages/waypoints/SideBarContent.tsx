@@ -9,6 +9,7 @@ import { TbMapPinPlus, TbMapPin, TbRoad } from "react-icons/tb";
 
 import { styled } from "styled-components";
 import Button from "../../components/common/button";
+import useFetchFile from "../../hooks/useFetchFile";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -113,9 +114,6 @@ interface Props {
   handleManageAerodromes: () => void;
   handleManageWaypoints: () => void;
   handleManageRunways: () => void;
-  handleDownloadAerodromes: () => void;
-  handleDownloadWaypoints: () => void;
-  handleDownloadRunways: () => void;
   isAdmin: boolean;
 }
 
@@ -127,9 +125,6 @@ const SideBarContent = ({
   handleManageAerodromes,
   handleManageWaypoints,
   handleManageRunways,
-  handleDownloadAerodromes,
-  handleDownloadWaypoints,
-  handleDownloadRunways,
   isAdmin,
 }: Props) => {
   const commonStyles = {
@@ -141,6 +136,8 @@ const SideBarContent = ({
     borderWidth: 3,
     borderRadious: 4,
   };
+
+  const fileFetcher = useFetchFile();
 
   const commonUserStyles = {
     ...commonStyles,
@@ -195,7 +192,9 @@ const SideBarContent = ({
       styles: {
         ...commonStyles,
       },
-      onClick: handleDownloadAerodromes,
+      onClick: () => {
+        fileFetcher("manage-waypoints/aerodromes");
+      },
     },
     {
       text: "VFR Waypoints",
@@ -203,7 +202,9 @@ const SideBarContent = ({
       styles: {
         ...commonStyles,
       },
-      onClick: handleDownloadWaypoints,
+      onClick: () => {
+        fileFetcher("manage-waypoints/");
+      },
     },
     {
       text: "Runways",
@@ -211,7 +212,9 @@ const SideBarContent = ({
       styles: {
         ...commonStyles,
       },
-      onClick: handleDownloadRunways,
+      onClick: () => {
+        fileFetcher("runways/csv");
+      },
     },
   ];
 
