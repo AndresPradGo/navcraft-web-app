@@ -9,7 +9,8 @@ interface HtmlButtonProps {
   $backgroundHoverColor: string;
   $fill: boolean;
   $shadow: boolean;
-  $width: string;
+  $minWidth: string;
+  $maxWidth: string;
   $height: string;
   $spaceChildren: "center" | "space-between" | "space-evenly" | "flex-start";
   $fontSize: number;
@@ -24,7 +25,8 @@ const HtmlButton = styled.button<HtmlButtonProps>`
   flex-direction: row;
   justify-content: ${(props) => props.$spaceChildren};
   align-items: center;
-  min-width: ${(props) => props.$width};
+  min-width: ${(props) => props.$minWidth};
+  max-width: ${(props) => props.$maxWidth};
   height: ${(props) => props.$height};
   font-size: ${(props) => props.$fontSize}px;
   letter-spacing: 2px;
@@ -61,7 +63,8 @@ const HtmlLink = styled(Link)<HtmlButtonProps>`
   justify-content: ${(props) =>
     props.$spaceChildren ? "space-between" : "center"};
   align-items: center;
-  min-width: ${(props) => props.$width};
+  min-width: ${(props) => props.$minWidth};
+  max-width: ${(props) => props.$maxWidth};
   height: ${(props) => props.$height};
   font-size: ${(props) => props.$fontSize}px;
   font-weight: lighter;
@@ -162,7 +165,8 @@ const Button = ({
         }
         $fill={fill}
         $shadow={shadow ? shadow : false}
-        $width={width ? width : "0px"}
+        $minWidth={width ? width : "0px"}
+        $maxWidth={width ? width : "100%"}
         $height={height ? height : "30px"}
         $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
         $fontSize={fontSize ? fontSize : 12}
@@ -179,7 +183,7 @@ const Button = ({
 
   return (
     <HtmlButton
-      type={btnType}
+      type={btnType ? btnType : "button"}
       ref={reference}
       $color={defaultColor}
       $hoverColor={defaultHoverColor}
@@ -193,7 +197,8 @@ const Button = ({
       }
       $fill={fill}
       $shadow={shadow ? shadow : false}
-      $width={width ? width : "0px"}
+      $minWidth={width ? width : "0px"}
+      $maxWidth={width ? width : "100%"}
       $height={height ? height : "30px"}
       $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
       $fontSize={fontSize ? fontSize : 12}

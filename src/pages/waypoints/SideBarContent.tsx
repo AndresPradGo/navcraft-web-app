@@ -203,7 +203,7 @@ const SideBarContent = ({
         ...commonStyles,
       },
       onClick: () => {
-        fileFetcher("manage-waypoints/");
+        fileFetcher("manage-waypoints");
       },
     },
     {
@@ -291,7 +291,7 @@ const SideBarContent = ({
           <HtmlButtonList>
             <h3>
               <DownloadIcon />
-              {"Export Data to CSV-file"}
+              {"Export Data to CSV File"}
             </h3>
             <div>
               {downloadButtons.map((button, index) => (
@@ -309,7 +309,7 @@ const SideBarContent = ({
           <HtmlButtonList>
             <h3>
               <ImportIcon />
-              {"Bulk Import from CSV-file"}
+              {"Bulk Import from CSV File"}
             </h3>
             <div>
               {importButtons.map((button, index) => (

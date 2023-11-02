@@ -3,6 +3,7 @@ import { AiOutlineSwap } from "react-icons/ai";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { GiRoad } from "react-icons/gi";
 import { MdOutlineConnectingAirports } from "react-icons/md";
+import { TbMapPin, TbRoad } from "react-icons/tb";
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
@@ -26,6 +27,8 @@ import EditRunwayForm from "../../components/editRunwayForm/index";
 import DeleteRunwayForm from "../../components/deleteRunwayForm/index";
 import EditOfficialAerodromeForm from "../../components/editOfficialAerodromeForm";
 import EditUserAerodromeForm from "../../components/editUserAerodromeForm";
+import FileForm from "../../components/common/fileForm/index";
+import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -94,6 +97,36 @@ const ChangeIcon = styled(AiOutlineSwap)`
   }
 `;
 
+const WaypointIcon = styled(TbMapPin)`
+  flex-shrink: 0;
+  font-size: 35px;
+  margin: 0 10px 0 0;
+
+  @media screen and (min-width: 510px) {
+    font-size: 40px;
+  }
+`;
+
+const AerodromeIcon = styled(MdOutlineConnectingAirports)`
+  flex-shrink: 0;
+  font-size: 35px;
+  margin: 0 10px 0 0;
+
+  @media screen and (min-width: 510px) {
+    font-size: 40px;
+  }
+`;
+
+const RunwayIcon = styled(TbRoad)`
+  flex-shrink: 0;
+  font-size: 35px;
+  margin: 0 10px 0 0;
+
+  @media screen and (min-width: 510px) {
+    font-size: 40px;
+  }
+`;
+
 const Waypoints = () => {
   const user = useAuth();
   const userIsAdmin = user && user.is_active && user.is_admin;
@@ -101,17 +134,18 @@ const Waypoints = () => {
   const [tableIndex, setTableIndex] = useState<number>(0);
   const [rowToEditId, setRowToEditId] = useState<number>(0);
   const [typeItemToEdit, setTypeItemToEdit] = useState<
-    | "vfrWaypoint"
+    | "VFR Waypoint"
     | "userWaypoint"
-    | "officialAerodrome"
+    | "Official Aerodrome"
     | "userAerodrome"
-    | "runway"
+    | "Runway"
     | null
   >(null);
 
   const editModal = useModal();
   const deleteModal = useModal();
   const editRunwayModal = useModal();
+  const uploadCsvModal = useModal();
 
   const {
     data: statusList,
@@ -215,12 +249,12 @@ const Waypoints = () => {
               }`,
               visible: !vw.hidden ? "Yes" : "No",
               handleEdit: () => {
-                setTypeItemToEdit("vfrWaypoint");
+                setTypeItemToEdit("VFR Waypoint");
                 setRowToEditId(vw.id);
                 editModal.handleOpen();
               },
               handleDelete: () => {
-                setTypeItemToEdit("vfrWaypoint");
+                setTypeItemToEdit("VFR Waypoint");
                 setRowToEditId(vw.id);
                 deleteModal.handleOpen();
               },
@@ -306,7 +340,7 @@ const Waypoints = () => {
               ? `/waypoints/aerodrome/${a.id}`
               : `/waypoints/private-aerodrome/${a.id}`,
             handleDelete: () => {
-              if (a.registered) setTypeItemToEdit("officialAerodrome");
+              if (a.registered) setTypeItemToEdit("Official Aerodrome");
               else setTypeItemToEdit("userAerodrome");
               setRowToEditId(a.id);
               deleteModal.handleOpen();
@@ -335,12 +369,12 @@ const Waypoints = () => {
             }`,
             surface: r.surface,
             handleEdit: () => {
-              setTypeItemToEdit("runway");
+              setTypeItemToEdit("Runway");
               setRowToEditId(r.id);
               editRunwayModal.handleOpen();
             },
             handleDelete: () => {
-              setTypeItemToEdit("runway");
+              setTypeItemToEdit("Runway");
               setRowToEditId(r.id);
               deleteModal.handleOpen();
             },
@@ -365,7 +399,7 @@ const Waypoints = () => {
   return (
     <>
       <Modal isOpen={editModal.isOpen}>
-        {typeItemToEdit === "vfrWaypoint" && userIsAdmin ? (
+        {typeItemToEdit === "VFR Waypoint" && userIsAdmin ? (
           <EditVfrWaypointForm
             closeModal={editModal.handleClose}
             waypointData={
@@ -446,7 +480,7 @@ const Waypoints = () => {
             }
             isOpen={editModal.isOpen}
           />
-        ) : typeItemToEdit === "officialAerodrome" && userIsAdmin ? (
+        ) : typeItemToEdit === "Official Aerodrome" && userIsAdmin ? (
           <EditOfficialAerodromeForm
             closeModal={editModal.handleClose}
             isOpen={editModal.isOpen}
@@ -556,13 +590,13 @@ const Waypoints = () => {
             name={userWaypointData ? userWaypointData.name : ""}
             id={userWaypointData ? userWaypointData.id : 0}
           />
-        ) : typeItemToEdit === "vfrWaypoint" && userIsAdmin ? (
+        ) : typeItemToEdit === "VFR Waypoint" && userIsAdmin ? (
           <DeleteVfrWaypointForm
             closeModal={deleteModal.handleClose}
             name={vfrWaypointData ? vfrWaypointData.name : ""}
             id={vfrWaypointData ? vfrWaypointData.id : 0}
           />
-        ) : typeItemToEdit === "officialAerodrome" && userIsAdmin ? (
+        ) : typeItemToEdit === "Official Aerodrome" && userIsAdmin ? (
           <DeleteVfrWaypointForm
             closeModal={deleteModal.handleClose}
             name={aerodromeData ? aerodromeData.name : ""}
@@ -577,7 +611,7 @@ const Waypoints = () => {
             id={aerodromeData ? aerodromeData.id : 0}
             queryKey="all"
           />
-        ) : typeItemToEdit === "runway" ? (
+        ) : typeItemToEdit === "Runway" ? (
           <DeleteRunwayForm
             fromAerodrome={false}
             aerodromeName={
@@ -597,6 +631,38 @@ const Waypoints = () => {
           />
         ) : null}
       </Modal>
+      <Modal isOpen={uploadCsvModal.isOpen} fullHeight={true}>
+        {userIsAdmin ? (
+          <FileForm
+            handleCancel={uploadCsvModal.handleClose}
+            title={`Import ${typeItemToEdit}s from CSV File`}
+            icon={
+              typeItemToEdit === "Official Aerodrome" ? (
+                <AerodromeIcon />
+              ) : typeItemToEdit === "Runway" ? (
+                <RunwayIcon />
+              ) : (
+                <WaypointIcon />
+              )
+            }
+            instructions={getCsvUploadingInstructions(
+              typeItemToEdit === "Official Aerodrome"
+                ? "aerodromes"
+                : typeItemToEdit === "Runway"
+                ? "runways"
+                : "waypoints"
+            )}
+            path={
+              typeItemToEdit === "Official Aerodrome"
+                ? "manage-waypoints/aerodromes"
+                : typeItemToEdit === "Runway"
+                ? "runways/csv"
+                : "manage-waypoints"
+            }
+            modalIsOpen={uploadCsvModal.isOpen}
+          />
+        ) : null}
+      </Modal>
       <ContentLayout
         sideBarContent={
           <SideBarContent
@@ -611,23 +677,26 @@ const Waypoints = () => {
               editModal.handleOpen();
             }}
             handleAddOfficialAerodrome={() => {
-              setTypeItemToEdit("officialAerodrome");
+              setTypeItemToEdit("Official Aerodrome");
               setRowToEditId(0);
               editModal.handleOpen();
             }}
             handleAddVFRWaypoint={() => {
-              setTypeItemToEdit("vfrWaypoint");
+              setTypeItemToEdit("VFR Waypoint");
               setRowToEditId(0);
               editModal.handleOpen();
             }}
             handleManageAerodromes={() => {
-              editModal.handleOpen();
+              setTypeItemToEdit("Official Aerodrome");
+              uploadCsvModal.handleOpen();
             }}
             handleManageWaypoints={() => {
-              editModal.handleOpen();
+              setTypeItemToEdit("VFR Waypoint");
+              uploadCsvModal.handleOpen();
             }}
             handleManageRunways={() => {
-              editModal.handleOpen();
+              setTypeItemToEdit("Runway");
+              uploadCsvModal.handleOpen();
             }}
             isAdmin={!!userIsAdmin}
           />

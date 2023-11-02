@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import { styled } from "styled-components";
 
-interface HtmlProps {
+interface ContainerProps {
   $isOpen: boolean;
 }
 
-const HtmlBody = styled.div<HtmlProps>`
+const HtmlBody = styled.div<ContainerProps>`
   overflow-x: hidden;
   overflow-y: hidden;
   transition: all 0.3s ease-out;
@@ -26,14 +26,19 @@ const HtmlBody = styled.div<HtmlProps>`
   backdrop-filter: blur(2px) saturate(180%);
 `;
 
-const HtmlModal = styled.div<HtmlProps>`
+interface ModalProps {
+  $isOpen: boolean;
+  $fullHeight: boolean;
+}
+
+const HtmlModal = styled.div<ModalProps>`
   transition: all 0.3s ease-out;
   transform: ${(props) => (props.$isOpen ? "none" : "translate(0, -50px)")};
   overflow-x: hidden;
   overflow-y: hidden;
   border: 1px solid var(--color-grey);
   border-radius: 8px;
-  min-height: 200px;
+  min-height: ${(props) => (props.$fullHeight ? "97vh" : "200px")};
   max-height: 97vh;
   display: flex;
   flex-direction: column;
@@ -49,12 +54,15 @@ const HtmlModal = styled.div<HtmlProps>`
 interface Props {
   children: ReactNode;
   isOpen: boolean;
+  fullHeight?: boolean;
 }
 
-const Modal = ({ children, isOpen }: Props) => {
+const Modal = ({ children, isOpen, fullHeight }: Props) => {
   return (
     <HtmlBody $isOpen={isOpen}>
-      <HtmlModal $isOpen={isOpen}>{children}</HtmlModal>
+      <HtmlModal $isOpen={isOpen} $fullHeight={!!fullHeight}>
+        {children}
+      </HtmlModal>
     </HtmlBody>
   );
 };
