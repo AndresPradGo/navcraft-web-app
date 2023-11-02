@@ -93,6 +93,7 @@ const SortButton = ({ sortOptions, selectedSortData, dispatch }: Props) => {
         spaceChildren="space-between"
         padding="10px 20px"
         margin="10px 0"
+        onlyHover={true}
       >
         Sort by:&nbsp;
         {sortOptions[selectedSortData.index].title}

@@ -138,6 +138,7 @@ const FilterButton = ({ text, filters, appliedFilters, dispatch }: Props) => {
         spaceChildren="space-between"
         padding="10px 20px"
         margin="10px 0"
+        onlyHover={true}
       >
         {text}
         {appliedFilters.length ? <FilterFilledIcon /> : <FilterIcon />}

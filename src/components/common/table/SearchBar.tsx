@@ -62,8 +62,7 @@ const HtmlForm = styled.form<FormProps>`
     color: var(--color-primary-dark);
     margin-right: 10px;
 
-    &:hover,
-    &:focus {
+    &:hover {
       background-color: var(--color-grey-bright);
       color: var(--color-primary-dark);
     }
