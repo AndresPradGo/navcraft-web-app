@@ -1,4 +1,11 @@
-import { ReactNode, useState, useEffect, DragEvent, ChangeEvent } from "react";
+import {
+  ReactNode,
+  useState,
+  useEffect,
+  DragEvent,
+  ChangeEvent,
+  FormEvent,
+} from "react";
 import { AiOutlineSave } from "react-icons/ai";
 import { FaFileExport, FaUpload } from "react-icons/fa6";
 import { LiaTimesSolid } from "react-icons/lia";
@@ -8,6 +15,8 @@ import { styled } from "styled-components";
 
 import Button from "../button";
 import FileTag from "./FileTag";
+import useUploadFile from "./useUploadFile";
+import Loader from "../../Loader";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -43,9 +52,14 @@ const HtmlForm = styled.form`
   }
 `;
 
-const HtmlInputContainer = styled.div`
+interface InputContainerProps {
+  $loading: boolean;
+}
+
+const HtmlInputContainer = styled.div<InputContainerProps>`
   display: flex;
   flex-direction: column;
+  justify-content: ${(props) => (props.$loading ? "center" : "flex-start")};
   width: 100%;
   overflow-y: auto;
   padding: 20px 0;
@@ -193,12 +207,18 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
+interface SubmissionsDataType {
+  path: string;
+  successMessage: string;
+  queryKey: (string | number)[];
+}
+
 interface Props {
-  handleCancel: () => void;
+  closeModal: () => void;
+  submissionData: SubmissionsDataType;
   title: string;
   icon: ReactNode;
   instructions: string[];
-  path: string;
   modalIsOpen: boolean;
 }
 
@@ -206,13 +226,16 @@ const FileForm = ({
   title,
   icon,
   instructions,
-  path,
-  handleCancel,
+  closeModal,
   modalIsOpen,
+  submissionData: { path, successMessage, queryKey },
 }: Props) => {
+  const [submited, setSubmited] = useState(false);
   const [helpExpanded, setHelpExpanded] = useState(false);
   const [fileIsOver, setFileIsOver] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+
+  const mutation = useUploadFile(path, successMessage, queryKey);
 
   useEffect(() => {
     if (!modalIsOpen) {
@@ -220,6 +243,12 @@ const FileForm = ({
       setFile(null);
     }
   }, [modalIsOpen]);
+
+  useEffect(() => {
+    if (submited && !mutation.isLoading) {
+      closeModal();
+    }
+  }, [submited, mutation.isLoading]);
 
   const handleDragover = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -248,75 +277,94 @@ const FileForm = ({
     }
   };
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (file && !mutation.isLoading) {
+      const formData = new FormData();
+      formData.append("csv_file", file);
+      mutation.mutate(formData);
+      setSubmited(true);
+    }
+  };
+
   return (
-    <HtmlForm>
+    <HtmlForm onSubmit={handleSubmit}>
       <h1>
         <div>
           <ExportIcon />
           {icon}
           {title}
         </div>
-        <CloseIcon onClick={handleCancel} />
+        <CloseIcon onClick={closeModal} />
       </h1>
-      <HtmlInputContainer>
-        <Button
-          color={
-            helpExpanded ? "var(--color-primary-dark)" : "var(--color-grey)"
-          }
-          hoverColor={
-            helpExpanded
-              ? "var(--color-primary-dark)"
-              : "var(--color-grey-bright)"
-          }
-          backgroundColor={
-            helpExpanded ? "var(--color-grey-bright)" : "var(--color-grey)"
-          }
-          backgroundHoverColor="var(--color-grey-bright)"
-          fill={helpExpanded}
-          width="100px"
-          spaceChildren="center"
-          fontSize={16}
-          borderRadious={100}
-          borderWidth={2}
-          margin="0 0 0 10px"
-          padding="10px 20px"
-          handleClick={() => {
-            setHelpExpanded(!helpExpanded);
-          }}
-        >
-          Help <HelpIcon />
-        </Button>
-        <HtmlList $expanded={helpExpanded}>
-          {instructions.map((point, index) => (
-            <li key={index}>{point}</li>
-          ))}
-        </HtmlList>
-        <HtmlUploadSection
-          $fileIsOver={fileIsOver}
-          onDragOver={handleDragover}
-          onDragLeave={handleDragEnd}
-          onDrop={handleFileDrop}
-        >
-          <div>
-            {file ? (
-              <FileTag name={file.name} handleDelete={() => setFile(null)} />
-            ) : (
-              <>
-                <UploadIcon />
-                <p>Drag & Drop CSV File or</p>
-                <input
-                  type="file"
-                  id="csv_upload"
-                  accept=".csv"
-                  onChange={handleFileAdd}
-                />
-                <label htmlFor="csv_upload">
-                  Browse <BrowseIcon />
-                </label>
-              </>
-            )}
-          </div>
-        </HtmlUploadSection>
+      <HtmlInputContainer $loading={mutation.isLoading}>
+        {mutation.isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <Button
+              color={
+                helpExpanded ? "var(--color-primary-dark)" : "var(--color-grey)"
+              }
+              hoverColor={
+                helpExpanded
+                  ? "var(--color-primary-dark)"
+                  : "var(--color-grey-bright)"
+              }
+              backgroundColor={
+                helpExpanded ? "var(--color-grey-bright)" : "var(--color-grey)"
+              }
+              backgroundHoverColor="var(--color-grey-bright)"
+              fill={helpExpanded}
+              width="100px"
+              spaceChildren="center"
+              fontSize={16}
+              borderRadious={100}
+              borderWidth={2}
+              margin="0 0 0 10px"
+              padding="10px 20px"
+              handleClick={() => {
+                setHelpExpanded(!helpExpanded);
+              }}
+            >
+              Help <HelpIcon />
+            </Button>
+            <HtmlList $expanded={helpExpanded}>
+              {instructions.map((point, index) => (
+                <li key={index}>{point}</li>
+              ))}
+            </HtmlList>
+            <HtmlUploadSection
+              $fileIsOver={fileIsOver}
+              onDragOver={handleDragover}
+              onDragLeave={handleDragEnd}
+              onDrop={handleFileDrop}
+            >
+              <div>
+                {file ? (
+                  <FileTag
+                    name={file.name}
+                    handleDelete={() => setFile(null)}
+                  />
+                ) : (
+                  <>
+                    <UploadIcon />
+                    <p>Drag & Drop CSV File or</p>
+                    <input
+                      type="file"
+                      id="csv_upload"
+                      accept=".csv"
+                      onChange={handleFileAdd}
+                    />
+                    <label htmlFor="csv_upload">
+                      Browse <BrowseIcon />
+                    </label>
+                  </>
+                )}
+              </div>
+            </HtmlUploadSection>
+          </>
+        )}
       </HtmlInputContainer>
       <HtmlButtons>
         <Button
@@ -327,7 +375,7 @@ const FileForm = ({
           fontSize={15}
           margin="5px 0"
           borderRadious={4}
-          handleClick={handleCancel}
+          handleClick={closeModal}
           btnType="button"
           width="120px"
           height="35px"
@@ -346,6 +394,8 @@ const FileForm = ({
           width="120px"
           height="35px"
           spaceChildren="space-evenly"
+          disabled={mutation.isLoading}
+          disabledText="Saving..."
         >
           Save
           <SaveIcon />

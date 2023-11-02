@@ -55,6 +55,20 @@ const HtmlButton = styled.button<HtmlButtonProps>`
     border: ${(props) => props.$borderWidth}px solid
       ${(props) => props.$backgroundHoverColor};
   }
+
+  &[disabled] {
+    background-color: ${(props) => props.$backgroundHoverColor};
+    border: ${(props) => props.$borderWidth}px solid
+      ${(props) => props.$backgroundHoverColor};
+    color: ${(props) => props.$hoverColor};
+    cursor: not-allowed;
+  }
+
+  &[disabled]:hover,
+  &[disabled]:focus {
+    background-color: ${(props) => props.$backgroundHoverColor};
+    color: ${(props) => props.$hoverColor};
+  }
 `;
 
 const HtmlLink = styled(Link)<HtmlButtonProps>`
@@ -114,6 +128,8 @@ interface Props {
   href?: string;
   reference?: Dispatch<SetStateAction<HTMLElement | null>>;
   btnType?: "button" | "reset" | "submit";
+  disabled?: boolean;
+  disabledText?: string;
 }
 
 const Button = ({
@@ -136,6 +152,8 @@ const Button = ({
   href,
   reference,
   btnType,
+  disabled,
+  disabledText,
 }: Props) => {
   const defaultColor = color
     ? color
@@ -207,8 +225,9 @@ const Button = ({
       $margin={margin ? margin : "0px"}
       $padding={padding ? padding : "5px 10px"}
       onClick={handleClick ? handleClick : () => {}}
+      disabled={!!disabled}
     >
-      {children}
+      {disabled ? disabledText : children}
     </HtmlButton>
   );
 };

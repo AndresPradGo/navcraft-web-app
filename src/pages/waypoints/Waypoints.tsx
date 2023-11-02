@@ -634,7 +634,7 @@ const Waypoints = () => {
       <Modal isOpen={uploadCsvModal.isOpen} fullHeight={true}>
         {userIsAdmin ? (
           <FileForm
-            handleCancel={uploadCsvModal.handleClose}
+            closeModal={uploadCsvModal.handleClose}
             title={`Import ${typeItemToEdit}s from CSV File`}
             icon={
               typeItemToEdit === "Official Aerodrome" ? (
@@ -652,12 +652,24 @@ const Waypoints = () => {
                 ? "runways"
                 : "waypoints"
             )}
-            path={
+            submissionData={
               typeItemToEdit === "Official Aerodrome"
-                ? "manage-waypoints/aerodromes"
+                ? {
+                    path: "manage-waypoints/aerodromes",
+                    successMessage: "Official Aerodromes'",
+                    queryKey: [],
+                  }
                 : typeItemToEdit === "Runway"
-                ? "runways/csv"
-                : "manage-waypoints"
+                ? {
+                    path: "runways/csv",
+                    successMessage: "Runways'",
+                    queryKey: [],
+                  }
+                : {
+                    path: "manage-waypoints",
+                    successMessage: "VFR Waypoints'",
+                    queryKey: [],
+                  }
             }
             modalIsOpen={uploadCsvModal.isOpen}
           />
