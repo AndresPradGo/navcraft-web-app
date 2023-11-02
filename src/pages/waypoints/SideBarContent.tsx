@@ -1,3 +1,4 @@
+import { AiOutlineSwap } from "react-icons/ai";
 import {
   FaUser,
   FaUserShield,
@@ -10,6 +11,7 @@ import { TbMapPinPlus, TbMapPin, TbRoad } from "react-icons/tb";
 import { styled } from "styled-components";
 import Button from "../../components/common/button";
 import useFetchFile from "../../hooks/useFetchFile";
+import useSideBar from "../../components/sidebar/useSideBar";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -67,6 +69,11 @@ const AddAerodromeIcon = styled(MdOutlineConnectingAirports)`
   margin-left: 5px;
 `;
 
+const ChangeIcon = styled(AiOutlineSwap)`
+  flex-shrink: 0;
+  font-size: 20px;
+`;
+
 const AddWaypointIcon = styled(TbMapPinPlus)`
   font-size: 20px;
   margin-left: 5px;
@@ -115,6 +122,8 @@ interface Props {
   handleManageWaypoints: () => void;
   handleManageRunways: () => void;
   isAdmin: boolean;
+  handleSwap: () => void;
+  nextList: string;
 }
 
 const SideBarContent = ({
@@ -126,8 +135,10 @@ const SideBarContent = ({
   handleManageWaypoints,
   handleManageRunways,
   isAdmin,
+  handleSwap,
+  nextList,
 }: Props) => {
-  const commonStyles = {
+  const baseStyles = {
     width: "100%",
     height: "40px",
     fontSize: 15,
@@ -136,11 +147,11 @@ const SideBarContent = ({
     borderWidth: 3,
     borderRadious: 4,
   };
-
+  const sideBar = useSideBar();
   const fileFetcher = useFetchFile();
 
-  const commonUserStyles = {
-    ...commonStyles,
+  const commonStyles = {
+    ...baseStyles,
     color: "var(--color-white)",
     hoverColor: "var(--color-white)",
     backgroundColor: "var(--color-primary-bright)",
@@ -152,7 +163,7 @@ const SideBarContent = ({
       text: isAdmin ? "Add User Aerodrome" : "Add Aerodrome",
       icon: <AddAerodromeIcon />,
       styles: {
-        ...commonUserStyles,
+        ...commonStyles,
       },
       onClick: handleAddUserAerodrome,
     },
@@ -160,7 +171,7 @@ const SideBarContent = ({
       text: isAdmin ? "Add User Waypoint" : "Add Waypoint",
       icon: <AddWaypointIcon />,
       styles: {
-        ...commonUserStyles,
+        ...commonStyles,
       },
       onClick: handleAddUserWaypoint,
     },
@@ -171,7 +182,7 @@ const SideBarContent = ({
       text: "Add Official Aerodrome",
       icon: <AddAerodromeIcon />,
       styles: {
-        ...commonUserStyles,
+        ...commonStyles,
       },
       onClick: handleAddOfficialAerodrome,
     },
@@ -179,7 +190,7 @@ const SideBarContent = ({
       text: "Add VFR Waypoint",
       icon: <AddWaypointIcon />,
       styles: {
-        ...commonUserStyles,
+        ...commonStyles,
       },
       onClick: handleAddVFRWaypoint,
     },
@@ -218,17 +229,12 @@ const SideBarContent = ({
     },
   ];
 
-  const commonImportStyles = {
-    ...commonStyles,
-    backgroundColor: "var(--color-contrast)",
-    backgroundHoverColor: "var(--color-contrast-hover)",
-  };
   const importButtons = [
     {
       text: "Official Aerodromes",
       icon: <AddAerodromeIcon />,
       styles: {
-        ...commonImportStyles,
+        ...baseStyles,
       },
       onClick: handleManageAerodromes,
     },
@@ -236,7 +242,7 @@ const SideBarContent = ({
       text: "VFR Waypoints",
       icon: <WaypointIcon />,
       styles: {
-        ...commonImportStyles,
+        ...baseStyles,
       },
       onClick: handleManageWaypoints,
     },
@@ -244,7 +250,7 @@ const SideBarContent = ({
       text: "Runways",
       icon: <RunwayIcon />,
       styles: {
-        ...commonImportStyles,
+        ...baseStyles,
       },
       onClick: handleManageRunways,
     },
@@ -252,6 +258,27 @@ const SideBarContent = ({
 
   return (
     <HtmlContainer>
+      <Button
+        handleClick={() => {
+          handleSwap();
+          sideBar.handleExpandSideBar(false);
+        }}
+        color="var(--color-contrast)"
+        hoverColor="var(--color-contrast-hover)"
+        backgroundColor="transparent"
+        backgroundHoverColor="transparent"
+        fill={false}
+        width="205px"
+        spaceChildren="space-between"
+        borderWidth={0}
+        fontSize={20}
+        margin="40px 0 20px"
+        padding="0"
+        onlyHover={true}
+      >
+        {`See ${nextList}`}
+        <ChangeIcon />
+      </Button>
       <HtmlButtonList>
         {isAdmin ? (
           <h3>

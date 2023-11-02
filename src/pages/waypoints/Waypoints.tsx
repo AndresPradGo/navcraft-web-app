@@ -87,8 +87,7 @@ const ChangeIcon = styled(AiOutlineSwap)`
   font-size: 30px;
   margin-left: 5px;
 
-  &:hover,
-  &:focus {
+  &:hover {
     color: var(--color-contrast-hover);
   }
 
@@ -711,6 +710,12 @@ const Waypoints = () => {
               uploadCsvModal.handleOpen();
             }}
             isAdmin={!!userIsAdmin}
+            handleSwap={handleChangeTable}
+            nextList={
+              tableIndex + 1 < tableOptions.length
+                ? tableOptions[tableIndex + 1].title
+                : tableOptions[0].title
+            }
           />
         }
       >

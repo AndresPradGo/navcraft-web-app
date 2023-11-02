@@ -18,6 +18,7 @@ interface HtmlButtonProps {
   $borderWidth: number;
   $margin: string;
   $padding: string;
+  $onlyHover: boolean;
 }
 
 const HtmlButton = styled.button<HtmlButtonProps>`
@@ -47,8 +48,7 @@ const HtmlButton = styled.button<HtmlButtonProps>`
       ? "0 0 8px 1px var(--color-shadow)"
       : "0 0 0 0 var(--color-primary-dark)"};
 
-  &:hover,
-  &:focus {
+  &:hover${(props) => (props.$onlyHover ? "" : ", &:focus")} {
     color: ${(props) => props.$hoverColor};
     background-color: ${(props) =>
       props.$fill ? props.$backgroundHoverColor : "transparent"};
@@ -99,8 +99,7 @@ const HtmlLink = styled(Link)<HtmlButtonProps>`
       ? "0 0 8px 1px var(--color-shadow)"
       : "0 0 0 0 var(--color-primary-dark)"};
 
-  &:hover,
-  &:focus {
+  &:hover${(props) => (props.$onlyHover ? "" : ", &:focus")} {
     color: ${(props) => props.$hoverColor};
     background-color: ${(props) =>
       props.$fill ? props.$backgroundHoverColor : "transparent"};
@@ -130,6 +129,7 @@ interface Props {
   btnType?: "button" | "reset" | "submit";
   disabled?: boolean;
   disabledText?: string;
+  onlyHover?: boolean;
 }
 
 const Button = ({
@@ -154,6 +154,7 @@ const Button = ({
   btnType,
   disabled,
   disabledText,
+  onlyHover,
 }: Props) => {
   const defaultColor = color
     ? color
@@ -194,6 +195,7 @@ const Button = ({
         $padding={padding ? padding : "5px 10px"}
         onClick={handleClick ? handleClick : () => {}}
         to={href}
+        $onlyHover={!!onlyHover}
       >
         {children}
       </HtmlLink>
@@ -226,6 +228,7 @@ const Button = ({
       $padding={padding ? padding : "5px 10px"}
       onClick={handleClick ? handleClick : () => {}}
       disabled={!!disabled}
+      $onlyHover={!!onlyHover}
     >
       {disabled ? disabledText : children}
     </HtmlButton>
