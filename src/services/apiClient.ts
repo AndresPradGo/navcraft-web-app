@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
 })
 
 interface APIResponseData {
-    detail: string
+    detail: string | {[key: string]: any}[]
 }
 interface APIResponse {
     data: APIResponseData,

@@ -5,6 +5,7 @@ import { APIClientError } from '../../services/apiClient';
 import {AerodromeDataFromForm} from './EditOfficialAerodromeForm';
 import apiClient, {EditOfficialAerodromeData, OfficialAerodromeDataFromAPI} from '../../services/officialAerodromeClient';
 import getUTCNowString from '../../utils/getUTCNowString'
+import errorToast from '../../utils/errorToest';
 
 interface AerodromeContext {
     previusData?: OfficialAerodromeDataFromAPI
@@ -134,29 +135,7 @@ const useEditOfficialAerodrome = () => {
 
         },
         onError: (error, newData, context) => {
-            if(error.response) {
-                if (typeof error.response.data.detail === "string")
-                    toast.error(error.response.data.detail, {
-                        position: "top-center",
-                        autoClose: 10000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                    });
-            } else toast.error("Something went wrong, please try again later.", {
-                    position: "top-center",
-                    autoClose: 10000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
-            
+            errorToast(error)
             if (newData.id !== 0 && context?.previusData) {
                 queryClient.setQueryData<OfficialAerodromeDataFromAPI>(
                     ['aerodrome', newData.id], 

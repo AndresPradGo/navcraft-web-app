@@ -5,6 +5,7 @@ import { APIClientError } from '../../services/apiClient';
 import {WaypointDataFromForm} from './EditVfrWaypointForm';
 import apiClient, {EditVfrWaypointData, VfrWaypointDataFromAPI} from '../../services/vfrWaypointClient';
 import getUTCNowString from '../../utils/getUTCNowString'
+import errorToast from '../../utils/errorToest';
 
 
 interface WaypointContext {
@@ -94,29 +95,7 @@ const useEditVfrWaypoint = () => {
             )
         },
         onError: (error, _, context) => {
-            if(error.response) {
-                if (typeof error.response.data.detail === "string")
-                    toast.error(error.response.data.detail, {
-                        position: "top-center",
-                        autoClose: 10000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                    });
-            } else toast.error("Something went wrong, please try again later.", {
-                    position: "top-center",
-                    autoClose: 10000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
-            
+            errorToast(error)
             if (!context?.previusData) return
             queryClient.setQueryData<VfrWaypointDataFromAPI[]>(
                 ['waypoints', 'vfr'], 

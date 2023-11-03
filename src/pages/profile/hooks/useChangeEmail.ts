@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import APIClient,{ APIClientError } from '../../../services/apiClient';
 import { EditUserResponse, ProfileData, ProfileDataWithJWT } from '../entities';
 import {FormDataType as ChangeEmailBody} from '../components/ChangeEmailForm'
+import errorToast from '../../../utils/errorToest';
 
 interface ChangeEmailContext {
     previusData?: ProfileData
@@ -61,30 +62,7 @@ const useChangeEmail = () => {
             )
         },
         onError: (error, _, context) => {
-            if(error.response) {
-                if (typeof error.response.data.detail === "string")
-                    toast.error(error.response.data.detail, {
-                        position: "top-center",
-                        autoClose: 10000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                    });
-                else toast.error("Something went wrong, please try again later.", {
-                    position: "top-center",
-                    autoClose: 10000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
-            }
-            
+            errorToast(error)
             if (!context?.previusData) return
             queryClient.setQueryData<ProfileData>(
                 ['profile'], 

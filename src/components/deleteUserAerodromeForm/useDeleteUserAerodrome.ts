@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../services/apiClient';
 import apiClient, {AerodromeDataFromAPI} from '../../services/userAerodromeClient'
+import errorToast from '../../utils/errorToest';
 
 
 interface DeleteAerodromeData {
@@ -43,29 +44,7 @@ const useDeleteUserAerodrome = (onDelete: () => void, key: "user" | "all") => {
             onDelete()
         },
         onError: (error, _, context) => {
-            if(error.response) {
-                if (typeof error.response.data.detail === "string")
-                    toast.error(error.response.data.detail, {
-                        position: "top-center",
-                        autoClose: 10000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                    });
-            } else toast.error("Something went wrong, please try again later.", {
-                position: "top-center",
-                autoClose: 10000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
-
+            errorToast(error)
             if (!context) return
             queryClient.setQueryData<AerodromeDataFromAPI[]>(
                 ['aerodromes', key], 
