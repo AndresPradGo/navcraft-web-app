@@ -130,7 +130,7 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
             permissions: "delete" as "delete",
           }))
         : [],
-    breakingPoint: 0,
+    breakingPoint: 1400,
   };
 
   const sortData = [

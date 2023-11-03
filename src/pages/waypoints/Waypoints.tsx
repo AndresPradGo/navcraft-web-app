@@ -380,7 +380,7 @@ const Waypoints = () => {
             permissions: !userIsAdmin ? undefined : ("delete" as "delete"),
           }))
         : [],
-    breakingPoint: 0,
+    breakingPoint: 1665,
   };
 
   const handleChangeTable = () => {

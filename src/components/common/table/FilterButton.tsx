@@ -137,7 +137,7 @@ const FilterButton = ({ text, filters, appliedFilters, dispatch }: Props) => {
         borderRadious={5}
         spaceChildren="space-between"
         padding="10px 20px"
-        margin="10px 0"
+        margin="10px 5px"
         onlyHover={true}
       >
         {text}

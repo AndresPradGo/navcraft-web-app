@@ -29,7 +29,7 @@ const HtmlButtonContainer = styled.div`
   width: 100%;
   min-height: 60px;
 
-  @media screen and (min-width: 917px) {
+  @media screen and (min-width: 936px) {
     justify-content: space-between;
   }
 `;

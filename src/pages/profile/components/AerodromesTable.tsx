@@ -160,7 +160,7 @@ const AerodromesTable = ({ editModal }: Props) => {
             permissions: "open-delete" as "open-delete",
           }))
         : [],
-    breakingPoint: 1000,
+    breakingPoint: 1400,
   };
 
   const sortData = [

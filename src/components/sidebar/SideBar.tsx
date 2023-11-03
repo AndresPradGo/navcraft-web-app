@@ -19,6 +19,7 @@ const HtmlSideBar = styled.div<HtmlSideBarContainerProps>`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  flex-shrink: 0;
 
   @media screen and (min-width: 635px) {
     width: ${(props) => (props.$sideBarIsExpanded ? "315px" : "0px")};

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BsChevronUp, BsChevronDown } from "react-icons/bs";
 import { styled } from "styled-components";
 
@@ -90,6 +91,23 @@ const HtmlDummyButton = styled.button`
 
 const SideBarExpandButton = () => {
   const { hasSideBar, sideBarIsExpanded, handleExpandSideBar } = useSideBar();
+
+  useEffect(() => {
+    const handleResize = () => {
+      const { innerWidth: width } = window;
+      if (width >= 1280) {
+        handleExpandSideBar(false);
+        window.removeEventListener("resize", handleResize);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      handleExpandSideBar(false);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   if (!hasSideBar) return <HtmlDummyButton />;
 

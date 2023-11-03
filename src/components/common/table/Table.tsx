@@ -12,10 +12,15 @@ interface HtmlTagProps {
 }
 
 const HtmlTable = styled.table<HtmlTagProps>`
+  flex-grow: 0;
   width: 100%;
-  max-width: ${(props) => (props.$sideBarIsExpanded ? "100vw" : "100%")};
+  max-width: 800px;
   margin-bottom: 10px;
   border-spacing: 0 10px;
+
+  @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
+    max-width: 100vw;
+  }
 `;
 
 const HtmlTableHead = styled.thead<HtmlTagProps>`
@@ -97,7 +102,9 @@ const HtmlTableBody = styled.tbody<HtmlTagProps>`
 `;
 
 const HtmlTableRow = styled.tr<HtmlTagProps>`
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 0;
   padding-bottom: 20px;
   text-align: left;
@@ -111,7 +118,7 @@ const HtmlTableRow = styled.tr<HtmlTagProps>`
   margin-bottom: 24px;
 
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
-    display: ${(props) => (props.$sideBarIsExpanded ? "block" : "table-row")};
+    display: ${(props) => (props.$sideBarIsExpanded ? "flex" : "table-row")};
     padding-bottom: ${(props) => (props.$sideBarIsExpanded ? "20" : "0")}px;
   }
 
@@ -127,6 +134,7 @@ const HtmlTableHeaderCell = styled.th<HtmlTagProps>`
   text-align: left;
   white-space: normal;
   overflow: hidden;
+  min-width: 100%;
 
   padding: 8px;
   vertical-align: middle;
@@ -182,6 +190,12 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
   text-align: right;
   padding: 8px 16px;
   color: var(--color-grey-bright);
+  text-wrap: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  max-width: 1000px;
+  min-width: 100%;
 
   &:first-of-type {
     padding-top: 16px;
@@ -201,15 +215,11 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
   }
 
   @media screen and (min-width: 525px) {
-    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 16px" : "8px 15%")};
-  }
-
-  @media screen and (min-width: 625px) {
-    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 5%" : "8px 20%")};
+    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 5%" : "8px 10%")};
   }
 
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
-    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 20%" : "16px 10px")};
+    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 15%" : "16px 10px")};
     display: ${(props) => (props.$sideBarIsExpanded ? "block" : "table-cell")};
     text-align: ${(props) => (props.$sideBarIsExpanded ? "right" : "center")};
 
@@ -268,8 +278,7 @@ const Table = ({
     headersWithButtons.buttons = "";
   }
 
-  const truncatedBreakingPoint =
-    breakingPoint < 768 ? 768 : breakingPoint > 980 ? 980 : breakingPoint;
+  const truncatedBreakingPoint = breakingPoint < 526 ? 526 : breakingPoint;
   return (
     <>
       <HtmlTable
