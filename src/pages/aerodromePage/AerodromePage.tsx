@@ -7,7 +7,7 @@ import { ImCompass2 } from "react-icons/im";
 import { PiEyeBold } from "react-icons/pi";
 import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { GiWindsock } from "react-icons/gi";
-import { MdOutlineConnectingAirports } from "react-icons/md";
+import { PiAirTrafficControlFill } from "react-icons/pi";
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
@@ -76,6 +76,13 @@ const HtmlTitleContainer = styled.div`
 
       & i {
         padding: 0;
+        display: flex;
+        align-items: center;
+
+        & svg {
+          font-size: 25px;
+          margin: 0 2px 0 0;
+        }
       }
 
       & svg {
@@ -463,11 +470,14 @@ const AerodromePage = () => {
               </span>
               <span>
                 <i>Private Aerodrome:</i>
-                <i>{aerodromeData?.code}</i>
+                <i>
+                  <PiAirTrafficControlFill />
+                  {aerodromeData?.code}
+                </i>
               </span>
             </div>
             <h1>
-              <MdOutlineConnectingAirports />
+              <PiAirTrafficControlFill />
               {aerodromeData?.name}
             </h1>
           </HtmlTitleContainer>

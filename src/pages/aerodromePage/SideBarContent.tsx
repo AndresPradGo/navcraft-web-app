@@ -1,4 +1,5 @@
-import { MdAddRoad, MdOutlineConnectingAirports } from "react-icons/md";
+import { MdAddRoad } from "react-icons/md";
+import { PiAirTrafficControlFill } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 import { styled } from "styled-components";
@@ -35,7 +36,7 @@ const AddRunwayIcon = styled(MdAddRoad)`
   margin-left: 5px;
 `;
 
-const AerodromeIcon = styled(MdOutlineConnectingAirports)`
+const AerodromeIcon = styled(PiAirTrafficControlFill)`
   font-size: 25px;
   margin-left: 5px;
 `;

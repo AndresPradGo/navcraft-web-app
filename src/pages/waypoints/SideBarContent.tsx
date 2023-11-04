@@ -5,7 +5,7 @@ import {
   FaFileExport,
   FaDownload,
 } from "react-icons/fa6";
-import { MdOutlineConnectingAirports } from "react-icons/md";
+import { PiAirTrafficControlFill } from "react-icons/pi";
 import { TbMapPinPlus, TbMapPin, TbRoad } from "react-icons/tb";
 
 import { styled } from "styled-components";
@@ -64,8 +64,8 @@ const HtmlButtonList = styled.div`
   }
 `;
 
-const AddAerodromeIcon = styled(MdOutlineConnectingAirports)`
-  font-size: 30px;
+const AddAerodromeIcon = styled(PiAirTrafficControlFill)`
+  font-size: 25px;
   margin-left: 5px;
 `;
 

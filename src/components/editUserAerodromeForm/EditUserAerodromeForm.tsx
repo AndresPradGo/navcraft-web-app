@@ -7,7 +7,7 @@ import {
 } from "react-icons/lia";
 import { ImCompass2 } from "react-icons/im";
 import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
-import { MdOutlineConnectingAirports } from "react-icons/md";
+import { PiAirTrafficControlFill } from "react-icons/pi";
 import { useForm, FieldValues } from "react-hook-form";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -235,7 +235,7 @@ const TerrainIcon = styled(LiaMountainSolid)`
   margin: 0 10px;
 `;
 
-const AddAerodromeIcon = styled(MdOutlineConnectingAirports)`
+const AddAerodromeIcon = styled(PiAirTrafficControlFill)`
   flex-shrink: 0;
   font-size: 35px;
   margin: 0 10px;
