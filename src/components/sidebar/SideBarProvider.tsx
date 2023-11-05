@@ -28,6 +28,10 @@ const SideBarProvider = ({ children }: Props) => {
       path: ["waypoints"],
       needsAdmin: false,
     },
+    {
+      path: ["aircraft-list"],
+      needsAdmin: false,
+    },
   ];
 
   const user = useAuth();

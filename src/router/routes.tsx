@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-import Aircraft from "../pages/Aircraft";
+import AircraftListPage from "../pages/aircraftListPage";
 import Flights from "../pages/Flights";
 import Layout from "../pages/layout";
 import Profile from "../pages/profile";
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       { index: true, element: <Navigate to="/flights" /> },
       { path: "flights", element: <Flights /> },
       { path: "waypoints", element: <Waypoints /> },
-      { path: "aircraft", element: <Aircraft /> },
+      { path: "aircraft-list", element: <AircraftListPage /> },
       { path: "profile", element: <Profile /> },
       { path: "waypoints/private-aerodrome/:id", element: <AerodromePage /> },
       { path: "waypoints/aerodrome/:id", element: <AerodromePage /> },
