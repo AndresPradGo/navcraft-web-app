@@ -230,6 +230,7 @@ const HtmlInputField = styled.input<RequiredInput>`
   font-size: 16px;
   letter-spacing: 0.8px;
   transition: all 0.3s linear;
+  border-radius: 4px;
 
   &:valid ~ span,
   &:focus ~ span {
@@ -241,6 +242,7 @@ const HtmlInputField = styled.input<RequiredInput>`
   &:valid ~ i,
   &:focus ~ i {
     height: 48px;
+    border-radius: 4px;
   }
 `;
 
