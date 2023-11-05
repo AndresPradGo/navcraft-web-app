@@ -38,6 +38,7 @@ const HtmlNoDataMessageParagraph = styled.p`
   font-size: 20px;
   padding: 20px;
   border-left: 1px solid var(--color-grey-bright);
+  text-wrap: wrap;
 `;
 
 interface SearchBarParametersType extends SearchBarDataType {

@@ -1,4 +1,5 @@
 import { AiOutlineSwap } from "react-icons/ai";
+import { FaTools } from "react-icons/fa";
 import {
   FaUser,
   FaUserShield,
@@ -70,6 +71,7 @@ const AddAerodromeIcon = styled(PiAirTrafficControlFill)`
 `;
 
 const ChangeIcon = styled(AiOutlineSwap)`
+  margin-left: 5px;
   flex-shrink: 0;
   font-size: 20px;
 `;
@@ -96,6 +98,12 @@ const UserIcon = styled(FaUser)`
 `;
 
 const AdminIcon = styled(FaUserShield)`
+  font-size: 20px;
+  margin-right: 8px;
+  padding-bottom: 3px;
+`;
+
+const ToolsIcon = styled(FaTools)`
   font-size: 20px;
   margin-right: 8px;
   padding-bottom: 3px;
@@ -268,7 +276,6 @@ const SideBarContent = ({
         backgroundColor="transparent"
         backgroundHoverColor="transparent"
         fill={false}
-        width="205px"
         spaceChildren="space-between"
         borderWidth={0}
         fontSize={20}
@@ -285,7 +292,12 @@ const SideBarContent = ({
             <UserIcon />
             {"User Tools"}
           </h3>
-        ) : null}
+        ) : (
+          <h3>
+            <ToolsIcon />
+            Tools
+          </h3>
+        )}
         <div>
           {userButtons.map((button, index) => (
             <Button key={index} {...button.styles} handleClick={button.onClick}>

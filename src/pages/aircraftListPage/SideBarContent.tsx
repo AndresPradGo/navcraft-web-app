@@ -1,4 +1,5 @@
 import { AiOutlineSwap } from "react-icons/ai";
+import { FaTools } from "react-icons/fa";
 import { FaUser, FaUserShield } from "react-icons/fa6";
 import { IoAirplane, IoAirplaneOutline } from "react-icons/io5";
 
@@ -84,6 +85,12 @@ const UserIcon = styled(FaUser)`
 `;
 
 const AdminIcon = styled(FaUserShield)`
+  font-size: 20px;
+  margin-right: 8px;
+  padding-bottom: 3px;
+`;
+
+const ToolsIcon = styled(FaTools)`
   font-size: 20px;
   margin-right: 8px;
   padding-bottom: 3px;
@@ -185,7 +192,7 @@ const SideBarContent = ({
       ) : (
         <HtmlButtonList>
           <h3>
-            <AdminIcon />
+            <ToolsIcon />
             {"Tools"}
           </h3>
           <div>

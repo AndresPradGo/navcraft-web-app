@@ -1,5 +1,6 @@
 import { BsPersonFillAdd } from "react-icons/bs";
-import { FaUserPen } from "react-icons/fa6";
+import { FaTools } from "react-icons/fa";
+import { FaUserPen, FaUserGear, FaUserXmark } from "react-icons/fa6";
 import { MdOutlineLogout } from "react-icons/md";
 import { PiAirTrafficControlFill } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -17,7 +18,8 @@ const HtmlContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 15px;
+  padding: 0;
+  min-height: 300px;
 `;
 
 const HtmlButtonList = styled.div`
@@ -26,15 +28,56 @@ const HtmlButtonList = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 15px;
+  padding: 15px 8px;
+
+  & h3 {
+    padding: 0 10px;
+    color: var(--color-grey-bright);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  & div {
+    width: 100%;
+    padding: 10px 8px;
+    border-top: 1px solid var(--color-grey);
+  }
+
+  @media screen and (min-width: 635px) {
+    padding: 10px;
+
+    & div {
+      padding: 10px 13px;
+    }
+  }
 
   @media screen and (min-width: 1280px) {
-    padding: 15px 47px;
+    padding: 18px;
+
+    & div {
+      padding: 10px 18px;
+    }
   }
 `;
 
-const HtmlButtonListWithBorder = styled(HtmlButtonList)`
-  border-top: 1px solid var(--color-grey);
+const SettingsIcon = styled(FaUserGear)`
+  font-size: 20px;
+  margin-right: 8px;
+  padding-bottom: 3px;
+`;
+
+const ToolsIcon = styled(FaTools)`
+  font-size: 20px;
+  margin-right: 8px;
+  padding-bottom: 3px;
+`;
+
+const ExitIcon = styled(FaUserXmark)`
+  font-size: 20px;
+  margin-right: 8px;
+  padding-bottom: 3px;
 `;
 
 const EditIcon = styled(FaUserPen)`
@@ -216,29 +259,47 @@ const SideBarContent = ({
   return (
     <HtmlContainer>
       <HtmlButtonList>
-        {buttons.map((button, index) => (
-          <Button key={index} {...button.styles} handleClick={button.onClick}>
-            {button.text}
-            {button.icon}
-          </Button>
-        ))}
+        <h3>
+          <SettingsIcon />
+          Profile Settings
+        </h3>
+        <div>
+          {buttons.map((button, index) => (
+            <Button key={index} {...button.styles} handleClick={button.onClick}>
+              {button.text}
+              {button.icon}
+            </Button>
+          ))}
+        </div>
       </HtmlButtonList>
-      <HtmlButtonListWithBorder>
-        {tableButtons.map((button, index) => (
-          <Button key={index} {...button.styles} handleClick={button.onClick}>
-            {button.text}
-            {button.icon}
-          </Button>
-        ))}
-      </HtmlButtonListWithBorder>
-      <HtmlButtonListWithBorder>
-        {exitButtons.map((button, index) => (
-          <Button key={index} {...button.styles} handleClick={button.onClick}>
-            {button.text}
-            {button.icon}
-          </Button>
-        ))}
-      </HtmlButtonListWithBorder>
+      <HtmlButtonList>
+        <h3>
+          <ToolsIcon />
+          Tools
+        </h3>
+        <div>
+          {tableButtons.map((button, index) => (
+            <Button key={index} {...button.styles} handleClick={button.onClick}>
+              {button.text}
+              {button.icon}
+            </Button>
+          ))}
+        </div>
+      </HtmlButtonList>
+      <HtmlButtonList>
+        <h3>
+          <ExitIcon />
+          Logout/Delete
+        </h3>
+        <div>
+          {exitButtons.map((button, index) => (
+            <Button key={index} {...button.styles} handleClick={button.onClick}>
+              {button.text}
+              {button.icon}
+            </Button>
+          ))}
+        </div>
+      </HtmlButtonList>
     </HtmlContainer>
   );
 };
