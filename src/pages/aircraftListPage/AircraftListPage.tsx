@@ -11,6 +11,8 @@ import useAuth from "../../hooks/useAuth";
 import Table from "../../components/common/table";
 import useAircraftModels from "./useAircraftModels";
 import SideBarContent from "./SideBarContent";
+import { useModal, Modal } from "../../components/common/modal";
+import EditAircraftForm from "../../components/editAircraftForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -98,6 +100,11 @@ const AircraftListPage = () => {
   } = useAircraftModels();
 
   const [tableIndex, setTableIndex] = useState<number>(0);
+  const [modalForm, setModalForm] = useState<
+    "addAircraft" | "deleteAircraft" | "addModel" | "deleteModel"
+  >("addAircraft");
+
+  const modal = useModal();
 
   const user = useAuth();
   const userIsAdmin = user && user.is_active && user.is_admin;
@@ -312,41 +319,61 @@ const AircraftListPage = () => {
   };
 
   return (
-    <ContentLayout
-      sideBarContent={
-        <SideBarContent
-          handleAddAircraft={() => {}}
-          handleAddModel={() => {}}
-          isAdmin={!!userIsAdmin}
-          handleSwap={handleChangeTable}
-          nextList={
-            tableIndex + 1 < tableOptions.length
-              ? tableOptions[tableIndex + 1].title
-              : tableOptions[0].title
-          }
-        />
-      }
-    >
-      <HtmlContainer>
-        <HtmlTitleContainer>
-          <h1>
-            {tableOptions[tableIndex].icon}
-            {tableOptions[tableIndex].title}
-          </h1>
-          {userIsAdmin && <ChangeIcon onClick={handleChangeTable} />}
-        </HtmlTitleContainer>
-        <HtmlTableContainer>
-          <Table
-            tableData={tableData}
-            sortColumnOptions={sortData[tableIndex]}
-            pageSize={10}
-            searchBarParameters={searchBarParameters[tableIndex]}
-            filterParameters={filterParameters[tableIndex]}
-            emptyTableMessage={`No ${tableOptions[tableIndex].title}...`}
+    <>
+      <Modal isOpen={modal.isOpen}>
+        {modalForm === "addAircraft" ? (
+          <EditAircraftForm
+            aircraftData={{
+              id: 0,
+              make: "",
+              model: "",
+              abbreviation: "",
+              registration: "",
+            }}
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
           />
-        </HtmlTableContainer>
-      </HtmlContainer>
-    </ContentLayout>
+        ) : null}
+      </Modal>
+      <ContentLayout
+        sideBarContent={
+          <SideBarContent
+            handleAddAircraft={() => {
+              setModalForm("addAircraft");
+              modal.handleOpen();
+            }}
+            handleAddModel={() => {}}
+            isAdmin={!!userIsAdmin}
+            handleSwap={handleChangeTable}
+            nextList={
+              tableIndex + 1 < tableOptions.length
+                ? tableOptions[tableIndex + 1].title
+                : tableOptions[0].title
+            }
+          />
+        }
+      >
+        <HtmlContainer>
+          <HtmlTitleContainer>
+            <h1>
+              {tableOptions[tableIndex].icon}
+              {tableOptions[tableIndex].title}
+            </h1>
+            {userIsAdmin && <ChangeIcon onClick={handleChangeTable} />}
+          </HtmlTitleContainer>
+          <HtmlTableContainer>
+            <Table
+              tableData={tableData}
+              sortColumnOptions={sortData[tableIndex]}
+              pageSize={10}
+              searchBarParameters={searchBarParameters[tableIndex]}
+              filterParameters={filterParameters[tableIndex]}
+              emptyTableMessage={`No ${tableOptions[tableIndex].title}...`}
+            />
+          </HtmlTableContainer>
+        </HtmlContainer>
+      </ContentLayout>
+    </>
   );
 };
 

@@ -1,13 +1,6 @@
 import APIClient from '../services/apiClient';
+import {AircraftDataFromForm} from '../components/editAircraftForm'
 
-
-export interface EditAircraftData {
-    make: string,
-    model: string,
-    abbreviation: string,
-    registration: string,
-    id: number,
-}
 
 interface PerformanceProfileBaseData {
     id: number;
@@ -17,10 +10,10 @@ interface PerformanceProfileBaseData {
     performance_profile_name: string;
 }
 
-export interface AircraftDataFromAPI extends EditAircraftData {
+export interface AircraftDataFromAPI extends AircraftDataFromForm {
     profiles: PerformanceProfileBaseData[]
 }
 
-const apiClient = new APIClient<EditAircraftData, AircraftDataFromAPI>("/aircraft")
+const apiClient = new APIClient<AircraftDataFromForm, AircraftDataFromAPI>("/aircraft")
 
 export default apiClient
