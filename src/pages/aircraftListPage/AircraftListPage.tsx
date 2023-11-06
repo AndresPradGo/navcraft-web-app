@@ -13,6 +13,7 @@ import useAircraftModels from "./useAircraftModels";
 import SideBarContent from "./SideBarContent";
 import { useModal, Modal } from "../../components/common/modal";
 import EditAircraftForm from "../../components/editAircraftForm";
+import EditAircraftModelForm from "../../components/editAircraftModelForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -320,7 +321,7 @@ const AircraftListPage = () => {
 
   return (
     <>
-      <Modal isOpen={modal.isOpen}>
+      <Modal isOpen={modal.isOpen} fullHeight={modalForm === "addModel"}>
         {modalForm === "addAircraft" ? (
           <EditAircraftForm
             aircraftData={{
@@ -333,6 +334,18 @@ const AircraftListPage = () => {
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
           />
+        ) : modalForm === "addModel" ? (
+          <EditAircraftModelForm
+            aircraftModelData={{
+              id: 0,
+              performance_profile_name: "",
+              is_complete: false,
+              fuel_type: "",
+            }}
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+            fuelOptions={fuelTypes}
+          />
         ) : null}
       </Modal>
       <ContentLayout
@@ -342,7 +355,10 @@ const AircraftListPage = () => {
               setModalForm("addAircraft");
               modal.handleOpen();
             }}
-            handleAddModel={() => {}}
+            handleAddModel={() => {
+              setModalForm("addModel");
+              modal.handleOpen();
+            }}
             isAdmin={!!userIsAdmin}
             handleSwap={handleChangeTable}
             nextList={

@@ -75,6 +75,15 @@ class APIClient<TPost, TGet> {
         return axiosInstance.post<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
     }
 
+    postAndPreProcess = <TFromAPI>(
+        data: TPost,
+        handlePreProcess: (preData: TFromAPI) => TGet, 
+        endpointPostfix?: string
+    ): Promise<TGet> => {
+        this._setAuthHeader()
+        return axiosInstance.post<TFromAPI>(this._getEndpoint(endpointPostfix), data).then(res => handlePreProcess(res.data))
+    }
+
     postWithoutAuth = (data: TPost, endpointPostfix?: string): Promise<TGet> => {
         return axiosInstance.post<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
     }

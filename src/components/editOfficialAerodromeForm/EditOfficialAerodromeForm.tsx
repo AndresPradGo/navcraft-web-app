@@ -498,10 +498,16 @@ const EditOfficialAerodromeForm = ({
 
   const submitHandler = (data: FieldValues) => {
     const wrongCoordinates = checkCoordinates(data);
-    if (!wrongCoordinates) {
-      const statusId = statusList.find(
-        (item) => item.status === data.status
-      )?.id;
+    const statusId = statusList.find((item) => item.status === data.status)?.id;
+
+    if (!statusId) {
+      setError("status", {
+        type: "manual",
+        message: "Select a valid option",
+      });
+    }
+
+    if (!wrongCoordinates && statusId) {
       closeModal();
       mutation.mutate({
         id: aerodromeData.id,
@@ -522,7 +528,7 @@ const EditOfficialAerodromeForm = ({
         has_metar: data.has_metar,
         has_fds: data.has_fds,
         status: data.status,
-        status_id: statusId || 3,
+        status_id: statusId,
       });
     }
   };

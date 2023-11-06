@@ -394,12 +394,20 @@ const EditRunwayForm = ({
   const submitHandler = (data: FieldValues) => {
     const wrongThldDispl = checkThresholdDisplacement(data);
     const wrongIntxnDep = checkIntersectionDeparture(data);
+    const surface_id = surfaces?.find(
+      (item) => item.surface === data.surface
+    )?.id;
 
-    if (!wrongThldDispl && !wrongIntxnDep) {
+    if (!surface_id) {
+      setError("surface", {
+        type: "manual",
+        message: "Select a valid option",
+      });
+    }
+
+    if (!wrongThldDispl && !wrongIntxnDep && surface_id) {
       closeModal();
       const pos = data.position;
-      const surface_id =
-        surfaces?.find((item) => item.surface === data.surface)?.id || 1;
       mutation.mutate({
         id: runwayData.id,
         aerodrome_id: runwayData.aerodromeId,
