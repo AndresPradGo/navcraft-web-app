@@ -15,6 +15,7 @@ import { useModal, Modal } from "../../components/common/modal";
 import EditAircraftForm from "../../components/editAircraftForm";
 import EditAircraftModelForm from "../../components/editAircraftModelForm";
 import DeleteAircraftForm from "../../components/deleteAircraftForm";
+import DeleteAircraftModelForm from "../../components/deleteAircraftModelForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -362,6 +363,11 @@ const AircraftListPage = () => {
               aircraftList.find((a) => a.id === idRowToDelete)?.registration ||
               ""
             }
+            id={idRowToDelete}
+            closeModal={modal.handleClose}
+          />
+        ) : modalForm === "deleteModel" ? (
+          <DeleteAircraftModelForm
             id={idRowToDelete}
             closeModal={modal.handleClose}
           />
