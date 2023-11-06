@@ -6,7 +6,7 @@ import apiClient, {PerformanceModelDataFromAPI} from '../../services/aircraftMod
 
 const useAircraftModels = () => {
     return useQuery<PerformanceModelDataFromAPI[], APIClientError>({
-        queryKey: ['aircraftModels'],
+        queryKey: ['aircraftModel', 'list'],
         queryFn: () => apiClient.getAll()
     })
 }

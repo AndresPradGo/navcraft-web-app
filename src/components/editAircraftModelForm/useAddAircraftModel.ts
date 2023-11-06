@@ -23,8 +23,8 @@ const useAddAircraftModel = () => {
             })
             ),
         onMutate: newData => {
-            const previusData = queryClient.getQueryData<PerformanceModelDataFromAPI[]>(['aircraftModels']) 
-            queryClient.setQueryData<PerformanceModelDataFromAPI[]>(['aircraftModels'], currentData => {
+            const previusData = queryClient.getQueryData<PerformanceModelDataFromAPI[]>(['aircraftModel', 'list']) 
+            queryClient.setQueryData<PerformanceModelDataFromAPI[]>(['aircraftModel', 'list'], currentData => {
                 return (
                     currentData 
                         ? [newData, ...currentData] 
@@ -45,7 +45,7 @@ const useAddAircraftModel = () => {
                 theme: "dark",
             });
 
-            queryClient.setQueryData<PerformanceModelDataFromAPI[]>(['aircraftModels'], currentData => {
+            queryClient.setQueryData<PerformanceModelDataFromAPI[]>(['aircraftModel', 'list'], currentData => {
                 return (
                     currentData?.map(item => {
                         if(item.id === 0) {
@@ -60,7 +60,7 @@ const useAddAircraftModel = () => {
             errorToast(error)
             if (context?.previusData) {
                 queryClient.setQueryData<PerformanceModelDataFromAPI[]>(
-                    ['aircraftModels'], 
+                    ['aircraftModel', 'list'], 
                     context.previusData
                 )
             }

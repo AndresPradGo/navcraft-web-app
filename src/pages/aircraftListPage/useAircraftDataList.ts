@@ -6,7 +6,7 @@ import apiClient, {AircraftDataFromAPI} from '../../services/aircraftClient';
 
 const useAircraftDataList = () => {
     return useQuery<AircraftDataFromAPI[], APIClientError>({
-        queryKey: ['aircraftList'],
+        queryKey: ['aircraft', 'list'],
         queryFn: () => apiClient.getAll()
     })
 }

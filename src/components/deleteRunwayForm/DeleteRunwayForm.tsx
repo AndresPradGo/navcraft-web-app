@@ -37,7 +37,7 @@ const HtmlContainer = styled.div`
   }
 `;
 
-const BodyContainer = styled.div`
+const HtmlBodyContainer = styled.div`
   width: 100%;
   overflow-x: hidden;
   text-wrap: wrap;
@@ -142,9 +142,9 @@ const DeleteRunwayForm = ({
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
-      <BodyContainer>
+      <HtmlBodyContainer>
         <p>{`Are you sure you want to delete runway "${name}" from ${aerodromeName}?`}</p>
-      </BodyContainer>
+      </HtmlBodyContainer>
       <HtmlButtons>
         <Button
           color="var(--color-primary-dark)"

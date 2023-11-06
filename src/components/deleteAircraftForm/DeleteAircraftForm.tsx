@@ -4,7 +4,8 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
 import Button from "../common/button";
-import useDeleteUserWaypoint from "./useDeleteUserWaypoint";
+import useDeleteAircraft from "./useDeleteAircraft";
+import { useNavigate } from "react-router-dom";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -111,19 +112,26 @@ const CloseIcon = styled(LiaTimesSolid)`
 
 interface Props {
   closeModal: () => void;
-  name: string;
+  registration: string;
   id: number;
-  isAdmin: boolean;
+  redirect?: boolean;
 }
 
-const DeleteUserWaypointForm = ({ closeModal, name, id, isAdmin }: Props) => {
-  const deleteMutation = useDeleteUserWaypoint();
-
+const DeleteAircraftForm = ({
+  closeModal,
+  registration,
+  id,
+  redirect,
+}: Props) => {
+  const navigate = useNavigate();
+  const mutation = useDeleteAircraft(() => {
+    if (!!redirect) navigate("/aircraft-list");
+  });
   const handleDelete = () => {
     closeModal();
-    deleteMutation.mutate({
-      id: id,
-      name: name,
+    mutation.mutate({
+      id,
+      registration,
     });
   };
 
@@ -132,12 +140,12 @@ const DeleteUserWaypointForm = ({ closeModal, name, id, isAdmin }: Props) => {
       <h1>
         <div>
           <TitleIcon />
-          {`Delete${isAdmin ? " User " : " "}Waypoint`}
+          Delete Aircraft
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlBodyContainer>
-        <p>{`Are you sure you want to delete "${name}" from your waypoints' list?`}</p>
+        <p>{`Are you sure you want to delete "${registration}" from your fleet?`}</p>
       </HtmlBodyContainer>
       <HtmlButtons>
         <Button
@@ -174,4 +182,4 @@ const DeleteUserWaypointForm = ({ closeModal, name, id, isAdmin }: Props) => {
   );
 };
 
-export default DeleteUserWaypointForm;
+export default DeleteAircraftForm;

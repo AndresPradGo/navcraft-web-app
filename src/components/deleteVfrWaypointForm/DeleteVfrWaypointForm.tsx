@@ -40,7 +40,7 @@ const HtmlContainer = styled.div`
   }
 `;
 
-const BodyContainer = styled.div`
+const HtmlBodyContainer = styled.div`
   width: 100%;
   overflow-x: hidden;
   text-wrap: wrap;
@@ -148,13 +148,13 @@ const DeleteVfrWaypointForm = ({
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
-      <BodyContainer>
+      <HtmlBodyContainer>
         {isAerodrome ? (
           <p>{`Are you sure you want to delete "${name}" from the registered aerodromes' list?`}</p>
         ) : (
           <p>{`Are you sure you want to delete "${name}" from the official VFR waypoints' list?`}</p>
         )}
-      </BodyContainer>
+      </HtmlBodyContainer>
       <HtmlButtons>
         <Button
           color="var(--color-primary-dark)"

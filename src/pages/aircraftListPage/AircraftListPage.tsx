@@ -14,6 +14,7 @@ import SideBarContent from "./SideBarContent";
 import { useModal, Modal } from "../../components/common/modal";
 import EditAircraftForm from "../../components/editAircraftForm";
 import EditAircraftModelForm from "../../components/editAircraftModelForm";
+import DeleteAircraftForm from "../../components/deleteAircraftForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -104,6 +105,7 @@ const AircraftListPage = () => {
   const [modalForm, setModalForm] = useState<
     "addAircraft" | "deleteAircraft" | "addModel" | "deleteModel"
   >("addAircraft");
+  const [idRowToDelete, setIdRowToDelete] = useState<number>(0);
 
   const modal = useModal();
 
@@ -150,7 +152,7 @@ const AircraftListPage = () => {
       abbreviation: "Model",
       make: "Make",
       model: "Name",
-      complete: "Profile State",
+      state: "Profile State",
       fuel: "Fuel",
     },
   ] as { [key: string]: string }[];
@@ -286,7 +288,11 @@ const AircraftListPage = () => {
               fuelTypes.find((fuel) => fuel.id === model.fuel_type_id)?.name ||
               "-",
             handleEdit: `aircraft-model/${model.id}`,
-            handleDelete: () => {},
+            handleDelete: () => {
+              setModalForm("deleteModel");
+              setIdRowToDelete(model.id);
+              modal.handleOpen();
+            },
             permissions: "open-delete" as "open-delete",
           }))
         : aircraftList.map((aircraft) => ({
@@ -309,7 +315,11 @@ const AircraftListPage = () => {
                 return fuel.id === id;
               })?.name || "-",
             handleEdit: `aircraft/${aircraft.id}`,
-            handleDelete: () => {},
+            handleDelete: () => {
+              setModalForm("deleteAircraft");
+              setIdRowToDelete(aircraft.id);
+              modal.handleOpen();
+            },
             permissions: "open-delete" as "open-delete",
           })),
   };
@@ -345,6 +355,15 @@ const AircraftListPage = () => {
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             fuelOptions={fuelTypes}
+          />
+        ) : modalForm === "deleteAircraft" ? (
+          <DeleteAircraftForm
+            registration={
+              aircraftList.find((a) => a.id === idRowToDelete)?.registration ||
+              ""
+            }
+            id={idRowToDelete}
+            closeModal={modal.handleClose}
           />
         ) : null}
       </Modal>
