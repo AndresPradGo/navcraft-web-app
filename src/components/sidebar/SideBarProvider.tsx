@@ -29,7 +29,7 @@ const SideBarProvider = ({ children }: Props) => {
       needsAdmin: false,
     },
     {
-      path: ["aircraft-list"],
+      path: ["aircraft"],
       needsAdmin: false,
     },
   ];

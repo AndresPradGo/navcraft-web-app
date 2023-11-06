@@ -1,5 +1,6 @@
+import { BiSolidEditAlt } from "react-icons/bi";
+import { RiDeleteBinLine, RiArrowRightLine } from "react-icons/ri";
 import { styled } from "styled-components";
-import { RiDeleteBinLine, RiEditFill, RiArrowRightLine } from "react-icons/ri";
 
 import Button from "../button/Button";
 
@@ -21,7 +22,7 @@ const DeleteIcon = styled(RiDeleteBinLine)`
   font-size: 14px;
 `;
 
-const EditIcon = styled(RiEditFill)`
+const EditIcon = styled(BiSolidEditAlt)`
   font-size: 14px;
 `;
 

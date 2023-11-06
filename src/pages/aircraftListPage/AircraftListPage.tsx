@@ -109,6 +109,7 @@ const AircraftListPage = () => {
   const [idRowToDelete, setIdRowToDelete] = useState<number>(0);
 
   const modal = useModal();
+  const addModelModal = useModal();
 
   const user = useAuth();
   const userIsAdmin = user && user.is_active && user.is_admin;
@@ -288,7 +289,7 @@ const AircraftListPage = () => {
             fuel:
               fuelTypes.find((fuel) => fuel.id === model.fuel_type_id)?.name ||
               "-",
-            handleEdit: `aircraft-model/${model.id}`,
+            handleEdit: `model/${model.id}`,
             handleDelete: () => {
               setModalForm("deleteModel");
               setIdRowToDelete(model.id);
@@ -315,7 +316,7 @@ const AircraftListPage = () => {
                   -1;
                 return fuel.id === id;
               })?.name || "-",
-            handleEdit: `aircraft/${aircraft.id}`,
+            handleEdit: `${aircraft.id}`,
             handleDelete: () => {
               setModalForm("deleteAircraft");
               setIdRowToDelete(aircraft.id);
@@ -332,7 +333,20 @@ const AircraftListPage = () => {
 
   return (
     <>
-      <Modal isOpen={modal.isOpen} fullHeight={modalForm === "addModel"}>
+      <Modal isOpen={addModelModal.isOpen} fullHeight={true}>
+        <EditAircraftModelForm
+          aircraftModelData={{
+            id: 0,
+            performance_profile_name: "",
+            is_complete: false,
+            fuel_type: "",
+          }}
+          closeModal={addModelModal.handleClose}
+          isOpen={addModelModal.isOpen}
+          fuelOptions={fuelTypes}
+        />
+      </Modal>
+      <Modal isOpen={modal.isOpen}>
         {modalForm === "addAircraft" ? (
           <EditAircraftForm
             aircraftData={{
@@ -344,18 +358,6 @@ const AircraftListPage = () => {
             }}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
-          />
-        ) : modalForm === "addModel" ? (
-          <EditAircraftModelForm
-            aircraftModelData={{
-              id: 0,
-              performance_profile_name: "",
-              is_complete: false,
-              fuel_type: "",
-            }}
-            closeModal={modal.handleClose}
-            isOpen={modal.isOpen}
-            fuelOptions={fuelTypes}
           />
         ) : modalForm === "deleteAircraft" ? (
           <DeleteAircraftForm
@@ -382,7 +384,7 @@ const AircraftListPage = () => {
             }}
             handleAddModel={() => {
               setModalForm("addModel");
-              modal.handleOpen();
+              addModelModal.handleOpen();
             }}
             isAdmin={!!userIsAdmin}
             handleSwap={handleChangeTable}

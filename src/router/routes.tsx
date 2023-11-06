@@ -11,6 +11,7 @@ import LoginPage from "../pages/login";
 import MasterRoutes from "../pages/MasterRoutes";
 import RegisterPage from "../pages/register/index";
 import AerodromePage from "../pages/aerodromePage";
+import AircraftPage from "../pages/aircraftPage";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,8 @@ const router = createBrowserRouter([
       { index: true, element: <Navigate to="/flights" /> },
       { path: "flights", element: <Flights /> },
       { path: "waypoints", element: <Waypoints /> },
-      { path: "aircraft-list", element: <AircraftListPage /> },
+      { path: "aircraft", element: <AircraftListPage /> },
+      { path: "aircraft/:id", element: <AircraftPage /> },
       { path: "profile", element: <Profile /> },
       { path: "waypoints/private-aerodrome/:id", element: <AerodromePage /> },
       { path: "waypoints/aerodrome/:id", element: <AerodromePage /> },

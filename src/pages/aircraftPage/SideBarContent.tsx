@@ -1,8 +1,7 @@
 import { BiSolidEditAlt } from "react-icons/bi";
+import { CgPerformance } from "react-icons/cg";
 import { FaTools } from "react-icons/fa";
-import { MdAddRoad } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
-
 import { styled } from "styled-components";
 
 import Button from "../../components/common/button";
@@ -41,6 +40,10 @@ const HtmlButtonList = styled.div`
     border-top: 1px solid var(--color-grey);
   }
 
+  & i {
+    height: 40px;
+  }
+
   @media screen and (min-width: 635px) {
     padding: 10px;
 
@@ -64,11 +67,6 @@ const ToolsIcon = styled(FaTools)`
   padding-bottom: 3px;
 `;
 
-const AddRunwayIcon = styled(MdAddRoad)`
-  font-size: 25px;
-  margin-left: 5px;
-`;
-
 const EditIcon = styled(BiSolidEditAlt)`
   font-size: 20px;
   margin-left: 5px;
@@ -79,16 +77,21 @@ const DeleteIcon = styled(RiDeleteBinLine)`
   margin-left: 5px;
 `;
 
-export interface Props {
-  handleDeleteAerodrome: () => void;
-  handleAddRunway: () => void;
-  handleEditAerodrome: () => void;
+const PerformanceIcon = styled(CgPerformance)`
+  font-size: 22px;
+  margin-left: 5px;
+`;
+
+interface Props {
+  handleAddProfile: () => void;
+  handleEditAircraft: () => void;
+  handleDeleteAircraft: () => void;
 }
 
 const SideBarContent = ({
-  handleDeleteAerodrome,
-  handleAddRunway,
-  handleEditAerodrome,
+  handleAddProfile,
+  handleEditAircraft,
+  handleDeleteAircraft,
 }: Props) => {
   const commonStyles = {
     width: "100%",
@@ -98,39 +101,27 @@ const SideBarContent = ({
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
+    color: "var(--color-white)",
+    hoverColor: "var(--color-white)",
+    backgroundColor: "var(--color-primary-bright)",
+    backgroundHoverColor: "var(--color-primary-light)",
   };
 
   const buttons = [
     {
-      text: "Edit Aerodrome",
+      text: "Edit Aircraft",
       icon: <EditIcon />,
-      styles: {
-        ...commonStyles,
-        color: "var(--color-white)",
-        hoverColor: "var(--color-white)",
-        backgroundColor: "var(--color-primary-bright)",
-        backgroundHoverColor: "var(--color-primary-light)",
-      },
-      onClick: () => {
-        handleEditAerodrome();
-      },
+      styles: commonStyles,
+      onClick: handleEditAircraft,
     },
     {
-      text: "Add Runway",
-      icon: <AddRunwayIcon />,
-      styles: {
-        ...commonStyles,
-        color: "var(--color-white)",
-        hoverColor: "var(--color-white)",
-        backgroundColor: "var(--color-primary-bright)",
-        backgroundHoverColor: "var(--color-primary-light)",
-      },
-      onClick: () => {
-        handleAddRunway();
-      },
+      text: "Add Performance Profile",
+      icon: <PerformanceIcon />,
+      styles: commonStyles,
+      onClick: handleAddProfile,
     },
     {
-      text: "Delete Aerodrome",
+      text: "Delete Aircraft",
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
@@ -139,9 +130,7 @@ const SideBarContent = ({
         backgroundColor: "var(--color-warning)",
         backgroundHoverColor: "var(--color-warning-hover)",
       },
-      onClick: () => {
-        handleDeleteAerodrome();
-      },
+      onClick: handleDeleteAircraft,
     },
   ];
 
@@ -150,7 +139,7 @@ const SideBarContent = ({
       <HtmlButtonList>
         <h3>
           <ToolsIcon />
-          Edit Aerodrome Tools
+          Edit Aircraft Tools
         </h3>
         <div>
           {buttons.map((button, index) => (

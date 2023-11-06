@@ -27,7 +27,7 @@ const useNavLinks = (): NavLinkData[] => {
     },
     {
       text: "Aircraft",
-      href: "/aircraft-list",
+      href: "/aircraft",
       icon: IoAirplane,
     },
     {

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { MdOutlineStart } from "react-icons/md";
 import { SlBadge } from "react-icons/sl";
@@ -23,6 +23,7 @@ import usePathList from "../../router/usePathList";
 import EditOfficialAerodromeForm from "../../components/editOfficialAerodromeForm";
 import useAerodromeStatusList from "../../hooks/useAerodromeStatusList";
 import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm/index";
+import DataTableList, { DataType } from "../../components/common/DataTableList";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -61,8 +62,7 @@ const HtmlTitleContainer = styled.div`
   }
 
   & div:first-of-type {
-    margin: 0 10px 10px;
-    padding-left: 10px;
+    margin: 0 10px 10px 0;
     color: var(--color-grey);
     display: flex;
     align-items: center;
@@ -98,45 +98,6 @@ const HtmlTitleContainer = styled.div`
         padding: 0 0 0 10px;
         text-wrap: wrap;
       }
-    }
-  }
-`;
-
-const HtmlDataList = styled.ul`
-  margin: 35px 0;
-  list-style: none;
-  width: 100%;
-  align-self: center;
-  max-width: 800px;
-  padding: 0;
-
-  & li {
-    width: 100%;
-    margin: 5px 0;
-    padding: 20px 5px 5px;
-    border-bottom: 1px solid var(--color-grey);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    & h3 {
-      padding-right: 8px;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      color: var(--color-white);
-    }
-
-    & span {
-      text-wrap: wrap;
-      text-align: right;
-      padding-left: 8px;
-    }
-  }
-
-  @media screen and (min-width: 425px) {
-    & li {
-      padding: 20px 10px 5px;
     }
   }
 `;
@@ -224,13 +185,6 @@ const AerodromePage = () => {
 
   const userCanEdit = userIsAdmin || isPrivateData;
 
-  interface AerodromeDataDisplay {
-    key: string;
-    title: string;
-    icon: ReactNode;
-    data: string;
-  }
-
   const aerodromeDataList = [
     {
       key: "code",
@@ -286,7 +240,7 @@ const AerodromePage = () => {
       icon: <StatusIcon />,
       data: aerodromeData?.status,
     },
-  ] as AerodromeDataDisplay[];
+  ];
 
   if (!isPrivateData) {
     aerodromeDataList.push({
@@ -481,19 +435,7 @@ const AerodromePage = () => {
               {aerodromeData?.name}
             </h1>
           </HtmlTitleContainer>
-          <HtmlDataList>
-            {aerodromeDataList.map((item) => {
-              return (
-                <li key={item.key}>
-                  <h3>
-                    {item.icon}
-                    {item.title}
-                  </h3>
-                  <span>{item.data}</span>
-                </li>
-              );
-            })}
-          </HtmlDataList>
+          <DataTableList dataList={aerodromeDataList as DataType[]} />
           <RunwaysTable
             aerodromeName={aerodromeData?.code || ""}
             canEdit={userCanEdit}
