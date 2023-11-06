@@ -133,6 +133,11 @@ const AircraftListPage = () => {
       title: "Aircraft",
       icon: <IoAirplane />,
     },
+    {
+      key: "aircraftModels",
+      title: "Aircraft Models",
+      icon: <IoAirplaneOutline />,
+    },
   ];
 
   const usedFuelTypeIds = new Set<number>();
@@ -181,6 +186,10 @@ const AircraftListPage = () => {
       placeHolder: "Search Aircraft",
       columnKeys: ["registration", "abbreviation", "make", "model"],
     },
+    {
+      placeHolder: "Search Models",
+      columnKeys: ["name"],
+    },
   ];
 
   const filterParameters = [
@@ -222,12 +231,6 @@ const AircraftListPage = () => {
   ];
 
   if (userIsAdmin) {
-    tableOptions.push({
-      key: "aircraftModels",
-      title: "Aircraft Models",
-      icon: <IoAirplaneOutline />,
-    });
-
     tableKeys.push(["id", "name", "state", "fuel"]);
 
     tableHeaders.push({
@@ -246,12 +249,11 @@ const AircraftListPage = () => {
         key: "name",
         title: "Name",
       },
+      {
+        key: "fuel",
+        title: "Fuel",
+      },
     ]);
-
-    searchBarParameters.push({
-      placeHolder: "Search Models",
-      columnKeys: ["name"],
-    });
 
     filterParameters.push({
       text: "Filter Models",
@@ -273,15 +275,42 @@ const AircraftListPage = () => {
         })),
       ],
     });
+  } else {
+    tableKeys.push(["name", "fuel"]);
+
+    tableHeaders.push({
+      name: "Name",
+      fuel: "Fuel",
+    });
+
+    sortData.push([
+      {
+        key: "name",
+        title: "Name",
+      },
+      {
+        key: "fuel",
+        title: "Fuel",
+      },
+    ]);
+
+    filterParameters.push({
+      text: "Filter Models",
+      filters: [
+        ...fuelTypes.map((fuelType) => ({
+          key: "fuel",
+          title: fuelType.name,
+          value: fuelType.name,
+        })),
+      ],
+    });
   }
 
   const tableData = {
     keys: tableKeys[tableIndex],
     headers: tableHeaders[tableIndex],
     rows:
-      tableOptions[tableIndex].key === "aircraftModels" &&
-      !!userIsAdmin &&
-      aircraftModels
+      tableOptions[tableIndex].key === "aircraftModels" && aircraftModels
         ? aircraftModels.map((model) => ({
             id: model.id,
             name: model.performance_profile_name,
@@ -295,7 +324,9 @@ const AircraftListPage = () => {
               setIdRowToDelete(model.id);
               modal.handleOpen();
             },
-            permissions: "open-delete" as "open-delete",
+            permissions: !!userIsAdmin
+              ? ("open-delete" as "open-delete")
+              : ("open" as "open"),
           }))
         : aircraftList.map((aircraft) => ({
             id: aircraft.id,
@@ -402,7 +433,7 @@ const AircraftListPage = () => {
               {tableOptions[tableIndex].icon}
               {tableOptions[tableIndex].title}
             </h1>
-            {userIsAdmin && <ChangeIcon onClick={handleChangeTable} />}
+            <ChangeIcon onClick={handleChangeTable} />
           </HtmlTitleContainer>
           <HtmlTableContainer>
             <Table

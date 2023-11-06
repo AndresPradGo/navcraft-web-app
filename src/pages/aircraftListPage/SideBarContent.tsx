@@ -142,28 +142,28 @@ const SideBarContent = ({
 
   return (
     <HtmlContainer>
+      <Button
+        handleClick={() => {
+          handleSwap();
+          sideBar.handleExpandSideBar(false);
+        }}
+        color="var(--color-contrast)"
+        hoverColor="var(--color-contrast-hover)"
+        backgroundColor="transparent"
+        backgroundHoverColor="transparent"
+        fill={false}
+        spaceChildren="space-between"
+        borderWidth={0}
+        fontSize={20}
+        margin="40px 0 20px"
+        padding="0"
+        onlyHover={true}
+      >
+        {`See ${nextList}`}
+        <ChangeIcon />
+      </Button>
       {isAdmin ? (
         <>
-          <Button
-            handleClick={() => {
-              handleSwap();
-              sideBar.handleExpandSideBar(false);
-            }}
-            color="var(--color-contrast)"
-            hoverColor="var(--color-contrast-hover)"
-            backgroundColor="transparent"
-            backgroundHoverColor="transparent"
-            fill={false}
-            spaceChildren="space-between"
-            borderWidth={0}
-            fontSize={20}
-            margin="40px 0 20px"
-            padding="0"
-            onlyHover={true}
-          >
-            {`See ${nextList}`}
-            <ChangeIcon />
-          </Button>
           <HtmlButtonList>
             <h3>
               <UserIcon />
