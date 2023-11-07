@@ -2,7 +2,7 @@ import APIClient from '../services/apiClient';
 import {AircraftDataFromForm} from '../components/editAircraftForm'
 
 
-interface PerformanceProfileBaseData {
+export interface PerformanceProfileBaseData {
     id: number;
     is_preferred: boolean;
     is_complete: boolean;

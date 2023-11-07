@@ -159,7 +159,7 @@ const AircraftListPage = () => {
       abbreviation: "Model",
       make: "Make",
       model: "Name",
-      state: "Profile State",
+      state: "State",
       fuel: "Fuel",
     },
   ] as { [key: string]: string }[];
@@ -235,8 +235,8 @@ const AircraftListPage = () => {
 
     tableHeaders.push({
       id: "ID",
-      name: "Name",
-      state: "Profile State",
+      name: "Description",
+      state: "State",
       fuel: "Fuel",
     });
 
@@ -279,7 +279,7 @@ const AircraftListPage = () => {
     tableKeys.push(["name", "fuel"]);
 
     tableHeaders.push({
-      name: "Name",
+      name: "Description",
       fuel: "Fuel",
     });
 

@@ -47,7 +47,7 @@ interface SearchBarParametersType extends SearchBarDataType {
 
 interface Props {
   tableData: TableProps;
-  emptyTableMessage: string;
+  emptyTableMessage?: string;
   sortColumnOptions?: SortColumnType[];
   pageSize?: number;
   searchBarParameters?: SearchBarParametersType;
@@ -110,12 +110,15 @@ const TableContainer = ({
       ) || [],
   });
 
-  if (tableData.rows.length === 0)
-    return (
-      <HtmlNoDataMessageParagraph>
-        {emptyTableMessage}
-      </HtmlNoDataMessageParagraph>
-    );
+  if (tableData.rows.length === 0) {
+    if (emptyTableMessage)
+      return (
+        <HtmlNoDataMessageParagraph>
+          {emptyTableMessage}
+        </HtmlNoDataMessageParagraph>
+      );
+    else return null;
+  }
 
   return (
     <HtmlTableContainer>

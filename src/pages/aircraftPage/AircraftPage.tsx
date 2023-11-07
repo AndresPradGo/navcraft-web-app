@@ -16,6 +16,7 @@ import EditAircraftForm from "../../components/editAircraftForm";
 import DeleteAircraftForm from "../../components/deleteAircraftForm";
 import useAircraftData from "./useAircraftData";
 import DataTableList, { DataType } from "../../components/common/DataTableList";
+import ProfilesTable from "./ProfilesTable";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -93,12 +94,13 @@ const AircraftPage = () => {
   const { id } = useParams();
 
   const modal = useModal();
+  const addProfileModal = useModal();
 
   const {
     data: aircraftData,
     error,
     isLoading,
-  } = useAircraftData(parseInt(id || "0") || 0);
+  } = useAircraftData(parseInt(id || "0"));
 
   const {
     data: fuelTypes,
@@ -165,6 +167,15 @@ const AircraftPage = () => {
           </h1>
         </HtmlTitleContainer>
         <DataTableList dataList={aircraftDataList as DataType[]} />
+        <ProfilesTable
+          profiles={aircraftData?.profiles || []}
+          addModal={addProfileModal}
+          aircraftId={parseInt(id || "0")}
+          profileId={idRowToEdit}
+          setProfileId={setIdRowToEdit}
+          aircraftRegistration={aircraftData?.registration || ""}
+          fuelTypes={fuelTypes}
+        />
       </ContentLayout>
     </>
   );
