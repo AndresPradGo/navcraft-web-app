@@ -95,10 +95,7 @@ const SideBarExpandButton = () => {
   useEffect(() => {
     const handleResize = () => {
       const { innerWidth: width } = window;
-      if (width >= 1280) {
-        handleExpandSideBar(false);
-        window.removeEventListener("resize", handleResize);
-      }
+      if (width >= 1280) handleExpandSideBar(false);
     };
 
     window.addEventListener("resize", handleResize);
