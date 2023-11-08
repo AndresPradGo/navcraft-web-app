@@ -88,20 +88,17 @@ const NameIcon = styled(AiFillTag)`
 
 const AircraftPage = () => {
   const [modalForm, setModalForm] = useState<
-    "editAircraft" | "deleteAircraft" | "addProfile" | "deleteProfile"
+    "editAircraft" | "deleteAircraft" | "deleteProfile"
   >("editAircraft");
   const [idRowToEdit, setIdRowToEdit] = useState<number>(0);
 
   const { id } = useParams();
+  const aircraftId = parseInt(id || "0");
 
   const modal = useModal();
   const addProfileModal = useModal();
 
-  const {
-    data: aircraftData,
-    error,
-    isLoading,
-  } = useAircraftData(parseInt(id || "0"));
+  const { data: aircraftData, error, isLoading } = useAircraftData(aircraftId);
 
   const {
     data: fuelTypes,
@@ -142,7 +139,16 @@ const AircraftPage = () => {
   ];
   return (
     <>
-      <Modal isOpen={modal.isOpen}>Form</Modal>
+      <Modal isOpen={modal.isOpen}>
+        {modalForm === "deleteAircraft" ? (
+          <DeleteAircraftForm
+            closeModal={modal.handleClose}
+            registration={aircraftData?.registration || ""}
+            id={aircraftId}
+            redirect={true}
+          />
+        ) : null}
+      </Modal>
       <Modal isOpen={addProfileModal.isOpen} fullHeight={true}>
         <AddAircraftProfileForm
           closeModal={addProfileModal.handleClose}
@@ -154,10 +160,7 @@ const AircraftPage = () => {
       <ContentLayout
         sideBarContent={
           <SideBarContent
-            handleAddProfile={() => {
-              setModalForm("addProfile");
-              addProfileModal.handleOpen();
-            }}
+            handleAddProfile={addProfileModal.handleOpen}
             handleEditAircraft={() => {
               setModalForm("editAircraft");
               modal.handleOpen();
@@ -181,7 +184,7 @@ const AircraftPage = () => {
           <ProfilesTable
             profiles={aircraftData?.profiles || []}
             addModal={addProfileModal}
-            aircraftId={parseInt(id || "0")}
+            aircraftId={aircraftId}
             profileId={idRowToEdit}
             setProfileId={setIdRowToEdit}
             aircraftRegistration={aircraftData?.registration || ""}
