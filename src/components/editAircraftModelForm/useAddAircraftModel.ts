@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import apiClient, {PerformanceModelDataFromAPI, CompletePerformanceModelDataFromAPI} from '../../services/aircraftModelClient'
 import { APIClientError } from '../../services/apiClient';
-import errorToast from '../../utils/errorToest';
+import errorToast from '../../utils/errorToast';
 
 
 interface AircraftContext {

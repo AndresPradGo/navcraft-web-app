@@ -5,7 +5,7 @@ import { APIClientError } from '../../services/apiClient';
 import {AerodromeDataFromForm} from './EditUserAerodromeForm';
 import apiClient, {EditAerodromeData, AerodromeDataFromAPI} from '../../services/userAerodromeClient';
 import getUTCNowString from '../../utils/getUTCNowString'
-import errorToast from '../../utils/errorToest';
+import errorToast from '../../utils/errorToast';
 
 interface AerodromeContext {
     previusData?: AerodromeDataFromAPI

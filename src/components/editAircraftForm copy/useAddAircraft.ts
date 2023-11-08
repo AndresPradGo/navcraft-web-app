@@ -16,8 +16,8 @@ const useAddAircraft = () => {
     return useMutation<AircraftDataFromForm, APIClientError, AircraftDataFromForm, AircraftContext>({
         mutationFn: (data) => apiClient.post(data),
         onMutate: newData => {
-            const previusData = queryClient.getQueryData<AircraftDataFromAPI[]>(['aircraft', 'list']) 
-            queryClient.setQueryData<AircraftDataFromAPI[]>(['aircraft', 'list'], currentData => {
+            const previusData = queryClient.getQueryData<AircraftDataFromAPI[]>(['aircraftList']) 
+            queryClient.setQueryData<AircraftDataFromAPI[]>(['aircraftList'], currentData => {
                 return (
                     currentData 
                         ? [{ ...newData, profiles: []}, ...currentData] 
@@ -38,7 +38,7 @@ const useAddAircraft = () => {
                 theme: "dark",
             });
 
-            queryClient.setQueryData<AircraftDataFromAPI[]>(['aircraft', 'list'], currentData => {
+            queryClient.setQueryData<AircraftDataFromAPI[]>(['aircraftList'], currentData => {
                 return (
                     currentData?.map(item => {
                         if(item.id === 0) {
@@ -56,7 +56,7 @@ const useAddAircraft = () => {
             errorToast(error)
             if (context?.previusData) {
                 queryClient.setQueryData<AircraftDataFromAPI[]>(
-                    ['aircraft', 'list'], 
+                    ['aircraftList'], 
                     context.previusData
                 )
             }

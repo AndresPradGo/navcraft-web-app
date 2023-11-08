@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import {APIClientError} from '../../services/apiClient';
 import apiClient, {UserDataFromAPI, EditUserData} from './userService'
-import errorToast from '../../utils/errorToest';
+import errorToast from '../../utils/errorToast';
 
 interface EditUserDataWithId extends EditUserData{
     id: number

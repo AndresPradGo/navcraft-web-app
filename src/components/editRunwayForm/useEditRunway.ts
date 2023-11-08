@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { APIClientError } from '../../services/apiClient';
 import { AerodromeDataFromAPI } from '../../services/userAerodromeClient';
 import apiClient, {EditRunwayData, RunwayData} from '../../services/runwayClient'
-import errorToast from '../../utils/errorToest';
+import errorToast from '../../utils/errorToast';
 
 
 interface EditRunwayDataWithIdAndSurface extends EditRunwayData {

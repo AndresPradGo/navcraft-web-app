@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../../services/apiClient';
 import apiClient from '../profileService'
-import errorToast from '../../../utils/errorToest';
+import errorToast from '../../../utils/errorToast';
 
 const useDeleteAccount = (onDelete: () => void) => {
     return useMutation<string, APIClientError, undefined>({

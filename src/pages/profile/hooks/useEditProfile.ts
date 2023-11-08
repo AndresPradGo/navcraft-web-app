@@ -6,7 +6,7 @@ import apiClient from '../profileService';
 import { APIClientError } from '../../../services/apiClient';
 import { EditUserResponse, ProfileData } from '../entities';
 import {FormDataType as EditProfileBody} from '../components/EditProfileForm'
-import errorToast from '../../../utils/errorToest';
+import errorToast from '../../../utils/errorToast';
 
 interface EditProfileContext {
     previusData?: ProfileData

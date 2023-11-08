@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../services/apiClient';
 import apiClient, {VfrWaypointDataFromAPI} from '../../services/vfrWaypointClient'
-import errorToast from '../../utils/errorToest';
+import errorToast from '../../utils/errorToast';
 
 
 interface DeleteWaypointData {

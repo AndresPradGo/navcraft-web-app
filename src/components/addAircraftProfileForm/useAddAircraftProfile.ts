@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import APIClient, { APIClientError } from '../../services/apiClient';
 import { PerformanceProfileBaseData, AircraftDataFromAPI } from '../../services/aircraftClient';
-import errorToast from '../../utils/errorToest';
+import errorToast from '../../utils/errorToast';
 
 interface AddProfileData {
     fuel_type_id: number;

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import APIClient,{ APIClientError } from '../../../services/apiClient';
 import { EditUserResponse, ProfileData, ProfileDataWithJWT } from '../entities';
 import {FormDataType as ChangeEmailBody} from '../components/ChangeEmailForm'
-import errorToast from '../../../utils/errorToest';
+import errorToast from '../../../utils/errorToast';
 
 interface ChangeEmailContext {
     previusData?: ProfileData

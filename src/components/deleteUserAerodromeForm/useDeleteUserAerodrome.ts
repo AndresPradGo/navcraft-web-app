@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../services/apiClient';
 import apiClient, {AerodromeDataFromAPI} from '../../services/userAerodromeClient'
-import errorToast from '../../utils/errorToest';
+import errorToast from '../../utils/errorToast';
 
 
 interface DeleteAerodromeData {

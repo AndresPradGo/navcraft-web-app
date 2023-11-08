@@ -5,7 +5,7 @@ import { APIClientError } from '../../services/apiClient';
 import {WaypointDataFromForm} from './EditUserWaypointForm';
 import apiClient, {EditWaypointData, WaypointDataFromAPI} from '../../services/userWaypointClient';
 import getUTCNowString from '../../utils/getUTCNowString'
-import errorToast from '../../utils/errorToest';
+import errorToast from '../../utils/errorToast';
 
 
 interface WaypointContext {

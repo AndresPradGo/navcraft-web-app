@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import APIClient, { APIClientError } from '../../../services/apiClient';
 import { EditUserResponse, ProfileData, ProfileDataWithJWT } from '../entities';
-import errorToast from '../../../utils/errorToest';
+import errorToast from '../../../utils/errorToast';
 
 
 interface ChangePasswordBody {

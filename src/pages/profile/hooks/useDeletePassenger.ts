@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import APIClient, { APIClientError } from '../../../services/apiClient';
 import {PassengerData as PassengerDataInCache} from '../../../hooks/usePassengersData'
-import errorToast from '../../../utils/errorToest';
+import errorToast from '../../../utils/errorToast';
 
 
 interface DeletePassegerData {
