@@ -66,11 +66,15 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
   max-height: ${(props) => (props.$isOpen ? "10000vh" : "0px")};
   opacity: ${(props) => (props.$isOpen ? "1" : "0")};
   overflow: hidden;
+
+  & ul {
+    text-wrap: wrap;
+  }
 `;
 
 const CheckIcon = styled(FaCheck)`
   color: var(--color-white);
-  font-size: 27px;
+  font-size: 30px;
   margin-right: 8px;
   padding-bottom: 3px;
 `;
@@ -110,7 +114,7 @@ const ProfilesTable = ({
       fuel: fuelTypes.find((item) => item.id === p.fuel_type_id)?.name || "-",
       complete: p.is_complete ? "Complete" : "Incomplete",
       selected: p.is_preferred ? <CheckIcon /> : "-",
-      handleEdit: "",
+      handleEdit: `profile/${p.id}`,
       handleDelete: () => {
         setProfileId(p.id);
         deleteModal.handleOpen();
@@ -129,30 +133,33 @@ const ProfilesTable = ({
             <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
             <h3>Performance Profiles</h3>
           </div>
-          <Button
-            borderRadious={100}
-            padding="5px"
-            height="30px"
-            backgroundColor="var(--color-grey)"
-            backgroundHoverColor="var(--color-white)"
-            color="var(--color-primary-dark)"
-            hoverColor="var(--color-primary-dark)"
-            margin="0 20px 0 0px"
-            fontSize={18}
-            handleClick={() => {
-              setProfileId(0);
-              addModal.handleOpen();
-            }}
-          >
-            <AiOutlinePlus />
-          </Button>
+          {profiles.length < 3 ? (
+            <Button
+              borderRadious={100}
+              padding="5px"
+              height="30px"
+              backgroundColor="var(--color-grey)"
+              backgroundHoverColor="var(--color-white)"
+              color="var(--color-primary-dark)"
+              hoverColor="var(--color-primary-dark)"
+              margin="0 20px 0 0px"
+              fontSize={18}
+              handleClick={() => {
+                setProfileId(0);
+                addModal.handleOpen();
+              }}
+            >
+              <AiOutlinePlus />
+            </Button>
+          ) : null}
         </HtmlTitleContainer>
         <HtmlTableContainer $isOpen={isOpen}>
           <ul>
             <li>
-              Add up to 3 different Performance profiles for this aircraft.
+              You can add up to 3 different performance profiles for this
+              aircraft.
             </li>
-            <li>Only the selected profile will be used for flight planing.</li>
+            <li>Only the selected profile will be used for flight planning.</li>
           </ul>
           <Table tableData={tableData} />
         </HtmlTableContainer>

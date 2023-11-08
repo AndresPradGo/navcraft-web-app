@@ -14,6 +14,7 @@ import SideBarContent from "./SideBarContent";
 import { useModal, Modal } from "../../components/common/modal";
 import EditAircraftForm from "../../components/editAircraftForm";
 import DeleteAircraftForm from "../../components/deleteAircraftForm";
+import AddAircraftProfileForm from "../../components/addAircraftProfileForm";
 import useAircraftData from "./useAircraftData";
 import DataTableList, { DataType } from "../../components/common/DataTableList";
 import ProfilesTable from "./ProfilesTable";
@@ -142,12 +143,20 @@ const AircraftPage = () => {
   return (
     <>
       <Modal isOpen={modal.isOpen}>Form</Modal>
+      <Modal isOpen={addProfileModal.isOpen} fullHeight={true}>
+        <AddAircraftProfileForm
+          closeModal={addProfileModal.handleClose}
+          isOpen={addProfileModal.isOpen}
+          fuelOptions={fuelTypes}
+          aircraftId={aircraftData ? aircraftData.id : 0}
+        />
+      </Modal>
       <ContentLayout
         sideBarContent={
           <SideBarContent
             handleAddProfile={() => {
               setModalForm("addProfile");
-              modal.handleOpen();
+              addProfileModal.handleOpen();
             }}
             handleEditAircraft={() => {
               setModalForm("editAircraft");
@@ -157,25 +166,28 @@ const AircraftPage = () => {
               setModalForm("deleteAircraft");
               modal.handleOpen();
             }}
+            canAddProfile={(aircraftData?.profiles || []).length < 3}
           />
         }
       >
-        <HtmlTitleContainer>
-          <h1>
-            <IoAirplane />
-            {`${aircraftData?.registration} [${aircraftData?.abbreviation}]`}
-          </h1>
-        </HtmlTitleContainer>
-        <DataTableList dataList={aircraftDataList as DataType[]} />
-        <ProfilesTable
-          profiles={aircraftData?.profiles || []}
-          addModal={addProfileModal}
-          aircraftId={parseInt(id || "0")}
-          profileId={idRowToEdit}
-          setProfileId={setIdRowToEdit}
-          aircraftRegistration={aircraftData?.registration || ""}
-          fuelTypes={fuelTypes}
-        />
+        <HtmlContainer>
+          <HtmlTitleContainer>
+            <h1>
+              <IoAirplane />
+              {`${aircraftData?.registration} [${aircraftData?.abbreviation}]`}
+            </h1>
+          </HtmlTitleContainer>
+          <DataTableList dataList={aircraftDataList as DataType[]} />
+          <ProfilesTable
+            profiles={aircraftData?.profiles || []}
+            addModal={addProfileModal}
+            aircraftId={parseInt(id || "0")}
+            profileId={idRowToEdit}
+            setProfileId={setIdRowToEdit}
+            aircraftRegistration={aircraftData?.registration || ""}
+            fuelTypes={fuelTypes}
+          />
+        </HtmlContainer>
       </ContentLayout>
     </>
   );

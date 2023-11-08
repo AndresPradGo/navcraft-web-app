@@ -62,6 +62,7 @@ const HtmlButton = styled.button<HtmlButtonProps>`
       ${(props) => props.$backgroundHoverColor};
     color: ${(props) => props.$hoverColor};
     cursor: not-allowed;
+    opacity: 25%;
   }
 
   &[disabled]:hover,
@@ -230,7 +231,7 @@ const Button = ({
       disabled={!!disabled}
       $onlyHover={!!onlyHover}
     >
-      {disabled ? disabledText : children}
+      {disabled && disabledText ? disabledText : children}
     </HtmlButton>
   );
 };

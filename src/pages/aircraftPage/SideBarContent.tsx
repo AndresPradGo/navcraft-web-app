@@ -86,12 +86,14 @@ interface Props {
   handleAddProfile: () => void;
   handleEditAircraft: () => void;
   handleDeleteAircraft: () => void;
+  canAddProfile: boolean;
 }
 
 const SideBarContent = ({
   handleAddProfile,
   handleEditAircraft,
   handleDeleteAircraft,
+  canAddProfile,
 }: Props) => {
   const commonStyles = {
     width: "100%",
@@ -117,8 +119,11 @@ const SideBarContent = ({
     {
       text: "Add Performance Profile",
       icon: <PerformanceIcon />,
-      styles: commonStyles,
-      onClick: handleAddProfile,
+      styles: {
+        ...commonStyles,
+        disabled: !canAddProfile,
+      },
+      onClick: canAddProfile ? handleAddProfile : () => {},
     },
     {
       text: "Delete Aircraft",

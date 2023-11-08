@@ -10,9 +10,9 @@ import { z } from "zod";
 import { useEffect } from "react";
 
 import Button from "../common/button";
-import useAddAircraft from "./useAddAircraftModel";
+import useAddAircraftModel from "./useAddAircraftModel";
 import { FuelTypeData } from "../../hooks/useFuelTypes";
-import DataList from "../common/datalist/index";
+import DataList from "../common/datalist";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -246,9 +246,9 @@ const schema = z.object({
   performance_profile_name: z
     .string()
     .min(2, { message: "Must be at least 2 characters long" })
-    .max(50, { message: "Must be at most 50 characters long" })
-    .regex(/^[\.\-a-zA-Z0-9\(\) ]+$/, {
-      message: "Only letters, numbers, white space, and symbols .-()",
+    .max(255, { message: "Must be at most 255 characters long" })
+    .regex(/^[a-zA-Z0-9\s.,()/\-]+$/, {
+      message: "Only letters, numbers, white space, and symbols .,-()/",
     }),
   is_complete: z.boolean(),
   fuel_type: z
@@ -278,7 +278,7 @@ const EditAircraftModelForm = ({
   isOpen,
   fuelOptions,
 }: Props) => {
-  const addMutation = useAddAircraft();
+  const addMutation = useAddAircraftModel();
   const {
     register,
     handleSubmit,
@@ -343,6 +343,28 @@ const EditAircraftModelForm = ({
             </span>
           </HtmlCheckbox>
         ) : null}
+        <DataList
+          setError={(message) =>
+            setError("fuel_type", {
+              type: "manual",
+              message: message,
+            })
+          }
+          clearErrors={() => clearErrors("fuel_type")}
+          required={true}
+          value={watch("fuel_type")}
+          hasError={!!errors.fuel_type}
+          errorMessage={errors.fuel_type?.message || ""}
+          options={fuelOptions ? fuelOptions.map((item) => item.name) : []}
+          setValue={(value: string) => setValue("fuel_type", value)}
+          name="fuel_type"
+          formIsOpen={isOpen}
+          resetValue={
+            aircraftModelData.fuel_type ? aircraftModelData.fuel_type : ""
+          }
+        >
+          <FuelIcon /> Fuel
+        </DataList>
         <HtmlInput
           $required={true}
           $hasValue={!!watch("performance_profile_name")}
@@ -362,31 +384,9 @@ const EditAircraftModelForm = ({
           )}
           <label htmlFor="performance_profile_name">
             <NameIcon />
-            Full Name
+            Descriptive Name
           </label>
         </HtmlInput>
-        <DataList
-          setError={(message) =>
-            setError("fuel_type", {
-              type: "manual",
-              message: message,
-            })
-          }
-          clearErrors={() => clearErrors("fuel_type")}
-          required={true}
-          value={watch("fuel_type")}
-          hasError={!!errors.fuel_type}
-          errorMessage={errors.fuel_type?.message || ""}
-          options={fuelOptions ? fuelOptions.map((item) => item.name) : []}
-          setValue={(value: string) => setValue("fuel_type", value)}
-          name="runway_surface"
-          formIsOpen={isOpen}
-          resetValue={
-            aircraftModelData.fuel_type ? aircraftModelData.fuel_type : ""
-          }
-        >
-          <FuelIcon /> Fuel
-        </DataList>
       </HtmlInputContainer>
       <HtmlButtons>
         <Button

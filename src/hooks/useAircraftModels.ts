@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import {APIClientError} from '../../services/apiClient';
-import apiClient, {PerformanceModelDataFromAPI} from '../../services/aircraftModelClient';
+import {APIClientError} from '../services/apiClient';
+import apiClient, {PerformanceModelDataFromAPI} from '../services/aircraftModelClient';
 
 
 const useAircraftModels = () => {

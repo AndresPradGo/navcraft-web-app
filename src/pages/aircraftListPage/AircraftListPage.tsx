@@ -9,7 +9,7 @@ import Loader from "../../components/Loader";
 import useAircraftDataList from "./useAircraftDataList";
 import useAuth from "../../hooks/useAuth";
 import Table from "../../components/common/table";
-import useAircraftModels from "./useAircraftModels";
+import useAircraftModels from "../../hooks/useAircraftModels";
 import SideBarContent from "./SideBarContent";
 import { useModal, Modal } from "../../components/common/modal";
 import EditAircraftForm from "../../components/editAircraftForm";

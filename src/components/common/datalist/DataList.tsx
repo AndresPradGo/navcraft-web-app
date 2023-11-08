@@ -122,7 +122,7 @@ const HtmlList = styled.ul<HtmlListProps>`
 
 const HtmlListItem = styled.li`
   width: 100%;
-  height: 40px;
+  min-height: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -131,7 +131,7 @@ const HtmlListItem = styled.li`
   transition: all 0.2s linear;
   color: var(--color-grey-bright);
   background-color: var(--color-grey-dark);
-  padding: 0 20px;
+  padding: 10px 20px;
 
   &:hover,
   &:focus {
@@ -198,8 +198,9 @@ const DataList = ({
         option.toLowerCase().startsWith(currentValue.toLowerCase())
       ).length ||
       (!required && currentValue === "")
-    )
+    ) {
       clearErrors();
+    }
     if (currentValue === "") dispatch({ type: "RESET", options });
     else dispatch({ type: "FILTER", value: currentValue, options });
   };
