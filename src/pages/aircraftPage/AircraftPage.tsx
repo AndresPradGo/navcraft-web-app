@@ -187,7 +187,6 @@ const AircraftPage = () => {
             aircraftId={aircraftId}
             profileId={idRowToEdit}
             setProfileId={setIdRowToEdit}
-            aircraftRegistration={aircraftData?.registration || ""}
             fuelTypes={fuelTypes}
           />
         </HtmlContainer>

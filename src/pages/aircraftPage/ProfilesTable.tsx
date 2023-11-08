@@ -9,6 +9,7 @@ import Button from "../../components/common/button";
 import { useModal, Modal, UseModalType } from "../../components/common/modal";
 import { PerformanceProfileBaseData } from "../../services/aircraftClient";
 import { FuelTypeData } from "../../hooks/useFuelTypes";
+import DeleteProfileForm from "../../components/deleteProfileForm";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -85,7 +86,6 @@ interface Props {
   addModal: UseModalType;
   profileId: number;
   setProfileId: Dispatch<SetStateAction<number>>;
-  aircraftRegistration: string;
   fuelTypes: FuelTypeData[];
 }
 
@@ -93,7 +93,6 @@ const ProfilesTable = ({
   profiles,
   addModal,
   aircraftId,
-  aircraftRegistration,
   profileId,
   fuelTypes,
   setProfileId,
@@ -126,7 +125,17 @@ const ProfilesTable = ({
 
   return (
     <>
-      <Modal isOpen={deleteModal.isOpen}>delete form</Modal>
+      <Modal isOpen={deleteModal.isOpen}>
+        <DeleteProfileForm
+          closeModal={deleteModal.handleClose}
+          id={profileId}
+          name={
+            profiles.find((p) => p.id === profileId)
+              ?.performance_profile_name || ""
+          }
+          aircraftId={aircraftId}
+        />
+      </Modal>
       <HtmlContainer>
         <HtmlTitleContainer>
           <div>

@@ -6,32 +6,28 @@ import apiClient, {PerformanceModelDataFromAPI} from '../../services/aircraftMod
 import errorToast from '../../utils/errorToest';
 
 
-interface DeleteAircraftData {
-    id: number;
-}
-
-interface DeleteAircraftContext {
-    previusData?: PerformanceModelDataFromAPI[]
+interface DeleteModelContext {
+    previousData?: PerformanceModelDataFromAPI[]
 }
 
 
 const useDeleteAircraftModel = (onDelete: () => void) => {
     const queryClient = useQueryClient()
-    return useMutation<string, APIClientError, DeleteAircraftData, DeleteAircraftContext>({
-        mutationFn: data => apiClient.delete(`/${data.id}`),
-        onMutate: data => {
-            const previusData = queryClient.getQueryData<PerformanceModelDataFromAPI[]>(['aircraftModel', 'list'])
+    return useMutation<string, APIClientError, number, DeleteModelContext>({
+        mutationFn: modelId => apiClient.delete(`/${modelId}`),
+        onMutate: modelId => {
+            const previousData = queryClient.getQueryData<PerformanceModelDataFromAPI[]>(['aircraftModel', 'list'])
             queryClient.setQueryData<PerformanceModelDataFromAPI[]>(
                 ['aircraftModel', 'list'], 
                 currentData => (
-                    currentData ? currentData.filter(item => item.id !== data.id) : []
+                    currentData ? currentData.filter(item => item.id !== modelId) : []
                 )
             )
-            return { previusData }
+            return { previousData }
         },
-        onSuccess: (_, data) => {
+        onSuccess: (_, modelId) => {
             queryClient.invalidateQueries({queryKey: ['aircraftModel', 'list']})
-            toast.info(`Aircraft Model with ID ${data.id} has been deleted.`, {
+            toast.info(`Aircraft Model with ID ${modelId} has been deleted.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
@@ -48,7 +44,7 @@ const useDeleteAircraftModel = (onDelete: () => void) => {
             if (!context) return
             queryClient.setQueryData<PerformanceModelDataFromAPI[]>(
                 ['aircraftModel', 'list'], 
-                context.previusData
+                context.previousData
             )
         }
     })

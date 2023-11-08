@@ -5,7 +5,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
 import Button from "../common/button";
-import useDeleteAircraftModel from "./useDeleteAircraftModel";
+import useDeleteProfile from "./useDeleteProfile";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -113,14 +113,23 @@ const CloseIcon = styled(LiaTimesSolid)`
 interface Props {
   closeModal: () => void;
   id: number;
+  name: string;
+  aircraftId: number;
   redirect?: boolean;
 }
 
-const DeleteAircraftModelForm = ({ closeModal, id, redirect }: Props) => {
+const DeleteProfileForm = ({
+  closeModal,
+  id,
+  name,
+  aircraftId,
+  redirect,
+}: Props) => {
   const navigate = useNavigate();
-  const mutation = useDeleteAircraftModel(() => {
-    if (!!redirect) navigate("/aircraft-list");
+  const mutation = useDeleteProfile(aircraftId, () => {
+    if (!!redirect) navigate(`/aircraft/${aircraftId}`);
   });
+
   const handleDelete = () => {
     closeModal();
     mutation.mutate(id);
@@ -131,12 +140,12 @@ const DeleteAircraftModelForm = ({ closeModal, id, redirect }: Props) => {
       <h1>
         <div>
           <TitleIcon />
-          Delete Aircraft Model
+          Delete Performance Profile
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlBodyContainer>
-        <p>{`Are you sure you want to delete aircraft Model with ID ${id}?`}</p>
+        <p>{`Are you sure you want to delete the performance profile "${name}"?`}</p>
       </HtmlBodyContainer>
       <HtmlButtons>
         <Button
@@ -173,4 +182,4 @@ const DeleteAircraftModelForm = ({ closeModal, id, redirect }: Props) => {
   );
 };
 
-export default DeleteAircraftModelForm;
+export default DeleteProfileForm;
