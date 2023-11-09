@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import APIClient, { APIClientError } from '../../services/apiClient';
 import { PerformanceProfileBaseData, AircraftDataFromAPI } from '../../services/aircraftClient';
 import errorToast from '../../utils/errorToast';
+import getUTCNowString from '../../utils/getUTCNowString';
 
 interface AddProfileData {
     fuel_type_id: number;
@@ -60,7 +61,9 @@ const useAddAircraftProfile = (aircraftId: number) => {
                     is_complete: dataFromApi.is_complete,
                     fuel_type_id: dataFromApi.fuel_type_id,
                     performance_profile_name: dataFromApi.performance_profile_name,
-                    is_preferred: dataFromApi.is_preferred
+                    is_preferred: dataFromApi.is_preferred,
+                    created_at_utc: dataFromApi.created_at_utc,
+                    last_updated_utc: dataFromApi.last_updated_utc
                 }),
                 endpointExtension
             ))
@@ -77,7 +80,9 @@ const useAddAircraftProfile = (aircraftId: number) => {
                             is_preferred: false,
                             is_complete: newData.type === 'MODEL',
                             fuel_type_id: newData.fuel_type_id,
-                            performance_profile_name: newData.performance_profile_name
+                            performance_profile_name: newData.performance_profile_name,
+                            created_at_utc: getUTCNowString(),
+                            last_updated_utc: getUTCNowString()
                         }
                     ]
                 }: undefined)

@@ -1,14 +1,19 @@
 import APIClient from './apiClient';
 
-export interface PerformanceModelDataFromAPI {
+
+export interface EditPerformanceModelData {
     id: number;
     is_complete: boolean;
     fuel_type_id: number;
     performance_profile_name: string;
 }
+export interface PerformanceModelDataFromAPI extends EditPerformanceModelData {
+    created_at_utc: string;
+    last_updated_utc: string;
+}
 
 export interface CompletePerformanceModelDataFromAPI extends PerformanceModelDataFromAPI{
-    center_of_gravity_in: number,
+  center_of_gravity_in: number,
   empty_weight_lb: number,
   max_ramp_weight_lb: number,
   max_takeoff_weight_lb: number,
@@ -17,6 +22,6 @@ export interface CompletePerformanceModelDataFromAPI extends PerformanceModelDat
   is_preferred: boolean
 }
 
-const apiClient = new APIClient<PerformanceModelDataFromAPI, PerformanceModelDataFromAPI>("/aircraft-models")
+const apiClient = new APIClient<EditPerformanceModelData, PerformanceModelDataFromAPI>("/aircraft-models")
 
 export default apiClient

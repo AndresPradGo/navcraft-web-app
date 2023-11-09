@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AiOutlineSwap } from "react-icons/ai";
 import { IoAirplane, IoAirplaneOutline } from "react-icons/io5";
 import { styled } from "styled-components";
+import _ from "lodash";
 
 import { ContentLayout } from "../layout";
 import useFuelTypes from "../../hooks/useFuelTypes";
@@ -16,6 +17,7 @@ import EditAircraftForm from "../../components/editAircraftForm";
 import EditAircraftModelForm from "../../components/editAircraftModelForm";
 import DeleteAircraftForm from "../../components/deleteAircraftForm";
 import DeleteAircraftModelForm from "../../components/deleteAircraftModelForm";
+import formatUTCDate from "../../utils/formatUTCDate";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -151,7 +153,15 @@ const AircraftListPage = () => {
     });
   });
   const tableKeys = [
-    ["registration", "abbreviation", "make", "model", "state", "fuel"],
+    [
+      "registration",
+      "abbreviation",
+      "make",
+      "model",
+      "state",
+      "fuel",
+      "updated",
+    ],
   ];
   const tableHeaders = [
     {
@@ -161,6 +171,7 @@ const AircraftListPage = () => {
       model: "Name",
       state: "State",
       fuel: "Fuel",
+      updated: "Date Updated",
     },
   ] as { [key: string]: string }[];
 
@@ -177,6 +188,10 @@ const AircraftListPage = () => {
       {
         key: "make",
         title: "Make",
+      },
+      {
+        key: "date",
+        title: "Date Updated",
       },
     ],
   ];
@@ -231,13 +246,14 @@ const AircraftListPage = () => {
   ];
 
   if (userIsAdmin) {
-    tableKeys.push(["id", "name", "state", "fuel"]);
+    tableKeys.push(["id", "name", "state", "fuel", "updated"]);
 
     tableHeaders.push({
       id: "ID",
       name: "Description",
       state: "State",
       fuel: "Fuel",
+      updated: "Date Updated",
     });
 
     sortData.push([
@@ -252,6 +268,10 @@ const AircraftListPage = () => {
       {
         key: "fuel",
         title: "Fuel",
+      },
+      {
+        key: "date",
+        title: "Date Updated",
       },
     ]);
 
@@ -318,6 +338,8 @@ const AircraftListPage = () => {
             fuel:
               fuelTypes.find((fuel) => fuel.id === model.fuel_type_id)?.name ||
               "-",
+            updated: formatUTCDate(model.last_updated_utc),
+            date: model.last_updated_utc,
             handleEdit: `model/${model.id}`,
             handleDelete: () => {
               setModalForm("deleteModel");
@@ -328,33 +350,46 @@ const AircraftListPage = () => {
               ? ("open-delete" as "open-delete")
               : ("open" as "open"),
           }))
-        : aircraftList.map((aircraft) => ({
-            id: aircraft.id,
-            registration: aircraft.registration,
-            abbreviation: aircraft.abbreviation,
-            make: aircraft.make,
-            model: aircraft.model,
-            state: aircraft.profiles.find((profile) => profile.is_complete)
-              ? "Complete"
-              : "Incomplete",
-            fuel:
-              fuelTypes.find((fuel) => {
-                const id =
-                  aircraft.profiles.find((profile) => profile.is_preferred)
-                    ?.fuel_type_id ||
-                  aircraft.profiles.find((profile) => profile.is_complete)
-                    ?.fuel_type_id ||
-                  -1;
-                return fuel.id === id;
-              })?.name || "-",
-            handleEdit: `${aircraft.id}`,
-            handleDelete: () => {
-              setModalForm("deleteAircraft");
-              setIdRowToDelete(aircraft.id);
-              modal.handleOpen();
-            },
-            permissions: "open-delete" as "open-delete",
-          })),
+        : aircraftList.map((aircraft) => {
+            const datesUpdated = [
+              { date: aircraft.last_updated_utc },
+              ...aircraft.profiles.map((profile) => ({
+                date: profile.last_updated_utc,
+              })),
+            ];
+            const dateUpdated = _.orderBy(datesUpdated, ["date"], ["desc"])[0][
+              "date"
+            ];
+            return {
+              id: aircraft.id,
+              registration: aircraft.registration,
+              abbreviation: aircraft.abbreviation,
+              make: aircraft.make,
+              model: aircraft.model,
+              state: aircraft.profiles.find((profile) => profile.is_complete)
+                ? "Complete"
+                : "Incomplete",
+              fuel:
+                fuelTypes.find((fuel) => {
+                  const id =
+                    aircraft.profiles.find((profile) => profile.is_preferred)
+                      ?.fuel_type_id ||
+                    aircraft.profiles.find((profile) => profile.is_complete)
+                      ?.fuel_type_id ||
+                    -1;
+                  return fuel.id === id;
+                })?.name || "-",
+              updated: formatUTCDate(dateUpdated),
+              date: dateUpdated,
+              handleEdit: `${aircraft.id}`,
+              handleDelete: () => {
+                setModalForm("deleteAircraft");
+                setIdRowToDelete(aircraft.id);
+                modal.handleOpen();
+              },
+              permissions: "open-delete" as "open-delete",
+            };
+          }),
   };
 
   const handleChangeTable = () => {

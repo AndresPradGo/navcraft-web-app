@@ -10,6 +10,7 @@ import { useModal, Modal, UseModalType } from "../../components/common/modal";
 import { PerformanceProfileBaseData } from "../../services/aircraftClient";
 import { FuelTypeData } from "../../hooks/useFuelTypes";
 import DeleteProfileForm from "../../components/deleteProfileForm";
+import formatUTCDate from "../../utils/formatUTCDate";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -100,12 +101,13 @@ const ProfilesTable = ({
   const [isOpen, setIsOpen] = useState(true);
   const deleteModal = useModal();
   const tableData = {
-    keys: ["name", "fuel", "complete", "selected"],
+    keys: ["name", "fuel", "complete", "selected", "updated"],
     headers: {
       name: "Description",
       fuel: "Fuel",
       complete: "State",
       selected: "Selected",
+      updated: "Date Updated",
     },
     rows: profiles.map((p) => ({
       id: p.id,
@@ -113,6 +115,8 @@ const ProfilesTable = ({
       fuel: fuelTypes.find((item) => item.id === p.fuel_type_id)?.name || "-",
       complete: p.is_complete ? "Complete" : "Incomplete",
       selected: p.is_preferred ? <CheckIcon /> : "-",
+      updated: formatUTCDate(p.last_updated_utc),
+      date: p.last_updated_utc,
       handleEdit: `profile/${p.id}`,
       handleDelete: () => {
         setProfileId(p.id);

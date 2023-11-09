@@ -5,6 +5,7 @@ import apiClient, {AircraftDataFromAPI} from '../../services/aircraftClient'
 import { APIClientError } from '../../services/apiClient';
 import { AircraftDataFromForm } from './EditAircraftForm';
 import errorToast from '../../utils/errorToast';
+import getUTCNowString from '../../utils/getUTCNowString';
 
 
 interface AircraftContext {
@@ -13,15 +14,25 @@ interface AircraftContext {
 
 const useAddAircraft = () => {
     const queryClient = useQueryClient()
-    return useMutation<AircraftDataFromForm, APIClientError, AircraftDataFromForm, AircraftContext>({
+    return useMutation<AircraftDataFromAPI, APIClientError, AircraftDataFromForm, AircraftContext>({
         mutationFn: (data) => apiClient.post(data),
         onMutate: newData => {
             const previusData = queryClient.getQueryData<AircraftDataFromAPI[]>(['aircraft', 'list']) 
             queryClient.setQueryData<AircraftDataFromAPI[]>(['aircraft', 'list'], currentData => {
                 return (
                     currentData 
-                        ? [{ ...newData, profiles: []}, ...currentData] 
-                        : [{ ...newData, profiles: []}]
+                        ? [{
+                             ...newData, 
+                             profiles: [], 
+                             created_at_utc:getUTCNowString(), 
+                             last_updated_utc:getUTCNowString()
+                            }, ...currentData] 
+                        : [{ 
+                            ...newData, 
+                            profiles: [], 
+                            created_at_utc:getUTCNowString(), 
+                            last_updated_utc:getUTCNowString()
+                        }]
                 )
             })
             return {previusData}

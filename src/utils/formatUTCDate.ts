@@ -1,5 +1,5 @@
 
-const formatUTCDate = (dateString: string): string => {
+const formatUTCDate = (dateString: string, monthNameFormat?: boolean): string => {
 
     const monthNames = [
         "January",
@@ -18,10 +18,12 @@ const formatUTCDate = (dateString: string): string => {
 
     const date = new Date(dateString);
     const day = date.getDate();
-    const month = monthNames[date.getMonth()];
+    const month = date.getMonth();
     const year = date.getFullYear();
+    const monthName = monthNames[date.getMonth()];
 
-    return `${month} ${day}, ${year}Z`
+    if(monthNameFormat) return `${monthName} ${day}, ${year} UTC`
+    return `${year}/${month < 10 ? "0" : ""}${month}/${day < 10 ? "0" : ""}${day}z`
 
 }
 

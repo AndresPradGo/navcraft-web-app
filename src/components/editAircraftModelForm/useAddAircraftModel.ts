@@ -1,9 +1,16 @@
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import apiClient, {PerformanceModelDataFromAPI, CompletePerformanceModelDataFromAPI} from '../../services/aircraftModelClient'
+import apiClient, 
+{
+    PerformanceModelDataFromAPI, 
+    CompletePerformanceModelDataFromAPI,
+    EditPerformanceModelData
+} from '../../services/aircraftModelClient'
 import { APIClientError } from '../../services/apiClient';
 import errorToast from '../../utils/errorToast';
+import getUTCNowString from '../../utils/getUTCNowString';
+
 
 
 interface AircraftContext {
@@ -12,7 +19,7 @@ interface AircraftContext {
 
 const useAddAircraftModel = () => {
     const queryClient = useQueryClient()
-    return useMutation<PerformanceModelDataFromAPI, APIClientError, PerformanceModelDataFromAPI, AircraftContext>({
+    return useMutation<PerformanceModelDataFromAPI, APIClientError, EditPerformanceModelData, AircraftContext>({
         mutationFn: (data) => apiClient.postAndPreProcess<CompletePerformanceModelDataFromAPI>(
             data,
             (dataFromApi) => ({
@@ -20,6 +27,8 @@ const useAddAircraftModel = () => {
                 is_complete: dataFromApi.is_complete,
                 fuel_type_id: dataFromApi.fuel_type_id,
                 performance_profile_name: dataFromApi.performance_profile_name,
+                created_at_utc: dataFromApi.created_at_utc,
+                last_updated_utc: dataFromApi.last_updated_utc
             })
             ),
         onMutate: newData => {
@@ -27,8 +36,21 @@ const useAddAircraftModel = () => {
             queryClient.setQueryData<PerformanceModelDataFromAPI[]>(['aircraftModel', 'list'], currentData => {
                 return (
                     currentData 
-                        ? [newData, ...currentData] 
-                        : [newData]
+                        ? [
+                            {
+                                ...newData, 
+                                created_at_utc: getUTCNowString(), 
+                                last_updated_utc: getUTCNowString()
+                            }, 
+                            ...currentData
+                        ] 
+                        : [
+                            {
+                                ...newData, 
+                                created_at_utc: getUTCNowString(), 
+                                last_updated_utc: getUTCNowString()
+                            }
+                        ]
                 )
             })
             return {previusData}
