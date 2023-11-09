@@ -10,6 +10,8 @@ export interface RunwayDataFromAPI {
     intersection_departure_length_ft?: number;
     surface: string;
     surface_id: number;
+    created_at_utc: string;
+    last_updated_utc: string;
 }
 
 export interface AerodromeDataFromAPI {

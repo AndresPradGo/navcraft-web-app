@@ -16,6 +16,7 @@ interface RequiredInputProps {
   $accepted: boolean;
   $hasValue: boolean;
   $required: boolean;
+  $lessPadding: boolean;
 }
 const HtmlInput = styled.div<RequiredInputProps>`
   position: relative;
@@ -24,7 +25,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  padding: 10px 20px 0;
+  padding: ${(props) => (props.$lessPadding ? "10px 10px 0" : "10px 20px 0")};
 
   & label {
     cursor: ${(props) => (props.$hasValue ? "default" : "text")};
@@ -97,6 +98,10 @@ const HtmlInput = styled.div<RequiredInputProps>`
     margin: 2px;
     text-wrap: wrap;
   }
+
+  @media screen and (min-width: 425px) {
+    padding: 10px 20px 0;
+  }
 `;
 
 interface HtmlListProps {
@@ -153,6 +158,7 @@ interface Props {
   name: string;
   required: boolean;
   formIsOpen: boolean;
+  lessPadding?: boolean;
 }
 
 const DataList = ({
@@ -168,6 +174,7 @@ const DataList = ({
   options,
   formIsOpen,
   resetValue,
+  lessPadding,
 }: Props) => {
   const positionPopperTools = usePopperInput();
   const [filteredOptions, dispatch] = useReducer(dataListReducer, options);
@@ -227,7 +234,12 @@ const DataList = ({
   };
 
   return (
-    <HtmlInput $required={required} $hasValue={!!value} $accepted={!hasError}>
+    <HtmlInput
+      $required={required}
+      $hasValue={!!value}
+      $accepted={!hasError}
+      $lessPadding={!!lessPadding}
+    >
       <input
         id={name}
         type="text"

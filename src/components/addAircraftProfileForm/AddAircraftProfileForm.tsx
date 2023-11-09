@@ -122,9 +122,23 @@ const HtmlSectionContent = styled.div<HtmlSectionProps>`
   border: ${(props) => (props.$isOpen ? "1px" : "0")} solid var(--color-white);
   border-top: 0;
   padding: 0px;
-  height: ${(props) => (props.$isOpen ? "320px" : "0px")};
+  height: ${(props) => (props.$isOpen ? "400px" : "0px")};
   opacity: ${(props) => (props.$isOpen ? "1" : "0")};
   overflow: hidden;
+
+  & ul {
+    padding-right: 10px;
+  }
+
+  @media screen and (min-width: 425px) {
+    & ul {
+      padding-right: 20px;
+    }
+  }
+
+  @media screen and (min-width: 490px) {
+    height: ${(props) => (props.$isOpen ? "310px" : "0px")};
+  }
 `;
 
 const HtmlSectionSeparator = styled.div`
@@ -151,7 +165,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  padding: 10px 20px 0;
+  padding: 10px 10px 0;
 
   & label {
     cursor: ${(props) => (props.$hasValue ? "default" : "text")};
@@ -223,6 +237,10 @@ const HtmlInput = styled.div<RequiredInputProps>`
     color: var(--color-warning-hover);
     margin: 2px;
     text-wrap: wrap;
+  }
+
+  @media screen and (min-width: 425px) {
+    padding: 10px 20px 0;
   }
 `;
 
@@ -475,6 +493,7 @@ const AddAircraftProfileForm = ({
               name="model"
               formIsOpen={isOpen}
               resetValue=""
+              lessPadding={true}
             >
               <ModelIcon /> Select Model
             </DataList>
@@ -518,6 +537,7 @@ const AddAircraftProfileForm = ({
               name="fuel_type"
               formIsOpen={isOpen}
               resetValue=""
+              lessPadding={true}
             >
               <FuelIcon /> Fuel
             </DataList>
