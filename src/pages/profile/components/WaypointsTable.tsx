@@ -15,6 +15,7 @@ import {
 } from "../../../components/common/modal";
 import EditUserWaypointForm from "../../../components/editUserWaypointForm";
 import DeleteUserWaypointForm from "../../../components/deleteUserWaypointForm";
+import formatUTCDate from "../../../utils/formatUTCDate";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -92,13 +93,14 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
   const waypointData = waypoints?.find((item) => item.id === waypointId);
 
   const tableData = {
-    keys: ["code", "name", "latitude", "longitude", "variation"],
+    keys: ["code", "name", "latitude", "longitude", "variation", "updated"],
     headers: {
       code: "Code",
       name: "Name",
       latitude: "Latitude",
       longitude: "Longitude",
       variation: "Magnetic Var",
+      updated: "Date Updated",
     },
     rows:
       !error && waypoints
@@ -108,6 +110,8 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
             name: w.name,
             latitude: `${w.lat_direction}${w.lat_degrees}\u00B0${w.lat_minutes}'${w.lat_seconds}"`,
             longitude: `${w.lon_direction}${w.lon_degrees}\u00B0${w.lon_minutes}'${w.lon_seconds}"`,
+            updated: formatUTCDate(w.last_updated_utc),
+            date: w.last_updated_utc,
             variation: `${Math.abs(
               w.magnetic_variation ? w.magnetic_variation : 0
             )}\u00B0${
@@ -141,6 +145,10 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
     {
       key: "name",
       title: "Name",
+    },
+    {
+      title: "Date Updated",
+      key: "date",
     },
   ];
 

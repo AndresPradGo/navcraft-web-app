@@ -7,6 +7,7 @@ interface WaypointHeaders {
     longitude: string;
     variation: string;
     visible?: string;
+    updated: string;
 }
 
 interface AerodromeHeaders extends WaypointHeaders {
@@ -22,6 +23,7 @@ interface RunwayHeaders {
     thld_displ: string;
     intersection_departure_length_ft: string;
     surface: string;
+    updated: string;
 }
 
 interface SortData {
@@ -53,7 +55,7 @@ interface TableDataType {
 
 const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): TableDataType[] | [] => {
     
-    const waypointsKeys = ["code", "name", "type", "latitude", "longitude", "variation"]
+    const waypointsKeys = ["code", "name", "type", "latitude", "longitude", "variation", "updated"]
     const waypointsHeaders = {
         code: "Code",
         name: "Name",
@@ -61,6 +63,7 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         latitude: "Latitude",
         longitude: "Longitude",
         variation: "Magnetic Var",
+        updated: "Date Updated"
     } as WaypointHeaders
     const waypointsSortData = [
         {
@@ -70,6 +73,10 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         {
           key: "name",
           title: "Name",
+        },
+        {
+            key: "date",
+            title: "Date Updated"
         }
     ];
     const waypointsSearchBarParameters = {
@@ -102,7 +109,8 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         "elevation_ft",
         "runways",
         "variation",
-        "weather"
+        "weather",
+        "updated"
     ]
     const aerodromesHeaders = {
         code: "Code",
@@ -114,7 +122,8 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         elevation_ft: "Elevation [ft]",
         runways: "Runways",
         variation: "Magnetic Var",
-        weather: "Available Weather"
+        weather: "Available Weather",
+        updated: "Date Updated"
     } as AerodromeHeaders
     const aerodromesSortData = [
         {
@@ -128,6 +137,10 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         {
             key: "status",
             title: "Status",
+        },
+        {
+            key: "date",
+            title: "Date Updated"
         }
     ];
     const aerodromesSearchBarParameters = {
@@ -177,6 +190,7 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         "thld_displ",
         "intersection_departure_length_ft",
         "surface",
+        "updated"
     ]
     const runwaysHeaders = {
         aerodrome: "Aerodrome",
@@ -184,7 +198,8 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         length_ft: "Length [ft]",
         thld_displ: "Thld Displ [ft]",
         intersection_departure_length_ft: "Intxn Dep [ft]",
-        surface: "Surface"
+        surface: "Surface",
+        updated: "Date Updated"
     } as RunwayHeaders
     const runwaysSortData = [
         {
@@ -202,6 +217,10 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         {
             title: "Surface",
             key: "surface",
+        },
+        {
+            title: "Date Updated",
+            key: "updated",
         },
     ]
     const runwaysSearchBarParameters = {

@@ -10,6 +10,7 @@ import Loader from "../../../components/Loader";
 import Button from "../../../components/common/button";
 import EditUserAerodromeForm from "../../../components/editUserAerodromeForm";
 import DeleteUserAerodromeForm from "../../../components/deleteUserAerodromeForm";
+import formatUTCDate from "../../../utils/formatUTCDate";
 import {
   useModal,
   Modal,
@@ -112,6 +113,7 @@ const AerodromesTable = ({ editModal }: Props) => {
       "elevation_ft",
       "runways",
       "variation",
+      "updated",
     ],
     headers: {
       code: "Code",
@@ -121,6 +123,7 @@ const AerodromesTable = ({ editModal }: Props) => {
       elevation_ft: "Elevation [ft]",
       runways: "Runways",
       variation: "Magnetic Var",
+      updated: "Date Updated",
     },
     rows:
       !error && aerodromes
@@ -142,6 +145,8 @@ const AerodromesTable = ({ editModal }: Props) => {
                 : ""
             }`,
             elevation_ft: a.elevation_ft,
+            updated: formatUTCDate(a.last_updated_utc),
+            date: a.last_updated_utc,
             runways: a.runways.length
               ? a.runways
                   .map(
@@ -171,6 +176,10 @@ const AerodromesTable = ({ editModal }: Props) => {
     {
       title: "Name",
       key: "name",
+    },
+    {
+      title: "Date Updated",
+      key: "date",
     },
   ];
 

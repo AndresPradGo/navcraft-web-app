@@ -12,7 +12,9 @@ interface Runway {
     aerodrome_id: number,
     id: number,
     surface: string,
-    aerodrome: string
+    aerodrome: string,
+    created_at_utc: string;
+    last_updated_utc: string;
 }
 
 interface EditRunwayData {

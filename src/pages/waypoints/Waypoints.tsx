@@ -29,6 +29,7 @@ import EditOfficialAerodromeForm from "../../components/editOfficialAerodromeFor
 import EditUserAerodromeForm from "../../components/editUserAerodromeForm";
 import FileForm from "../../components/common/fileForm/index";
 import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions";
+import formatUTCDate from "../../utils/formatUTCDate";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -247,6 +248,8 @@ const Waypoints = () => {
                   : ""
               }`,
               visible: !vw.hidden ? "Yes" : "No",
+              updated: formatUTCDate(vw.last_updated_utc),
+              date: vw.last_updated_utc,
               handleEdit: () => {
                 setTypeItemToEdit("VFR Waypoint");
                 setRowToEditId(vw.id);
@@ -278,6 +281,8 @@ const Waypoints = () => {
                   : ""
               }`,
               visible: "Yes",
+              updated: formatUTCDate(uw.last_updated_utc),
+              date: uw.last_updated_utc,
               handleEdit: () => {
                 setTypeItemToEdit("userWaypoint");
                 setRowToEditId(uw.id);
@@ -312,6 +317,8 @@ const Waypoints = () => {
             }`,
             status: a.status,
             elevation_ft: a.elevation_ft,
+            updated: formatUTCDate(a.last_updated_utc),
+            date: a.last_updated_utc,
             runways: a.runways.length
               ? a.runways
                   .map(
@@ -367,6 +374,8 @@ const Waypoints = () => {
               r.intersection_departure_length_ft || "-"
             }`,
             surface: r.surface,
+            updated: formatUTCDate(r.last_updated_utc),
+            date: r.last_updated_utc,
             handleEdit: () => {
               setTypeItemToEdit("Runway");
               setRowToEditId(r.id);
@@ -380,7 +389,7 @@ const Waypoints = () => {
             permissions: !userIsAdmin ? undefined : ("delete" as "delete"),
           }))
         : [],
-    breakingPoint: 1665,
+    breakingPoint: userIsAdmin ? 1810 : 1400,
   };
 
   const handleChangeTable = () => {
