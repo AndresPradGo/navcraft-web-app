@@ -12,6 +12,7 @@ import { useEffect } from "react";
 
 import Button from "../common/button";
 import useAddAircraft from "./useAddAircraft";
+import useEditAircraft from "./useEditAircraft";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -249,6 +250,7 @@ interface Props {
 
 const EditAircraftForm = ({ aircraftData, closeModal, isOpen }: Props) => {
   const addMutation = useAddAircraft();
+  const editMutation = useEditAircraft();
   const {
     register,
     handleSubmit,
@@ -272,6 +274,14 @@ const EditAircraftForm = ({ aircraftData, closeModal, isOpen }: Props) => {
     closeModal();
     if (aircraftData.id === 0) {
       addMutation.mutate({
+        id: aircraftData.id,
+        make: data.make,
+        model: data.model,
+        abbreviation: data.abbreviation,
+        registration: data.registration,
+      });
+    } else {
+      editMutation.mutate({
         id: aircraftData.id,
         make: data.make,
         model: data.model,

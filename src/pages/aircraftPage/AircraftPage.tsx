@@ -147,6 +147,18 @@ const AircraftPage = () => {
             id={aircraftId}
             redirect={true}
           />
+        ) : modalForm === "editAircraft" ? (
+          <EditAircraftForm
+            closeModal={modal.handleClose}
+            aircraftData={{
+              id: aircraftId,
+              make: aircraftData?.make || "",
+              model: aircraftData?.model || "",
+              abbreviation: aircraftData?.abbreviation || "",
+              registration: aircraftData?.registration || "",
+            }}
+            isOpen={modal.isOpen}
+          />
         ) : null}
       </Modal>
       <Modal isOpen={addProfileModal.isOpen} fullHeight={true}>
