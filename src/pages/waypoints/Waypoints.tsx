@@ -80,6 +80,9 @@ const HtmlTitleContainer = styled.div`
 const HtmlTableContainer = styled.div`
   margin: 50px 0 0;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ChangeIcon = styled(AiOutlineSwap)`

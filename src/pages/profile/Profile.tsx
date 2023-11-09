@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FaWeightScale } from "react-icons/fa6";
 import { styled } from "styled-components";
-import { toast } from "react-toastify";
 
 import { ContentLayout } from "../layout";
 import SideBarContent from "./components/SideBarContent";
@@ -133,21 +132,7 @@ const Profile = () => {
   const editWaypointModal = useModal();
 
   const { data: profileData, error, isLoading } = useProfileData();
-  if (error) {
-    if (error.response)
-      toast.error(error.response.data.detail, {
-        position: "top-center",
-        autoClose: 10000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-
-    throw new Error("");
-  }
+  if (error) throw new Error("");
   if (isLoading) return <Loader />;
 
   const handleAddPassenger = () => {
