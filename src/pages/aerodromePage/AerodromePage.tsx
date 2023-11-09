@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { BsCalendarDate } from "react-icons/bs";
 import { MdOutlineStart } from "react-icons/md";
 import { SlBadge } from "react-icons/sl";
 import { LiaMapSignsSolid, LiaMountainSolid } from "react-icons/lia";
@@ -24,6 +25,8 @@ import EditOfficialAerodromeForm from "../../components/editOfficialAerodromeFor
 import useAerodromeStatusList from "../../hooks/useAerodromeStatusList";
 import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm/index";
 import DataTableList, { DataType } from "../../components/common/DataTableList";
+import formatUTCDate from "../../utils/formatUTCDate";
+import getUTCNowString from "../../utils/getUTCNowString";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -147,6 +150,11 @@ const WeatherIcon = styled(GiWindsock)`
   margin: 0 10px 0 0;
 `;
 
+const DateIcon = styled(BsCalendarDate)`
+  font-size: 25px;
+  margin: 0 10px 0 0;
+`;
+
 const AerodromePage = () => {
   const user = useAuth();
   const pathname = usePathList();
@@ -266,6 +274,16 @@ const AerodromePage = () => {
       });
     }
   }
+
+  aerodromeDataList.push({
+    key: "last_updated_utc",
+    title: "Date Updated",
+    icon: <DateIcon />,
+    data: formatUTCDate(
+      aerodromeData?.last_updated_utc || getUTCNowString(),
+      true
+    ),
+  });
 
   return (
     <>

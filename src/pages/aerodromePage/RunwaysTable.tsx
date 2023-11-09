@@ -11,6 +11,7 @@ import EditRunwayForm, {
   RunwayDataType,
 } from "../../components/editRunwayForm/EditRunwayForm";
 import DeleteRunwayForm from "../../components/deleteRunwayForm/DeleteRunwayForm";
+import formatUTCDate from "../../utils/formatUTCDate";
 
 interface HtmlTagProps {
   $isOpen: boolean;
@@ -72,7 +73,7 @@ const HtmlTableContainer = styled.div<HtmlTagProps>`
 
 interface Props {
   editModal: UseModalType;
-  runwaysData: RunwayDataFromAPI[] | [];
+  runwaysData: RunwayDataFromAPI[];
   aerodromeId: number;
   runwayId: number;
   setRunwayId: Dispatch<SetStateAction<number>>;
@@ -133,6 +134,7 @@ const RunwaysTable = ({
       "thld_displ",
       "intersection_departure_length_ft",
       "surface",
+      "updated",
     ],
     headers: {
       runway: "Runway",
@@ -140,6 +142,7 @@ const RunwaysTable = ({
       thld_displ: "Thld Displ [ft]",
       intersection_departure_length_ft: "Intxn Dep [ft]",
       surface: "Surface",
+      updated: "Date Updated",
     },
     rows: runwaysData.map((r) => ({
       id: r.id,
@@ -150,6 +153,8 @@ const RunwaysTable = ({
         r.intersection_departure_length_ft || "-"
       }`,
       surface: r.surface,
+      updated: formatUTCDate(r.last_updated_utc),
+      date: r.last_updated_utc,
       handleEdit: () => {
         if (canEdit) {
           setRunwayId(r.id);
@@ -179,6 +184,10 @@ const RunwaysTable = ({
     {
       title: "Surface",
       key: "surface",
+    },
+    {
+      title: "Date Updated",
+      key: "date",
     },
   ];
 

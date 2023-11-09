@@ -1,16 +1,7 @@
 import APIClient from './apiClient'
+import {RunwayDataFromAPI} from './userAerodromeClient'
 
 
-export interface RunwayDataFromAPI {
-    id: number;
-    number: number;
-    position?: "R" | "L" | "C";
-    length_ft: number;
-    landing_length_ft?: number;
-    intersection_departure_length_ft?: number;
-    surface: string;
-    surface_id: number;
-}
 
 export interface OfficialAerodromeDataFromAPI {
     id: number;

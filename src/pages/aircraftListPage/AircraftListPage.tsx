@@ -351,12 +351,9 @@ const AircraftListPage = () => {
               : ("open" as "open"),
           }))
         : aircraftList.map((aircraft) => {
-            const datesUpdated = [
-              { date: aircraft.last_updated_utc },
-              ...aircraft.profiles.map((profile) => ({
-                date: profile.last_updated_utc,
-              })),
-            ];
+            const datesUpdated = aircraft.profiles.map((profile) => ({
+              date: profile.last_updated_utc,
+            }));
             const dateUpdated = _.orderBy(datesUpdated, ["date"], ["desc"])[0][
               "date"
             ];

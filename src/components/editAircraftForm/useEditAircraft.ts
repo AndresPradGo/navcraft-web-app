@@ -26,7 +26,6 @@ const useEditAircraft = () => {
                         model: newData.model,
                         abbreviation: newData.abbreviation,
                         registration: newData.registration,
-                        created_at_utc: getUTCNowString(),
                         last_updated_utc: getUTCNowString()
                     }
                     ) : undefined)

@@ -6,6 +6,7 @@ import { APIClientError } from '../../services/apiClient';
 import { AerodromeDataFromAPI } from '../../services/userAerodromeClient';
 import apiClient, {EditRunwayData, RunwayData} from '../../services/runwayClient'
 import errorToast from '../../utils/errorToast';
+import getUTCNowString from '../../utils/getUTCNowString';
 
 
 interface EditRunwayDataWithIdAndSurface extends EditRunwayData {
@@ -56,7 +57,9 @@ const useEditRunway = (fromAerodrome: boolean) => {
                                         landing_length_ft: newData.landing_length_ft,
                                         intersection_departure_length_ft: newData.intersection_departure_length_ft,
                                         surface: newData.surface,
-                                        surface_id: newData.surface_id
+                                        surface_id: newData.surface_id,
+                                        created_at_utc: item.created_at_utc,
+                                        last_updated_utc: getUTCNowString()
                                     }
                                 }
                                 return item
@@ -70,7 +73,9 @@ const useEditRunway = (fromAerodrome: boolean) => {
                             landing_length_ft: newData.landing_length_ft,
                             intersection_departure_length_ft: newData.intersection_departure_length_ft,
                             surface: newData.surface,
-                            surface_id: newData.surface_id
+                            surface_id: newData.surface_id,
+                            created_at_utc: getUTCNowString(),
+                            last_updated_utc: getUTCNowString()
                         }]} : undefined
     
                     }
@@ -95,7 +100,9 @@ const useEditRunway = (fromAerodrome: boolean) => {
                                 landing_length_ft: newData.landing_length_ft,
                                 intersection_departure_length_ft: newData.intersection_departure_length_ft,
                                 surface: newData.surface,
-                                surface_id: newData.surface_id
+                                surface_id: newData.surface_id,
+                                created_at_utc: item.created_at_utc,
+                                last_updated_utc: getUTCNowString()
                             })
                         }
                         return item
@@ -111,7 +118,9 @@ const useEditRunway = (fromAerodrome: boolean) => {
                         landing_length_ft: newData.landing_length_ft,
                         intersection_departure_length_ft: newData.intersection_departure_length_ft,
                         surface: newData.surface,
-                        surface_id: newData.surface_id
+                        surface_id: newData.surface_id,
+                        created_at_utc: getUTCNowString(),
+                        last_updated_utc: getUTCNowString()
                     }
                     return (currentData ? [...currentData, newRunway] : [newRunway])
                 }
@@ -148,7 +157,9 @@ const useEditRunway = (fromAerodrome: boolean) => {
                                 landing_length_ft: savedData.landing_length_ft,
                                 intersection_departure_length_ft: savedData.intersection_departure_length_ft,
                                 surface: savedData.surface,
-                                surface_id: savedData.surface_id
+                                surface_id: savedData.surface_id,
+                                created_at_utc: savedData.created_at_utc,
+                                last_updated_utc: savedData.last_updated_utc
                             }
                         }
                         return item
@@ -170,6 +181,8 @@ const useEditRunway = (fromAerodrome: boolean) => {
                                 surface_id: savedData.surface_id,
                                 aerodrome: savedData.aerodrome,
                                 aerodrome_id: savedData.aerodrome_id,
+                                created_at_utc: savedData.created_at_utc,
+                                last_updated_utc: savedData.last_updated_utc
                             }
                         }
                         return item
