@@ -395,7 +395,7 @@ const Waypoints = () => {
     breakingPoint: userIsAdmin ? 1810 : 1400,
   };
 
-  const handleChangeTable = () => {
+  const handleChangeToNextTable = () => {
     if (tableIndex >= tableOptions.length - 1) setTableIndex(0);
     else setTableIndex(tableIndex + 1);
   };
@@ -722,12 +722,9 @@ const Waypoints = () => {
               uploadCsvModal.handleOpen();
             }}
             isAdmin={!!userIsAdmin}
-            handleSwap={handleChangeTable}
-            nextList={
-              tableIndex + 1 < tableOptions.length
-                ? tableOptions[tableIndex + 1].title
-                : tableOptions[0].title
-            }
+            handleChangeSection={setTableIndex}
+            sectionIndex={tableIndex}
+            sectionOptions={tableOptions}
           />
         }
       >
@@ -737,7 +734,7 @@ const Waypoints = () => {
               {tableOptions[tableIndex].icon}
               {tableOptions[tableIndex].title}
             </h1>
-            <ChangeIcon onClick={handleChangeTable} />
+            <ChangeIcon onClick={handleChangeToNextTable} />
           </HtmlTitleContainer>
           <HtmlTableContainer>
             <Table

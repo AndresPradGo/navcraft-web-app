@@ -1,4 +1,3 @@
-import { AiOutlineSwap } from "react-icons/ai";
 import { FaTools } from "react-icons/fa";
 import {
   FaUser,
@@ -8,11 +7,14 @@ import {
 } from "react-icons/fa6";
 import { PiAirTrafficControlFill } from "react-icons/pi";
 import { TbMapPinPlus, TbMapPin, TbRoad } from "react-icons/tb";
-
 import { styled } from "styled-components";
+
 import Button from "../../components/common/button";
 import useFetchFile from "../../hooks/useFetchFile";
 import useSideBar from "../../components/sidebar/useSideBar";
+import SideBarIndex, {
+  PageSectionDataType,
+} from "../../components/SideBarIndex";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -70,12 +72,6 @@ const AddAerodromeIcon = styled(PiAirTrafficControlFill)`
   margin-left: 5px;
 `;
 
-const ChangeIcon = styled(AiOutlineSwap)`
-  margin-left: 5px;
-  flex-shrink: 0;
-  font-size: 20px;
-`;
-
 const AddWaypointIcon = styled(TbMapPinPlus)`
   font-size: 20px;
   margin-left: 5px;
@@ -130,8 +126,9 @@ interface Props {
   handleManageWaypoints: () => void;
   handleManageRunways: () => void;
   isAdmin: boolean;
-  handleSwap: () => void;
-  nextList: string;
+  handleChangeSection: (index: number) => void;
+  sectionIndex: number;
+  sectionOptions: PageSectionDataType[];
 }
 
 const SideBarContent = ({
@@ -143,9 +140,13 @@ const SideBarContent = ({
   handleManageWaypoints,
   handleManageRunways,
   isAdmin,
-  handleSwap,
-  nextList,
+  handleChangeSection,
+  sectionIndex,
+  sectionOptions,
 }: Props) => {
+  const sideBar = useSideBar();
+  const fileFetcher = useFetchFile();
+
   const baseStyles = {
     width: "100%",
     height: "40px",
@@ -155,9 +156,6 @@ const SideBarContent = ({
     borderWidth: 3,
     borderRadious: 4,
   };
-  const sideBar = useSideBar();
-  const fileFetcher = useFetchFile();
-
   const commonStyles = {
     ...baseStyles,
     color: "var(--color-white)",
@@ -264,28 +262,18 @@ const SideBarContent = ({
     },
   ];
 
+  const handleChangeSectionFromSideBar = (index: number) => {
+    handleChangeSection(index);
+    sideBar.handleExpandSideBar(false);
+  };
+
   return (
     <HtmlContainer>
-      <Button
-        handleClick={() => {
-          handleSwap();
-          sideBar.handleExpandSideBar(false);
-        }}
-        color="var(--color-contrast)"
-        hoverColor="var(--color-contrast-hover)"
-        backgroundColor="transparent"
-        backgroundHoverColor="transparent"
-        fill={false}
-        spaceChildren="space-between"
-        borderWidth={0}
-        fontSize={20}
-        margin="40px 0 20px"
-        padding="0"
-        onlyHover={true}
-      >
-        {`See ${nextList}`}
-        <ChangeIcon />
-      </Button>
+      <SideBarIndex
+        handleChangeSection={handleChangeSectionFromSideBar}
+        selectedIdx={sectionIndex}
+        sectionOptions={sectionOptions}
+      />
       <HtmlButtonList>
         {isAdmin ? (
           <h3>
