@@ -40,14 +40,17 @@ const HtmlWraper = styled.div<HtmlSideBarContainerProps>`
   align-items: center;
   overflow: hidden;
   max-height: 100vh;
-  width: ${(props) => (props.$sideBarIsExpanded ? "95%" : "0px")};
+  width: 95%;
+  transform: ${(props) =>
+    props.$sideBarIsExpanded ? "translate(0, 0)" : "translate(-100%, 0)"};
 
   @media screen and (min-width: 635px) {
-    width: ${(props) => (props.$sideBarIsExpanded ? "315px" : "0px")};
+    width: 315px;
   }
 
   @media screen and (min-width: 1280px) {
     width: 350px;
+    transform: translate(0, 0);
   }
 `;
 
