@@ -34,7 +34,7 @@ const HtmlTitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 258px;
+  width: 168px;
 
   & h1:first-of-type {
     display: flex;
@@ -52,7 +52,7 @@ const HtmlTitleContainer = styled.div`
   }
 
   @media screen and (min-width: 425px) {
-    width: 350px;
+    width: 223px;
     justify-content: flex-end;
     & h1:first-of-type {
       font-size: 35px;
@@ -137,7 +137,7 @@ const AircraftListPage = () => {
     },
     {
       key: "aircraftModels",
-      title: "Aircraft Models",
+      title: "Models",
       icon: <IoAirplaneOutline />,
     },
   ];
@@ -450,12 +450,9 @@ const AircraftListPage = () => {
               addModelModal.handleOpen();
             }}
             isAdmin={!!userIsAdmin}
-            handleSwap={handleChangeTable}
-            nextList={
-              tableIndex + 1 < tableOptions.length
-                ? tableOptions[tableIndex + 1].title
-                : tableOptions[0].title
-            }
+            handleChangeSection={setTableIndex}
+            sectionIndex={tableIndex}
+            sectionOptions={tableOptions}
           />
         }
       >

@@ -1,4 +1,3 @@
-import { AiOutlineSwap } from "react-icons/ai";
 import { FaTools } from "react-icons/fa";
 import { FaUser, FaUserShield } from "react-icons/fa6";
 import { IoAirplane, IoAirplaneOutline } from "react-icons/io5";
@@ -6,6 +5,9 @@ import { styled } from "styled-components";
 
 import Button from "../../components/common/button";
 import useSideBar from "../../components/sidebar/useSideBar";
+import SideBarIndex, {
+  PageSectionDataType,
+} from "../../components/SideBarIndex";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -62,12 +64,6 @@ const HtmlButtonList = styled.div`
   }
 `;
 
-const ChangeIcon = styled(AiOutlineSwap)`
-  margin-left: 5px;
-  flex-shrink: 0;
-  font-size: 20px;
-`;
-
 const AddAircraftIcon = styled(IoAirplane)`
   font-size: 20px;
   margin-left: 5px;
@@ -100,16 +96,18 @@ interface Props {
   handleAddAircraft: () => void;
   handleAddModel: () => void;
   isAdmin: boolean;
-  handleSwap: () => void;
-  nextList: string;
+  handleChangeSection: (index: number) => void;
+  sectionIndex: number;
+  sectionOptions: PageSectionDataType[];
 }
 
 const SideBarContent = ({
   handleAddAircraft,
   handleAddModel,
   isAdmin,
-  handleSwap,
-  nextList,
+  handleChangeSection,
+  sectionIndex,
+  sectionOptions,
 }: Props) => {
   const baseStyles = {
     width: "100%",
@@ -140,28 +138,18 @@ const SideBarContent = ({
     onClick: handleAddModel,
   };
 
+  const handleChangeSectionFromSideBar = (index: number) => {
+    handleChangeSection(index);
+    sideBar.handleExpandSideBar(false);
+  };
+
   return (
     <HtmlContainer>
-      <Button
-        handleClick={() => {
-          handleSwap();
-          sideBar.handleExpandSideBar(false);
-        }}
-        color="var(--color-contrast)"
-        hoverColor="var(--color-contrast-hover)"
-        backgroundColor="transparent"
-        backgroundHoverColor="transparent"
-        fill={false}
-        spaceChildren="space-between"
-        borderWidth={0}
-        fontSize={20}
-        margin="40px 0 20px"
-        padding="0"
-        onlyHover={true}
-      >
-        {`See ${nextList}`}
-        <ChangeIcon />
-      </Button>
+      <SideBarIndex
+        handleChangeSection={handleChangeSectionFromSideBar}
+        selectedIdx={sectionIndex}
+        sectionOptions={sectionOptions}
+      />
       {isAdmin ? (
         <>
           <HtmlButtonList>
