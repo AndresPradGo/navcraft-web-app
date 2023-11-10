@@ -177,7 +177,7 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
             },
             ...aerodromeStatus.map(item => ({
                 key: "status",
-                title: item,
+                title: `Status: ${item}`,
                 value: item
             }))
         ]
