@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import {APIClientError} from '../../services/apiClient';
-import apiClient, {AircraftDataFromAPI} from '../../services/aircraftClient';
+import {APIClientError} from '../services/apiClient';
+import apiClient, {AircraftDataFromAPI} from '../services/aircraftClient';
 
 
 const useAircraftDataList = (id: number) => {

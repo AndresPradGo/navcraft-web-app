@@ -33,7 +33,7 @@ const HtmlContainer = styled.div`
 const HtmlTitleContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 168px;
 
   & h1:first-of-type {
@@ -47,13 +47,12 @@ const HtmlTitleContainer = styled.div`
     & svg {
       flex-shrink: 0;
       font-size: 40px;
-      margin: 0 5px 0 0;
+      margin: 0 10px 0 0;
     }
   }
 
   @media screen and (min-width: 425px) {
     width: 223px;
-    justify-content: flex-end;
     & h1:first-of-type {
       font-size: 35px;
 

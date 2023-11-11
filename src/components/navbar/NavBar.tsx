@@ -199,7 +199,7 @@ const HtmlLinkText = styled.span`
   margin: 0 10px;
   font-size: 16px;
   @media screen and (min-width: 768px) {
-    margin-left: 0px;
+    margin: 0px;
   }
 `;
 

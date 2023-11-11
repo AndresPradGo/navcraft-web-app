@@ -65,7 +65,7 @@ const HtmlTitleContainer = styled.div`
   }
 
   & div:first-of-type {
-    margin: 0 10px 10px 0;
+    margin: 0 10px 10px 15px;
     color: var(--color-grey);
     display: flex;
     align-items: center;
@@ -77,6 +77,11 @@ const HtmlTitleContainer = styled.div`
       display: flex;
       align-items: center;
 
+      & svg {
+        font-size: 25px;
+        margin: 0 10px;
+      }
+
       & i {
         padding: 0;
         display: flex;
@@ -86,11 +91,6 @@ const HtmlTitleContainer = styled.div`
           font-size: 25px;
           margin: 0 2px 0 0;
         }
-      }
-
-      & svg {
-        font-size: 25px;
-        margin: 0 10px;
       }
     }
 
@@ -436,22 +436,22 @@ const AerodromePage = () => {
       >
         <HtmlContainer>
           <HtmlTitleContainer>
+            <h1>
+              <PiAirTrafficControlFill />
+              {aerodromeData?.name}
+            </h1>
             <div>
               <span>
                 <i>Waypoints</i> <MdOutlineStart />
               </span>
               <span>
-                <i>Private Aerodrome:</i>
+                <i>{isPrivateData ? "Private " : ""}Aerodrome:</i>
                 <i>
                   <PiAirTrafficControlFill />
                   {aerodromeData?.code}
                 </i>
               </span>
             </div>
-            <h1>
-              <PiAirTrafficControlFill />
-              {aerodromeData?.name}
-            </h1>
           </HtmlTitleContainer>
           <DataTableList dataList={aerodromeDataList as DataType[]} />
           <RunwaysTable

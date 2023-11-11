@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { AiOutlineSave, AiFillTag } from "react-icons/ai";
-import { BsFillFuelPumpFill, BsChevronDown } from "react-icons/bs";
-import { CgPerformance } from "react-icons/cg";
+import {
+  BsFillFuelPumpFill,
+  BsChevronDown,
+  BsSpeedometer,
+} from "react-icons/bs";
 import { IoAirplaneOutline } from "react-icons/io5";
 import { LiaTimesSolid } from "react-icons/lia";
 import { styled } from "styled-components";
@@ -254,7 +257,7 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const TitleIcon = styled(CgPerformance)`
+const TitleIcon = styled(BsSpeedometer)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 10px;

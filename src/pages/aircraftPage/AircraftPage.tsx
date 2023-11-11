@@ -15,7 +15,7 @@ import { useModal, Modal } from "../../components/common/modal";
 import EditAircraftForm from "../../components/editAircraftForm";
 import DeleteAircraftForm from "../../components/deleteAircraftForm";
 import AddAircraftProfileForm from "../../components/addAircraftProfileForm";
-import useAircraftData from "./useAircraftData";
+import useAircraftData from "../../hooks/useAircraftData";
 import DataTableList, { DataType } from "../../components/common/DataTableList";
 import ProfilesTable from "./ProfilesTable";
 

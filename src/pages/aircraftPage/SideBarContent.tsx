@@ -1,5 +1,5 @@
 import { BiSolidEditAlt } from "react-icons/bi";
-import { CgPerformance } from "react-icons/cg";
+import { BsSpeedometer } from "react-icons/bs";
 import { FaTools } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
@@ -77,7 +77,7 @@ const DeleteIcon = styled(RiDeleteBinLine)`
   margin-left: 5px;
 `;
 
-const PerformanceIcon = styled(CgPerformance)`
+const PerformanceIcon = styled(BsSpeedometer)`
   font-size: 22px;
   margin-left: 5px;
 `;

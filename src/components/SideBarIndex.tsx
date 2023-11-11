@@ -4,6 +4,7 @@ import { animateScroll as scroll } from "react-scroll";
 import { styled } from "styled-components";
 
 import Button from "./common/button";
+import useSideBar from "./sidebar/useSideBar";
 
 const HtmlButtonList = styled.div`
   width: 100%;
@@ -50,7 +51,7 @@ const HtmlSpan = styled.span`
 `;
 
 const SectionIcon = styled(RiArchiveDrawerFill)`
-  font-size: 20px;
+  font-size: 27px;
   margin-right: 8px;
   padding-bottom: 3px;
 `;
@@ -72,6 +73,8 @@ const SideBarIndex = ({
   selectedIdx,
   sectionOptions,
 }: Props) => {
+  const sideBar = useSideBar();
+
   const handleClick = (index: number) => {
     if (selectedIdx === index) {
       scroll.scrollToTop({
@@ -79,8 +82,12 @@ const SideBarIndex = ({
         delay: 200,
         smooth: true,
       });
-    } else handleChangeSection(index);
+    } else {
+      handleChangeSection(index);
+    }
+    sideBar.handleExpandSideBar(false);
   };
+
   return (
     <HtmlButtonList>
       <h3>

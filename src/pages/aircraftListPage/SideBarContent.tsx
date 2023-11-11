@@ -4,7 +4,6 @@ import { IoAirplane, IoAirplaneOutline } from "react-icons/io5";
 import { styled } from "styled-components";
 
 import Button from "../../components/common/button";
-import useSideBar from "../../components/sidebar/useSideBar";
 import SideBarIndex, {
   PageSectionDataType,
 } from "../../components/SideBarIndex";
@@ -122,7 +121,6 @@ const SideBarContent = ({
     backgroundColor: "var(--color-primary-bright)",
     backgroundHoverColor: "var(--color-primary-light)",
   };
-  const sideBar = useSideBar();
 
   const userButton = {
     text: "Add Aircraft",
@@ -138,15 +136,10 @@ const SideBarContent = ({
     onClick: handleAddModel,
   };
 
-  const handleChangeSectionFromSideBar = (index: number) => {
-    handleChangeSection(index);
-    sideBar.handleExpandSideBar(false);
-  };
-
   return (
     <HtmlContainer>
       <SideBarIndex
-        handleChangeSection={handleChangeSectionFromSideBar}
+        handleChangeSection={handleChangeSection}
         selectedIdx={sectionIndex}
         sectionOptions={sectionOptions}
       />

@@ -6,10 +6,10 @@ const usePathList = (): string[] => {
     const pathNameWithaoutSearch = patchAndSearch[0]
     let currentPath = pathNameWithaoutSearch.split("/").filter((item) => item);
     currentPath = currentPath.length ? currentPath : ["flights"];
-    const numParams = Object.keys(useParams()).length
+    const params = Object.values(useParams())
 
-    if(numParams > 0)
-        return currentPath.slice(0, -numParams)
+    if(params.length > 0)
+        return currentPath.filter(item => !params.find(param => item === param))
     return currentPath
 }
 

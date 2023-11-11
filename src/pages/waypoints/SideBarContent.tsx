@@ -11,7 +11,6 @@ import { styled } from "styled-components";
 
 import Button from "../../components/common/button";
 import useFetchFile from "../../hooks/useFetchFile";
-import useSideBar from "../../components/sidebar/useSideBar";
 import SideBarIndex, {
   PageSectionDataType,
 } from "../../components/SideBarIndex";
@@ -144,7 +143,6 @@ const SideBarContent = ({
   sectionIndex,
   sectionOptions,
 }: Props) => {
-  const sideBar = useSideBar();
   const fileFetcher = useFetchFile();
 
   const baseStyles = {
@@ -262,15 +260,10 @@ const SideBarContent = ({
     },
   ];
 
-  const handleChangeSectionFromSideBar = (index: number) => {
-    handleChangeSection(index);
-    sideBar.handleExpandSideBar(false);
-  };
-
   return (
     <HtmlContainer>
       <SideBarIndex
-        handleChangeSection={handleChangeSectionFromSideBar}
+        handleChangeSection={handleChangeSection}
         selectedIdx={sectionIndex}
         sectionOptions={sectionOptions}
       />

@@ -45,7 +45,7 @@ const HtmlContainer = styled.div`
 const HtmlTitleContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 228px;
 
   & h1:first-of-type {
@@ -65,7 +65,6 @@ const HtmlTitleContainer = styled.div`
 
   @media screen and (min-width: 425px) {
     width: 300px;
-    justify-content: flex-end;
     & h1:first-of-type {
       font-size: 35px;
 
