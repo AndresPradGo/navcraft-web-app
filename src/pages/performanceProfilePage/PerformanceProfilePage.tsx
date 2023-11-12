@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { AiOutlineSwap } from "react-icons/ai";
-import { FaSitemap } from "react-icons/fa";
 import { BsSpeedometer } from "react-icons/bs";
-import { FaPlaneDeparture, FaPlaneArrival } from "react-icons/fa";
+import { FaPlaneDeparture, FaPlaneArrival, FaSitemap } from "react-icons/fa";
 import { IoAirplane } from "react-icons/io5";
 import { MdBalance, MdOutlineStart } from "react-icons/md";
 import { PiWind } from "react-icons/pi";
@@ -190,6 +189,28 @@ const PerformanceProfilePage = () => {
           handleChangeSection={setSectionIdx}
           sectionIndex={sectionIdx}
           sectionOptions={sections}
+          disableSelect={
+            !profileBaseData?.is_complete || !!profileBaseData?.is_preferred
+          }
+          handleEditProfile={() => {}}
+          handleSelectProfile={() => {}}
+          handleDeleteProfile={() => {}}
+          handleAddBaggage={() => {}}
+          handleAddSeat={() => {}}
+          handleAddFuel={() => {}}
+          handleEditWBData={() => {}}
+          handleAddWBProfile={() => {}}
+          handleEditTakeoffData={() => {}}
+          handleDownloadTakeoffData={() => {}}
+          handleImportTakeoffData={() => {}}
+          handleEditClimbData={() => {}}
+          handleDownloadClimbData={() => {}}
+          handleImportClimbData={() => {}}
+          handleDownloadCruiseData={() => {}}
+          handleImportCruiseData={() => {}}
+          handleEditLandData={() => {}}
+          handleDownloadLandData={() => {}}
+          handleImportLandData={() => {}}
         />
       }
     >
