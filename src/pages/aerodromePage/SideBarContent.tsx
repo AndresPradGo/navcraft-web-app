@@ -2,10 +2,9 @@ import { BiSolidEditAlt } from "react-icons/bi";
 import { FaTools } from "react-icons/fa";
 import { MdAddRoad } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
-
 import { styled } from "styled-components";
 
-import Button from "../../components/common/button";
+import SideBarBtnList from "../../components/SideBarBtnList";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -16,46 +15,6 @@ const HtmlContainer = styled.div`
   align-items: center;
   padding: 0;
   min-height: 300px;
-`;
-
-const HtmlButtonList = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 15px 8px;
-
-  & h3 {
-    padding: 0 10px;
-    color: var(--color-grey-bright);
-    margin: 0;
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-
-  & div {
-    width: 100%;
-    padding: 10px 8px;
-    border-top: 1px solid var(--color-grey);
-  }
-
-  @media screen and (min-width: 635px) {
-    padding: 10px;
-
-    & div {
-      padding: 10px 13px;
-    }
-  }
-
-  @media screen and (min-width: 1280px) {
-    padding: 18px;
-
-    & div {
-      padding: 10px 18px;
-    }
-  }
 `;
 
 const ToolsIcon = styled(FaTools)`
@@ -147,20 +106,11 @@ const SideBarContent = ({
 
   return (
     <HtmlContainer>
-      <HtmlButtonList>
-        <h3>
-          <ToolsIcon />
-          Edit Aerodrome Tools
-        </h3>
-        <div>
-          {buttons.map((button, index) => (
-            <Button key={index} {...button.styles} handleClick={button.onClick}>
-              {button.text}
-              {button.icon}
-            </Button>
-          ))}
-        </div>
-      </HtmlButtonList>
+      <SideBarBtnList
+        titleIcon={<ToolsIcon />}
+        title=" Edit Aerodrome Tools"
+        buttons={buttons}
+      />
     </HtmlContainer>
   );
 };

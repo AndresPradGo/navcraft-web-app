@@ -8,8 +8,8 @@ import { TbMailCog, TbLockCog, TbMapPinPlus } from "react-icons/tb";
 import { styled } from "styled-components";
 import { useQueryClient } from "@tanstack/react-query";
 
-import Button from "../../../components/common/button";
 import { useNavigate } from "react-router-dom";
+import SideBarBtnList from "../../../components/SideBarBtnList";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -20,46 +20,6 @@ const HtmlContainer = styled.div`
   align-items: center;
   padding: 0;
   min-height: 300px;
-`;
-
-const HtmlButtonList = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 15px 8px;
-
-  & h3 {
-    padding: 0 10px;
-    color: var(--color-grey-bright);
-    margin: 0;
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-
-  & div {
-    width: 100%;
-    padding: 10px 8px;
-    border-top: 1px solid var(--color-grey);
-  }
-
-  @media screen and (min-width: 635px) {
-    padding: 10px;
-
-    & div {
-      padding: 10px 13px;
-    }
-  }
-
-  @media screen and (min-width: 1280px) {
-    padding: 18px;
-
-    & div {
-      padding: 10px 18px;
-    }
-  }
 `;
 
 const SettingsIcon = styled(FaUserGear)`
@@ -258,48 +218,21 @@ const SideBarContent = ({
 
   return (
     <HtmlContainer>
-      <HtmlButtonList>
-        <h3>
-          <SettingsIcon />
-          Profile Settings
-        </h3>
-        <div>
-          {buttons.map((button, index) => (
-            <Button key={index} {...button.styles} handleClick={button.onClick}>
-              {button.text}
-              {button.icon}
-            </Button>
-          ))}
-        </div>
-      </HtmlButtonList>
-      <HtmlButtonList>
-        <h3>
-          <ToolsIcon />
-          Tools
-        </h3>
-        <div>
-          {tableButtons.map((button, index) => (
-            <Button key={index} {...button.styles} handleClick={button.onClick}>
-              {button.text}
-              {button.icon}
-            </Button>
-          ))}
-        </div>
-      </HtmlButtonList>
-      <HtmlButtonList>
-        <h3>
-          <ExitIcon />
-          Logout/Delete
-        </h3>
-        <div>
-          {exitButtons.map((button, index) => (
-            <Button key={index} {...button.styles} handleClick={button.onClick}>
-              {button.text}
-              {button.icon}
-            </Button>
-          ))}
-        </div>
-      </HtmlButtonList>
+      <SideBarBtnList
+        titleIcon={<SettingsIcon />}
+        title="Profile Settings"
+        buttons={buttons}
+      />
+      <SideBarBtnList
+        titleIcon={<ToolsIcon />}
+        title="Tools"
+        buttons={tableButtons}
+      />
+      <SideBarBtnList
+        titleIcon={<ExitIcon />}
+        title="Logout/Delete"
+        buttons={exitButtons}
+      />
     </HtmlContainer>
   );
 };

@@ -108,7 +108,7 @@ const HtmlLink = styled(Link)<HtmlButtonProps>`
   }
 `;
 
-interface Props {
+export interface Props {
   color?: string;
   hoverColor?: string;
   backgroundColor?: string;
@@ -123,7 +123,7 @@ interface Props {
   borderWidth?: number;
   margin?: string;
   padding?: string;
-  children: ReactNode;
+  children?: ReactNode;
   handleClick?: () => void;
   href?: string;
   reference?: Dispatch<SetStateAction<HTMLElement | null>>;
