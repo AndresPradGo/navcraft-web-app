@@ -15,6 +15,7 @@ import useAircraftData from "../../hooks/useAircraftData";
 import useFuelTypes from "../../hooks/useFuelTypes";
 import Loader from "../../components/Loader";
 import { useParams } from "react-router-dom";
+import AnnouncementBox from "../../components/AnnouncementBox";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -28,6 +29,7 @@ const HtmlContainer = styled.div`
 `;
 
 const HtmlTitleContainer = styled.div`
+  margin-bottom: 30px;
   & div:first-of-type {
     display: flex;
     align-items: center;
@@ -139,7 +141,7 @@ const PerformanceProfilePage = () => {
     throw new Error("");
   if (isLoading || fuelTypesIsLoading) return <Loader />;
 
-  const ProfileBaseData = aircraftData?.profiles.find(
+  const profileBaseData = aircraftData?.profiles.find(
     (profile) => profile.id === profileId
   );
 
@@ -213,11 +215,24 @@ const PerformanceProfilePage = () => {
               <i>Profile:</i>
               <i>
                 <BsSpeedometer />
-                {ProfileBaseData?.performance_profile_name}
+                {profileBaseData?.performance_profile_name}
               </i>
             </span>
           </div>
         </HtmlTitleContainer>
+        {!profileBaseData?.is_complete ? (
+          <AnnouncementBox
+            isWarning={true}
+            title="Incomplete Profile"
+            message="Complete every section of the profile, in order to use it for flight-planing."
+          />
+        ) : profileBaseData?.is_preferred ? (
+          <AnnouncementBox
+            isWarning={false}
+            title={`Selected profile`}
+            message={`This performance profile will be used for every flight with ${aircraftData?.registration}.`}
+          />
+        ) : null}
       </HtmlContainer>
     </ContentLayout>
   );
