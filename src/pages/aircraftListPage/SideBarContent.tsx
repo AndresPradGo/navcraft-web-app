@@ -5,8 +5,8 @@ import { styled } from "styled-components";
 
 import SideBarIndex, {
   PageSectionDataType,
-} from "../../components/SideBarIndex";
-import SideBarBtnList from "../../components/SideBarBtnList";
+} from "../../components/common/SideBarIndex";
+import SideBarBtnList from "../../components/common/SideBarBtnList";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;

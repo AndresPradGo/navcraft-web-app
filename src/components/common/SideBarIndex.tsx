@@ -3,8 +3,8 @@ import { RiArchiveDrawerFill } from "react-icons/ri";
 import { animateScroll as scroll } from "react-scroll";
 import { styled } from "styled-components";
 
-import Button from "./common/button";
-import useSideBar from "./sidebar/useSideBar";
+import Button from "./button";
+import useSideBar from "../sidebar/useSideBar";
 
 const HtmlButtonList = styled.div`
   width: 100%;

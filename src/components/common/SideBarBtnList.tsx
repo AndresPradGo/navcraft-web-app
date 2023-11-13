@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-import Button, { BaseButtonType } from "./common/button";
+import Button, { BaseButtonType } from "./button";
 import { ReactNode } from "react";
 
 const HtmlButtonList = styled.div`

@@ -9,7 +9,7 @@ import { styled } from "styled-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useNavigate } from "react-router-dom";
-import SideBarBtnList from "../../../components/SideBarBtnList";
+import SideBarBtnList from "../../../components/common/SideBarBtnList";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;

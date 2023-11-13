@@ -4,7 +4,7 @@ import { MdAddRoad } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
-import SideBarBtnList from "../../components/SideBarBtnList";
+import SideBarBtnList from "../../components/common/SideBarBtnList";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
