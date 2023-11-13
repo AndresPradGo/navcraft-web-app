@@ -101,13 +101,13 @@ const SideBarIndex = ({
             handleClick={() => handleClick(index)}
             color={`${
               index === selectedIdx
-                ? "var(--color-white)"
+                ? "var(--color-grey-bright)"
                 : "var(--color-contrast)"
             }`}
             hoverColor={`${
               index === selectedIdx
-                ? "var(--color-white)"
-                : "var(--color-white)"
+                ? "var(--color-grey-bright)"
+                : "var(--color-grey-bright)"
             }`}
             backgroundColor="transparent"
             backgroundHoverColor="transparent"

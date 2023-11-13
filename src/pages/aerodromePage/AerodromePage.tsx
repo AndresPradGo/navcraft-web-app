@@ -43,7 +43,7 @@ const HtmlTitleContainer = styled.div`
   & h1:first-of-type {
     display: flex;
     align-items: center;
-    margin: 10px 0;
+    margin: 10px 0 25px 0;
     font-size: 25px;
     text-wrap: wrap;
     line-height: 0.98;
@@ -100,6 +100,8 @@ const HtmlTitleContainer = styled.div`
         color: var(--color-grey-bright);
         padding: 0 0 0 10px;
         text-wrap: wrap;
+        display: flex;
+        align-items: flex-start;
       }
     }
   }

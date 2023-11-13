@@ -40,7 +40,7 @@ const HtmlTitleContainer = styled.div`
     h1:first-of-type {
       display: flex;
       align-items: center;
-      margin: 10px 0;
+      margin: 10px 0 25px 0;
       font-size: 25px;
       text-wrap: wrap;
       line-height: 0.98;
@@ -101,6 +101,8 @@ const HtmlTitleContainer = styled.div`
         color: var(--color-grey-bright);
         padding: 0 0 0 10px;
         text-wrap: wrap;
+        display: flex;
+        align-items: flex-start;
       }
     }
   }
@@ -237,7 +239,7 @@ const PerformanceProfilePage = () => {
               <MdOutlineStart />
             </span>
             <span>
-              <i>Profile:</i>
+              <i>Performance Profile:</i>
               <i>
                 <BsSpeedometer />
                 {profileBaseData?.performance_profile_name}
@@ -249,13 +251,13 @@ const PerformanceProfilePage = () => {
           <AnnouncementBox
             isWarning={true}
             title="Incomplete Profile"
-            message="Complete every section of the profile, in order to use it for flight-planing."
+            message="Complete every section of the profile, in order to be able to use it for flight-planing."
           />
         ) : profileBaseData?.is_preferred ? (
           <AnnouncementBox
             isWarning={false}
             title={`Selected profile`}
-            message={`This performance profile will be used for every flight with ${aircraftData?.registration}.`}
+            message={`This profile has been selected for ${aircraftData?.registration}, and it will be used for flight-planing.`}
           />
         ) : null}
         {sectionIdx === 0 ? (

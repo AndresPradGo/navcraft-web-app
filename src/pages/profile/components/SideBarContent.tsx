@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { useNavigate } from "react-router-dom";
 import SideBarBtnList from "../../../components/common/SideBarBtnList";
+import SideBarTitle from "../../../components/common/SideBarTitle";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -218,6 +219,7 @@ const SideBarContent = ({
 
   return (
     <HtmlContainer>
+      <SideBarTitle>Profile</SideBarTitle>
       <SideBarBtnList
         titleIcon={<SettingsIcon />}
         title="Profile Settings"

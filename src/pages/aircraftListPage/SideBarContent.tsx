@@ -7,6 +7,7 @@ import SideBarIndex, {
   PageSectionDataType,
 } from "../../components/common/SideBarIndex";
 import SideBarBtnList from "../../components/common/SideBarBtnList";
+import SideBarTitle from "../../components/common/SideBarTitle";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -98,6 +99,7 @@ const SideBarContent = ({
 
   return (
     <HtmlContainer>
+      <SideBarTitle>Aircraft List</SideBarTitle>
       <SideBarIndex
         handleChangeSection={handleChangeSection}
         selectedIdx={sectionIndex}

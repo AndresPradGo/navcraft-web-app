@@ -5,6 +5,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
 import SideBarBtnList from "../../components/common/SideBarBtnList";
+import SideBarTitle from "../../components/common/SideBarTitle";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -106,6 +107,7 @@ const SideBarContent = ({
 
   return (
     <HtmlContainer>
+      <SideBarTitle>Aerodrome</SideBarTitle>
       <SideBarBtnList
         titleIcon={<ToolsIcon />}
         title=" Edit Aerodrome Tools"

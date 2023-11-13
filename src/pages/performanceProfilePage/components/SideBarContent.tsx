@@ -7,11 +7,11 @@ import {
   FaSitemap,
 } from "react-icons/fa";
 import { FaFileExport, FaDownload } from "react-icons/fa6";
-import { GiFuelTank } from "react-icons/gi";
 import {
   MdBalance,
   MdLuggage,
   MdAirlineSeatReclineNormal,
+  MdPropaneTank,
 } from "react-icons/md";
 import { PiWind } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -22,6 +22,7 @@ import SideBarIndex, {
   PageSectionDataType,
 } from "../../../components/common/SideBarIndex";
 import SideBarBtnList from "../../../components/common/SideBarBtnList";
+import SideBarTitle from "../../../components/common/SideBarTitle";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -101,8 +102,8 @@ const SeatIcon = styled(MdAirlineSeatReclineNormal)`
   margin-left: 5px;
 `;
 
-const TankIcon = styled(GiFuelTank)`
-  font-size: 27px;
+const TankIcon = styled(MdPropaneTank)`
+  font-size: 22px;
   margin-left: 5px;
 `;
 
@@ -344,6 +345,7 @@ const SideBarContent = ({
 
   return (
     <HtmlContainer>
+      <SideBarTitle>Aircraft Performance Profile</SideBarTitle>
       <SideBarIndex
         handleChangeSection={handleChangeSection}
         selectedIdx={sectionIndex}
