@@ -18,6 +18,7 @@ import AnnouncementBox from "../../components/common/AnnouncementBox";
 import ArrangementSection from "./components/ArrangementSection";
 import { Modal, useModal } from "../../components/common/modal";
 import EditBaggageCompartmentForm from "./components/EditBaggageCompartmentForm";
+import EditSeatRowForm from "./components/EditSeatRowForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -209,6 +210,18 @@ const PerformanceProfilePage = () => {
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
           />
+        ) : currentForm === "addSeat" ? (
+          <EditSeatRowForm
+            seatRowData={{
+              id: 0,
+              name: "",
+              arm_in: 0,
+              number_of_seats: 1,
+              weight_limit_lb: NaN,
+            }}
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+          />
         ) : null}
       </Modal>
       <ContentLayout
@@ -227,7 +240,10 @@ const PerformanceProfilePage = () => {
               setCurrentForm("addCompartment");
               modal.handleOpen();
             }}
-            handleAddSeat={() => {}}
+            handleAddSeat={() => {
+              setCurrentForm("addSeat");
+              modal.handleOpen();
+            }}
             handleAddFuel={() => {}}
             handleEditWBData={() => {}}
             handleAddWBProfile={() => {}}
