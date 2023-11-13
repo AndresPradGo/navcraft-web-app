@@ -14,7 +14,7 @@ import useAircraftData from "../../hooks/useAircraftData";
 import useFuelTypes from "../../hooks/useFuelTypes";
 import Loader from "../../components/Loader";
 import { useParams } from "react-router-dom";
-import AnnouncementBox from "../../components/AnnouncementBox";
+import AnnouncementBox from "../../components/common/AnnouncementBox";
 import ArrangementSection from "./components/ArrangementSection";
 
 const HtmlContainer = styled.div`
