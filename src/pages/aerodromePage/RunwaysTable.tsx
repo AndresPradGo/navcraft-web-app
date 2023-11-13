@@ -1,10 +1,5 @@
-import { useState, Dispatch, SetStateAction } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
-import { BsChevronDown } from "react-icons/bs";
-import { styled } from "styled-components";
+import { Dispatch, SetStateAction } from "react";
 
-import Table from "../../components/common/table";
-import Button from "../../components/common/button";
 import { RunwayDataFromAPI } from "../../services/userAerodromeClient";
 import { useModal, Modal, UseModalType } from "../../components/common/modal";
 import EditRunwayForm, {
@@ -12,64 +7,7 @@ import EditRunwayForm, {
 } from "../../components/editRunwayForm/EditRunwayForm";
 import DeleteRunwayForm from "../../components/deleteRunwayForm/DeleteRunwayForm";
 import formatUTCDate from "../../utils/formatUTCDate";
-
-interface HtmlTagProps {
-  $isOpen: boolean;
-}
-const HtmlContainer = styled.div`
-  margin: 100px 0 50px;
-  width: 100%;
-`;
-
-const HtmlTitleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 5px;
-  padding: 0 0 10px 5px;
-  border-bottom: 1px solid var(--color-grey);
-
-  & div {
-    display: flex;
-    align-items: center;
-
-    & h3:first-of-type {
-      margin: 0;
-      color: var(--color-grey-bright);
-    }
-  }
-
-  @media screen and (min-width: 425px) {
-    padding: 0 0 10px 20px;
-  }
-`;
-
-const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
-  color: var(--color-grey);
-  cursor: pointer;
-  margin-right: 5px;
-  font-size: 25px;
-  transform: rotate(${(props) => (props.$isOpen ? "-180deg" : "0deg")});
-  transition: 0.3s transform linear;
-
-  &:hover,
-  &:focus {
-    color: var(--color-white);
-  }
-
-  @media screen and (min-width: 425px) {
-    margin-right: 20px;
-  }
-`;
-
-const HtmlTableContainer = styled.div<HtmlTagProps>`
-  transition: padding 0.6s, max-height 0.3s, opacity 0.6s;
-  border-bottom: 1px solid var(--color-grey);
-  padding: ${(props) => (props.$isOpen ? "15px" : "0px 15px")};
-  max-height: ${(props) => (props.$isOpen ? "10000vh" : "0px")};
-  opacity: ${(props) => (props.$isOpen ? "1" : "0")};
-  overflow: hidden;
-`;
+import ExpandibleTable from "../../components/common/ExpandibleTable";
 
 interface Props {
   editModal: UseModalType;
@@ -90,7 +28,6 @@ const RunwaysTable = ({
   setRunwayId,
   canEdit,
 }: Props) => {
-  const [isOpen, setIsOpen] = useState(true);
   const deleteModal = useModal();
   const runwayInCache = runwaysData.find((item) => item.id === runwayId);
   const runwayData = runwayInCache
@@ -222,41 +159,17 @@ const RunwaysTable = ({
           </Modal>
         </>
       ) : null}
-      <HtmlContainer>
-        <HtmlTitleContainer>
-          <div>
-            <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
-            <h3>Runways</h3>
-          </div>
-          {canEdit ? (
-            <Button
-              borderRadious={100}
-              padding="5px"
-              height="30px"
-              backgroundColor="var(--color-grey)"
-              backgroundHoverColor="var(--color-white)"
-              color="var(--color-primary-dark)"
-              hoverColor="var(--color-primary-dark)"
-              margin="0 20px 0 0px"
-              fontSize={18}
-              handleClick={() => {
-                setRunwayId(0);
-                editModal.handleOpen();
-              }}
-            >
-              <AiOutlinePlus />
-            </Button>
-          ) : null}
-        </HtmlTitleContainer>
-        <HtmlTableContainer $isOpen={isOpen}>
-          <Table
-            tableData={tableData}
-            sortColumnOptions={sortData}
-            pageSize={20}
-            emptyTableMessage="No Runways saved for this aerodrome..."
-          />
-        </HtmlTableContainer>
-      </HtmlContainer>
+      <ExpandibleTable
+        tableData={tableData}
+        sortColumnOptions={sortData}
+        pageSize={20}
+        emptyTableMessage="No Runways saved for this aerodrome..."
+        title="Runways"
+        hanldeAdd={() => {
+          setRunwayId(0);
+          editModal.handleOpen();
+        }}
+      />
     </>
   );
 };

@@ -9,12 +9,13 @@ import { TbTrendingUp2 } from "react-icons/tb";
 import { styled } from "styled-components";
 
 import ContentLayout from "../layout/ContentLayout";
-import SideBarContent from "./SideBarContent";
+import SideBarContent from "./components/SideBarContent";
 import useAircraftData from "../../hooks/useAircraftData";
 import useFuelTypes from "../../hooks/useFuelTypes";
 import Loader from "../../components/Loader";
 import { useParams } from "react-router-dom";
 import AnnouncementBox from "../../components/AnnouncementBox";
+import ArrangementSection from "./components/ArrangementSection";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -143,6 +144,9 @@ const PerformanceProfilePage = () => {
   const profileBaseData = aircraftData?.profiles.find(
     (profile) => profile.id === profileId
   );
+  const fuelType =
+    fuelTypes.find((fuel) => fuel.id === profileBaseData?.fuel_type_id) ||
+    fuelTypes[0];
 
   const sections = [
     {
@@ -252,6 +256,11 @@ const PerformanceProfilePage = () => {
             isWarning={false}
             title={`Selected profile`}
             message={`This performance profile will be used for every flight with ${aircraftData?.registration}.`}
+          />
+        ) : null}
+        {sectionIdx === 0 ? (
+          <ArrangementSection
+            fuel={{ name: fuelType.name, density: fuelType.density_lb_gal }}
           />
         ) : null}
       </HtmlContainer>

@@ -45,7 +45,7 @@ interface SearchBarParametersType extends SearchBarDataType {
   columnKeys: string[];
 }
 
-interface Props {
+export interface Props {
   tableData: TableProps;
   emptyTableMessage?: string;
   sortColumnOptions?: SortColumnType[];

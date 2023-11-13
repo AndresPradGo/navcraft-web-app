@@ -1,74 +1,15 @@
-import { useState, Dispatch, SetStateAction } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
-import { BsChevronDown } from "react-icons/bs";
+import { Dispatch, SetStateAction } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { styled } from "styled-components";
 
-import Table from "../../components/common/table";
-import Button from "../../components/common/button";
 import { useModal, Modal, UseModalType } from "../../components/common/modal";
 import { PerformanceProfileBaseData } from "../../services/aircraftClient";
 import { FuelTypeData } from "../../hooks/useFuelTypes";
 import DeleteProfileForm from "../../components/deleteProfileForm";
 import formatUTCDate from "../../utils/formatUTCDate";
+import ExpandibleTable from "../../components/common/ExpandibleTable";
 
-interface HtmlTagProps {
-  $isOpen: boolean;
-}
-const HtmlContainer = styled.div`
-  margin: 100px 0 50px;
-  width: 100%;
-`;
-
-const HtmlTitleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 5px;
-  padding: 0 0 10px 5px;
-  border-bottom: 1px solid var(--color-grey);
-
-  & div {
-    display: flex;
-    align-items: center;
-
-    & h3:first-of-type {
-      margin: 0;
-      color: var(--color-grey-bright);
-    }
-  }
-
-  @media screen and (min-width: 425px) {
-    padding: 0 0 10px 20px;
-  }
-`;
-
-const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
-  color: var(--color-grey);
-  cursor: pointer;
-  margin-right: 5px;
-  font-size: 25px;
-  transform: rotate(${(props) => (props.$isOpen ? "-180deg" : "0deg")});
-  transition: 0.3s transform linear;
-
-  &:hover,
-  &:focus {
-    color: var(--color-white);
-  }
-
-  @media screen and (min-width: 425px) {
-    margin-right: 20px;
-  }
-`;
-
-const HtmlTableContainer = styled.div<HtmlTagProps>`
-  transition: padding 0.6s, max-height 0.3s, opacity 0.6s;
-  border-bottom: 1px solid var(--color-grey);
-  padding: ${(props) => (props.$isOpen ? "15px" : "0px 15px")};
-  max-height: ${(props) => (props.$isOpen ? "10000vh" : "0px")};
-  opacity: ${(props) => (props.$isOpen ? "1" : "0")};
-  overflow: hidden;
-
+const HtmlInstructionsList = styled.ul`
   & ul {
     text-wrap: wrap;
   }
@@ -98,7 +39,6 @@ const ProfilesTable = ({
   fuelTypes,
   setProfileId,
 }: Props) => {
-  const [isOpen, setIsOpen] = useState(true);
   const deleteModal = useModal();
   const tableData = {
     keys: ["name", "fuel", "complete", "selected", "updated"],
@@ -140,43 +80,24 @@ const ProfilesTable = ({
           aircraftId={aircraftId}
         />
       </Modal>
-      <HtmlContainer>
-        <HtmlTitleContainer>
-          <div>
-            <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
-            <h3>Performance Profiles</h3>
-          </div>
-          {profiles.length < 3 ? (
-            <Button
-              borderRadious={100}
-              padding="5px"
-              height="30px"
-              backgroundColor="var(--color-grey)"
-              backgroundHoverColor="var(--color-white)"
-              color="var(--color-primary-dark)"
-              hoverColor="var(--color-primary-dark)"
-              margin="0 20px 0 0px"
-              fontSize={18}
-              handleClick={() => {
-                setProfileId(0);
-                addModal.handleOpen();
-              }}
-            >
-              <AiOutlinePlus />
-            </Button>
-          ) : null}
-        </HtmlTitleContainer>
-        <HtmlTableContainer $isOpen={isOpen}>
-          <ul>
+      <ExpandibleTable
+        tableData={tableData}
+        title="Performance Profiles"
+        hanldeAdd={() => {
+          setProfileId(0);
+          addModal.handleOpen();
+        }}
+        disableAdd={profiles.length >= 3}
+        otherComponent={
+          <HtmlInstructionsList>
             <li>
               You can add up to 3 different performance profiles for this
               aircraft.
             </li>
             <li>Only the selected profile will be used for flight planning.</li>
-          </ul>
-          <Table tableData={tableData} />
-        </HtmlTableContainer>
-      </HtmlContainer>
+          </HtmlInstructionsList>
+        }
+      />
     </>
   );
 };

@@ -324,7 +324,6 @@ const AircraftListPage = () => {
       ],
     });
   }
-  console.log(aircraftList);
 
   const tableData = {
     keys: tableKeys[tableIndex],
