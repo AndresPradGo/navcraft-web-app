@@ -16,6 +16,8 @@ import Loader from "../../components/Loader";
 import { useParams } from "react-router-dom";
 import AnnouncementBox from "../../components/common/AnnouncementBox";
 import ArrangementSection from "./components/ArrangementSection";
+import { Modal, useModal } from "../../components/common/modal";
+import EditBaggageCompartmentForm from "./components/EditBaggageCompartmentForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -125,6 +127,11 @@ const ChangeIcon = styled(AiOutlineSwap)`
 
 const PerformanceProfilePage = () => {
   const [sectionIdx, setSectionIdx] = useState(0);
+  const [currentForm, setCurrentForm] = useState<
+    "editProfile" | "deleteProfile" | "addCompartment" | "addSeat" | "addTank"
+  >("editProfile");
+
+  const modal = useModal();
 
   const { id: stringId, aircraftId: stringAircraftId } = useParams();
   const profileId = parseInt(stringId || "0");
@@ -189,84 +196,103 @@ const PerformanceProfilePage = () => {
   };
 
   return (
-    <ContentLayout
-      sideBarContent={
-        <SideBarContent
-          handleChangeSection={setSectionIdx}
-          sectionIndex={sectionIdx}
-          sectionOptions={sections}
-          disableSelect={
-            !profileBaseData?.is_complete || !!profileBaseData?.is_preferred
-          }
-          handleEditProfile={() => {}}
-          handleSelectProfile={() => {}}
-          handleDeleteProfile={() => {}}
-          handleAddBaggage={() => {}}
-          handleAddSeat={() => {}}
-          handleAddFuel={() => {}}
-          handleEditWBData={() => {}}
-          handleAddWBProfile={() => {}}
-          handleEditTakeoffData={() => {}}
-          handleDownloadTakeoffData={() => {}}
-          handleImportTakeoffData={() => {}}
-          handleEditClimbData={() => {}}
-          handleDownloadClimbData={() => {}}
-          handleImportClimbData={() => {}}
-          handleDownloadCruiseData={() => {}}
-          handleImportCruiseData={() => {}}
-          handleEditLandData={() => {}}
-          handleDownloadLandData={() => {}}
-          handleImportLandData={() => {}}
-        />
-      }
-    >
-      <HtmlContainer>
-        <HtmlTitleContainer>
-          <div>
-            <h1>
-              {sections[sectionIdx].icon}
-              {sections[sectionIdx].title}
-            </h1>
-            <ChangeIcon onClick={handleChangeToNextTable} />
-          </div>
-          <div>
-            <span>
-              <i>Aircraft:</i>
-              <i>
-                <IoAirplane />
-                {aircraftData?.registration}
-              </i>
-              <MdOutlineStart />
-            </span>
-            <span>
-              <i>Performance Profile:</i>
-              <i>
-                <BsSpeedometer />
-                {profileBaseData?.performance_profile_name}
-              </i>
-            </span>
-          </div>
-        </HtmlTitleContainer>
-        {!profileBaseData?.is_complete ? (
-          <AnnouncementBox
-            isWarning={true}
-            title="Incomplete Profile"
-            message="Complete every section of the profile, in order to be able to use it for flight-planing."
-          />
-        ) : profileBaseData?.is_preferred ? (
-          <AnnouncementBox
-            isWarning={false}
-            title={`Selected profile`}
-            message={`This profile has been selected for ${aircraftData?.registration}, and it will be used for flight-planing.`}
+    <>
+      <Modal isOpen={modal.isOpen}>
+        {currentForm === "addCompartment" ? (
+          <EditBaggageCompartmentForm
+            compartmentData={{
+              id: 0,
+              name: "",
+              arm_in: 0,
+              weight_limit_lb: NaN,
+            }}
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
           />
         ) : null}
-        {sectionIdx === 0 ? (
-          <ArrangementSection
-            fuel={{ name: fuelType.name, density: fuelType.density_lb_gal }}
+      </Modal>
+      <ContentLayout
+        sideBarContent={
+          <SideBarContent
+            handleChangeSection={setSectionIdx}
+            sectionIndex={sectionIdx}
+            sectionOptions={sections}
+            disableSelect={
+              !profileBaseData?.is_complete || !!profileBaseData?.is_preferred
+            }
+            handleEditProfile={() => {}}
+            handleSelectProfile={() => {}}
+            handleDeleteProfile={() => {}}
+            handleAddBaggage={() => {
+              setCurrentForm("addCompartment");
+              modal.handleOpen();
+            }}
+            handleAddSeat={() => {}}
+            handleAddFuel={() => {}}
+            handleEditWBData={() => {}}
+            handleAddWBProfile={() => {}}
+            handleEditTakeoffData={() => {}}
+            handleDownloadTakeoffData={() => {}}
+            handleImportTakeoffData={() => {}}
+            handleEditClimbData={() => {}}
+            handleDownloadClimbData={() => {}}
+            handleImportClimbData={() => {}}
+            handleDownloadCruiseData={() => {}}
+            handleImportCruiseData={() => {}}
+            handleEditLandData={() => {}}
+            handleDownloadLandData={() => {}}
+            handleImportLandData={() => {}}
           />
-        ) : null}
-      </HtmlContainer>
-    </ContentLayout>
+        }
+      >
+        <HtmlContainer>
+          <HtmlTitleContainer>
+            <div>
+              <h1>
+                {sections[sectionIdx].icon}
+                {sections[sectionIdx].title}
+              </h1>
+              <ChangeIcon onClick={handleChangeToNextTable} />
+            </div>
+            <div>
+              <span>
+                <i>Aircraft:</i>
+                <i>
+                  <IoAirplane />
+                  {aircraftData?.registration}
+                </i>
+                <MdOutlineStart />
+              </span>
+              <span>
+                <i>Performance Profile:</i>
+                <i>
+                  <BsSpeedometer />
+                  {profileBaseData?.performance_profile_name}
+                </i>
+              </span>
+            </div>
+          </HtmlTitleContainer>
+          {!profileBaseData?.is_complete ? (
+            <AnnouncementBox
+              isWarning={true}
+              title="Incomplete Profile"
+              message="Complete every section of the profile, in order to be able to use it for flight-planing."
+            />
+          ) : profileBaseData?.is_preferred ? (
+            <AnnouncementBox
+              isWarning={false}
+              title={`Selected profile`}
+              message={`This profile has been selected for ${aircraftData?.registration}, and it will be used for flight-planing.`}
+            />
+          ) : null}
+          {sectionIdx === 0 ? (
+            <ArrangementSection
+              fuel={{ name: fuelType.name, density: fuelType.density_lb_gal }}
+            />
+          ) : null}
+        </HtmlContainer>
+      </ContentLayout>
+    </>
   );
 };
 

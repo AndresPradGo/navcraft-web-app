@@ -381,9 +381,9 @@ const schema = z.object({
   elevation_ft: z.number({ invalid_type_error: "Enter a number" }),
   magnetic_variation: z.union([
     z
-      .number({ invalid_type_error: "Enter a number" })
+      .number({ invalid_type_error: "Enter a number, or leave blank" })
       .max(99.94, { message: "Must be less than 99.95" })
-      .min(-99.94, { message: "Must be greater than 99.95" })
+      .min(-99.94, { message: "Must be greater than -99.95" })
       .nullable(),
     z.literal(null),
   ]),

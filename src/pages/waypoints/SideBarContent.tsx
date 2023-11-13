@@ -166,7 +166,7 @@ const SideBarContent = ({
       text: "Official Aerodromes",
       icon: <AddAerodromeIcon />,
       styles: {
-        ...commonStyles,
+        ...baseStyles,
       },
       onClick: () => {
         fileFetcher("manage-waypoints/aerodromes");
@@ -176,7 +176,7 @@ const SideBarContent = ({
       text: "VFR Waypoints",
       icon: <WaypointIcon />,
       styles: {
-        ...commonStyles,
+        ...baseStyles,
       },
       onClick: () => {
         fileFetcher("manage-waypoints");
@@ -186,7 +186,7 @@ const SideBarContent = ({
       text: "Runways",
       icon: <RunwayIcon />,
       styles: {
-        ...commonStyles,
+        ...baseStyles,
       },
       onClick: () => {
         fileFetcher("runways/csv");
@@ -199,7 +199,7 @@ const SideBarContent = ({
       text: "Official Aerodromes",
       icon: <AddAerodromeIcon />,
       styles: {
-        ...baseStyles,
+        ...commonStyles,
       },
       onClick: handleManageAerodromes,
     },
@@ -207,7 +207,7 @@ const SideBarContent = ({
       text: "VFR Waypoints",
       icon: <WaypointIcon />,
       styles: {
-        ...baseStyles,
+        ...commonStyles,
       },
       onClick: handleManageWaypoints,
     },
@@ -215,7 +215,7 @@ const SideBarContent = ({
       text: "Runways",
       icon: <RunwayIcon />,
       styles: {
-        ...baseStyles,
+        ...commonStyles,
       },
       onClick: handleManageRunways,
     },
