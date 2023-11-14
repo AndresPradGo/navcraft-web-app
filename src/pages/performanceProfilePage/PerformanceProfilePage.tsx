@@ -22,6 +22,7 @@ import EditSeatRowForm from "./components/EditSeatRowForm";
 import EditFuelTankForm from "./components/EditFuelTankForm";
 import useAircraftArrangementData from "../../hooks/useAircraftArrangementData";
 import EditPerformanceProfileForm from "./components/EditPerformanceProfileForm";
+import useSelectPerformanceProfile from "./hooks/useSelectPerformanceProfile";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -141,6 +142,8 @@ const PerformanceProfilePage = () => {
   const { id: stringId, aircraftId: stringAircraftId } = useParams();
   const profileId = parseInt(stringId || "0");
   const aircraftId = parseInt(stringAircraftId || "0");
+
+  const selectProfileMutation = useSelectPerformanceProfile(aircraftId);
 
   const { data: aircraftData, error, isLoading } = useAircraftData(aircraftId);
 
@@ -291,7 +294,9 @@ const PerformanceProfilePage = () => {
             handleEditProfile={() => {
               editProfileModal.handleOpen();
             }}
-            handleSelectProfile={() => {}}
+            handleSelectProfile={() => {
+              selectProfileMutation.mutate(profileId);
+            }}
             handleDeleteProfile={() => {}}
             handleAddBaggage={handleAddBaggage}
             handleAddSeat={handleAddSeat}

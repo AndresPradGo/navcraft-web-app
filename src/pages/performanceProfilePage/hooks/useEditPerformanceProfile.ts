@@ -69,7 +69,7 @@ const useEditPerformanceProfile = (aircraftId: number) => {
             return {previusData}
         },
         onSuccess: (savedData) => {
-            toast.success(`${savedData.performance_profile_name} has been updated successfully.`, {
+            toast.success(`${savedData.performance_profile_name}, has been updated successfully.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
