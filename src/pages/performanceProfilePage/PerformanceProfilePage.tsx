@@ -19,6 +19,7 @@ import ArrangementSection from "./components/ArrangementSection";
 import { Modal, useModal } from "../../components/common/modal";
 import EditBaggageCompartmentForm from "./components/EditBaggageCompartmentForm";
 import EditSeatRowForm from "./components/EditSeatRowForm";
+import EditFuelTankForm from "./components/EditFuelTankForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -222,6 +223,19 @@ const PerformanceProfilePage = () => {
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
           />
+        ) : currentForm === "addTank" ? (
+          <EditFuelTankForm
+            fuelTankData={{
+              id: 0,
+              name: "",
+              arm_in: 0,
+              fuel_capacity_gallons: 0,
+              unusable_fuel_gallons: 0,
+              burn_sequence: 1,
+            }}
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+          />
         ) : null}
       </Modal>
       <ContentLayout
@@ -244,7 +258,10 @@ const PerformanceProfilePage = () => {
               setCurrentForm("addSeat");
               modal.handleOpen();
             }}
-            handleAddFuel={() => {}}
+            handleAddFuel={() => {
+              setCurrentForm("addTank");
+              modal.handleOpen();
+            }}
             handleEditWBData={() => {}}
             handleAddWBProfile={() => {}}
             handleEditTakeoffData={() => {}}
