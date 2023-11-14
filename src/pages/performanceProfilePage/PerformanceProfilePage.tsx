@@ -20,6 +20,7 @@ import { Modal, useModal } from "../../components/common/modal";
 import EditBaggageCompartmentForm from "./components/EditBaggageCompartmentForm";
 import EditSeatRowForm from "./components/EditSeatRowForm";
 import EditFuelTankForm from "./components/EditFuelTankForm";
+import useAircraftArrangementData from "../../hooks/useAircraftArrangementData";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -147,8 +148,18 @@ const PerformanceProfilePage = () => {
     error: fuelTypesError,
   } = useFuelTypes();
 
+  const {
+    data: arrangementData,
+    error: arrangementError,
+    isLoading: arrangementLoading,
+  } = useAircraftArrangementData(profileId);
+
   if (error && error.message !== "Network Error") throw new Error("notFound");
-  else if ((error && error.message === "Network Error") || fuelTypesError)
+  else if (
+    (error && error.message === "Network Error") ||
+    fuelTypesError ||
+    arrangementError
+  )
     throw new Error("");
   if (isLoading || fuelTypesIsLoading) return <Loader />;
 
@@ -284,6 +295,9 @@ const PerformanceProfilePage = () => {
             handleEditLandData={() => {}}
             handleDownloadLandData={() => {}}
             handleImportLandData={() => {}}
+            disableAddFuelTank={
+              arrangementData ? arrangementData.fuel_tanks.length >= 4 : false
+            }
           />
         }
       >
@@ -334,6 +348,8 @@ const PerformanceProfilePage = () => {
               handleAddBaggage={handleAddBaggage}
               handleAddSeat={handleAddSeat}
               handleAddFuel={handleAddFuel}
+              isLoading={arrangementLoading}
+              arrangementData={arrangementData}
             />
           ) : null}
         </HtmlContainer>

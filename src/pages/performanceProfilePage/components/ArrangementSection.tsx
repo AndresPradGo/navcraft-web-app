@@ -4,12 +4,12 @@ import { GiMolecule } from "react-icons/gi";
 import { styled } from "styled-components";
 
 import DataTableList from "../../../components/common/DataTableList";
-import useAircraftArrangementData from "../../../hooks/useAircraftArrangementData";
 import ExpandibleTable from "../../../components/common/ExpandibleTable";
 import { useModal, Modal } from "../../../components/common/modal";
 import EditBaggageCompartmentForm from "./EditBaggageCompartmentForm";
 import EditSeatRowForm from "./EditSeatRowForm";
 import EditFuelTankForm from "./EditFuelTankForm";
+import { AircraftArrangementDataFromAPI } from "../../../services/aircraftArrangementClient";
 
 const HtmlInstructionsList = styled.ul`
   & ul {
@@ -36,6 +36,8 @@ interface Props {
   handleAddBaggage: () => void;
   handleAddSeat: () => void;
   handleAddFuel: () => void;
+  arrangementData?: AircraftArrangementDataFromAPI;
+  isLoading: boolean;
 }
 
 const ArrangementSection = ({
@@ -44,21 +46,15 @@ const ArrangementSection = ({
   handleAddBaggage,
   handleAddSeat,
   handleAddFuel,
+  arrangementData,
+  isLoading,
 }: Props) => {
-  const {
-    data: arrangementData,
-    error,
-    isLoading,
-  } = useAircraftArrangementData(profileId);
-
   const [selectedId, setSelectedId] = useState<number>(0);
   const [currentForm, setCurrentForm] = useState<
     "addCompartment" | "addSeat" | "addTank"
   >("addCompartment");
 
   const modal = useModal();
-  if (error && error.message !== "Network Error") throw new Error("notFound");
-  else if (error && error.message === "Network Error") throw new Error("");
 
   const compartmentsTableData = {
     keys: ["name", "arm_in", "weight_limit_lb"],
@@ -67,24 +63,23 @@ const ArrangementSection = ({
       arm_in: "Arm [in]",
       weight_limit_lb: "Weight Limit [lb]",
     },
-    rows:
-      !error && arrangementData
-        ? arrangementData.baggage_compartments.map((compartment) => ({
-            id: compartment.id,
-            name: compartment.name,
-            arm_in: compartment.arm_in,
-            weight_limit_lb: compartment.weight_limit_lb
-              ? compartment.weight_limit_lb
-              : "-",
-            handleEdit: () => {
-              setSelectedId(compartment.id);
-              setCurrentForm("addCompartment");
-              modal.handleOpen();
-            },
-            handleDelete: () => {},
-            permissions: "delete" as "delete",
-          }))
-        : [],
+    rows: arrangementData
+      ? arrangementData.baggage_compartments.map((compartment) => ({
+          id: compartment.id,
+          name: compartment.name,
+          arm_in: compartment.arm_in,
+          weight_limit_lb: compartment.weight_limit_lb
+            ? compartment.weight_limit_lb
+            : "-",
+          handleEdit: () => {
+            setSelectedId(compartment.id);
+            setCurrentForm("addCompartment");
+            modal.handleOpen();
+          },
+          handleDelete: () => {},
+          permissions: "delete" as "delete",
+        }))
+      : [],
   };
 
   const compartmentsSortData = [
@@ -110,23 +105,22 @@ const ArrangementSection = ({
       weight_limit_lb: "Weight Limit [lb]",
       number_of_seats: "Number of Seats",
     },
-    rows:
-      !error && arrangementData
-        ? arrangementData.seat_rows.map((seat) => ({
-            id: seat.id,
-            name: seat.name,
-            arm_in: seat.arm_in,
-            weight_limit_lb: seat.weight_limit_lb ? seat.weight_limit_lb : "-",
-            number_of_seats: seat.number_of_seats,
-            handleEdit: () => {
-              setSelectedId(seat.id);
-              setCurrentForm("addSeat");
-              modal.handleOpen();
-            },
-            handleDelete: () => {},
-            permissions: "delete" as "delete",
-          }))
-        : [],
+    rows: arrangementData
+      ? arrangementData.seat_rows.map((seat) => ({
+          id: seat.id,
+          name: seat.name,
+          arm_in: seat.arm_in,
+          weight_limit_lb: seat.weight_limit_lb ? seat.weight_limit_lb : "-",
+          number_of_seats: seat.number_of_seats,
+          handleEdit: () => {
+            setSelectedId(seat.id);
+            setCurrentForm("addSeat");
+            modal.handleOpen();
+          },
+          handleDelete: () => {},
+          permissions: "delete" as "delete",
+        }))
+      : [],
   };
 
   const seatsSortData = [
@@ -163,28 +157,27 @@ const ArrangementSection = ({
       burn_sequence: "Burn Sequence",
       unusable_fuel_gallons: "Unusable Fuel [gal]",
     },
-    rows:
-      !error && arrangementData
-        ? arrangementData.fuel_tanks.map((tank) => ({
-            id: tank.id,
-            name: tank.name,
-            arm_in: tank.arm_in,
-            fuel_capacity_gallons: tank.fuel_capacity_gallons
-              ? tank.fuel_capacity_gallons
-              : "-",
-            burn_sequence: tank.burn_sequence,
-            unusable_fuel_gallons: tank.unusable_fuel_gallons
-              ? tank.unusable_fuel_gallons
-              : "-",
-            handleEdit: () => {
-              setSelectedId(tank.id);
-              setCurrentForm("addTank");
-              modal.handleOpen();
-            },
-            handleDelete: () => {},
-            permissions: "delete" as "delete",
-          }))
-        : [],
+    rows: arrangementData
+      ? arrangementData.fuel_tanks.map((tank) => ({
+          id: tank.id,
+          name: tank.name,
+          arm_in: tank.arm_in,
+          fuel_capacity_gallons: tank.fuel_capacity_gallons
+            ? tank.fuel_capacity_gallons
+            : "-",
+          burn_sequence: tank.burn_sequence,
+          unusable_fuel_gallons: tank.unusable_fuel_gallons
+            ? tank.unusable_fuel_gallons
+            : "-",
+          handleEdit: () => {
+            setSelectedId(tank.id);
+            setCurrentForm("addTank");
+            modal.handleOpen();
+          },
+          handleDelete: () => {},
+          permissions: "delete" as "delete",
+        }))
+      : [],
   };
 
   const tanksSortData = [
@@ -295,6 +288,7 @@ const ArrangementSection = ({
       <ExpandibleTable
         tableData={tanksTableData}
         sortColumnOptions={tanksSortData}
+        disableAdd={tanksTableData.rows.length >= 4}
         pageSize={5}
         emptyTableMessage="No Fuel Tanks have been added to this profile..."
         title="Fuel Tanks"
@@ -302,7 +296,7 @@ const ArrangementSection = ({
         dataIsLoading={isLoading}
         otherComponent={
           <HtmlInstructionsList>
-            <li>You can add fuel tanks to this performance profile.</li>
+            <li>You can add up to 4 fuel tanks to this performance profile.</li>
             <li>
               Tanks with lower burn sequence, will be assumed to burn fuel
               first.

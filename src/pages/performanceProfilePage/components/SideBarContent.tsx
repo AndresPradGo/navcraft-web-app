@@ -151,6 +151,7 @@ interface Props {
   handleEditLandData: () => void;
   handleDownloadLandData: () => void;
   handleImportLandData: () => void;
+  disableAddFuelTank: boolean;
 }
 
 const SideBarContent = ({
@@ -177,6 +178,7 @@ const SideBarContent = ({
   handleEditLandData,
   handleDownloadLandData,
   handleImportLandData,
+  disableAddFuelTank,
 }: Props) => {
   const baseStyles = {
     width: "100%",
@@ -245,7 +247,7 @@ const SideBarContent = ({
     {
       text: "Add Fuel Tank",
       icon: <TankIcon />,
-      styles: { ...commonStyles },
+      styles: { ...commonStyles, disabled: disableAddFuelTank },
       onClick: handleAddFuel,
     },
   ];
