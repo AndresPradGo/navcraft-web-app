@@ -12,6 +12,15 @@ export interface PerformanceProfileBaseData {
     last_updated_utc: string;
 }
 
+export interface CompletePerformanceProfileDataFromAPI extends PerformanceProfileBaseData{
+    center_of_gravity_in: number,
+    empty_weight_lb: number,
+    max_ramp_weight_lb: number,
+    max_takeoff_weight_lb: number,
+    max_landing_weight_lb: number,
+    baggage_allowance_lb: number,
+}
+
 export interface AircraftDataFromAPI extends AircraftDataFromForm {
     profiles: PerformanceProfileBaseData[]
     created_at_utc: string;

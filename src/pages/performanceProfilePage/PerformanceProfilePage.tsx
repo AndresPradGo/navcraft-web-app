@@ -132,10 +132,11 @@ const ChangeIcon = styled(AiOutlineSwap)`
 const PerformanceProfilePage = () => {
   const [sectionIdx, setSectionIdx] = useState(0);
   const [currentForm, setCurrentForm] = useState<
-    "editProfile" | "deleteProfile" | "addCompartment" | "addSeat" | "addTank"
-  >("editProfile");
+    "deleteProfile" | "addCompartment" | "addSeat" | "addTank"
+  >("deleteProfile");
 
   const modal = useModal();
+  const editProfileModal = useModal();
 
   const { id: stringId, aircraftId: stringAircraftId } = useParams();
   const profileId = parseInt(stringId || "0");
@@ -226,16 +227,18 @@ const PerformanceProfilePage = () => {
 
   return (
     <>
+      <Modal isOpen={editProfileModal.isOpen} fullHeight={true}>
+        <EditPerformanceProfileForm
+          closeModal={editProfileModal.handleClose}
+          isOpen={editProfileModal.isOpen}
+          aircraftId={aircraftId}
+          profileName={profileBaseData?.performance_profile_name || ""}
+          fuelType={fuelType.name}
+          profileId={profileId}
+        />
+      </Modal>
       <Modal isOpen={modal.isOpen}>
-        {currentForm === "editProfile" ? (
-          <EditPerformanceProfileForm
-            closeModal={modal.handleClose}
-            isOpen={modal.isOpen}
-            aircraftId={aircraftId}
-            profileName={profileBaseData?.performance_profile_name || ""}
-            fuelType={fuelType.name}
-          />
-        ) : currentForm === "addCompartment" ? (
+        {currentForm === "addCompartment" ? (
           <EditBaggageCompartmentForm
             compartmentData={{
               id: 0,
@@ -286,8 +289,7 @@ const PerformanceProfilePage = () => {
               !profileBaseData?.is_complete || !!profileBaseData?.is_preferred
             }
             handleEditProfile={() => {
-              setCurrentForm("editProfile");
-              modal.handleOpen();
+              editProfileModal.handleOpen();
             }}
             handleSelectProfile={() => {}}
             handleDeleteProfile={() => {}}

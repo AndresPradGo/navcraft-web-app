@@ -11,6 +11,7 @@ import Button from "../../../components/common/button";
 import { FuelTypeData } from "../../../hooks/useFuelTypes";
 import DataList from "../../../components/common/datalist";
 import { useQueryClient } from "@tanstack/react-query";
+import useEditPerformanceProfile from "../hooks/useEditPerformanceProfile";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -217,7 +218,7 @@ const schema = z.object({
       message: "Only letters, numbers, white spaces, and symbols -/",
     }),
 });
-export type AircraftProfileDataFromForm = z.infer<typeof schema>;
+type AircraftProfileDataFromForm = z.infer<typeof schema>;
 
 interface Props {
   closeModal: () => void;
@@ -225,6 +226,7 @@ interface Props {
   aircraftId: number;
   profileName: string;
   fuelType: string;
+  profileId: number;
 }
 
 const EditPerformanceProfileForm = ({
@@ -233,6 +235,7 @@ const EditPerformanceProfileForm = ({
   aircraftId,
   profileName,
   fuelType,
+  profileId,
 }: Props) => {
   const {
     register,
@@ -244,6 +247,8 @@ const EditPerformanceProfileForm = ({
     setValue,
     clearErrors,
   } = useForm<AircraftProfileDataFromForm>({ resolver: zodResolver(schema) });
+
+  const mutation = useEditPerformanceProfile(aircraftId);
 
   const queryClient = useQueryClient();
   const fuelOptions = queryClient.getQueryData<FuelTypeData[]>(["fuelTypes"]);
@@ -263,6 +268,11 @@ const EditPerformanceProfileForm = ({
     )?.id;
     if (fuelId) {
       closeModal();
+      mutation.mutate({
+        id: profileId,
+        performance_profile_name: data.performance_profile_name,
+        fuel_type_id: fuelId,
+      });
     } else
       setError("fuel_type", {
         type: "manual",

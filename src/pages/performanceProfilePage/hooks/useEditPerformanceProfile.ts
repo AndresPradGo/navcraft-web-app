@@ -1,52 +1,43 @@
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import APIClient, { APIClientError } from '../../services/apiClient';
-import { PerformanceProfileBaseData, AircraftDataFromAPI, CompletePerformanceProfileDataFromAPI } from '../../services/aircraftClient';
-import errorToast from '../../utils/errorToast';
-import getUTCNowString from '../../utils/getUTCNowString';
+import APIClient, { APIClientError } from '../../../services/apiClient';
+import { 
+    PerformanceProfileBaseData, 
+    AircraftDataFromAPI, 
+    CompletePerformanceProfileDataFromAPI 
+} from '../../../services/aircraftClient';
+import errorToast from '../../../utils/errorToast';
+import getUTCNowString from '../../../utils/getUTCNowString';
 
-interface AddProfileData {
-    fuel_type_id: number;
-    performance_profile_name: string;
-}
-
-interface AddProfileDataWithType extends AddProfileData {
-    type: 'BLANK'
-}
-
-interface AddProfileFromModelDataWithType {
-    model_id: number;
-    type: 'MODEL'
-    performance_profile_name: string;
-    fuel_type_id: number;
-}
 
 interface AircraftContext {
     previusData?: AircraftDataFromAPI
 }
 
-const apiClient = new APIClient<AddProfileData | undefined, PerformanceProfileBaseData>("/aircraft/performance-profile")
+interface AddProfileData {
+    performance_profile_name: string;
+    fuel_type_id: number;
+}
 
-const useAddAircraftProfile = (aircraftId: number) => {
+interface AddProfileDataWithId {
+    id: number;
+    performance_profile_name: string;
+    fuel_type_id: number;
+}
+
+const apiClient = new APIClient<AddProfileData, PerformanceProfileBaseData>("/aircraft/performance-profile")
+
+
+const useEditPerformanceProfile = (aircraftId: number) => {
     const queryClient = useQueryClient()
-    return useMutation<
-        PerformanceProfileBaseData, 
-        APIClientError, 
-        AddProfileFromModelDataWithType | AddProfileDataWithType, 
-        AircraftContext
-    >({
-        mutationFn: (data) => {
-            let dataToSend = undefined
-            let endpointExtension = `/${aircraftId}`
-            if(data.type === 'BLANK') {
-                dataToSend = {
+    return useMutation<PerformanceProfileBaseData, APIClientError, AddProfileDataWithId, AircraftContext>({
+        mutationFn: data => {
+            return (apiClient.editAndPreProcess<CompletePerformanceProfileDataFromAPI>(
+                {
+                    performance_profile_name: data.performance_profile_name,
                     fuel_type_id: data.fuel_type_id,
-                    performance_profile_name: data.performance_profile_name 
-                }
-            } else endpointExtension = endpointExtension + `/${data.model_id}`
-            return (apiClient.postAndPreProcess<CompletePerformanceProfileDataFromAPI>(
-                dataToSend,
+                },
                 (dataFromApi) => ({
                     id: dataFromApi.id,
                     is_complete: dataFromApi.is_complete,
@@ -56,7 +47,7 @@ const useAddAircraftProfile = (aircraftId: number) => {
                     created_at_utc: dataFromApi.created_at_utc,
                     last_updated_utc: dataFromApi.last_updated_utc
                 }),
-                endpointExtension
+                `/${data.id}`
             ))
         },
         onMutate: newData => {
@@ -64,24 +55,21 @@ const useAddAircraftProfile = (aircraftId: number) => {
             queryClient.setQueryData<AircraftDataFromAPI>(['aircraft', aircraftId], currentData => {
                 return (currentData ? {
                     ...currentData, 
-                    profiles: [
-                        ...currentData.profiles, 
-                        {
-                            id: 0,
-                            is_preferred: false,
-                            is_complete: newData.type === 'MODEL',
-                            fuel_type_id: newData.fuel_type_id,
-                            performance_profile_name: newData.performance_profile_name,
-                            created_at_utc: getUTCNowString(),
-                            last_updated_utc: getUTCNowString()
-                        }
-                    ]
+                    profiles: currentData.profiles.map(profile => (profile.id === newData.id ? {
+                        id: newData.id,
+                        is_preferred: profile.is_preferred,
+                        is_complete: profile.is_complete,
+                        fuel_type_id: newData.fuel_type_id,
+                        performance_profile_name: newData.performance_profile_name,
+                        created_at_utc: profile.created_at_utc,
+                        last_updated_utc: getUTCNowString()
+                    } : profile))
                 }: undefined)
             })
             return {previusData}
         },
         onSuccess: (savedData) => {
-            toast.success(`${savedData.performance_profile_name} has been added successfully.`, {
+            toast.success(`${savedData.performance_profile_name} has been updated successfully.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
@@ -95,7 +83,7 @@ const useAddAircraftProfile = (aircraftId: number) => {
                 return (currentData ? {
                     ...currentData, 
                     profiles: currentData.profiles.map(item => {
-                        if(item.id === 0) {
+                        if(item.id === savedData.id) {
                             return savedData
                         }
                         return item
@@ -115,4 +103,4 @@ const useAddAircraftProfile = (aircraftId: number) => {
     })
 }
 
-export default useAddAircraftProfile
+export default useEditPerformanceProfile
