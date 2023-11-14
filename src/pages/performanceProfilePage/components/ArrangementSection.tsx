@@ -254,6 +254,7 @@ const ArrangementSection = ({
             fuelTankData={selectedTank}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
+            profileId={profileId}
           />
         ) : null}
       </Modal>

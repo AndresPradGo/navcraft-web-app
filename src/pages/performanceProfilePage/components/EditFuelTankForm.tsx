@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
+import useEditFuelTank from "../hooks/useEditFuelTank";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -248,9 +249,15 @@ interface Props {
   fuelTankData: FuelTankDataFromForm;
   closeModal: () => void;
   isOpen: boolean;
+  profileId: number;
 }
 
-const EditFuelTankForm = ({ fuelTankData, closeModal, isOpen }: Props) => {
+const EditFuelTankForm = ({
+  fuelTankData,
+  closeModal,
+  isOpen,
+  profileId,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -258,6 +265,8 @@ const EditFuelTankForm = ({ fuelTankData, closeModal, isOpen }: Props) => {
     reset,
     watch,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
+
+  const mutation = useEditFuelTank(profileId);
 
   useEffect(() => {
     if (isOpen) {
@@ -278,7 +287,14 @@ const EditFuelTankForm = ({ fuelTankData, closeModal, isOpen }: Props) => {
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
-    console.log(data);
+    mutation.mutate({
+      id: fuelTankData.id,
+      name: data.name,
+      arm_in: data.arm_in,
+      fuel_capacity_gallons: data.fuel_capacity_gallons,
+      unusable_fuel_gallons: data.unusable_fuel_gallons,
+      burn_sequence: data.burn_sequence,
+    });
   };
 
   return (
