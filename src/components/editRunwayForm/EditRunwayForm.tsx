@@ -5,11 +5,8 @@ import { CgMoveUp } from "react-icons/cg";
 import { FaLinesLeaning } from "react-icons/fa6";
 import { GiConcreteBag } from "react-icons/gi";
 import { LiaTimesSolid } from "react-icons/lia";
-import {
-  MdAddRoad,
-  MdEditRoad,
-  MdOutlineConnectingAirports,
-} from "react-icons/md";
+import { MdAddRoad, MdEditRoad } from "react-icons/md";
+import { PiAirTrafficControlDuotone } from "react-icons/pi";
 import { TfiRuler } from "react-icons/tfi";
 import { styled } from "styled-components";
 import { useForm, FieldValues } from "react-hook-form";
@@ -167,7 +164,7 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const AerodromeIcon = styled(MdOutlineConnectingAirports)`
+const AerodromeIcon = styled(PiAirTrafficControlDuotone)`
   font-size: 35px;
   margin: 0 10px;
   flex-shrink: 0;

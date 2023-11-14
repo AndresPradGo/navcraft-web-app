@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AiOutlineSwap } from "react-icons/ai";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { GiRoad } from "react-icons/gi";
-import { PiAirTrafficControlFill } from "react-icons/pi";
+import { PiAirTrafficControlDuotone } from "react-icons/pi";
 import { TbMapPin, TbRoad } from "react-icons/tb";
 import { styled } from "styled-components";
 
@@ -109,7 +109,7 @@ const WaypointIcon = styled(TbMapPin)`
   }
 `;
 
-const AerodromeIcon = styled(PiAirTrafficControlFill)`
+const AerodromeIcon = styled(PiAirTrafficControlDuotone)`
   flex-shrink: 0;
   font-size: 35px;
   margin: 0 10px 0 0;
@@ -211,7 +211,7 @@ const Waypoints = () => {
     {
       key: "aerodromes",
       title: "Aerodromes",
-      icon: <PiAirTrafficControlFill />,
+      icon: <PiAirTrafficControlDuotone />,
     },
   ];
   if (userIsAdmin)

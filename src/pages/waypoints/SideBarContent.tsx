@@ -5,7 +5,7 @@ import {
   FaFileExport,
   FaDownload,
 } from "react-icons/fa6";
-import { PiAirTrafficControlFill } from "react-icons/pi";
+import { PiAirTrafficControlDuotone } from "react-icons/pi";
 import { TbMapPinPlus, TbMapPin, TbRoad } from "react-icons/tb";
 import { styled } from "styled-components";
 
@@ -27,7 +27,7 @@ const HtmlContainer = styled.div`
   min-height: 300px;
 `;
 
-const AddAerodromeIcon = styled(PiAirTrafficControlFill)`
+const AddAerodromeIcon = styled(PiAirTrafficControlDuotone)`
   font-size: 25px;
   margin-left: 5px;
 `;

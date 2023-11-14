@@ -8,7 +8,7 @@ import { ImCompass2 } from "react-icons/im";
 import { PiEyeBold } from "react-icons/pi";
 import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { GiWindsock } from "react-icons/gi";
-import { PiAirTrafficControlFill } from "react-icons/pi";
+import { PiAirTrafficControlDuotone } from "react-icons/pi";
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
@@ -439,7 +439,7 @@ const AerodromePage = () => {
         <HtmlContainer>
           <HtmlTitleContainer>
             <h1>
-              <PiAirTrafficControlFill />
+              <PiAirTrafficControlDuotone />
               {aerodromeData?.name}
             </h1>
             <div>
@@ -449,7 +449,7 @@ const AerodromePage = () => {
               <span>
                 <i>{isPrivateData ? "Private " : ""}Aerodrome:</i>
                 <i>
-                  <PiAirTrafficControlFill />
+                  <PiAirTrafficControlDuotone />
                   {aerodromeData?.code}
                 </i>
               </span>

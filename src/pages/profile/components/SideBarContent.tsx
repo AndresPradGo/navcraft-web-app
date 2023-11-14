@@ -2,7 +2,7 @@ import { BsPersonFillAdd } from "react-icons/bs";
 import { FaTools } from "react-icons/fa";
 import { FaUserPen, FaUserGear, FaUserXmark } from "react-icons/fa6";
 import { MdOutlineLogout } from "react-icons/md";
-import { PiAirTrafficControlFill } from "react-icons/pi";
+import { PiAirTrafficControlDuotone } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { TbMailCog, TbLockCog, TbMapPinPlus } from "react-icons/tb";
 import { styled } from "styled-components";
@@ -71,7 +71,7 @@ const AddPassengerIcon = styled(BsPersonFillAdd)`
   margin-left: 5px;
 `;
 
-const AddAerodromeIcon = styled(PiAirTrafficControlFill)`
+const AddAerodromeIcon = styled(PiAirTrafficControlDuotone)`
   font-size: 25px;
   margin-left: 5px;
 `;

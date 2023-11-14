@@ -9,7 +9,7 @@ import {
 import { ImCompass2 } from "react-icons/im";
 import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { GiWindsock } from "react-icons/gi";
-import { PiAirTrafficControlFill } from "react-icons/pi";
+import { PiAirTrafficControlDuotone } from "react-icons/pi";
 import { SlBadge } from "react-icons/sl";
 import { useForm, FieldValues } from "react-hook-form";
 import { styled } from "styled-components";
@@ -306,7 +306,7 @@ const TerrainIcon = styled(LiaMountainSolid)`
   margin: 0 10px;
 `;
 
-const AddAerodromeIcon = styled(PiAirTrafficControlFill)`
+const AddAerodromeIcon = styled(PiAirTrafficControlDuotone)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 10px;
