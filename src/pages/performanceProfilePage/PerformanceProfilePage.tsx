@@ -238,6 +238,7 @@ const PerformanceProfilePage = () => {
             }}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
+            profileId={profileId}
           />
         ) : currentForm === "addTank" ? (
           <EditFuelTankForm

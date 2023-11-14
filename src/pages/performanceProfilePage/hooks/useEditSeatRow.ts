@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../../services/apiClient';
-import { CompartmentDataFromForm } from '../components/EditBaggageCompartmentForm';
+import { SeatRowDataFromForm } from '../components/EditSeatRowForm';
 import apiClient, {AircraftArrangementDataFromAPI} from '../../../services/aircraftArrangementClient'
 import errorToast from '../../../utils/errorToast';
 
@@ -11,19 +11,19 @@ interface AircraftArrangementContext {
     previousData?: AircraftArrangementDataFromAPI 
 }
 
-const useEditBaggageCompartment = (profileId: number) => {
+const useEditSeatRow = (profileId: number) => {
     const queryClient = useQueryClient()
-    return useMutation<CompartmentDataFromForm, APIClientError, CompartmentDataFromForm, AircraftArrangementContext>({
+    return useMutation<SeatRowDataFromForm, APIClientError, SeatRowDataFromForm, AircraftArrangementContext>({
         mutationFn: (data) => {
             if (data.id === 0) 
-                return apiClient.postAndGetOther<CompartmentDataFromForm>(
-                    data as CompartmentDataFromForm, 
-                    `/baggage-compartment/${profileId}`
+                return apiClient.postAndGetOther<SeatRowDataFromForm>(
+                    data as SeatRowDataFromForm, 
+                    `/seat-row/${profileId}`
                 )
             else 
-                return apiClient.editAndGetOther<CompartmentDataFromForm>(
-                    data as CompartmentDataFromForm, 
-                    `/baggage-compartment/${data.id}`
+                return apiClient.editAndGetOther<SeatRowDataFromForm>(
+                    data as SeatRowDataFromForm, 
+                    `/seat-row/${data.id}`
                 )
         },
         onMutate: newData => {
@@ -32,17 +32,17 @@ const useEditBaggageCompartment = (profileId: number) => {
                 ['AircraftArrangementData', profileId], 
                 currentData => {
                     if(newData.id === 0) {
-                        return currentData ? {...currentData, baggage_compartments: [newData, ...currentData.baggage_compartments]} : {
-                            baggage_compartments: [newData],
-                            seat_rows: [],
+                        return currentData ? {...currentData, seat_rows: [newData, ...currentData.seat_rows]} : {
+                            seat_rows: [newData],
+                            baggage_compartments: [],
                             fuel_tanks: []
                         }
                     } else {
-                        return currentData ? {...currentData, baggage_compartments: currentData.baggage_compartments.map(item => (
+                        return currentData ? {...currentData, seat_rows: currentData.seat_rows.map(item => (
                             item.id === newData.id ? newData : item
                         ))} : {
-                            baggage_compartments: [newData],
-                            seat_rows: [],
+                            seat_rows: [newData],
+                            baggage_compartments: [],
                             fuel_tanks: []
                         }
                     }
@@ -51,7 +51,7 @@ const useEditBaggageCompartment = (profileId: number) => {
             return { previousData }
         },
         onSuccess: (savedData, newData) => {
-            toast.success(`${savedData.name} has been ${newData.id === 0 ? "added" : "edited"} successfully`, {
+            toast.success(`${savedData.name} has been ${newData.id === 0 ? "added" : "edited"} successfully.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
@@ -64,11 +64,11 @@ const useEditBaggageCompartment = (profileId: number) => {
             queryClient.setQueryData<AircraftArrangementDataFromAPI>(
                 ['AircraftArrangementData', profileId], 
                 currentData => {
-                    return currentData ? {...currentData, baggage_compartments: currentData.baggage_compartments.map(item => (
+                    return currentData ? {...currentData, seat_rows: currentData.seat_rows.map(item => (
                         item.id === newData.id ? savedData : item
                     ))} : {
-                        baggage_compartments: [savedData],
-                        seat_rows: [],
+                        seat_rows: [savedData],
+                        baggage_compartments: [],
                         fuel_tanks: []
                     }
                 }
@@ -86,4 +86,4 @@ const useEditBaggageCompartment = (profileId: number) => {
     })
 }
 
-export default useEditBaggageCompartment
+export default useEditSeatRow

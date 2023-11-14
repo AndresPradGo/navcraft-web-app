@@ -247,6 +247,7 @@ const ArrangementSection = ({
             seatRowData={selectedSeat}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
+            profileId={profileId}
           />
         ) : currentForm === "addTank" ? (
           <EditFuelTankForm
@@ -300,7 +301,7 @@ const ArrangementSection = ({
         dataIsLoading={isLoading}
         otherComponent={
           <HtmlInstructionsList>
-            <li>You can add fuel tanks to this performance profile</li>
+            <li>You can add fuel tanks to this performance profile.</li>
             <li>
               Tanks with lower burn sequence, will be assumed to burn fuel
               first.

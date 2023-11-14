@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
+import useEditSeatRow from "../hooks/useEditSeatRow";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -234,8 +235,14 @@ interface Props {
   seatRowData: SeatRowDataFromForm;
   closeModal: () => void;
   isOpen: boolean;
+  profileId: number;
 }
-const EditSeatRowForm = ({ seatRowData, closeModal, isOpen }: Props) => {
+const EditSeatRowForm = ({
+  seatRowData,
+  closeModal,
+  isOpen,
+  profileId,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -243,6 +250,8 @@ const EditSeatRowForm = ({ seatRowData, closeModal, isOpen }: Props) => {
     reset,
     watch,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
+
+  const mutation = useEditSeatRow(profileId);
 
   useEffect(() => {
     if (isOpen) {
@@ -262,7 +271,13 @@ const EditSeatRowForm = ({ seatRowData, closeModal, isOpen }: Props) => {
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
-    console.log(data);
+    mutation.mutate({
+      id: seatRowData.id,
+      name: data.name,
+      arm_in: data.arm_in,
+      number_of_seats: data.number_of_seats,
+      weight_limit_lb: data.weight_limit_lb,
+    });
   };
 
   return (
