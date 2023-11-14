@@ -21,6 +21,7 @@ import EditBaggageCompartmentForm from "./components/EditBaggageCompartmentForm"
 import EditSeatRowForm from "./components/EditSeatRowForm";
 import EditFuelTankForm from "./components/EditFuelTankForm";
 import useAircraftArrangementData from "../../hooks/useAircraftArrangementData";
+import EditPerformanceProfileForm from "./components/EditPerformanceProfileForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -226,7 +227,15 @@ const PerformanceProfilePage = () => {
   return (
     <>
       <Modal isOpen={modal.isOpen}>
-        {currentForm === "addCompartment" ? (
+        {currentForm === "editProfile" ? (
+          <EditPerformanceProfileForm
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+            aircraftId={aircraftId}
+            profileName={profileBaseData?.performance_profile_name || ""}
+            fuelType={fuelType.name}
+          />
+        ) : currentForm === "addCompartment" ? (
           <EditBaggageCompartmentForm
             compartmentData={{
               id: 0,
@@ -276,7 +285,10 @@ const PerformanceProfilePage = () => {
             disableSelect={
               !profileBaseData?.is_complete || !!profileBaseData?.is_preferred
             }
-            handleEditProfile={() => {}}
+            handleEditProfile={() => {
+              setCurrentForm("editProfile");
+              modal.handleOpen();
+            }}
             handleSelectProfile={() => {}}
             handleDeleteProfile={() => {}}
             handleAddBaggage={handleAddBaggage}
