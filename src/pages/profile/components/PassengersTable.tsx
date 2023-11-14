@@ -84,6 +84,7 @@ const PassengersTable = ({ editModal, passengerId, setPassengerId }: Props) => {
         title="Frequent Passengers"
         hanldeAdd={handleAddNewClick}
         dataIsLoading={isLoading}
+        marginTop={100}
       />
     </>
   );

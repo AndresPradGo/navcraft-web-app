@@ -7,11 +7,11 @@ import Button from "./button";
 import Table, { TableProps } from "./table/";
 import Loader from "../Loader";
 
-interface HtmlTagProps {
-  $isOpen: boolean;
+interface HtmlContainerProps {
+  $marginTop: number;
 }
-const HtmlContainer = styled.div`
-  margin: 100px 0 50px;
+const HtmlContainer = styled.div<HtmlContainerProps>`
+  margin: ${(props) => props.$marginTop}px 0 50px;
   width: 100%;
 `;
 
@@ -38,6 +38,9 @@ const HtmlTitleContainer = styled.div`
   }
 `;
 
+interface HtmlTagProps {
+  $isOpen: boolean;
+}
 const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
   color: var(--color-grey);
   cursor: pointer;
@@ -71,6 +74,7 @@ interface Props extends TableProps {
   disableAdd?: boolean;
   otherComponent?: ReactNode;
   dataIsLoading?: boolean;
+  marginTop?: number;
 }
 
 const ExpandibleTable = ({
@@ -85,11 +89,12 @@ const ExpandibleTable = ({
   searchBarParameters,
   filterParameters,
   dataIsLoading,
+  marginTop,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <HtmlContainer>
+    <HtmlContainer $marginTop={marginTop || 50}>
       <HtmlTitleContainer>
         <div>
           <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />

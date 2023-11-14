@@ -8,7 +8,7 @@ interface HtmlTagProps {
 
 const HtmlContainer = styled.div<HtmlTagProps>`
   padding: 15px;
-  align-self: center;
+
   max-width: 100%;
   display: flex;
   align-items: center;

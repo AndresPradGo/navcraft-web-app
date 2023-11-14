@@ -152,7 +152,7 @@ const SaveIcon = styled(AiOutlineSave)`
 `;
 const TitleIcon = styled(MdLuggage)`
   flex-shrink: 0;
-  font-size: 25px;
+  font-size: 30px;
   margin: 0 10px;
 
   @media screen and (min-width: 510px) {

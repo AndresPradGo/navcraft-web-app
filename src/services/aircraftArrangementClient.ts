@@ -3,9 +3,7 @@ import {CompartmentDataFromForm} from '../pages/performanceProfilePage/component
 import {SeatRowDataFromForm} from '../pages/performanceProfilePage/components/EditSeatRowForm'
 import {FuelTankDataFromForm} from '../pages/performanceProfilePage/components/EditFuelTankForm'
 
-
-
-interface AircraftArrangementDataFromAPI {
+export interface AircraftArrangementDataFromAPI {
     baggage_compartments: CompartmentDataFromForm[];
     seat_rows : SeatRowDataFromForm[];
     fuel_tanks : FuelTankDataFromForm[];

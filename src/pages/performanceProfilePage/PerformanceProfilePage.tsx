@@ -192,6 +192,21 @@ const PerformanceProfilePage = () => {
     },
   ];
 
+  const handleAddBaggage = () => {
+    setCurrentForm("addCompartment");
+    modal.handleOpen();
+  };
+
+  const handleAddSeat = () => {
+    setCurrentForm("addSeat");
+    modal.handleOpen();
+  };
+
+  const handleAddFuel = () => {
+    setCurrentForm("addTank");
+    modal.handleOpen();
+  };
+
   const handleChangeToNextTable = () => {
     if (sectionIdx >= sections.length - 1) setSectionIdx(0);
     else setSectionIdx(sectionIdx + 1);
@@ -250,18 +265,9 @@ const PerformanceProfilePage = () => {
             handleEditProfile={() => {}}
             handleSelectProfile={() => {}}
             handleDeleteProfile={() => {}}
-            handleAddBaggage={() => {
-              setCurrentForm("addCompartment");
-              modal.handleOpen();
-            }}
-            handleAddSeat={() => {
-              setCurrentForm("addSeat");
-              modal.handleOpen();
-            }}
-            handleAddFuel={() => {
-              setCurrentForm("addTank");
-              modal.handleOpen();
-            }}
+            handleAddBaggage={handleAddBaggage}
+            handleAddSeat={handleAddSeat}
+            handleAddFuel={handleAddFuel}
             handleEditWBData={() => {}}
             handleAddWBProfile={() => {}}
             handleEditTakeoffData={() => {}}
@@ -321,6 +327,10 @@ const PerformanceProfilePage = () => {
           {sectionIdx === 0 ? (
             <ArrangementSection
               fuel={{ name: fuelType.name, density: fuelType.density_lb_gal }}
+              profileId={profileId}
+              handleAddBaggage={handleAddBaggage}
+              handleAddSeat={handleAddSeat}
+              handleAddFuel={handleAddFuel}
             />
           ) : null}
         </HtmlContainer>
