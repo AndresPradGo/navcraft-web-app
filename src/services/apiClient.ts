@@ -93,6 +93,11 @@ class APIClient<TPost, TGet> {
         return axiosInstance.post<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
     }
 
+    postAndGetOther = <TGetOther>(data: TPost, endpointPostfix?: string): Promise<TGetOther> => {
+        this._setAuthHeader()
+        return axiosInstance.post<TGetOther>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
+    }
+
     edit = (data: TPost, endpointPostfix?: string): Promise<TGet> => {
         this._setAuthHeader()
         return axiosInstance.put<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
@@ -101,6 +106,11 @@ class APIClient<TPost, TGet> {
     editOther = <TPostOther>(data: TPostOther, endpointPostfix?: string): Promise<TGet> => {
         this._setAuthHeader()
         return axiosInstance.put<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
+    }
+
+    editAndGetOther = <TGetOther>(data: TPost, endpointPostfix?: string): Promise<TGetOther> => {
+        this._setAuthHeader()
+        return axiosInstance.put<TGetOther>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
     }
 
     editOtherAndPreProcess = <TPostOther, TFromAPI>(

@@ -240,6 +240,7 @@ const ArrangementSection = ({
             compartmentData={selectedCompartment}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
+            profileId={profileId}
           />
         ) : currentForm === "addSeat" ? (
           <EditSeatRowForm

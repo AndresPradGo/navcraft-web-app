@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
+import useEditBaggageCompartment from "../hooks/useEditBaggageCompartment";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -224,12 +225,14 @@ interface Props {
   compartmentData: CompartmentDataFromForm;
   closeModal: () => void;
   isOpen: boolean;
+  profileId: number;
 }
 
 const EditBaggageCompartmentForm = ({
   compartmentData,
   closeModal,
   isOpen,
+  profileId,
 }: Props) => {
   const {
     register,
@@ -238,6 +241,8 @@ const EditBaggageCompartmentForm = ({
     reset,
     watch,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
+
+  const mutation = useEditBaggageCompartment(profileId);
 
   useEffect(() => {
     if (isOpen) {
@@ -256,7 +261,12 @@ const EditBaggageCompartmentForm = ({
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
-    console.log(data);
+    mutation.mutate({
+      id: compartmentData.id,
+      name: data.name,
+      arm_in: data.arm_in,
+      weight_limit_lb: data.weight_limit_lb,
+    });
   };
 
   return (
