@@ -133,6 +133,7 @@ const DeleteArrangementItemForm = ({
       name,
     });
   };
+
   return (
     <HtmlContainer>
       <h1>

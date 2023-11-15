@@ -5,7 +5,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
 import Button from "../common/button";
-import useDeleteProfile from "./useDeleteProfile";
+import useDeleteProfile from "./useDeletePerformanceProfile";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -118,7 +118,7 @@ interface Props {
   redirect?: boolean;
 }
 
-const DeleteProfileForm = ({
+const DeletePerformanceProfileForm = ({
   closeModal,
   id,
   name,
@@ -182,4 +182,4 @@ const DeleteProfileForm = ({
   );
 };
 
-export default DeleteProfileForm;
+export default DeletePerformanceProfileForm;

@@ -9,7 +9,7 @@ interface DeleteProfileContext {
     previousData?: AircraftDataFromAPI
 }
 
-const useDeleteProfile = (aircraftId: number, onDelete: () => void) => {
+const useDeletePerformanceProfile = (aircraftId: number, onDelete: () => void) => {
     const queryClient = useQueryClient()
     return useMutation<string, APIClientError, number, DeleteProfileContext>({
         mutationFn: profileId => apiClient.delete(`/performance-profile/${profileId}`),
@@ -51,4 +51,4 @@ const useDeleteProfile = (aircraftId: number, onDelete: () => void) => {
     })
 }
 
-export default useDeleteProfile
+export default useDeletePerformanceProfile

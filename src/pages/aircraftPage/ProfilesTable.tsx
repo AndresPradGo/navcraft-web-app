@@ -5,7 +5,7 @@ import { styled } from "styled-components";
 import { useModal, Modal, UseModalType } from "../../components/common/modal";
 import { PerformanceProfileBaseData } from "../../services/aircraftClient";
 import { FuelTypeData } from "../../hooks/useFuelTypes";
-import DeleteProfileForm from "../../components/deleteProfileForm";
+import DeletePerformanceProfileForm from "../../components/deletePerformanceProfileForm";
 import formatUTCDate from "../../utils/formatUTCDate";
 import ExpandibleTable from "../../components/common/ExpandibleTable";
 
@@ -70,7 +70,7 @@ const ProfilesTable = ({
   return (
     <>
       <Modal isOpen={deleteModal.isOpen}>
-        <DeleteProfileForm
+        <DeletePerformanceProfileForm
           closeModal={deleteModal.handleClose}
           id={profileId}
           name={
