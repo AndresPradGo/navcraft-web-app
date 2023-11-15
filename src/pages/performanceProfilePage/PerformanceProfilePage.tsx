@@ -24,6 +24,7 @@ import useAircraftArrangementData from "../../hooks/useAircraftArrangementData";
 import EditPerformanceProfileForm from "./components/EditPerformanceProfileForm";
 import useSelectPerformanceProfile from "./hooks/useSelectPerformanceProfile";
 import DeletePerformanceProfileForm from "../../components/deletePerformanceProfileForm";
+import WeightBalanceSection from "./components/WeightBalanceSection";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -382,6 +383,8 @@ const PerformanceProfilePage = () => {
               isLoading={arrangementLoading}
               arrangementData={arrangementData}
             />
+          ) : sectionIdx === 1 ? (
+            <WeightBalanceSection />
           ) : null}
         </HtmlContainer>
       </ContentLayout>
