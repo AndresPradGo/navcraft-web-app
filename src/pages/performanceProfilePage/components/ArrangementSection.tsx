@@ -39,7 +39,6 @@ interface Props {
   handleAddSeat: () => void;
   handleAddFuel: () => void;
   arrangementData?: AircraftArrangementDataFromAPI;
-  isLoading: boolean;
 }
 
 const ArrangementSection = ({
@@ -48,7 +47,6 @@ const ArrangementSection = ({
   handleAddBaggage,
   handleAddSeat,
   handleAddFuel,
-  isLoading,
 }: Props) => {
   const queryClient = useQueryClient();
   const arrangementData =
@@ -322,7 +320,6 @@ const ArrangementSection = ({
         emptyTableMessage="No Baggage Compartments have been added to this profile..."
         title="Baggage Compartments"
         hanldeAdd={handleAddBaggage}
-        dataIsLoading={isLoading}
       />
       <ExpandibleTable
         tableData={seatsTableData}
@@ -331,7 +328,6 @@ const ArrangementSection = ({
         emptyTableMessage="No Seat Rows have been added to this profile..."
         title="Seat Rows"
         hanldeAdd={handleAddSeat}
-        dataIsLoading={isLoading}
       />
       <ExpandibleTable
         tableData={tanksTableData}
@@ -341,7 +337,6 @@ const ArrangementSection = ({
         emptyTableMessage="No Fuel Tanks have been added to this profile..."
         title="Fuel Tanks"
         hanldeAdd={handleAddFuel}
-        dataIsLoading={isLoading}
         otherComponent={
           <HtmlInstructionsList>
             <li>You can add up to 4 fuel tanks to this performance profile.</li>

@@ -9,6 +9,7 @@ interface WeightBalancelimits {
 }
 
 interface WeightAndBalanceProfile {
+    id: number;
     name: string;
     limits : WeightBalancelimits[];
     created_at_utc: string;

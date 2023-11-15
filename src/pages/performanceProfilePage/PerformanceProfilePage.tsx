@@ -177,7 +177,12 @@ const PerformanceProfilePage = () => {
     weightBalanceData.error
   )
     throw new Error("");
-  if (isLoading || fuelTypesIsLoading || weightBalanceData.isLoading)
+  if (
+    isLoading ||
+    fuelTypesIsLoading ||
+    weightBalanceData.isLoading ||
+    arrangementLoading
+  )
     return <Loader />;
 
   const profileBaseData = aircraftData?.profiles.find(
@@ -218,6 +223,16 @@ const PerformanceProfilePage = () => {
       title: "Landing Performance",
       icon: <FaPlaneArrival />,
     },
+  ];
+
+  const addWeightBalanceProfileInstructions = [
+    "You can add up to 4 Weight and Balance Profiles.",
+    "To add or edit a W&B Profile, list all the points that describe the boundaries of the profile.",
+    "Each point is composed by a CoG location in inches aft of the datum, and an aircraft weight in pounds.",
+    "Enter each point following the forma: (CoG location, aircraft weight). For example, (47.3, 14000).",
+    "After entering each point, confirm the data has been recognized correctly, by finding the point in the graph, and by checking the list of entered point.",
+    "Make sure you enter the points in the correct order, or the profile will not be accurate.",
+    "After entering all points, make sure the graph looks correct, before saving the data.",
   ];
 
   const handleAddBaggage = () => {
@@ -399,10 +414,13 @@ const PerformanceProfilePage = () => {
               handleAddBaggage={handleAddBaggage}
               handleAddSeat={handleAddSeat}
               handleAddFuel={handleAddFuel}
-              isLoading={arrangementLoading}
             />
           ) : sectionIdx === 1 ? (
-            <WeightBalanceSection />
+            <WeightBalanceSection
+              profileId={profileId}
+              handlAddWeightBalanceprofile={() => {}}
+              instructions={addWeightBalanceProfileInstructions}
+            />
           ) : null}
         </HtmlContainer>
       </ContentLayout>
