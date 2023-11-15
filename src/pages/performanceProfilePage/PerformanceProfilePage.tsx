@@ -21,10 +21,12 @@ import EditBaggageCompartmentForm from "./components/EditBaggageCompartmentForm"
 import EditSeatRowForm from "./components/EditSeatRowForm";
 import EditFuelTankForm from "./components/EditFuelTankForm";
 import useAircraftArrangementData from "../../hooks/useAircraftArrangementData";
+import useWeightBalanceData from "../../hooks/useWeightBalanceData";
 import EditPerformanceProfileForm from "./components/EditPerformanceProfileForm";
 import useSelectPerformanceProfile from "./hooks/useSelectPerformanceProfile";
 import DeletePerformanceProfileForm from "../../components/deletePerformanceProfileForm";
 import WeightBalanceSection from "./components/WeightBalanceSection";
+import EditWeightAndBalanceDataForm from "./components/EditWeightAndBalanceDataForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -135,7 +137,11 @@ const ChangeIcon = styled(AiOutlineSwap)`
 const PerformanceProfilePage = () => {
   const [sectionIdx, setSectionIdx] = useState(0);
   const [currentForm, setCurrentForm] = useState<
-    "deleteProfile" | "addCompartment" | "addSeat" | "addTank"
+    | "deleteProfile"
+    | "addCompartment"
+    | "addSeat"
+    | "addTank"
+    | "editWeightBalanceData"
   >("deleteProfile");
 
   const modal = useModal();
@@ -161,14 +167,18 @@ const PerformanceProfilePage = () => {
     isLoading: arrangementLoading,
   } = useAircraftArrangementData(profileId);
 
+  const weightBalanceData = useWeightBalanceData(profileId);
+
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if (
     (error && error.message === "Network Error") ||
     fuelTypesError ||
-    arrangementError
+    arrangementError ||
+    weightBalanceData.error
   )
     throw new Error("");
-  if (isLoading || fuelTypesIsLoading) return <Loader />;
+  if (isLoading || fuelTypesIsLoading || weightBalanceData.isLoading)
+    return <Loader />;
 
   const profileBaseData = aircraftData?.profiles.find(
     (profile) => profile.id === profileId
@@ -290,6 +300,12 @@ const PerformanceProfilePage = () => {
             isOpen={modal.isOpen}
             profileId={profileId}
           />
+        ) : currentForm === "editWeightBalanceData" ? (
+          <EditWeightAndBalanceDataForm
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+            profileId={profileId}
+          />
         ) : null}
       </Modal>
       <ContentLayout
@@ -314,7 +330,10 @@ const PerformanceProfilePage = () => {
             handleAddBaggage={handleAddBaggage}
             handleAddSeat={handleAddSeat}
             handleAddFuel={handleAddFuel}
-            handleEditWBData={() => {}}
+            handleEditWBData={() => {
+              setCurrentForm("editWeightBalanceData");
+              modal.handleOpen();
+            }}
             handleAddWBProfile={() => {}}
             handleEditTakeoffData={() => {}}
             handleDownloadTakeoffData={() => {}}
@@ -381,7 +400,6 @@ const PerformanceProfilePage = () => {
               handleAddSeat={handleAddSeat}
               handleAddFuel={handleAddFuel}
               isLoading={arrangementLoading}
-              arrangementData={arrangementData}
             />
           ) : sectionIdx === 1 ? (
             <WeightBalanceSection />

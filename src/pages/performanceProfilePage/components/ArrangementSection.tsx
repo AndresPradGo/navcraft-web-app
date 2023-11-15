@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { BsFillFuelPumpFill } from "react-icons/bs";
 import { GiMolecule } from "react-icons/gi";
 import { styled } from "styled-components";
@@ -47,9 +48,14 @@ const ArrangementSection = ({
   handleAddBaggage,
   handleAddSeat,
   handleAddFuel,
-  arrangementData,
   isLoading,
 }: Props) => {
+  const queryClient = useQueryClient();
+  const arrangementData =
+    queryClient.getQueryData<AircraftArrangementDataFromAPI>([
+      "AircraftArrangementData",
+      profileId,
+    ]);
   const [selectedId, setSelectedId] = useState<number>(0);
   const [currentForm, setCurrentForm] = useState<
     | "addCompartment"
