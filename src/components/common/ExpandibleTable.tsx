@@ -16,6 +16,7 @@ const HtmlContainer = styled.div<HtmlContainerProps>`
 `;
 
 const HtmlTitleContainer = styled.div`
+  text-wrap: wrap;
   display: flex;
   justify-content: space-between;
   align-items: center;

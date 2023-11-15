@@ -22,6 +22,7 @@ interface HtmlButtonProps {
 }
 
 const HtmlButton = styled.button<HtmlButtonProps>`
+  flex-shrink: 0;
   display: flex;
   flex-direction: row;
   justify-content: ${(props) => props.$spaceChildren};

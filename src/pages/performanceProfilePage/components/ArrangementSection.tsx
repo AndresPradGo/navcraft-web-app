@@ -10,6 +10,7 @@ import EditBaggageCompartmentForm from "./EditBaggageCompartmentForm";
 import EditSeatRowForm from "./EditSeatRowForm";
 import EditFuelTankForm from "./EditFuelTankForm";
 import { AircraftArrangementDataFromAPI } from "../../../services/aircraftArrangementClient";
+import DeleteArrangementItemForm from "./DeleteArrangementItemForm";
 
 const HtmlInstructionsList = styled.ul`
   & ul {
@@ -51,7 +52,12 @@ const ArrangementSection = ({
 }: Props) => {
   const [selectedId, setSelectedId] = useState<number>(0);
   const [currentForm, setCurrentForm] = useState<
-    "addCompartment" | "addSeat" | "addTank"
+    | "addCompartment"
+    | "addSeat"
+    | "addTank"
+    | "deleteCompartment"
+    | "deleteTank"
+    | "deleteSeat"
   >("addCompartment");
 
   const modal = useModal();
@@ -76,7 +82,11 @@ const ArrangementSection = ({
             setCurrentForm("addCompartment");
             modal.handleOpen();
           },
-          handleDelete: () => {},
+          handleDelete: () => {
+            setSelectedId(compartment.id);
+            setCurrentForm("deleteCompartment");
+            modal.handleOpen();
+          },
           permissions: "delete" as "delete",
         }))
       : [],
@@ -117,7 +127,11 @@ const ArrangementSection = ({
             setCurrentForm("addSeat");
             modal.handleOpen();
           },
-          handleDelete: () => {},
+          handleDelete: () => {
+            setSelectedId(seat.id);
+            setCurrentForm("deleteSeat");
+            modal.handleOpen();
+          },
           permissions: "delete" as "delete",
         }))
       : [],
@@ -174,7 +188,11 @@ const ArrangementSection = ({
             setCurrentForm("addTank");
             modal.handleOpen();
           },
-          handleDelete: () => {},
+          handleDelete: () => {
+            setSelectedId(tank.id);
+            setCurrentForm("deleteTank");
+            modal.handleOpen();
+          },
           permissions: "delete" as "delete",
         }))
       : [],
@@ -247,6 +265,30 @@ const ArrangementSection = ({
             fuelTankData={selectedTank}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
+            profileId={profileId}
+          />
+        ) : currentForm === "deleteCompartment" ? (
+          <DeleteArrangementItemForm
+            closeModal={modal.handleClose}
+            type={"Baggage Compartment"}
+            name={selectedCompartment.name}
+            id={selectedId}
+            profileId={profileId}
+          />
+        ) : currentForm === "deleteSeat" ? (
+          <DeleteArrangementItemForm
+            closeModal={modal.handleClose}
+            type={"Seat Row"}
+            name={selectedSeat.name}
+            id={selectedId}
+            profileId={profileId}
+          />
+        ) : currentForm === "deleteTank" ? (
+          <DeleteArrangementItemForm
+            closeModal={modal.handleClose}
+            type={"Fuel Tank"}
+            name={selectedTank.name}
+            id={selectedId}
             profileId={profileId}
           />
         ) : null}
