@@ -132,6 +132,7 @@ interface Props {
   sectionIndex: number;
   sectionOptions: PageSectionDataType[];
   disableSelect: boolean;
+  disableAddWeightBalance: boolean;
   handleEditProfile: () => void;
   handleSelectProfile: () => void;
   handleDeleteProfile: () => void;
@@ -179,6 +180,7 @@ const SideBarContent = ({
   handleDownloadLandData,
   handleImportLandData,
   disableAddFuelTank,
+  disableAddWeightBalance,
 }: Props) => {
   const baseStyles = {
     width: "100%",
@@ -262,7 +264,7 @@ const SideBarContent = ({
     {
       text: "Add W&B Profile",
       icon: <AddIcon />,
-      styles: { ...commonStyles },
+      styles: { ...commonStyles, disabled: disableAddWeightBalance },
       onClick: handleAddWBProfile,
     },
   ];

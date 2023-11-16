@@ -38,7 +38,6 @@ interface Props {
   handleAddBaggage: () => void;
   handleAddSeat: () => void;
   handleAddFuel: () => void;
-  arrangementData?: AircraftArrangementDataFromAPI;
 }
 
 const ArrangementSection = ({

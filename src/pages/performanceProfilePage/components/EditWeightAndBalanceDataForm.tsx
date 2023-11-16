@@ -17,6 +17,7 @@ import { z } from "zod";
 
 import Button from "../../../components/common/button";
 import { WeightAndBalanceDataFromAPI } from "../../../services/weightBalanceClient";
+import useEditWeightBalanceData from "../hooks/useEditWeightBalanceData";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -280,6 +281,8 @@ const EditWeightAndBalanceDataForm = ({
       profileId,
     ]);
 
+  const mutation = useEditWeightBalanceData(profileId);
+
   const {
     register,
     handleSubmit,
@@ -303,7 +306,7 @@ const EditWeightAndBalanceDataForm = ({
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
-    console.log(data);
+    mutation.mutate(data as WeightBalanceDataFromForm);
   };
   return (
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>

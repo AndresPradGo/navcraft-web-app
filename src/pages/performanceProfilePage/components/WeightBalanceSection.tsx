@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { GiRadialBalance } from "react-icons/gi";
 import { MdNoLuggage } from "react-icons/md";
@@ -48,25 +47,16 @@ const COGIcon = styled(GiRadialBalance)`
 `;
 
 interface Props {
-  profileId: number;
   handlAddWeightBalanceprofile: () => void;
   instructions: string[];
+  weightBalanceData?: WeightAndBalanceDataFromAPI;
 }
 
 const WeightBalanceSection = ({
-  profileId,
   handlAddWeightBalanceprofile,
   instructions,
+  weightBalanceData,
 }: Props) => {
-  const queryClient = useQueryClient();
-  const weightBalanceData =
-    queryClient.getQueryData<WeightAndBalanceDataFromAPI>([
-      "AircraftWeightBalanceData",
-      profileId,
-    ]);
-
-  console.log(weightBalanceData);
-
   const dataList = [
     {
       key: "center_of_gravity_in",

@@ -167,20 +167,24 @@ const PerformanceProfilePage = () => {
     isLoading: arrangementLoading,
   } = useAircraftArrangementData(profileId);
 
-  const weightBalanceData = useWeightBalanceData(profileId);
+  const {
+    data: weightBalanceData,
+    error: weightBalanceError,
+    isLoading: weightBalanceLoading,
+  } = useWeightBalanceData(profileId);
 
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if (
     (error && error.message === "Network Error") ||
     fuelTypesError ||
     arrangementError ||
-    weightBalanceData.error
+    weightBalanceError
   )
     throw new Error("");
   if (
     isLoading ||
     fuelTypesIsLoading ||
-    weightBalanceData.isLoading ||
+    weightBalanceLoading ||
     arrangementLoading
   )
     return <Loader />;
@@ -332,6 +336,9 @@ const PerformanceProfilePage = () => {
             disableSelect={
               !profileBaseData?.is_complete || !!profileBaseData?.is_preferred
             }
+            disableAddWeightBalance={
+              weightBalanceData.weight_balance_profiles.length >= 4
+            }
             handleEditProfile={() => {
               editProfileModal.handleOpen();
             }}
@@ -417,7 +424,7 @@ const PerformanceProfilePage = () => {
             />
           ) : sectionIdx === 1 ? (
             <WeightBalanceSection
-              profileId={profileId}
+              weightBalanceData={weightBalanceData}
               handlAddWeightBalanceprofile={() => {}}
               instructions={addWeightBalanceProfileInstructions}
             />
