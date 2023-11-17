@@ -1,12 +1,17 @@
 import { ReactNode } from "react";
 import { styled } from "styled-components";
 
-const HtmlDataList = styled.ul`
-  margin: 35px 0;
+interface HtmlTagProps {
+  $maxWidth: number;
+  $margin: string;
+}
+const HtmlDataList = styled.ul<HtmlTagProps>`
+  flex-shrink: 0;
+  margin: ${(props) => props.$margin};
   list-style: none;
   width: 100%;
   align-self: center;
-  max-width: 800px;
+  max-width: ${(props) => props.$maxWidth}px;
   padding: 0;
 
   & li {
@@ -49,11 +54,16 @@ export interface DataType {
 
 interface Props {
   dataList: DataType[];
+  maxWidth?: number;
+  margin?: string;
 }
 
-const DataTableList = ({ dataList }: Props) => {
+const DataTableList = ({ dataList, maxWidth, margin }: Props) => {
   return (
-    <HtmlDataList>
+    <HtmlDataList
+      $maxWidth={maxWidth !== undefined ? maxWidth : 800}
+      $margin={margin !== undefined ? margin : "35px 0"}
+    >
       {dataList.map((item) => {
         return (
           <li key={item.key}>

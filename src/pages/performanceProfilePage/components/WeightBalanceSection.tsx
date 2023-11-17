@@ -3,15 +3,28 @@ import { GiRadialBalance } from "react-icons/gi";
 import { MdNoLuggage } from "react-icons/md";
 import { PiAirplane, PiAirplaneFill } from "react-icons/pi";
 import { styled } from "styled-components";
+import _ from "lodash";
 
 import DataTableList from "../../../components/common/DataTableList";
 import ExpandibleTable from "../../../components/common/ExpandibleTable";
 import { useModal, Modal } from "../../../components/common/modal";
 import { WeightAndBalanceDataFromAPI } from "../../../services/weightBalanceClient";
 import formatUTCDate from "../../../utils/formatUTCDate";
+import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
+
+const HtmlDataContainer = styled.div`
+  transition: all 2s;
+  width: 100%;
+  display: flex;
+  margin: 0 0 35px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  align-content: center;
+`;
 
 const HtmlInstructionsList = styled.ul`
-  & ul {
+  & li {
     text-wrap: wrap;
   }
 `;
@@ -100,7 +113,7 @@ const WeightBalanceSection = ({
     keys: ["name", "updated"],
     headers: {
       name: "Name",
-      updated: "Date Updated",
+      updated: "Last Updated",
     },
     rows: weightBalanceData
       ? weightBalanceData.weight_balance_profiles.map((profile) => ({
@@ -114,14 +127,42 @@ const WeightBalanceSection = ({
       : [],
   };
 
+  const profiles = weightBalanceData
+    ? weightBalanceData.weight_balance_profiles.map((profile) => {
+        const orderLimits = _.orderBy(profile.limits, ["sequence"], ["asc"]);
+
+        return {
+          name: profile.name,
+          limits: orderLimits.map((limit) => ({
+            cg_location_in: limit.cg_location_in,
+            weight_lb: Math.round(limit.weight_lb * 100) / 100000,
+            label: `(${limit.cg_location_in}, ${
+              Math.round(limit.weight_lb * 100) / 100000
+            })`,
+          })),
+        };
+      })
+    : [];
+
+  const displayTable = !!profiles.length && profiles[0].limits.length;
+
   return (
     <>
-      <DataTableList dataList={dataList} />
+      <HtmlDataContainer>
+        <DataTableList dataList={dataList} maxWidth={400} margin="35px 0 0" />
+        {displayTable ? (
+          <WeightBalanceGraph
+            showMTOW={true}
+            profiles={profiles}
+            maxTakeoff={weightBalanceData?.max_takeoff_weight_lb}
+          />
+        ) : null}
+      </HtmlDataContainer>
       <ExpandibleTable
         tableData={tableData}
         disableAdd={tableData.rows.length >= 4}
         emptyTableMessage="No W&B Profiles have been added..."
-        title="W&B Profiles"
+        title="List of W&B Profiles"
         hanldeAdd={handlAddWeightBalanceprofile}
         otherComponent={
           <HtmlInstructionsList>

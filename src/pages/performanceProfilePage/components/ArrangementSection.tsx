@@ -14,7 +14,7 @@ import { AircraftArrangementDataFromAPI } from "../../../services/aircraftArrang
 import DeleteArrangementItemForm from "./DeleteArrangementItemForm";
 
 const HtmlInstructionsList = styled.ul`
-  & ul {
+  & li {
     text-wrap: wrap;
   }
 `;
