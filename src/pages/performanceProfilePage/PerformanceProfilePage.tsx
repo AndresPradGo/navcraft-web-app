@@ -233,9 +233,9 @@ const PerformanceProfilePage = () => {
     "You can add up to 4 Weight and Balance Profiles.",
     "To add or edit a W&B Profile, list all the points that describe the boundaries of the profile.",
     "Each point is composed by a CoG-location in inches aft of the datum, and an aircraft weight in pounds.",
-    "Enter each point following the forma: (CoG-location, aircraft-weight). For example, (47.3, 14000).",
-    "To confirm the data has been entered correctly, check the sample graph and the list of points.",
     "Make sure you enter the points in the correct order, or the profile will not be accurate.",
+    "Enter first the point for the lighter and most forward configuration, and follow a clockwise order.",
+    "To confirm the data has been entered correctly, check the sample graph and the list of points.",
     "Make sure the graph looks correct before saving the data.",
   ];
 

@@ -79,9 +79,10 @@ const WeightBalanceGraph = ({ profiles, maxTakeoff, showMTOW }: Props) => {
   const colors = ["#5CD3FF", "#FF33E4", "#31F500", "#FFC71F"];
 
   const getYDomain = (dataMin: number, dataMax: number): [number, number] => {
-    const range = dataMax - dataMin;
-    const gap = Math.ceil((range / 10) * 100) / 100;
-    const top = Math.ceil((dataMin + gap * 11) * 100) / 100;
+    const MTOW = maxTakeoff ? maxTakeoff / 1000 : undefined;
+    const range = (MTOW || dataMax) - dataMin;
+    const gap = range / 9;
+    const top = Math.ceil((dataMin + gap * 10) * 100) / 100;
     return [dataMin, top];
   };
 
@@ -125,10 +126,11 @@ const WeightBalanceGraph = ({ profiles, maxTakeoff, showMTOW }: Props) => {
     <HtmlContainer $SideBarIsOpen={sideBarIsExpanded}>
       <h1>W&B Profiles</h1>
       <ResponsiveContainer width={"100%"} aspect={1.4} debounce={100}>
-        <ComposedChart margin={{ top: 0, right: 15, left: 0, bottom: 15 }}>
+        <ComposedChart margin={{ top: 0, right: 25, left: 0, bottom: 15 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
-            tickCount={12}
+            interval="preserveStart"
+            tickCount={11}
             minTickGap={7}
             dataKey="cg_location_in"
             type="number"
@@ -144,7 +146,8 @@ const WeightBalanceGraph = ({ profiles, maxTakeoff, showMTOW }: Props) => {
             />
           </XAxis>
           <YAxis
-            tickCount={12}
+            interval="preserveStart"
+            tickCount={11}
             width={100}
             dataKey="weight_lb"
             type="number"
@@ -209,11 +212,11 @@ const WeightBalanceGraph = ({ profiles, maxTakeoff, showMTOW }: Props) => {
               y={maxTakeoff ? maxTakeoff / 1000 : undefined}
               stroke="var(--color-warning)"
               strokeDasharray="5 5"
-              strokeWidth={2.5}
+              strokeWidth={3}
               isFront={true}
             >
               <Label
-                value={`MTOW: ${maxTakeoff}lbs`}
+                value={`MTOW`}
                 offset={0}
                 position="insideRight"
                 stroke="var(--color-grey-bright)"
