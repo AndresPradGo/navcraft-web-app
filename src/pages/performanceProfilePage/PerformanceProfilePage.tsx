@@ -27,6 +27,7 @@ import useSelectPerformanceProfile from "./hooks/useSelectPerformanceProfile";
 import DeletePerformanceProfileForm from "../../components/deletePerformanceProfileForm";
 import WeightBalanceSection from "./components/WeightBalanceSection";
 import EditWeightAndBalanceDataForm from "./components/EditWeightAndBalanceDataForm";
+import EditWeightBalanceProfileForm from "./components/EditWeightBalanceProfileForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -142,6 +143,7 @@ const PerformanceProfilePage = () => {
     | "addSeat"
     | "addTank"
     | "editWeightBalanceData"
+    | "addWeightBalanceProfile"
   >("deleteProfile");
 
   const modal = useModal();
@@ -254,6 +256,11 @@ const PerformanceProfilePage = () => {
     modal.handleOpen();
   };
 
+  const handleAddWeightBalanceProfile = () => {
+    setCurrentForm("addWeightBalanceProfile");
+    modal.handleOpen();
+  };
+
   const handleChangeToNextTable = () => {
     if (sectionIdx >= sections.length - 1) setSectionIdx(0);
     else setSectionIdx(sectionIdx + 1);
@@ -325,6 +332,16 @@ const PerformanceProfilePage = () => {
             isOpen={modal.isOpen}
             profileId={profileId}
           />
+        ) : currentForm === "addWeightBalanceProfile" ? (
+          <EditWeightBalanceProfileForm
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+            data={{
+              id: 0,
+              name: "",
+              limits: [],
+            }}
+          />
         ) : null}
       </Modal>
       <ContentLayout
@@ -356,7 +373,7 @@ const PerformanceProfilePage = () => {
               setCurrentForm("editWeightBalanceData");
               modal.handleOpen();
             }}
-            handleAddWBProfile={() => {}}
+            handleAddWBProfile={handleAddWeightBalanceProfile}
             handleEditTakeoffData={() => {}}
             handleDownloadTakeoffData={() => {}}
             handleImportTakeoffData={() => {}}
@@ -425,7 +442,7 @@ const PerformanceProfilePage = () => {
           ) : sectionIdx === 1 ? (
             <WeightBalanceSection
               weightBalanceData={weightBalanceData}
-              handlAddWeightBalanceprofile={() => {}}
+              handlAddWeightBalanceprofile={handleAddWeightBalanceProfile}
               instructions={addWeightBalanceProfileInstructions}
               profileId={profileId}
             />

@@ -19,8 +19,7 @@ const HtmlTitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 5px;
-  padding: 0 0 10px 5px;
+  padding: 0 0 5px 5px;
   border-bottom: 1px solid var(--color-grey);
 
   & div {
@@ -34,7 +33,7 @@ const HtmlTitleContainer = styled.div`
   }
 
   @media screen and (min-width: 425px) {
-    padding: 0 0 10px 20px;
+    padding: 0 0 5px 20px;
   }
 `;
 

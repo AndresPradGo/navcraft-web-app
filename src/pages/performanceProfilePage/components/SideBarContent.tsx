@@ -1,5 +1,5 @@
 import { BiSolidSelectMultiple, BiSolidEditAlt } from "react-icons/bi";
-import { BsSpeedometer, BsPlusCircle } from "react-icons/bs";
+import { BsSpeedometer } from "react-icons/bs";
 import {
   FaPlaneDeparture,
   FaPlaneArrival,
@@ -12,6 +12,7 @@ import {
   MdLuggage,
   MdAirlineSeatReclineNormal,
   MdPropaneTank,
+  MdOutlineAdd,
 } from "react-icons/md";
 import { PiWind } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -112,7 +113,7 @@ const EditIcon = styled(BiSolidEditAlt)`
   margin-left: 5px;
 `;
 
-const AddIcon = styled(BsPlusCircle)`
+const AddIcon = styled(MdOutlineAdd)`
   font-size: 20px;
   margin-left: 5px;
 `;

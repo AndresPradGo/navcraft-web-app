@@ -82,8 +82,7 @@ const HtmlSectionTitle = styled.div<HtmlSectionProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 5px;
-  padding: 0 0 10px 5px;
+  padding: 0 0 2px 5px;
   border-bottom: 1px solid
     ${(props) => (props.$isOpen ? "var(--color-white)" : "var(--color-grey)")};
 
@@ -98,7 +97,7 @@ const HtmlSectionTitle = styled.div<HtmlSectionProps>`
   }
 
   @media screen and (min-width: 425px) {
-    padding: 0 0 10px 20px;
+    padding: 0 0 2px 20px;
   }
 `;
 
