@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { GiRadialBalance } from "react-icons/gi";
 import { MdNoLuggage } from "react-icons/md";
@@ -11,6 +12,7 @@ import { useModal, Modal } from "../../../components/common/modal";
 import { WeightAndBalanceDataFromAPI } from "../../../services/weightBalanceClient";
 import formatUTCDate from "../../../utils/formatUTCDate";
 import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
+import DeleteWeightBalanceProfileForm from "./DeleteWeightBalanceProfileForm";
 
 const HtmlDataContainer = styled.div`
   transition: all 2s;
@@ -31,45 +33,76 @@ const HtmlInstructionsList = styled.ul`
 
 const EmptyIcon = styled(PiAirplane)`
   font-size: 25px;
-  margin: 0 5px 0 10px;
+  margin: 0 5px 0 0;
+
+  @media screen and (min-width: 425px) {
+    margin: 0 5px 0 10px;
+  }
 `;
 
 const RampIcon = styled(PiAirplaneFill)`
   font-size: 25px;
-  margin: 0 5px 0 10px;
+  margin: 0 5px 0 0;
+
+  @media screen and (min-width: 425px) {
+    margin: 0 5px 0 10px;
+  }
 `;
 
 const TakeoffIcon = styled(BiSolidPlaneTakeOff)`
   font-size: 25px;
-  margin: 0 5px 0 10px;
+  margin: 0 5px 0 0;
+
+  @media screen and (min-width: 425px) {
+    margin: 0 5px 0 10px;
+  }
 `;
 
 const LandingIcon = styled(BiSolidPlaneLand)`
   font-size: 25px;
-  margin: 0 5px 0 10px;
+  margin: 0 5px 0 0;
+
+  @media screen and (min-width: 425px) {
+    margin: 0 5px 0 10px;
+  }
 `;
 
 const LuggageIcon = styled(MdNoLuggage)`
   font-size: 25px;
-  margin: 0 5px 0 10px;
+  margin: 0 5px 0 0;
+
+  @media screen and (min-width: 425px) {
+    margin: 0 5px 0 10px;
+  }
 `;
 
 const COGIcon = styled(GiRadialBalance)`
   font-size: 25px;
-  margin: 0 5px 0 10px;
+  margin: 0 5px 0 0;
+
+  @media screen and (min-width: 425px) {
+    margin: 0 5px 0 10px;
+  }
 `;
 
 interface Props {
   handlAddWeightBalanceprofile: () => void;
   instructions: string[];
   weightBalanceData?: WeightAndBalanceDataFromAPI;
+  profileId: number;
 }
 
 const WeightBalanceSection = ({
   handlAddWeightBalanceprofile,
   instructions,
   weightBalanceData,
+  profileId,
 }: Props) => {
+  const [currentForm, setCurrentForm] = useState<"delete" | "edit">("delete");
+  const [selectedId, setSelectedId] = useState<number>(0);
+
+  const modal = useModal();
+
   const dataList = [
     {
       key: "center_of_gravity_in",
@@ -121,7 +154,11 @@ const WeightBalanceSection = ({
           name: profile.name,
           updated: formatUTCDate(profile.last_updated_utc),
           handleEdit: () => {},
-          handleDelete: () => {},
+          handleDelete: () => {
+            setCurrentForm("delete");
+            setSelectedId(profile.id);
+            modal.handleOpen();
+          },
           permissions: "delete" as "delete",
         }))
       : [],
@@ -148,6 +185,20 @@ const WeightBalanceSection = ({
 
   return (
     <>
+      <Modal isOpen={modal.isOpen}>
+        {currentForm === "delete" ? (
+          <DeleteWeightBalanceProfileForm
+            closeModal={modal.handleClose}
+            name={
+              weightBalanceData?.weight_balance_profiles.find(
+                (p) => p.id === selectedId
+              )?.name || ""
+            }
+            id={selectedId}
+            profileId={profileId}
+          />
+        ) : null}
+      </Modal>
       <HtmlDataContainer>
         <DataTableList dataList={dataList} maxWidth={400} margin="35px 0 0" />
         {displayTable ? (

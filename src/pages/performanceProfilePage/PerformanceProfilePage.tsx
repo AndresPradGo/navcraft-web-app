@@ -427,6 +427,7 @@ const PerformanceProfilePage = () => {
               weightBalanceData={weightBalanceData}
               handlAddWeightBalanceprofile={() => {}}
               instructions={addWeightBalanceProfileInstructions}
+              profileId={profileId}
             />
           ) : null}
         </HtmlContainer>
