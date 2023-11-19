@@ -6,7 +6,7 @@ import { LiaTimesSolid } from "react-icons/lia";
 import { MdOutlineAdd, MdBalance } from "react-icons/md";
 import { VscGraphScatter } from "react-icons/vsc";
 import { styled } from "styled-components";
-import { z, ZodError } from "zod";
+import { z } from "zod";
 
 import Button from "../../../components/common/button";
 
@@ -94,12 +94,34 @@ const HtmlSectionTitle = styled.div`
 `;
 
 const HtmlSectionContent = styled.div`
-  transition: padding 0.6s, height 0.3s, opacity 0.6s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   border: 1px solid var(--color-grey);
   border-radius: 3px;
-  height: 100px;
+  min-height: 100px;
   padding: 0px;
   overflow: hidden;
+  padding: 10px 5px;
+`;
+
+const HtmlPairedInputsContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+
+  & div {
+    max-width: 205px;
+    padding: 10px 0 0;
+    margin: 0 5px;
+
+    & input {
+      padding: 10px;
+    }
+  }
 `;
 interface RequiredInputProps {
   $accepted: boolean;
@@ -324,8 +346,8 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
     limits: [],
   });
   const [limitValues, setLimitValues] = useState<LimitDataType>({
-    weight_lb: NaN,
-    cg_location_in: NaN,
+    weight_lb: 0,
+    cg_location_in: 0,
   });
   const [errors, setErrors] = useState<ErrorType>({
     name: null,
@@ -370,6 +392,72 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
     setValues((prev) => ({ ...prev, name: newName }));
   };
 
+  const handleLimitChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.id;
+    const val = parseFloat(e.target.value);
+
+    if (input === "cg_location_in") {
+      const result = limitSchema.safeParse({
+        cg_location_in: val,
+        weight_lb: 100,
+      });
+      if (result.success) {
+        setLimitErrors((prev) => ({ ...prev, cg_location_in: null }));
+      } else
+        setLimitErrors((prev) => ({
+          ...prev,
+          cg_location_in: result.error.errors[0].message,
+        }));
+      setLimitValues((prev) => ({ ...prev, cg_location_in: val }));
+    } else {
+      const result = limitSchema.safeParse({
+        cg_location_in: 100,
+        weight_lb: val,
+      });
+      if (result.success) {
+        setLimitErrors((prev) => ({ ...prev, weight_lb: null }));
+      } else
+        setLimitErrors((prev) => ({
+          ...prev,
+          weight_lb: result.error.errors[0].message,
+        }));
+      setLimitValues((prev) => ({ ...prev, weight_lb: val }));
+    }
+  };
+
+  const handleAddLimit = () => {
+    const result = limitSchema.safeParse({
+      cg_location_in: limitValues.cg_location_in,
+      weight_lb: limitValues.weight_lb,
+    });
+
+    if (result.success) {
+      setLimitErrors({
+        cg_location_in: null,
+        weight_lb: null,
+      });
+      const newLimits = [...values.limits];
+      newLimits.push({
+        cg_location_in: limitValues.cg_location_in,
+        weight_lb: limitValues.weight_lb,
+      });
+      setValues((prev) => ({
+        ...prev,
+        limits: newLimits,
+      }));
+      setLimitValues({
+        cg_location_in: NaN,
+        weight_lb: NaN,
+      });
+    } else {
+      const newErrors = { ...limitErrors };
+      for (const e of result.error.errors) {
+        newErrors[e.path[0] as "cg_location_in" | "weight_lb"] = e.message;
+      }
+      setLimitErrors(newErrors);
+    }
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
   };
@@ -411,7 +499,78 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
               <h3>Graph Boundary Points</h3>
             </div>
           </HtmlSectionTitle>
-          <HtmlSectionContent></HtmlSectionContent>
+          <HtmlSectionContent>
+            <HtmlPairedInputsContainer>
+              <HtmlInput
+                $required={true}
+                $hasValue={limitValues.cg_location_in >= 0}
+                $accepted={!limitErrors.cg_location_in}
+              >
+                <input
+                  id="cg_location_in"
+                  type="number"
+                  autoComplete="off"
+                  required={true}
+                  onChange={handleLimitChange}
+                  value={
+                    isNaN(limitValues.cg_location_in)
+                      ? ""
+                      : limitValues.cg_location_in
+                  }
+                />
+                {limitErrors.cg_location_in ? (
+                  <p>{limitErrors.cg_location_in}</p>
+                ) : (
+                  <p>&nbsp;</p>
+                )}
+                <label htmlFor="cg_location_in">
+                  <COGIcon />
+                  {"CoG [in]"}
+                </label>
+              </HtmlInput>
+              <HtmlInput
+                $required={true}
+                $hasValue={limitValues.weight_lb >= 0}
+                $accepted={!limitErrors.weight_lb}
+              >
+                <input
+                  id="weight_lb"
+                  type="number"
+                  autoComplete="off"
+                  required={true}
+                  onChange={handleLimitChange}
+                  value={
+                    isNaN(limitValues.weight_lb) ? "" : limitValues.weight_lb
+                  }
+                />
+                {limitErrors.weight_lb ? (
+                  <p>{limitErrors.weight_lb}</p>
+                ) : (
+                  <p>&nbsp;</p>
+                )}
+                <label htmlFor="weight_lb">
+                  <WeightIcon />
+                  {"Weight [lbs]"}
+                </label>
+              </HtmlInput>
+            </HtmlPairedInputsContainer>
+            <Button
+              color="var(--color-primary-dark)"
+              hoverColor="var(--color-primary-dark)"
+              backgroundColor="var(--color-grey)"
+              backgroundHoverColor="var(--color-grey-bright)"
+              fontSize={15}
+              margin="5px 0"
+              borderRadious={4}
+              handleClick={handleAddLimit}
+              btnType="button"
+              width="250px"
+              height="35px"
+            >
+              Add Boundary Point
+              <AddIcon />
+            </Button>
+          </HtmlSectionContent>
         </HtmlSectionContainer>
       </HtmlInputContainer>
       <HtmlButtons>
