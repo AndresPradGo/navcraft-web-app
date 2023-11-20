@@ -9,6 +9,7 @@ import { styled } from "styled-components";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
+import WeightBalanceLimitsList from "./WeightBalanceLimitsList";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -100,10 +101,8 @@ const HtmlSectionContent = styled.div`
 
   border: 1px solid var(--color-grey);
   border-radius: 3px;
-  min-height: 100px;
-  padding: 0px;
   overflow: hidden;
-  padding: 10px 5px;
+  padding: 10px;
 `;
 
 const HtmlPairedInputsContainer = styled.div`
@@ -203,7 +202,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   }
 
   & p {
-    font-size: 16px;
+    font-size: 15px;
     color: var(--color-warning-hover);
     margin: 2px;
     text-wrap: wrap;
@@ -279,7 +278,7 @@ const NameIcon = styled(AiFillTag)`
 
 const WeightIcon = styled(GiWeight)`
   font-size: 25px;
-  margin: 0 10px;
+  margin: 0 5px 0 10px;
 `;
 
 const AddIcon = styled(MdOutlineAdd)`
@@ -306,7 +305,7 @@ const limitSchema = z.object({
     .max(9999.94, { message: "Must be less than 9999.95" })
     .min(0, { message: "Must be greater than zero" }),
 });
-type LimitDataType = z.infer<typeof limitSchema>;
+export type LimitDataType = z.infer<typeof limitSchema>;
 
 const formSchema = z.object({
   name: z
@@ -392,6 +391,13 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
     setValues((prev) => ({ ...prev, name: newName }));
   };
 
+  const handleLimitsChange = (newLimits: LimitDataType[]) => {
+    setValues((prev) => ({
+      ...prev,
+      limits: newLimits,
+    }));
+  };
+
   const handleLimitChange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.id;
     const val = parseFloat(e.target.value);
@@ -438,8 +444,8 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
       });
       const newLimits = [...values.limits];
       newLimits.push({
-        cg_location_in: limitValues.cg_location_in,
-        weight_lb: limitValues.weight_lb,
+        cg_location_in: Math.round(limitValues.cg_location_in * 100) / 100,
+        weight_lb: Math.round(limitValues.weight_lb * 100) / 100,
       });
       setValues((prev) => ({
         ...prev,
@@ -560,7 +566,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
               backgroundColor="var(--color-grey)"
               backgroundHoverColor="var(--color-grey-bright)"
               fontSize={15}
-              margin="5px 0"
+              margin="0 5px 20px 0"
               borderRadious={4}
               handleClick={handleAddLimit}
               btnType="button"
@@ -570,6 +576,10 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
               Add Boundary Point
               <AddIcon />
             </Button>
+            <WeightBalanceLimitsList
+              setLimits={handleLimitsChange}
+              limits={values.limits}
+            />
           </HtmlSectionContent>
         </HtmlSectionContainer>
       </HtmlInputContainer>
