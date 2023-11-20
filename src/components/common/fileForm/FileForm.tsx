@@ -17,6 +17,7 @@ import Button from "../button";
 import FileTag from "./FileTag";
 import useUploadFile from "./useUploadFile";
 import Loader from "../../Loader";
+import ExpandibleMessage from "../ExpandibleMessage";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -142,24 +143,6 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-interface HtmlListProps {
-  $expanded: boolean;
-}
-
-const HtmlList = styled.ol<HtmlListProps>`
-  transition: all 0.3s linear;
-  max-height: ${(props) => (props.$expanded ? "200px" : "0")};
-  overflow-x: hidden;
-  overflow-y: auto;
-  margin: 0;
-  padding: ${(props) => (props.$expanded ? "10px 5px 10px 40px" : "0 30px")};
-  flex-shrink: 0;
-  border: 2px solid var(--color-grey-bright);
-  margin: 5px 10px 0;
-  border-radius: 8px;
-  opacity: ${(props) => (props.$expanded ? "1" : "0")};
-`;
-
 const SaveIcon = styled(AiOutlineSave)`
   font-size: 25px;
 `;
@@ -231,7 +214,6 @@ const FileForm = ({
   submissionData: { path, successMessage, queryKey },
 }: Props) => {
   const [submited, setSubmited] = useState(false);
-  const [helpExpanded, setHelpExpanded] = useState(false);
   const [fileIsOver, setFileIsOver] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
@@ -239,7 +221,6 @@ const FileForm = ({
 
   useEffect(() => {
     if (!modalIsOpen) {
-      setHelpExpanded(false);
       setFile(null);
     }
   }, [modalIsOpen]);
@@ -302,38 +283,9 @@ const FileForm = ({
           <Loader />
         ) : (
           <>
-            <Button
-              color={
-                helpExpanded ? "var(--color-primary-dark)" : "var(--color-grey)"
-              }
-              hoverColor={
-                helpExpanded
-                  ? "var(--color-primary-dark)"
-                  : "var(--color-grey-bright)"
-              }
-              backgroundColor={
-                helpExpanded ? "var(--color-grey-bright)" : "var(--color-grey)"
-              }
-              backgroundHoverColor="var(--color-grey-bright)"
-              fill={helpExpanded}
-              width="100px"
-              spaceChildren="center"
-              fontSize={16}
-              borderRadious={100}
-              borderWidth={2}
-              margin="0 0 0 10px"
-              padding="10px 20px"
-              handleClick={() => {
-                setHelpExpanded(!helpExpanded);
-              }}
-            >
+            <ExpandibleMessage reset={!modalIsOpen} messageList={instructions}>
               Help <HelpIcon />
-            </Button>
-            <HtmlList $expanded={helpExpanded}>
-              {instructions.map((point, index) => (
-                <li key={index}>{point}</li>
-              ))}
-            </HtmlList>
+            </ExpandibleMessage>
             <HtmlUploadSection
               $fileIsOver={fileIsOver}
               onDragOver={handleDragover}

@@ -235,8 +235,7 @@ const PerformanceProfilePage = () => {
     "You can add up to 4 Weight and Balance Profiles.",
     "To add or edit a W&B Profile, list all the points that describe the boundaries of the profile.",
     "Each point is composed by a CoG-location in inches aft of the datum, and an aircraft weight in pounds.",
-    "Make sure you enter the points in the correct order, or the profile will not be accurate.",
-    "Enter first the point for the lighter and most forward configuration, and follow a clockwise order.",
+    "To make sure the profile is accurate, enter the points in the right sequence, starting with the lighter and most forward configuration, and following a clockwise order.",
     "To confirm the data has been entered correctly, check the sample graph and the list of points.",
     "Make sure the graph looks correct before saving the data.",
   ];
@@ -338,6 +337,7 @@ const PerformanceProfilePage = () => {
           />
         ) : currentForm === "addWeightBalanceProfile" ? (
           <EditWeightBalanceProfileForm
+            helpInstructions={addWeightBalanceProfileInstructions}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             data={{

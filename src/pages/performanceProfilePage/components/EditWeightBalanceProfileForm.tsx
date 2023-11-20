@@ -3,7 +3,7 @@ import { AiOutlineSave, AiFillTag } from "react-icons/ai";
 import { BiSolidEditAlt } from "react-icons/bi";
 import { GiWeight, GiRadialBalance } from "react-icons/gi";
 import { LiaTimesSolid } from "react-icons/lia";
-import { MdOutlineAdd, MdBalance } from "react-icons/md";
+import { MdOutlineAdd, MdBalance, MdOutlineLiveHelp } from "react-icons/md";
 import { VscGraphScatter } from "react-icons/vsc";
 import { styled } from "styled-components";
 import { z } from "zod";
@@ -11,6 +11,7 @@ import { z } from "zod";
 import Button from "../../../components/common/button";
 import WeightBalanceLimitsList from "./WeightBalanceLimitsList";
 import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
+import ExpandibleMessage from "../../../components/common/ExpandibleMessage";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -289,6 +290,12 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
+const HelpIcon = styled(MdOutlineLiveHelp)`
+  font-size: 20px;
+  flex-shrink: 0;
+  margin: 0 0 0 5px;
+`;
+
 const NameIcon = styled(AiFillTag)`
   font-size: 20px;
   margin: 0 5px 0 10px;
@@ -335,7 +342,7 @@ const formSchema = z.object({
     }),
   limits: z
     .array(limitSchema)
-    .length(4, { message: "Must contain a minimum of 4 boundary points" }),
+    .min(4, { message: "Must contain a minimum of 4 boundary points" }),
 });
 type FormDataType = z.infer<typeof formSchema>;
 
@@ -357,9 +364,17 @@ interface Props {
   closeModal: () => void;
   data: FormDataWithId;
   isOpen: boolean;
+  helpInstructions: string[];
+  labelKey?: string;
 }
 
-const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
+const EditWeightBalanceProfileForm = ({
+  closeModal,
+  data,
+  isOpen,
+  helpInstructions,
+  labelKey,
+}: Props) => {
   const [values, setValues] = useState<FormDataType>({
     name: "",
     limits: [],
@@ -525,7 +540,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
           $accepted={!errors.name}
         >
           <input
-            id="name"
+            id={`${labelKey ? labelKey : ""}-name`}
             type="text"
             autoComplete="off"
             required={true}
@@ -533,7 +548,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
             value={values.name}
           />
           {errors.name ? <p>{errors.name}</p> : <p>&nbsp;</p>}
-          <label htmlFor="name">
+          <label htmlFor={`${labelKey ? labelKey : ""}-name`}>
             <NameIcon />
             Profile Name
           </label>
@@ -546,6 +561,12 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
             </div>
           </HtmlSectionTitle>
           <HtmlSectionContent>
+            <ExpandibleMessage
+              reset={!isOpen}
+              messageList={helpInstructions.filter((_, i) => i)}
+            >
+              Help <HelpIcon />
+            </ExpandibleMessage>
             <HtmlPairedInputsContainer>
               <HtmlInput
                 $required={true}
@@ -553,7 +574,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
                 $accepted={!limitErrors.cg_location_in}
               >
                 <input
-                  id="cg_location_in"
+                  id={`${labelKey ? labelKey : ""}-cg_location_in`}
                   type="number"
                   autoComplete="off"
                   required={false}
@@ -569,7 +590,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor="cg_location_in">
+                <label htmlFor={`${labelKey ? labelKey : ""}-cg_location_in`}>
                   <COGIcon />
                   {"CoG [in]"}
                 </label>
@@ -580,7 +601,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
                 $accepted={!limitErrors.weight_lb}
               >
                 <input
-                  id="weight_lb"
+                  id={`${labelKey ? labelKey : ""}-weight_lb`}
                   type="number"
                   autoComplete="off"
                   required={false}
@@ -594,7 +615,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor="weight_lb">
+                <label htmlFor={`${labelKey ? labelKey : ""}-weight_lb`}>
                   <WeightIcon />
                   {"Weight [lbs]"}
                 </label>

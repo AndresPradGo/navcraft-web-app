@@ -212,8 +212,10 @@ const WeightBalanceSection = ({
           />
         ) : currentForm === "edit" ? (
           <EditWeightBalanceProfileForm
+            helpInstructions={instructions}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
+            labelKey="edit"
             data={{
               id: selectedId,
               name: profileToEdit?.name || "",

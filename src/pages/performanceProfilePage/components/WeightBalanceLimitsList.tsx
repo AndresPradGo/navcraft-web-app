@@ -15,8 +15,13 @@ const HtmlContainer = styled.div`
   align-content: center;
   flex-wrap: wrap;
   padding: 10px;
-
   margin: 10px 0;
+
+  & h3 {
+    align-self: flex-start;
+    margin: 10px 0;
+    color: var(--color-grey-bright);
+  }
 `;
 
 interface HtmlTagProps {
@@ -112,6 +117,7 @@ const WeightBalanceLimitsList = ({ limits, setLimits }: Props) => {
 
   return (
     <HtmlContainer>
+      {limits.length ? <h3>Added Points:</h3> : null}
       {limits.map((limit, idx) => (
         <HtmlTag
           key={idx}
