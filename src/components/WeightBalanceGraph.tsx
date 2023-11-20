@@ -96,7 +96,7 @@ const WeightBalanceGraph = ({
     const top = Math.ceil((dataMin + gap * 10) * 100) / 100;
     return [dataMin, top];
   };
-  console.log(profiles);
+
   const handleMouseEnterLegend = (_: {}, index: number) => {
     setSelected((prev) => prev.map((v, i) => (index === i ? true : v)));
   };

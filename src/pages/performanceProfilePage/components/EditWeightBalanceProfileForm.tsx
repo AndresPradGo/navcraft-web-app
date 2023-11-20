@@ -63,6 +63,13 @@ const HtmlSectionContainer = styled.div`
   width: 100%;
   padding: 0 10px;
 
+  & p {
+    font-size: 15px;
+    color: var(--color-warning-hover);
+    margin: 2px;
+    text-wrap: wrap;
+  }
+
   @media screen and (min-width: 610px) {
     padding: 0 20px;
   }
@@ -326,7 +333,9 @@ const formSchema = z.object({
     .regex(/^[\-a-zA-Z0-9\(\) ]+$/, {
       message: "Only letters, numbers, white space, and symbols -()",
     }),
-  limits: z.array(limitSchema),
+  limits: z
+    .array(limitSchema)
+    .length(4, { message: "Must contain a minimum of 4 boundary points" }),
 });
 type FormDataType = z.infer<typeof formSchema>;
 
@@ -389,11 +398,29 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
     }
   }, [isOpen]);
 
+  const checkLimits = (newLimits: LimitDataType[]) => {
+    const result = formSchema.safeParse({
+      name: "newName",
+      limits: newLimits,
+    });
+    if (result.success) setErrors((prev) => ({ ...prev, limits: null }));
+    else
+      setErrors((prev) => ({
+        ...prev,
+        limits: result.error.errors[0].message,
+      }));
+  };
+
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newName = e.target.value;
     const result = formSchema.safeParse({
       name: newName,
-      limits: [],
+      limits: [
+        { weight_lb: 1, cg_location_in: 1 },
+        { weight_lb: 2, cg_location_in: 2 },
+        { weight_lb: 3, cg_location_in: 3 },
+        { weight_lb: 4, cg_location_in: 4 },
+      ],
     });
     if (result.success) {
       setErrors((prev) => ({ ...prev, name: null }));
@@ -403,6 +430,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
   };
 
   const handleLimitsChange = (newLimits: LimitDataType[]) => {
+    checkLimits(newLimits);
     setValues((prev) => ({
       ...prev,
       limits: newLimits,
@@ -458,6 +486,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
         cg_location_in: Math.round(limitValues.cg_location_in * 100) / 100,
         weight_lb: Math.round(limitValues.weight_lb * 100) / 100,
       });
+      checkLimits(newLimits);
       setValues((prev) => ({
         ...prev,
         limits: newLimits,
@@ -527,7 +556,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
                   id="cg_location_in"
                   type="number"
                   autoComplete="off"
-                  required={true}
+                  required={false}
                   onChange={handleLimitChange}
                   value={
                     isNaN(limitValues.cg_location_in)
@@ -554,7 +583,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
                   id="weight_lb"
                   type="number"
                   autoComplete="off"
-                  required={true}
+                  required={false}
                   onChange={handleLimitChange}
                   value={
                     isNaN(limitValues.weight_lb) ? "" : limitValues.weight_lb
@@ -612,6 +641,7 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
               ) : null}
             </HtmlGraphContainer>
           </HtmlSectionContent>
+          {errors.limits ? <p>{errors.limits}</p> : <p>&nbsp;</p>}
         </HtmlSectionContainer>
       </HtmlInputContainer>
       <HtmlButtons>
