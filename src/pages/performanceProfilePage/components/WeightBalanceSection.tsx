@@ -196,7 +196,7 @@ const WeightBalanceSection = ({
     <>
       <Modal
         isOpen={modal.isOpen}
-        width={currentForm === "edit" ? 714 : 600}
+        width={currentForm === "edit" ? 718 : 600}
         fullHeight={currentForm === "edit"}
       >
         {currentForm === "delete" ? (
@@ -236,6 +236,7 @@ const WeightBalanceSection = ({
             profiles={profiles}
             maxTakeoff={weightBalanceData?.max_takeoff_weight_lb}
             title="W&B Profiles"
+            margin={"35px 0 0"}
           />
         ) : null}
       </HtmlDataContainer>

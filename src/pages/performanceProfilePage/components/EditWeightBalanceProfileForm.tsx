@@ -9,7 +9,7 @@ import { styled } from "styled-components";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
-import WeightBalanceLimitsList from "./WeightBalanceLimitsList";
+import WeightBalanceLimitsList from "./weightBalanceLimitsList/WeightBalanceLimitsList";
 import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
 import ExpandibleMessage from "../../../components/common/ExpandibleMessage";
 
@@ -81,6 +81,7 @@ const HtmlSectionTitle = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 0 2px 5px;
+  color: var(--color-white);
 
   & div {
     display: flex;
@@ -88,11 +89,9 @@ const HtmlSectionTitle = styled.div`
 
     & h3:first-of-type {
       margin: 0;
-      color: var(--color-grey-bright);
     }
 
     & svg {
-      color: var(--color-grey-bright);
       margin-right: 10px;
       font-size: 25px;
     }
@@ -104,14 +103,14 @@ const HtmlSectionTitle = styled.div`
 `;
 
 const HtmlSectionContent = styled.div`
+  min-height: 570px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  border: 1px solid var(--color-grey);
-  border-radius: 3px;
+  border-top: 1px solid var(--color-white);
   overflow: hidden;
-  padding: 10px;
+  padding: 20px 10px 10px;
 `;
 
 const HtmlPairedInputsContainer = styled.div`
@@ -120,6 +119,7 @@ const HtmlPairedInputsContainer = styled.div`
   align-items: center;
   align-content: center;
   flex-wrap: wrap;
+  margin-top: 20px;
 
   & div {
     max-width: 205px;
@@ -223,6 +223,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
 `;
 
 const HtmlGraphContainer = styled.div`
+  transition: all 0.3s;
   width: 100%;
   display: flex;
   align-items: center;
@@ -230,6 +231,7 @@ const HtmlGraphContainer = styled.div`
   align-content: center;
   flex-grow: 0;
   flex-wrap: wrap;
+  margin-top: 10px;
 `;
 
 const HtmlButtons = styled.div`
@@ -456,7 +458,7 @@ const EditWeightBalanceProfileForm = ({
     const input = e.target.id;
     const val = parseFloat(e.target.value);
 
-    if (input === "cg_location_in") {
+    if (input === `${labelKey ? labelKey : ""}-cg_location_in`) {
       const result = limitSchema.safeParse({
         cg_location_in: val,
         weight_lb: 100,
@@ -627,7 +629,7 @@ const EditWeightBalanceProfileForm = ({
               backgroundColor="var(--color-grey)"
               backgroundHoverColor="var(--color-grey-bright)"
               fontSize={15}
-              margin="0 5px 20px 0"
+              margin="10px 5px 20px 0"
               borderRadious={4}
               handleClick={handleAddLimit}
               btnType="button"
@@ -640,7 +642,10 @@ const EditWeightBalanceProfileForm = ({
             <HtmlGraphContainer>
               <WeightBalanceLimitsList
                 setLimits={handleLimitsChange}
-                limits={values.limits}
+                limits={values.limits.map((l) => ({
+                  ...l,
+                  id: `(${l.weight_lb}, ${l.cg_location_in})`,
+                }))}
               />
               {values.limits.length > 0 ? (
                 <WeightBalanceGraph

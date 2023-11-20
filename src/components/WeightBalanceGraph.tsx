@@ -17,6 +17,7 @@ import useSideBar from "./sidebar/useSideBar";
 interface HtmlTagProps {
   $SideBarIsOpen: boolean;
   $width: number;
+  $margin: string;
 }
 
 const HtmlContainer = styled.div<HtmlTagProps>`
@@ -28,7 +29,7 @@ const HtmlContainer = styled.div<HtmlTagProps>`
   align-items: center;
   justify-content: center;
   align-self: flex-start;
-  margin-top: 35px;
+  margin: ${(props) => props.$margin};
 
   & ul {
     width: 100%;
@@ -40,7 +41,7 @@ const HtmlContainer = styled.div<HtmlTagProps>`
 
   & h1 {
     color: var(--color-grey-bright);
-    margin: 5px 0;
+    margin: 5px 0 0;
     font-size: 16px;
   }
 
@@ -74,6 +75,7 @@ interface Props {
   title?: string;
   hideLegend?: boolean;
   width?: number;
+  margin?: string;
 }
 
 const WeightBalanceGraph = ({
@@ -83,6 +85,7 @@ const WeightBalanceGraph = ({
   title,
   hideLegend,
   width,
+  margin,
 }: Props) => {
   const { sideBarIsExpanded } = useSideBar();
   const [selected, setSelected] = useState(profiles.map(() => false));
@@ -94,7 +97,7 @@ const WeightBalanceGraph = ({
     const range = (MTOW || dataMax) - dataMin;
     const gap = range / 9;
     const top = Math.ceil((dataMin + gap * 10) * 100) / 100;
-    return [dataMin, top];
+    return [Math.ceil(dataMin * 100) / 100, top];
   };
 
   const handleMouseEnterLegend = (_: {}, index: number) => {
@@ -137,8 +140,9 @@ const WeightBalanceGraph = ({
     <HtmlContainer
       $SideBarIsOpen={sideBarIsExpanded}
       $width={width ? width : 800}
+      $margin={margin ? margin : "0"}
     >
-      <h1>{title}</h1>
+      {title ? <h1>{title}</h1> : null}
       <ResponsiveContainer width={"100%"} aspect={1.4} debounce={100}>
         <ComposedChart margin={{ top: 0, right: 25, left: 0, bottom: 15 }}>
           <CartesianGrid strokeDasharray="3 3" />
