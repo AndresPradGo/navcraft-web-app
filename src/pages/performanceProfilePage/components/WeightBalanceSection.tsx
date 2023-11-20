@@ -13,6 +13,7 @@ import { WeightAndBalanceDataFromAPI } from "../../../services/weightBalanceClie
 import formatUTCDate from "../../../utils/formatUTCDate";
 import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
 import DeleteWeightBalanceProfileForm from "./DeleteWeightBalanceProfileForm";
+import EditWeightBalanceProfileForm from "../components/EditWeightBalanceProfileForm";
 
 const HtmlDataContainer = styled.div`
   transition: all 2s;
@@ -153,7 +154,11 @@ const WeightBalanceSection = ({
           id: profile.id,
           name: profile.name,
           updated: formatUTCDate(profile.last_updated_utc),
-          handleEdit: () => {},
+          handleEdit: () => {
+            setCurrentForm("edit");
+            setSelectedId(profile.id);
+            modal.handleOpen();
+          },
           handleDelete: () => {
             setCurrentForm("delete");
             setSelectedId(profile.id);
@@ -183,9 +188,17 @@ const WeightBalanceSection = ({
 
   const displayTable = !!profiles.length && profiles[0].limits.length;
 
+  const profileToEdit = weightBalanceData?.weight_balance_profiles.find(
+    (p) => p.id === selectedId
+  );
+
   return (
     <>
-      <Modal isOpen={modal.isOpen}>
+      <Modal
+        isOpen={modal.isOpen}
+        width={currentForm === "edit" ? 714 : 600}
+        fullHeight={currentForm === "edit"}
+      >
         {currentForm === "delete" ? (
           <DeleteWeightBalanceProfileForm
             closeModal={modal.handleClose}
@@ -197,6 +210,20 @@ const WeightBalanceSection = ({
             id={selectedId}
             profileId={profileId}
           />
+        ) : currentForm === "edit" ? (
+          <EditWeightBalanceProfileForm
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+            data={{
+              id: selectedId,
+              name: profileToEdit?.name || "",
+              limits:
+                profileToEdit?.limits.map((l) => ({
+                  weight_lb: l.weight_lb,
+                  cg_location_in: l.cg_location_in,
+                })) || [],
+            }}
+          />
         ) : null}
       </Modal>
       <HtmlDataContainer>
@@ -206,6 +233,7 @@ const WeightBalanceSection = ({
             showMTOW={true}
             profiles={profiles}
             maxTakeoff={weightBalanceData?.max_takeoff_weight_lb}
+            title="W&B Profiles"
           />
         ) : null}
       </HtmlDataContainer>

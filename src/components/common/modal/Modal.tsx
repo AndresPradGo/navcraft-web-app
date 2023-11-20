@@ -29,10 +29,11 @@ const HtmlBody = styled.div<ContainerProps>`
 interface ModalProps {
   $isOpen: boolean;
   $fullHeight: boolean;
+  $width: number;
 }
 
 const HtmlModal = styled.div<ModalProps>`
-  transition: all 0.3s ease-out;
+  transition: transform 0.3s ease-out;
   transform: ${(props) => (props.$isOpen ? "none" : "translate(0, -50px)")};
   overflow-x: hidden;
   overflow-y: hidden;
@@ -47,7 +48,7 @@ const HtmlModal = styled.div<ModalProps>`
   pointer-events: ${(props) => (props.$isOpen ? "auto" : "none")};
   background-color: var(--color-primary);
   margin: 10px;
-  flex-basis: 600px;
+  flex-basis: ${(props) => props.$width}px;
   flex-shrink: 1;
 `;
 
@@ -55,12 +56,17 @@ interface Props {
   children: ReactNode;
   isOpen: boolean;
   fullHeight?: boolean;
+  width?: number;
 }
 
-const Modal = ({ children, isOpen, fullHeight }: Props) => {
+const Modal = ({ children, isOpen, fullHeight, width }: Props) => {
   return (
     <HtmlBody $isOpen={isOpen}>
-      <HtmlModal $isOpen={isOpen} $fullHeight={!!fullHeight}>
+      <HtmlModal
+        $isOpen={isOpen}
+        $fullHeight={!!fullHeight}
+        $width={width ? width : 600}
+      >
         {children}
       </HtmlModal>
     </HtmlBody>

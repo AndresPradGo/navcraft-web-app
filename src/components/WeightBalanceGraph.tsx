@@ -16,11 +16,12 @@ import useSideBar from "./sidebar/useSideBar";
 
 interface HtmlTagProps {
   $SideBarIsOpen: boolean;
+  $width: number;
 }
 
 const HtmlContainer = styled.div<HtmlTagProps>`
   width: 100%;
-  max-width: 800px;
+  max-width: ${(props) => props.$width}px;
   font-size: 10px;
   display: flex;
   flex-direction: column;
@@ -58,7 +59,7 @@ const HtmlContainer = styled.div<HtmlTagProps>`
 interface WeightBalanceLimits {
   weight_lb: number;
   cg_location_in: number;
-  label: string;
+  label?: string;
 }
 
 interface WeightBalanceProfile {
@@ -70,9 +71,19 @@ interface Props {
   profiles: WeightBalanceProfile[];
   maxTakeoff?: number;
   showMTOW?: boolean;
+  title?: string;
+  hideLegend?: boolean;
+  width?: number;
 }
 
-const WeightBalanceGraph = ({ profiles, maxTakeoff, showMTOW }: Props) => {
+const WeightBalanceGraph = ({
+  profiles,
+  maxTakeoff,
+  showMTOW,
+  title,
+  hideLegend,
+  width,
+}: Props) => {
   const { sideBarIsExpanded } = useSideBar();
   const [selected, setSelected] = useState(profiles.map(() => false));
   const [mouseOver, setMouseOver] = useState(profiles.map(() => false));
@@ -85,7 +96,7 @@ const WeightBalanceGraph = ({ profiles, maxTakeoff, showMTOW }: Props) => {
     const top = Math.ceil((dataMin + gap * 10) * 100) / 100;
     return [dataMin, top];
   };
-
+  console.log(profiles);
   const handleMouseEnterLegend = (_: {}, index: number) => {
     setSelected((prev) => prev.map((v, i) => (index === i ? true : v)));
   };
@@ -123,8 +134,11 @@ const WeightBalanceGraph = ({ profiles, maxTakeoff, showMTOW }: Props) => {
   };
 
   return (
-    <HtmlContainer $SideBarIsOpen={sideBarIsExpanded}>
-      <h1>W&B Profiles</h1>
+    <HtmlContainer
+      $SideBarIsOpen={sideBarIsExpanded}
+      $width={width ? width : 800}
+    >
+      <h1>{title}</h1>
       <ResponsiveContainer width={"100%"} aspect={1.4} debounce={100}>
         <ComposedChart margin={{ top: 0, right: 25, left: 0, bottom: 15 }}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -161,17 +175,19 @@ const WeightBalanceGraph = ({ profiles, maxTakeoff, showMTOW }: Props) => {
               position="center"
             />
           </YAxis>
-          <Legend
-            verticalAlign="top"
-            height={36}
-            wrapperStyle={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-            }}
-            onMouseOver={handleMouseEnterLegend}
-            onMouseOut={handleMouseLeaveLegend}
-          />
+          {!hideLegend ? (
+            <Legend
+              verticalAlign="top"
+              height={36}
+              wrapperStyle={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+              onMouseOver={handleMouseEnterLegend}
+              onMouseOut={handleMouseLeaveLegend}
+            />
+          ) : null}
           {profiles.map((p, i) => (
             <Area
               onMouseEnter={handleMouseEnterGraph}

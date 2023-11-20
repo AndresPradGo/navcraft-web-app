@@ -10,6 +10,7 @@ import { z } from "zod";
 
 import Button from "../../../components/common/button";
 import WeightBalanceLimitsList from "./WeightBalanceLimitsList";
+import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -211,6 +212,16 @@ const HtmlInput = styled.div<RequiredInputProps>`
   @media screen and (min-width: 425px) {
     padding: 10px 20px 0;
   }
+`;
+
+const HtmlGraphContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: center;
+  flex-grow: 0;
+  flex-wrap: wrap;
 `;
 
 const HtmlButtons = styled.div`
@@ -576,10 +587,30 @@ const EditWeightBalanceProfileForm = ({ closeModal, data, isOpen }: Props) => {
               Add Boundary Point
               <AddIcon />
             </Button>
-            <WeightBalanceLimitsList
-              setLimits={handleLimitsChange}
-              limits={values.limits}
-            />
+            <HtmlGraphContainer>
+              <WeightBalanceLimitsList
+                setLimits={handleLimitsChange}
+                limits={values.limits}
+              />
+              {values.limits.length > 0 ? (
+                <WeightBalanceGraph
+                  profiles={[
+                    {
+                      name: values.name,
+                      limits: values.limits.map((l) => ({
+                        ...l,
+                        weight_lb: Math.round(l.weight_lb * 100) / 100000,
+                        label: `(${l.cg_location_in}, ${
+                          Math.round(l.weight_lb * 100) / 100000
+                        })`,
+                      })),
+                    },
+                  ]}
+                  hideLegend={values.name === ""}
+                  width={400}
+                />
+              ) : null}
+            </HtmlGraphContainer>
           </HtmlSectionContent>
         </HtmlSectionContainer>
       </HtmlInputContainer>

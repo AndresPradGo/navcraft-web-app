@@ -278,7 +278,11 @@ const PerformanceProfilePage = () => {
           profileId={profileId}
         />
       </Modal>
-      <Modal isOpen={modal.isOpen}>
+      <Modal
+        isOpen={modal.isOpen}
+        width={currentForm === "addWeightBalanceProfile" ? 1000 : 600}
+        fullHeight={currentForm === "addWeightBalanceProfile"}
+      >
         {currentForm === "deleteProfile" ? (
           <DeletePerformanceProfileForm
             closeModal={modal.handleClose}
