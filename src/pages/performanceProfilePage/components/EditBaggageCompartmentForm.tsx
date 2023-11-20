@@ -286,13 +286,17 @@ const EditBaggageCompartmentForm = ({
         >
           <input
             {...register("name")}
-            id="compartment_name"
+            id={`${compartmentData ? compartmentData.id : ""}-compartment_name`}
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="compartment_name">
+          <label
+            htmlFor={`${
+              compartmentData ? compartmentData.id : ""
+            }-compartment_name`}
+          >
             <NameIcon />
             Name
           </label>
@@ -304,13 +308,19 @@ const EditBaggageCompartmentForm = ({
         >
           <input
             {...register("arm_in", { valueAsNumber: true })}
-            id="compartment_arm_in"
+            id={`${
+              compartmentData ? compartmentData.id : ""
+            }-compartment_arm_in`}
             step="any"
             type="number"
             autoComplete="off"
           />
           {errors.arm_in ? <p>{errors.arm_in.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="compartment_arm_in">
+          <label
+            htmlFor={`${
+              compartmentData ? compartmentData.id : ""
+            }-compartment_arm_in`}
+          >
             <ArmIcon />
             {"Arm [in]"}
           </label>
@@ -327,7 +337,9 @@ const EditBaggageCompartmentForm = ({
               setValueAs: handleWeightLimitValue,
             })}
             step="any"
-            id="compartment_weight_limit_lb"
+            id={`${
+              compartmentData ? compartmentData.id : ""
+            }-compartment_weight_limit_lb`}
             type="number"
             autoComplete="off"
           />
@@ -336,7 +348,11 @@ const EditBaggageCompartmentForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="compartment_weight_limit_lb">
+          <label
+            htmlFor={`${
+              compartmentData ? compartmentData.id : ""
+            }-compartment_weight_limit_lb`}
+          >
             <WeightIcon />
             {"Weight Limit [Lb]"}
           </label>

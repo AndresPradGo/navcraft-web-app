@@ -314,13 +314,13 @@ const EditFuelTankForm = ({
         >
           <input
             {...register("name")}
-            id="tank_name"
+            id={`${fuelTankData ? fuelTankData.id : ""}-tank_name`}
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="tank_name">
+          <label htmlFor={`${fuelTankData ? fuelTankData.id : ""}-tank_name`}>
             <NameIcon />
             Name
           </label>
@@ -332,13 +332,13 @@ const EditFuelTankForm = ({
         >
           <input
             {...register("arm_in", { valueAsNumber: true })}
-            id="tank_arm_in"
+            id={`${fuelTankData ? fuelTankData.id : ""}-tank_arm_in`}
             step="any"
             type="number"
             autoComplete="off"
           />
           {errors.arm_in ? <p>{errors.arm_in.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="tank_arm_in">
+          <label htmlFor={`${fuelTankData ? fuelTankData.id : ""}-tank_arm_in`}>
             <ArmIcon />
             {"Arm [in]"}
           </label>
@@ -354,7 +354,9 @@ const EditFuelTankForm = ({
           <input
             {...register("fuel_capacity_gallons", { valueAsNumber: true })}
             step="any"
-            id="tank_fuel_capacity_gallons"
+            id={`${
+              fuelTankData ? fuelTankData.id : ""
+            }-tank_fuel_capacity_gallons`}
             type="number"
             autoComplete="off"
           />
@@ -363,7 +365,11 @@ const EditFuelTankForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="tank_fuel_capacity_gallons">
+          <label
+            htmlFor={`${
+              fuelTankData ? fuelTankData.id : ""
+            }-tank_fuel_capacity_gallons`}
+          >
             <CapacityIcon />
             {"Fuel Capacity [gal]"}
           </label>
@@ -380,7 +386,9 @@ const EditFuelTankForm = ({
             {...register("unusable_fuel_gallons", {
               setValueAs: handleNullableNumberValue,
             })}
-            id="tank_unusable_fuel_gallons"
+            id={`${
+              fuelTankData ? fuelTankData.id : ""
+            }-tank_unusable_fuel_gallons`}
             type="number"
             step="any"
             autoComplete="off"
@@ -390,7 +398,11 @@ const EditFuelTankForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="tank_unusable_fuel_gallons">
+          <label
+            htmlFor={`${
+              fuelTankData ? fuelTankData.id : ""
+            }-tank_unusable_fuel_gallons`}
+          >
             <UnusableIcon />
             {"Unusable Fuel [gal]"}
           </label>
@@ -404,7 +416,7 @@ const EditFuelTankForm = ({
             {...register("burn_sequence", {
               setValueAs: handleNullableNumberValue,
             })}
-            id="tank_burn_sequence"
+            id={`${fuelTankData ? fuelTankData.id : ""}-tank_burn_sequence`}
             type="number"
             autoComplete="off"
           />
@@ -413,7 +425,11 @@ const EditFuelTankForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="tank_burn_sequence">
+          <label
+            htmlFor={`${
+              fuelTankData ? fuelTankData.id : ""
+            }-tank_burn_sequence`}
+          >
             <SequenceIcon />
             {"Burn Sequence"}
           </label>

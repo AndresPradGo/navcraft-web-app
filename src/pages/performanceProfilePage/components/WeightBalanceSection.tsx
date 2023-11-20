@@ -109,37 +109,37 @@ const WeightBalanceSection = ({
       key: "center_of_gravity_in",
       title: "CoG [in]",
       icon: <COGIcon />,
-      data: `${weightBalanceData?.center_of_gravity_in || ""}`,
+      data: `${weightBalanceData?.center_of_gravity_in || "-"}`,
     },
     {
       key: "empty_weight_lb",
       title: "Empty Weight [lb]",
       icon: <EmptyIcon />,
-      data: `${weightBalanceData?.empty_weight_lb || ""}`,
+      data: `${weightBalanceData?.empty_weight_lb || "-"}`,
     },
     {
       key: "max_ramp_weight_lb",
       title: "Max Ramp Weight [lb]",
       icon: <RampIcon />,
-      data: `${weightBalanceData?.max_ramp_weight_lb || ""}`,
+      data: `${weightBalanceData?.max_ramp_weight_lb || "-"}`,
     },
     {
       key: "max_takeoff_weight_lb",
       title: "Max Takeoff Weight [lb]",
       icon: <TakeoffIcon />,
-      data: `${weightBalanceData?.max_takeoff_weight_lb || ""}`,
+      data: `${weightBalanceData?.max_takeoff_weight_lb || "-"}`,
     },
     {
       key: "max_landing_weight_lb",
       title: "Max Landing Weight [lb]",
       icon: <LandingIcon />,
-      data: `${weightBalanceData?.max_landing_weight_lb || ""}`,
+      data: `${weightBalanceData?.max_landing_weight_lb || "-"}`,
     },
     {
       key: "baggage_allowance_lb",
       title: "Baggage Allowance [lb]",
       icon: <LuggageIcon />,
-      data: `${weightBalanceData?.baggage_allowance_lb || ""}`,
+      data: `${weightBalanceData?.baggage_allowance_lb || "-"}`,
     },
   ];
 

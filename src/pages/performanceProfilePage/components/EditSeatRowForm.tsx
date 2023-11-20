@@ -297,13 +297,13 @@ const EditSeatRowForm = ({
         >
           <input
             {...register("name")}
-            id="seat_name"
+            id={`${seatRowData ? seatRowData.id : ""}-seat_name`}
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="seat_name">
+          <label htmlFor={`${seatRowData ? seatRowData.id : ""}-seat_name`}>
             <NameIcon />
             Name
           </label>
@@ -315,13 +315,13 @@ const EditSeatRowForm = ({
         >
           <input
             {...register("arm_in", { valueAsNumber: true })}
-            id="seat_arm_in"
+            id={`${seatRowData ? seatRowData.id : ""}-seat_arm_in`}
             step="any"
             type="number"
             autoComplete="off"
           />
           {errors.arm_in ? <p>{errors.arm_in.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="seat_arm_in">
+          <label htmlFor={`${seatRowData ? seatRowData.id : ""}-seat_arm_in`}>
             <ArmIcon />
             {"Arm [in]"}
           </label>
@@ -335,7 +335,7 @@ const EditSeatRowForm = ({
         >
           <input
             {...register("number_of_seats", { valueAsNumber: true })}
-            id="seat_number_of_seats"
+            id={`${seatRowData ? seatRowData.id : ""}-number_of_seats`}
             type="number"
             autoComplete="off"
           />
@@ -344,7 +344,9 @@ const EditSeatRowForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="seat_number_of_seats">
+          <label
+            htmlFor={`${seatRowData ? seatRowData.id : ""}-number_of_seats`}
+          >
             <NumberIcon />
             {"of Seats in Row"}
           </label>
@@ -361,7 +363,7 @@ const EditSeatRowForm = ({
               setValueAs: handleWeightLimitValue,
             })}
             step="any"
-            id="seat_weight_limit_lb"
+            id={`${seatRowData ? seatRowData.id : ""}-seat_weight_limit_lb`}
             type="number"
             autoComplete="off"
           />
@@ -370,7 +372,11 @@ const EditSeatRowForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="seat_weight_limit_lb">
+          <label
+            htmlFor={`${
+              seatRowData ? seatRowData.id : ""
+            }-seat_weight_limit_lb`}
+          >
             <WeightIcon />
             {"Weight Limit [Lb]"}
           </label>
