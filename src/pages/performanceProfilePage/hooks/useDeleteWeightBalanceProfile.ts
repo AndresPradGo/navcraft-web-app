@@ -3,7 +3,8 @@ import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../../services/apiClient';
 import errorToast from '../../../utils/errorToast';
-import apiClient, {WeightAndBalanceDataFromAPI} from '../../../services/weightBalanceClient'
+import apiClient from '../../../services/weightBalanceProfileClient'
+import {WeightAndBalanceDataFromAPI} from '../../../services/weightBalanceClient'
 
 
 
@@ -20,7 +21,7 @@ interface AircraftArrangementContext {
 const useDeleteWeightBalanceProfile = (profileId: number) => {
     const queryClient = useQueryClient()
     return useMutation<string, APIClientError, DeleteData, AircraftArrangementContext>({
-        mutationFn: data => apiClient.delete(`/weight-balance-profile/${data.id}`),
+        mutationFn: data => apiClient.delete(`/${data.id}`),
         onMutate: data => {
             const previousData = queryClient.getQueryData<WeightAndBalanceDataFromAPI>(['AircraftWeightBalanceData', profileId])
             queryClient.setQueryData<WeightAndBalanceDataFromAPI>(

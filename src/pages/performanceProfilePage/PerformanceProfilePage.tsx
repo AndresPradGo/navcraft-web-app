@@ -337,6 +337,7 @@ const PerformanceProfilePage = () => {
           />
         ) : currentForm === "addWeightBalanceProfile" ? (
           <EditWeightBalanceProfileForm
+            performanceProfileId={profileId}
             helpInstructions={addWeightBalanceProfileInstructions}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}

@@ -12,6 +12,7 @@ import Button from "../../../components/common/button";
 import WeightBalanceLimitsList from "./weightBalanceLimitsList/WeightBalanceLimitsList";
 import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
 import ExpandibleMessage from "../../../components/common/ExpandibleMessage";
+import useEditWeightBalanceProfile from "../hooks/useEditWeightBalanceProfile";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -347,6 +348,9 @@ const formSchema = z.object({
     .min(4, { message: "Must contain a minimum of 4 boundary points" }),
 });
 type FormDataType = z.infer<typeof formSchema>;
+export interface FormDataWithId extends FormDataType {
+  id: number;
+}
 
 interface ErrorType {
   name: string | null;
@@ -358,16 +362,13 @@ interface LimitErrorType {
   cg_location_in: string | null;
 }
 
-interface FormDataWithId extends FormDataType {
-  id: number;
-}
-
 interface Props {
   closeModal: () => void;
   data: FormDataWithId;
   isOpen: boolean;
   helpInstructions: string[];
   labelKey?: string;
+  performanceProfileId: number;
 }
 
 const EditWeightBalanceProfileForm = ({
@@ -376,6 +377,7 @@ const EditWeightBalanceProfileForm = ({
   isOpen,
   helpInstructions,
   labelKey,
+  performanceProfileId,
 }: Props) => {
   const [values, setValues] = useState<FormDataType>({
     name: "",
@@ -393,6 +395,8 @@ const EditWeightBalanceProfileForm = ({
     weight_lb: null,
     cg_location_in: null,
   });
+
+  const mutation = useEditWeightBalanceProfile(performanceProfileId);
 
   useEffect(() => {
     if (isOpen) {
@@ -523,6 +527,21 @@ const EditWeightBalanceProfileForm = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    const result = formSchema.safeParse(values);
+    if (result.success) {
+      setErrors({ name: null, limits: null });
+      mutation.mutate({
+        id: data.id,
+        ...values,
+      });
+      closeModal();
+    } else {
+      const newErrors = { ...errors };
+      for (const e of result.error.errors) {
+        newErrors[e.path[0] as "name" | "limits"] = e.message;
+      }
+      setErrors(newErrors);
+    }
   };
 
   return (

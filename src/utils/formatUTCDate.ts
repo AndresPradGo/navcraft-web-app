@@ -23,7 +23,7 @@ const formatUTCDate = (dateString: string, monthNameFormat?: boolean): string =>
     const monthName = monthNames[date.getMonth()];
 
     if(monthNameFormat) return `${monthName} ${day}, ${year} UTC`
-    return `${year}/${month < 10 ? "0" : ""}${month}/${day < 10 ? "0" : ""}${day}z`
+    return `${year}/${month < 10 ? "0" : ""}${month + 1}/${day < 10 ? "0" : ""}${day}z`
 
 }
 

@@ -147,7 +147,7 @@ const WeightBalanceSection = ({
     keys: ["name", "updated"],
     headers: {
       name: "Name",
-      updated: "Last Updated",
+      updated: "Date Updated",
     },
     rows: weightBalanceData
       ? weightBalanceData.weight_balance_profiles.map((profile) => ({
@@ -212,6 +212,7 @@ const WeightBalanceSection = ({
           />
         ) : currentForm === "edit" ? (
           <EditWeightBalanceProfileForm
+            performanceProfileId={profileId}
             helpInstructions={instructions}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
