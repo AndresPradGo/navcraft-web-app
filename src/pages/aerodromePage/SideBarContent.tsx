@@ -58,6 +58,10 @@ const SideBarContent = ({
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
+    color: "var(--color-grey-bright)",
+    hoverColor: "var(--color-white)",
+    backgroundColor: "var(--color-primary-bright)",
+    backgroundHoverColor: "var(--color-primary-light)",
   };
 
   const buttons = [
@@ -66,10 +70,6 @@ const SideBarContent = ({
       icon: <EditIcon />,
       styles: {
         ...commonStyles,
-        color: "var(--color-white)",
-        hoverColor: "var(--color-white)",
-        backgroundColor: "var(--color-primary-bright)",
-        backgroundHoverColor: "var(--color-primary-light)",
       },
       onClick: () => {
         handleEditAerodrome();
@@ -80,10 +80,6 @@ const SideBarContent = ({
       icon: <AddRunwayIcon />,
       styles: {
         ...commonStyles,
-        color: "var(--color-white)",
-        hoverColor: "var(--color-white)",
-        backgroundColor: "var(--color-primary-bright)",
-        backgroundHoverColor: "var(--color-primary-light)",
       },
       onClick: () => {
         handleAddRunway();
@@ -94,8 +90,6 @@ const SideBarContent = ({
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
-        color: "var(--color-white)",
-        hoverColor: "var(--color-white)",
         backgroundColor: "var(--color-warning)",
         backgroundHoverColor: "var(--color-warning-hover)",
       },

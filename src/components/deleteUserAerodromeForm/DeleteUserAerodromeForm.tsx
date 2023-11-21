@@ -167,7 +167,7 @@ const DeleteUserAerodromeForm = ({
           Cancel
         </Button>
         <Button
-          color="var(--color-white)"
+          color="var(--color-grey-bright)"
           hoverColor="var(--color-white)"
           backgroundColor="var(--color-warning)"
           backgroundHoverColor="var(--color-warning-hover)"

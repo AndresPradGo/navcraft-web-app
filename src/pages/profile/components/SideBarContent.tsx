@@ -104,7 +104,7 @@ const SideBarContent = ({
   const queryClient = useQueryClient();
 
   const commonStyles = {
-    color: "var(--color-white)",
+    color: "var(--color-grey-bright)",
     hoverColor: "var(--color-white)",
     backgroundColor: "var(--color-primary-bright)",
     backgroundHoverColor: "var(--color-primary-light)",
@@ -206,8 +206,7 @@ const SideBarContent = ({
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
-        color: "var(--color-white)",
-        hoverColor: "var(--color-white)",
+
         backgroundColor: "var(--color-warning)",
         backgroundHoverColor: "var(--color-warning-hover)",
       },

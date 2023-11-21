@@ -54,7 +54,7 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
           <EditIcon />
         </Button>
         <Button
-          color="var(--color-white)"
+          color="var(--color-grey_bright)"
           hoverColor="var(--color-white)"
           backgroundColor="var(--color-warning)"
           backgroundHoverColor="var(--color-warning-hover)"
@@ -81,7 +81,7 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
           <OpenIcon />
         </Button>
         <Button
-          color="var(--color-white)"
+          color="var(--color-grey-bright)"
           hoverColor="var(--color-white)"
           backgroundColor="var(--color-warning)"
           backgroundHoverColor="var(--color-warning-hover)"

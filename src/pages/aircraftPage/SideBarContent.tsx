@@ -60,7 +60,7 @@ const SideBarContent = ({
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
-    color: "var(--color-white)",
+    color: "var(--color-grey-bright)",
     hoverColor: "var(--color-white)",
     backgroundColor: "var(--color-primary-bright)",
     backgroundHoverColor: "var(--color-primary-light)",
@@ -87,7 +87,7 @@ const SideBarContent = ({
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
-        color: "var(--color-white)",
+        color: "var(--color-grey-bright)",
         hoverColor: "var(--color-white)",
         backgroundColor: "var(--color-warning)",
         backgroundHoverColor: "var(--color-warning-hover)",

@@ -117,7 +117,7 @@ const SideBarContent = ({
   };
   const commonStyles = {
     ...baseStyles,
-    color: "var(--color-white)",
+    color: "var(--color-grey-bright)",
     hoverColor: "var(--color-white)",
     backgroundColor: "var(--color-primary-bright)",
     backgroundHoverColor: "var(--color-primary-light)",
