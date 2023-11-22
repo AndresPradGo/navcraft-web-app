@@ -22,6 +22,8 @@ import EditSeatRowForm from "./components/EditSeatRowForm";
 import EditFuelTankForm from "./components/EditFuelTankForm";
 import useAircraftArrangementData from "../../hooks/useAircraftArrangementData";
 import useWeightBalanceData from "../../hooks/useWeightBalanceData";
+import useTakeoffPerformanceData from "../../hooks/useTakeoffPerformanceData";
+import useLandingPerformanceData from "../../hooks/useLandingPerformanceData";
 import EditPerformanceProfileForm from "./components/EditPerformanceProfileForm";
 import useSelectPerformanceProfile from "./hooks/useSelectPerformanceProfile";
 import DeletePerformanceProfileForm from "../../components/deletePerformanceProfileForm";
@@ -176,19 +178,29 @@ const PerformanceProfilePage = () => {
     isLoading: weightBalanceLoading,
   } = useWeightBalanceData(profileId);
 
+  const { error: takeoffError, isLoading: takeoffLoading } =
+    useTakeoffPerformanceData(profileId);
+
+  const { error: landingError, isLoading: landingLoading } =
+    useLandingPerformanceData(profileId);
+
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if (
     (error && error.message === "Network Error") ||
     fuelTypesError ||
     arrangementError ||
-    weightBalanceError
+    weightBalanceError ||
+    takeoffError ||
+    landingError
   )
     throw new Error("");
   if (
     isLoading ||
     fuelTypesIsLoading ||
     weightBalanceLoading ||
-    arrangementLoading
+    arrangementLoading ||
+    takeoffLoading ||
+    landingLoading
   )
     return <Loader />;
 
