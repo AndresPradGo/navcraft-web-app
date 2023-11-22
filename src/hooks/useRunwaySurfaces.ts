@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import APIClient, {APIClientError} from '../services/apiClient';
 
-interface RunwaySurfaceData {
+export interface RunwaySurfaceData {
     surface: string
     id: number
 }

@@ -31,6 +31,7 @@ import WeightBalanceSection from "./components/WeightBalanceSection";
 import EditWeightAndBalanceDataForm from "./components/EditWeightAndBalanceDataForm";
 import EditWeightBalanceProfileForm from "./components/EditWeightBalanceProfileForm";
 import TakeoffLandingSection from "./components/TakeoffLandingSection";
+import useRunwaySurfaces from "../../hooks/useRunwaySurfaces";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -184,6 +185,9 @@ const PerformanceProfilePage = () => {
   const { error: landingError, isLoading: landingLoading } =
     useLandingPerformanceData(profileId);
 
+  const { error: surfacesError, isLoading: surfacesLoading } =
+    useRunwaySurfaces();
+
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if (
     (error && error.message === "Network Error") ||
@@ -191,7 +195,8 @@ const PerformanceProfilePage = () => {
     arrangementError ||
     weightBalanceError ||
     takeoffError ||
-    landingError
+    landingError ||
+    surfacesError
   )
     throw new Error("");
   if (
@@ -200,7 +205,8 @@ const PerformanceProfilePage = () => {
     weightBalanceLoading ||
     arrangementLoading ||
     takeoffLoading ||
-    landingLoading
+    landingLoading ||
+    surfacesLoading
   )
     return <Loader />;
 
