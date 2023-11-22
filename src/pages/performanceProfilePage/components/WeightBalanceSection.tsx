@@ -14,6 +14,7 @@ import formatUTCDate from "../../../utils/formatUTCDate";
 import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
 import DeleteWeightBalanceProfileForm from "./DeleteWeightBalanceProfileForm";
 import EditWeightBalanceProfileForm from "../components/EditWeightBalanceProfileForm";
+import { useQueryClient } from "@tanstack/react-query";
 
 const HtmlDataContainer = styled.div`
   transition: all 2s;
@@ -89,18 +90,23 @@ const COGIcon = styled(GiRadialBalance)`
 interface Props {
   handlAddWeightBalanceprofile: () => void;
   instructions: string[];
-  weightBalanceData?: WeightAndBalanceDataFromAPI;
   profileId: number;
 }
 
 const WeightBalanceSection = ({
   handlAddWeightBalanceprofile,
   instructions,
-  weightBalanceData,
   profileId,
 }: Props) => {
   const [currentForm, setCurrentForm] = useState<"delete" | "edit">("delete");
   const [selectedId, setSelectedId] = useState<number>(0);
+
+  const queryClient = useQueryClient();
+  const weightBalanceData =
+    queryClient.getQueryData<WeightAndBalanceDataFromAPI>([
+      "AircraftWeightBalanceData",
+      profileId,
+    ]);
 
   const modal = useModal();
 

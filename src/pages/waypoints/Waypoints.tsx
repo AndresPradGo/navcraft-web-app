@@ -147,6 +147,7 @@ const Waypoints = () => {
   const editModal = useModal();
   const deleteModal = useModal();
   const editRunwayModal = useModal();
+  const editAerodromeModal = useModal();
   const uploadCsvModal = useModal();
 
   const {
@@ -408,6 +409,35 @@ const Waypoints = () => {
 
   return (
     <>
+      <Modal isOpen={editAerodromeModal.isOpen}>
+        <EditOfficialAerodromeForm
+          closeModal={editAerodromeModal.handleClose}
+          isOpen={editAerodromeModal.isOpen}
+          statusList={statusList}
+          aerodromeData={{
+            id: 0,
+            code: "",
+            name: "",
+            lat_degrees: 0,
+            lat_minutes: 0,
+            lat_seconds: 0,
+            lat_direction: "North",
+            lon_degrees: 0,
+            lon_minutes: 0,
+            lon_seconds: 0,
+            lon_direction: "West",
+            elevation_ft: 0,
+            magnetic_variation: NaN,
+            hide: true,
+            has_taf: false,
+            has_metar: false,
+            has_fds: false,
+            status:
+              statusList.find((status) => status.id === 3)?.status || "Unknown",
+            status_id: 3,
+          }}
+        />
+      </Modal>
       <Modal isOpen={editModal.isOpen}>
         {typeItemToEdit === "VFR Waypoint" && userIsAdmin ? (
           <EditVfrWaypointForm
@@ -489,35 +519,6 @@ const Waypoints = () => {
                   }
             }
             isOpen={editModal.isOpen}
-          />
-        ) : typeItemToEdit === "Official Aerodrome" && userIsAdmin ? (
-          <EditOfficialAerodromeForm
-            closeModal={editModal.handleClose}
-            isOpen={editModal.isOpen}
-            statusList={statusList}
-            aerodromeData={{
-              id: 0,
-              code: "",
-              name: "",
-              lat_degrees: 0,
-              lat_minutes: 0,
-              lat_seconds: 0,
-              lat_direction: "North",
-              lon_degrees: 0,
-              lon_minutes: 0,
-              lon_seconds: 0,
-              lon_direction: "West",
-              elevation_ft: 0,
-              magnetic_variation: NaN,
-              hide: true,
-              has_taf: false,
-              has_metar: false,
-              has_fds: false,
-              status:
-                statusList.find((status) => status.id === 3)?.status ||
-                "Unknown",
-              status_id: 3,
-            }}
           />
         ) : typeItemToEdit === "userAerodrome" ? (
           <EditUserAerodromeForm
@@ -701,7 +702,7 @@ const Waypoints = () => {
             handleAddOfficialAerodrome={() => {
               setTypeItemToEdit("Official Aerodrome");
               setRowToEditId(0);
-              editModal.handleOpen();
+              editAerodromeModal.handleOpen();
             }}
             handleAddVFRWaypoint={() => {
               setTypeItemToEdit("VFR Waypoint");

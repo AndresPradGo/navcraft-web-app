@@ -28,6 +28,7 @@ import DeletePerformanceProfileForm from "../../components/deletePerformanceProf
 import WeightBalanceSection from "./components/WeightBalanceSection";
 import EditWeightAndBalanceDataForm from "./components/EditWeightAndBalanceDataForm";
 import EditWeightBalanceProfileForm from "./components/EditWeightBalanceProfileForm";
+import TakeoffLandingSection from "./components/TakeoffLandingSection";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -380,6 +381,7 @@ const PerformanceProfilePage = () => {
             }}
             handleAddWBProfile={handleAddWeightBalanceProfile}
             handleEditTakeoffData={() => {}}
+            handleAddTakeoffData={() => {}}
             handleDownloadTakeoffData={() => {}}
             handleImportTakeoffData={() => {}}
             handleEditClimbData={() => {}}
@@ -388,6 +390,7 @@ const PerformanceProfilePage = () => {
             handleDownloadCruiseData={() => {}}
             handleImportCruiseData={() => {}}
             handleEditLandData={() => {}}
+            handleAddLandData={() => {}}
             handleDownloadLandData={() => {}}
             handleImportLandData={() => {}}
             disableAddFuelTank={
@@ -446,11 +449,14 @@ const PerformanceProfilePage = () => {
             />
           ) : sectionIdx === 1 ? (
             <WeightBalanceSection
-              weightBalanceData={weightBalanceData}
               handlAddWeightBalanceprofile={handleAddWeightBalanceProfile}
               instructions={addWeightBalanceProfileInstructions}
               profileId={profileId}
             />
+          ) : sectionIdx === 2 ? (
+            <TakeoffLandingSection isTakeoff={true} profileId={profileId} />
+          ) : sectionIdx === 5 ? (
+            <TakeoffLandingSection isTakeoff={false} profileId={profileId} />
           ) : null}
         </HtmlContainer>
       </ContentLayout>

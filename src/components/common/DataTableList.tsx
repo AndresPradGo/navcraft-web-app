@@ -29,10 +29,14 @@ const HtmlDataList = styled.ul<HtmlTagProps>`
       display: flex;
       align-items: center;
       color: var(--color-white);
+      text-wrap: wrap;
+
+      & svg {
+        flex-shrink: 0;
+      }
     }
 
     & span {
-      text-wrap: wrap;
       text-align: right;
       padding-left: 8px;
     }
@@ -48,7 +52,7 @@ const HtmlDataList = styled.ul<HtmlTagProps>`
 export interface DataType {
   key: string;
   title: string;
-  icon: ReactNode;
+  icon?: ReactNode;
   data: string;
 }
 

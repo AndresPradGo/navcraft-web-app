@@ -7,8 +7,8 @@ import { LiaMapSignsSolid, LiaMountainSolid } from "react-icons/lia";
 import { ImCompass2 } from "react-icons/im";
 import { PiEyeBold } from "react-icons/pi";
 import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
-import { GiWindsock } from "react-icons/gi";
 import { PiAirTrafficControlDuotone } from "react-icons/pi";
+import { WiDayCloudyGusts } from "react-icons/wi";
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
@@ -147,7 +147,7 @@ const VisibleIcon = styled(PiEyeBold)`
   margin: 0 10px 0 0;
 `;
 
-const WeatherIcon = styled(GiWindsock)`
+const WeatherIcon = styled(WiDayCloudyGusts)`
   font-size: 30px;
   margin: 0 10px 0 0;
 `;

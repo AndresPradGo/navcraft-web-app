@@ -7,6 +7,7 @@ import {
   FaSitemap,
 } from "react-icons/fa";
 import { FaFileExport, FaDownload } from "react-icons/fa6";
+import { ImRoad } from "react-icons/im";
 import {
   MdBalance,
   MdLuggage,
@@ -16,7 +17,7 @@ import {
 } from "react-icons/md";
 import { PiWind } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { TbTrendingUp2 } from "react-icons/tb";
+import { TbTrendingUp2, TbWindsock } from "react-icons/tb";
 import { styled } from "styled-components";
 
 import SideBarIndex, {
@@ -113,6 +114,16 @@ const EditIcon = styled(BiSolidEditAlt)`
   margin-left: 5px;
 `;
 
+const WindIcon = styled(TbWindsock)`
+  font-size: 20px;
+  margin-left: 5px;
+`;
+
+const RunwayIcon = styled(ImRoad)`
+  font-size: 20px;
+  margin-left: 5px;
+`;
+
 const AddIcon = styled(MdOutlineAdd)`
   font-size: 20px;
   margin-left: 5px;
@@ -143,6 +154,7 @@ interface Props {
   handleEditWBData: () => void;
   handleAddWBProfile: () => void;
   handleEditTakeoffData: () => void;
+  handleAddTakeoffData: () => void;
   handleDownloadTakeoffData: () => void;
   handleImportTakeoffData: () => void;
   handleEditClimbData: () => void;
@@ -151,6 +163,7 @@ interface Props {
   handleDownloadCruiseData: () => void;
   handleImportCruiseData: () => void;
   handleEditLandData: () => void;
+  handleAddLandData: () => void;
   handleDownloadLandData: () => void;
   handleImportLandData: () => void;
   disableAddFuelTank: boolean;
@@ -170,6 +183,7 @@ const SideBarContent = ({
   handleEditWBData,
   handleAddWBProfile,
   handleEditTakeoffData,
+  handleAddTakeoffData,
   handleDownloadTakeoffData,
   handleImportTakeoffData,
   handleEditClimbData,
@@ -178,6 +192,7 @@ const SideBarContent = ({
   handleDownloadCruiseData,
   handleImportCruiseData,
   handleEditLandData,
+  handleAddLandData,
   handleDownloadLandData,
   handleImportLandData,
   disableAddFuelTank,
@@ -272,10 +287,16 @@ const SideBarContent = ({
 
   const takeoffButtons = [
     {
-      text: "Edit Adjustment Values",
-      icon: <EditIcon />,
+      text: "Edit Wind Adjustments",
+      icon: <WindIcon />,
       styles: { ...commonStyles },
       onClick: handleEditTakeoffData,
+    },
+    {
+      text: "Add Runway Adjustment",
+      icon: <RunwayIcon />,
+      styles: { ...commonStyles },
+      onClick: handleAddTakeoffData,
     },
     {
       text: "Download Data",
@@ -329,10 +350,16 @@ const SideBarContent = ({
 
   const landButtons = [
     {
-      text: "Edit Adjustment Values",
-      icon: <EditIcon />,
+      text: "Edit Wind Adjustments",
+      icon: <WindIcon />,
       styles: { ...commonStyles },
       onClick: handleEditLandData,
+    },
+    {
+      text: "Add Runway Adjustment",
+      icon: <RunwayIcon />,
+      styles: { ...commonStyles },
+      onClick: handleAddLandData,
     },
     {
       text: "Download Data",

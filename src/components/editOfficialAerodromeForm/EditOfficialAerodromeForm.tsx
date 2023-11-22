@@ -8,9 +8,9 @@ import {
 } from "react-icons/lia";
 import { ImCompass2 } from "react-icons/im";
 import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
-import { GiWindsock } from "react-icons/gi";
 import { PiAirTrafficControlDuotone } from "react-icons/pi";
 import { SlBadge } from "react-icons/sl";
+import { WiDayCloudyGusts } from "react-icons/wi";
 import { useForm, FieldValues } from "react-hook-form";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -281,7 +281,7 @@ const StatusIcon = styled(SlBadge)`
   margin: 0 10px;
 `;
 
-const WeatherIcon = styled(GiWindsock)`
+const WeatherIcon = styled(WiDayCloudyGusts)`
   font-size: 30px;
   margin: 0 10px;
 `;
