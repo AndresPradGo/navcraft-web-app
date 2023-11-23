@@ -1,17 +1,16 @@
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useForm, FieldValues } from "react-hook-form";
 import { AiOutlineSave } from "react-icons/ai";
+import { BiSolidEditAlt } from "react-icons/bi";
+import { BsFillFuelPumpFill } from "react-icons/bs";
+import { FaTemperatureHalf } from "react-icons/fa6";
 import { LiaTimesSolid } from "react-icons/lia";
-import { PiWind } from "react-icons/pi";
-import { TbWindsock } from "react-icons/tb";
+import { TbTrendingUp2 } from "react-icons/tb";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
-import { TakeoffLandingDataFromAPI } from "../../../services/takeoffLandingPerformanceDataClient";
-import useEditWindAdjustmentData from "../hooks/useEditWindAdjustmentData";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -147,7 +146,6 @@ const HtmlInput = styled.div<RequiredInputProps>`
     text-wrap: wrap;
   }
 `;
-
 const HtmlButtons = styled.div`
   display: flex;
   flex-direction: row;
@@ -157,19 +155,8 @@ const HtmlButtons = styled.div`
   width: 100%;
   padding: 10px 20px;
 `;
-
 const SaveIcon = styled(AiOutlineSave)`
   font-size: 25px;
-`;
-
-const TitleIcon = styled(TbWindsock)`
-  flex-shrink: 0;
-  font-size: 30px;
-  margin: 0 10px 0 0;
-
-  @media screen and (min-width: 510px) {
-    font-size: 40px;
-  }
 `;
 
 const CloseIcon = styled(LiaTimesSolid)`
@@ -190,146 +177,166 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
-const HeadwindIcon = styled(PiWind)`
-  font-size: 25px;
+const TemperatureIcon = styled(FaTemperatureHalf)`
+  font-size: 23px;
   margin: 0 5px 0 10px;
-  transform: rotate(180deg);
 `;
 
-const TailwindIcon = styled(PiWind)`
-  font-size: 25px;
+const FuelIcon = styled(BsFillFuelPumpFill)`
+  font-size: 18px;
   margin: 0 5px 0 10px;
+`;
+
+const EditIcon = styled(BiSolidEditAlt)`
+  flex-shrink: 0;
+  font-size: 30px;
+  margin: 0 2px 0 0;
+
+  @media screen and (min-width: 510px) {
+    font-size: 40px;
+  }
+`;
+
+const ClimbIcon = styled(TbTrendingUp2)`
+  flex-shrink: 0;
+  font-size: 30px;
+  margin: 0 10px 0 0;
+
+  @media screen and (min-width: 510px) {
+    font-size: 40px;
+  }
 `;
 
 const schema = z.object({
-  percent_decrease_knot_headwind: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(99.94, { message: "Must be less than 99.95" })
-    .min(0, { message: "Must be greater than zero" }),
-  percent_increase_knot_tailwind: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(99.94, { message: "Must be less than 99.95" })
-    .min(0, { message: "Must be greater than zero" }),
+  take_off_taxi_fuel_gallons: z.union([
+    z
+      .number({ invalid_type_error: "Enter a number" })
+      .max(99.94, { message: "Must be less than 99.94" })
+      .min(0, { message: "Must be greater than zero" })
+      .nullable(),
+    z.literal(null),
+  ]),
+  percent_increase_climb_temperature_c: z.union([
+    z
+      .number({ invalid_type_error: "Enter a number" })
+      .max(99.94, { message: "Must be less than 99.94" })
+      .min(0, { message: "Must be greater than zero" })
+      .nullable(),
+    z.literal(null),
+  ]),
 });
-
-export type WindAdjustmentDataFromForm = z.infer<typeof schema>;
+export type FormDataType = z.infer<typeof schema>;
 
 interface Props {
+  data: FormDataType;
   closeModal: () => void;
   isOpen: boolean;
   profileId: number;
-  isTakeoff: boolean;
 }
-const EditWindAdjustmentsForm = ({
-  closeModal,
-  isOpen,
-  profileId,
-  isTakeoff,
-}: Props) => {
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData<TakeoffLandingDataFromAPI>([
-    isTakeoff ? "takeoffPerformance" : "landingPerformance",
-    profileId,
-  ]);
 
-  const mutation = useEditWindAdjustmentData(profileId, isTakeoff);
-
+const EditClimbDataForm = ({ data, closeModal, isOpen, profileId }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
     watch,
-  } = useForm<WindAdjustmentDataFromForm>({ resolver: zodResolver(schema) });
+  } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
   useEffect(() => {
     if (isOpen) {
       reset({
-        percent_decrease_knot_headwind:
-          data?.percent_decrease_knot_headwind || 0,
-        percent_increase_knot_tailwind:
-          data?.percent_increase_knot_tailwind || 0,
+        take_off_taxi_fuel_gallons: data.take_off_taxi_fuel_gallons,
+        percent_increase_climb_temperature_c:
+          data.percent_increase_climb_temperature_c,
       });
     }
   }, [isOpen]);
 
+  const handleNullableNumberValue = (value: string): number | null => {
+    if (Number.isNaN(parseFloat(value))) return null;
+    return parseFloat(value);
+  };
+
   const submitHandler = (data: FieldValues) => {
     closeModal();
-    mutation.mutate({
-      percent_decrease_knot_headwind: data.percent_decrease_knot_headwind,
-      percent_increase_knot_tailwind: data.percent_increase_knot_tailwind,
-    });
+    console.log(data);
   };
 
   return (
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <h1>
         <div>
-          <TitleIcon />
-          {`Edit ${isTakeoff ? "Takeoff" : "Landing"} Wind Adjustments`}
+          <EditIcon />
+          <ClimbIcon />
+          Edit Climb Performance Adjustment Values
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
         <ul>
           <li>
-            {`Percentages by which the ${
-              isTakeoff ? "takeoff" : "landing"
-            } distance will be decreased/increased, with every knot of headwind/tailwind.`}
+            The Ground Fuel, is the gallons of fuel allowed for ground
+            operations. That is, engine start, taxi, warmup and takeoff.
+          </li>
+          <li>
+            The Temperature Losses, is the percentage by which the time,
+            distance and fuel to climb, will be increased for every &deg;C of
+            air temperature above standard.
           </li>
         </ul>
         <HtmlInput
-          $required={true}
+          $required={false}
           $hasValue={
-            !!watch("percent_decrease_knot_headwind") ||
-            watch("percent_decrease_knot_headwind") === 0
+            !!watch("take_off_taxi_fuel_gallons") ||
+            watch("take_off_taxi_fuel_gallons") === 0
           }
-          $accepted={!errors.percent_decrease_knot_headwind}
+          $accepted={!errors.take_off_taxi_fuel_gallons}
         >
           <input
-            {...register("percent_decrease_knot_headwind", {
-              valueAsNumber: true,
+            {...register("take_off_taxi_fuel_gallons", {
+              setValueAs: handleNullableNumberValue,
             })}
-            id="percent_decrease_knot_headwind"
-            step="any"
+            id="take_off_taxi_fuel_gallons"
             type="number"
+            step="any"
             autoComplete="off"
           />
-          {errors.percent_decrease_knot_headwind ? (
-            <p>{errors.percent_decrease_knot_headwind.message}</p>
+          {errors.take_off_taxi_fuel_gallons ? (
+            <p>{errors.take_off_taxi_fuel_gallons.message}</p>
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="percent_decrease_knot_headwind">
-            <HeadwindIcon />
-            {"Headwind [%]"}
+          <label htmlFor="take_off_taxi_fuel_gallons">
+            <FuelIcon />
+            {"Ground Fuel [gal]"}
           </label>
         </HtmlInput>
         <HtmlInput
-          $required={true}
+          $required={false}
           $hasValue={
-            !!watch("percent_increase_knot_tailwind") ||
-            watch("percent_increase_knot_tailwind") === 0
+            !!watch("percent_increase_climb_temperature_c") ||
+            watch("percent_increase_climb_temperature_c") === 0
           }
-          $accepted={!errors.percent_increase_knot_tailwind}
+          $accepted={!errors.percent_increase_climb_temperature_c}
         >
           <input
-            {...register("percent_increase_knot_tailwind", {
-              valueAsNumber: true,
+            {...register("percent_increase_climb_temperature_c", {
+              setValueAs: handleNullableNumberValue,
             })}
-            id="percent_increase_knot_tailwind"
-            step="any"
+            id="percent_increase_climb_temperature_c"
             type="number"
+            step="any"
             autoComplete="off"
           />
-          {errors.percent_increase_knot_tailwind ? (
-            <p>{errors.percent_increase_knot_tailwind.message}</p>
+          {errors.percent_increase_climb_temperature_c ? (
+            <p>{errors.percent_increase_climb_temperature_c.message}</p>
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="percent_increase_knot_tailwind">
-            <TailwindIcon />
-            {"Tailwind [%]"}
+          <label htmlFor="percent_increase_climb_temperature_c">
+            <TemperatureIcon />
+            {"Temperature Losses [%]"}
           </label>
         </HtmlInput>
       </HtmlInputContainer>
@@ -370,4 +377,4 @@ const EditWindAdjustmentsForm = ({
   );
 };
 
-export default EditWindAdjustmentsForm;
+export default EditClimbDataForm;

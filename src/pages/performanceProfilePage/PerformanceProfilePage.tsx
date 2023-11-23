@@ -36,6 +36,7 @@ import EditWindAdjustmentsForm from "./components/EditWindAdjustmentsForm";
 import EditSurfaceAdjustmentForm from "./components/EditSurfaceAdjustmentForm";
 import FileForm from "../../components/common/fileForm/index";
 import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions";
+import EditClimbDataForm from "./components/EditClimbDataForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -199,6 +200,7 @@ const PerformanceProfilePage = () => {
     | "importClimb"
     | "importCruise"
     | "importLanding"
+    | "editClimbAdjustments"
   >("deleteProfile");
 
   const modal = useModal();
@@ -550,6 +552,16 @@ const PerformanceProfilePage = () => {
             isOpen={modal.isOpen}
             isTakeoff={false}
           />
+        ) : currentForm === "editClimbAdjustments" ? (
+          <EditClimbDataForm
+            profileId={profileId}
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+            data={{
+              take_off_taxi_fuel_gallons: null,
+              percent_increase_climb_temperature_c: null,
+            }}
+          />
         ) : null}
       </Modal>
       <ContentLayout
@@ -594,7 +606,10 @@ const PerformanceProfilePage = () => {
               setCurrentForm("importTakeoff");
               fileModal.handleOpen();
             }}
-            handleEditClimbData={() => {}}
+            handleEditClimbData={() => {
+              modal.handleOpen();
+              setCurrentForm("editClimbAdjustments");
+            }}
             handleImportClimbData={() => {
               setCurrentForm("importClimb");
               fileModal.handleOpen();
