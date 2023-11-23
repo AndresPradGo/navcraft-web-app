@@ -7,6 +7,7 @@ import ExpandibleTable from "../../../components/common/ExpandibleTable";
 import { useModal, Modal } from "../../../components/common/modal";
 import { TakeoffLandingDataFromAPI } from "../../../services/takeoffLandingPerformanceDataClient";
 import { RunwaySurfaceData } from "../../../hooks/useRunwaySurfaces";
+import EditSurfaceAdjustmentForm from "./EditSurfaceAdjustmentForm";
 
 const HtmlInstructionsList = styled.ul`
   & li {
@@ -26,6 +27,11 @@ const TakeoffLandingSection = ({ profileId, isTakeoff }: Props) => {
     profileId,
   ]);
 
+  const [surfaceToEditId, setSurfaceToEditId] = useState<number>(0);
+
+  const editModal = useModal();
+  const deleteModal = useModal();
+
   const surfaces = queryClient.getQueryData<RunwaySurfaceData[]>([
     "runwaySurface",
   ]);
@@ -33,7 +39,9 @@ const TakeoffLandingSection = ({ profileId, isTakeoff }: Props) => {
   const dataList = [
     {
       key: "percent_decrease_knot_headwind",
-      title: "For every knot of headwind, decrease distance by:",
+      title: `For every knot of headwind, decrease ${
+        isTakeoff ? "takeoff" : "landing"
+      } distance by:`,
       data: `${
         data?.percent_decrease_knot_headwind
           ? `${data?.percent_decrease_knot_headwind}%`
@@ -42,7 +50,9 @@ const TakeoffLandingSection = ({ profileId, isTakeoff }: Props) => {
     },
     {
       key: "percent_increase_knot_tailwind",
-      title: "For every knot of tailwind, increase distance by:",
+      title: `For every knot of tailwind, increase ${
+        isTakeoff ? "takeoff" : "landing"
+      } distance by:`,
       data: `${
         data?.percent_increase_knot_tailwind
           ? `${data?.percent_increase_knot_tailwind}%`
@@ -64,7 +74,10 @@ const TakeoffLandingSection = ({ profileId, isTakeoff }: Props) => {
             surface:
               surfaces.find((s) => s.id === item.surface_id)?.surface || "-",
             percent: item.percent,
-            handleEdit: () => {},
+            handleEdit: () => {
+              setSurfaceToEditId(item.surface_id);
+              editModal.handleOpen();
+            },
             handleDelete: () => {},
             permissions: "delete" as "delete",
           }))
@@ -118,13 +131,30 @@ const TakeoffLandingSection = ({ profileId, isTakeoff }: Props) => {
     "To import the data, open the form from the sidebar, and follow the instructions in the form.",
   ];
 
+  const surfaceToEdit = data?.percent_increase_runway_surfaces.find(
+    (item) => item.surface_id === surfaceToEditId
+  ) || { surface_id: 0, percent: NaN };
+
   return (
     <>
+      <Modal isOpen={editModal.isOpen} fullHeight={true}>
+        <EditSurfaceAdjustmentForm
+          closeModal={editModal.handleClose}
+          isOpen={editModal.isOpen}
+          profileId={profileId}
+          surface_id={surfaceToEdit.surface_id}
+          percent={surfaceToEdit.percent}
+          isTakeoff={isTakeoff}
+        />
+      </Modal>
       <DataTableList dataList={dataList} maxWidth={800} margin="35px 0 0" />
       <ExpandibleTable
         tableData={surfaceTableData}
         title="Surface Adjustments"
-        hanldeAdd={() => {}}
+        hanldeAdd={() => {
+          setSurfaceToEditId(0);
+          editModal.handleOpen();
+        }}
         otherComponent={
           <HtmlInstructionsList>
             {surfaceInstructions.map((item, index) => (
@@ -137,6 +167,10 @@ const TakeoffLandingSection = ({ profileId, isTakeoff }: Props) => {
         tableData={performanceTableData}
         title={`${isTakeoff ? "Takeoff" : "Landing"} Performance Data`}
         hanldeAdd={() => {}}
+        pageSize={10}
+        emptyTableMessage={`${
+          isTakeoff ? "Takeoff" : "Landing"
+        } performance table is empty...`}
         disableAdd={true}
         otherComponent={
           <HtmlInstructionsList>

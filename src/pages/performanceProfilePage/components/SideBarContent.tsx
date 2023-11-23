@@ -15,7 +15,7 @@ import {
   MdPropaneTank,
   MdOutlineAdd,
 } from "react-icons/md";
-import { PiWind } from "react-icons/pi";
+import { TbPlaneInflight } from "react-icons/tb";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { TbTrendingUp2, TbWindsock } from "react-icons/tb";
 import { styled } from "styled-components";
@@ -67,7 +67,7 @@ const ClimbIcon = styled(TbTrendingUp2)`
   padding-bottom: 3px;
 `;
 
-const CruiseIcon = styled(PiWind)`
+const CruiseIcon = styled(TbPlaneInflight)`
   font-size: 23px;
   margin-right: 8px;
   padding-bottom: 3px;

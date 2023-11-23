@@ -3,14 +3,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useForm, FieldValues } from "react-hook-form";
 import { AiOutlineSave } from "react-icons/ai";
 import { LiaTimesSolid } from "react-icons/lia";
+import { PiWind } from "react-icons/pi";
 import { TbWindsock } from "react-icons/tb";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
-import { WeightAndBalanceDataFromAPI } from "../../../services/weightBalanceClient";
-import useEditWeightBalanceData from "../hooks/useEditWeightBalanceData";
+import { TakeoffLandingDataFromAPI } from "../../../services/takeoffLandingPerformanceDataClient";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -53,6 +53,12 @@ const HtmlInputContainer = styled.div`
 
   border-top: 1px solid var(--color-grey);
   border-bottom: 1px solid var(--color-grey);
+
+  & ul {
+    & li {
+      text-wrap: wrap;
+    }
+  }
 `;
 interface RequiredInputProps {
   $accepted: boolean;
@@ -183,6 +189,17 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
+const HeadwindIcon = styled(PiWind)`
+  font-size: 25px;
+  margin: 0 5px 0 10px;
+  transform: rotate(180deg);
+`;
+
+const TailwindIcon = styled(PiWind)`
+  font-size: 25px;
+  margin: 0 5px 0 10px;
+`;
+
 const schema = z.object({
   percent_decrease_knot_headwind: z
     .number({ invalid_type_error: "Enter a number" })
@@ -209,13 +226,10 @@ const EditWindAdjustmentsForm = ({
   isTakeoff,
 }: Props) => {
   const queryClient = useQueryClient();
-  const weightBalanceData =
-    profileId !== 0
-      ? queryClient.getQueryData<WeightAndBalanceDataFromAPI>([
-          "AircraftWeightBalanceData",
-          profileId,
-        ])
-      : {};
+  const data = queryClient.getQueryData<TakeoffLandingDataFromAPI>([
+    isTakeoff ? "takeoffPerformance" : "landingPerformance",
+    profileId,
+  ]);
 
   const {
     register,
@@ -228,8 +242,10 @@ const EditWindAdjustmentsForm = ({
   useEffect(() => {
     if (isOpen) {
       reset({
-        percent_decrease_knot_headwind: 1,
-        percent_increase_knot_tailwind: 1,
+        percent_decrease_knot_headwind:
+          data?.percent_decrease_knot_headwind || 0,
+        percent_increase_knot_tailwind:
+          data?.percent_decrease_knot_headwind || 0,
       });
     }
   }, [isOpen]);
@@ -244,11 +260,18 @@ const EditWindAdjustmentsForm = ({
       <h1>
         <div>
           <TitleIcon />
-          {`Edit ${isTakeoff ? "Takeoff" : "Landing"} Wind-Adjustments`}
+          {`Edit ${isTakeoff ? "Takeoff" : "Landing"} Wind Adjustments`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
+        <ul>
+          <li>
+            {`These are the percentages by which the ${
+              isTakeoff ? "takeoff" : "landing"
+            } distance will be decreased/increased, with every knot of headwind/tailwind.`}
+          </li>
+        </ul>
         <HtmlInput
           $required={true}
           $hasValue={
@@ -272,6 +295,7 @@ const EditWindAdjustmentsForm = ({
             <p>&nbsp;</p>
           )}
           <label htmlFor="percent_decrease_knot_headwind">
+            <HeadwindIcon />
             {"Headwind [%]"}
           </label>
         </HtmlInput>
@@ -298,6 +322,7 @@ const EditWindAdjustmentsForm = ({
             <p>&nbsp;</p>
           )}
           <label htmlFor="percent_increase_knot_tailwind">
+            <TailwindIcon />
             {"Tailwind [%]"}
           </label>
         </HtmlInput>

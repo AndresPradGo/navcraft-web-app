@@ -4,7 +4,7 @@ import { BsSpeedometer } from "react-icons/bs";
 import { FaPlaneDeparture, FaPlaneArrival, FaSitemap } from "react-icons/fa";
 import { IoAirplane } from "react-icons/io5";
 import { MdBalance, MdOutlineStart } from "react-icons/md";
-import { PiWind } from "react-icons/pi";
+import { TbPlaneInflight } from "react-icons/tb";
 import { TbTrendingUp2 } from "react-icons/tb";
 import { styled } from "styled-components";
 
@@ -32,6 +32,8 @@ import EditWeightAndBalanceDataForm from "./components/EditWeightAndBalanceDataF
 import EditWeightBalanceProfileForm from "./components/EditWeightBalanceProfileForm";
 import TakeoffLandingSection from "./components/TakeoffLandingSection";
 import useRunwaySurfaces from "../../hooks/useRunwaySurfaces";
+import EditWindAdjustmentsForm from "./components/EditWindAdjustmentsForm";
+import EditSurfaceAdjustmentForm from "./components/EditSurfaceAdjustmentForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -148,10 +150,14 @@ const PerformanceProfilePage = () => {
     | "addTank"
     | "editWeightBalanceData"
     | "addWeightBalanceProfile"
+    | "editTakeoffWindAdjustments"
+    | "editLandingWindAdjustments"
   >("deleteProfile");
 
   const modal = useModal();
   const editProfileModal = useModal();
+  const takeoffModal = useModal();
+  const landingModal = useModal();
 
   const { id: stringId, aircraftId: stringAircraftId } = useParams();
   const profileId = parseInt(stringId || "0");
@@ -241,7 +247,7 @@ const PerformanceProfilePage = () => {
     {
       key: "cruise",
       title: "Cruise Performance",
-      icon: <PiWind />,
+      icon: <TbPlaneInflight />,
     },
     {
       key: "landing",
@@ -286,6 +292,26 @@ const PerformanceProfilePage = () => {
 
   return (
     <>
+      <Modal isOpen={takeoffModal.isOpen} fullHeight={true}>
+        <EditSurfaceAdjustmentForm
+          closeModal={takeoffModal.handleClose}
+          isOpen={takeoffModal.isOpen}
+          profileId={profileId}
+          surface_id={0}
+          percent={NaN}
+          isTakeoff={true}
+        />
+      </Modal>
+      <Modal isOpen={landingModal.isOpen} fullHeight={true}>
+        <EditSurfaceAdjustmentForm
+          closeModal={landingModal.handleClose}
+          isOpen={landingModal.isOpen}
+          profileId={profileId}
+          surface_id={0}
+          percent={NaN}
+          isTakeoff={false}
+        />
+      </Modal>
       <Modal isOpen={editProfileModal.isOpen} fullHeight={true}>
         <EditPerformanceProfileForm
           closeModal={editProfileModal.handleClose}
@@ -366,6 +392,20 @@ const PerformanceProfilePage = () => {
               limits: [],
             }}
           />
+        ) : currentForm === "editTakeoffWindAdjustments" ? (
+          <EditWindAdjustmentsForm
+            profileId={profileId}
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+            isTakeoff={true}
+          />
+        ) : currentForm === "editLandingWindAdjustments" ? (
+          <EditWindAdjustmentsForm
+            profileId={profileId}
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+            isTakeoff={false}
+          />
         ) : null}
       </Modal>
       <ContentLayout
@@ -398,8 +438,13 @@ const PerformanceProfilePage = () => {
               modal.handleOpen();
             }}
             handleAddWBProfile={handleAddWeightBalanceProfile}
-            handleEditTakeoffData={() => {}}
-            handleAddTakeoffData={() => {}}
+            handleEditTakeoffData={() => {
+              setCurrentForm("editTakeoffWindAdjustments");
+              modal.handleOpen();
+            }}
+            handleAddTakeoffData={() => {
+              takeoffModal.handleOpen();
+            }}
             handleDownloadTakeoffData={() => {}}
             handleImportTakeoffData={() => {}}
             handleEditClimbData={() => {}}
@@ -407,8 +452,13 @@ const PerformanceProfilePage = () => {
             handleImportClimbData={() => {}}
             handleDownloadCruiseData={() => {}}
             handleImportCruiseData={() => {}}
-            handleEditLandData={() => {}}
-            handleAddLandData={() => {}}
+            handleEditLandData={() => {
+              setCurrentForm("editLandingWindAdjustments");
+              modal.handleOpen();
+            }}
+            handleAddLandData={() => {
+              landingModal.handleOpen();
+            }}
             handleDownloadLandData={() => {}}
             handleImportLandData={() => {}}
             disableAddFuelTank={

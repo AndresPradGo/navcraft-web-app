@@ -5,17 +5,20 @@ import { AiOutlineSave } from "react-icons/ai";
 import { GiConcreteBag } from "react-icons/gi";
 import { ImRoad } from "react-icons/im";
 import { LiaTimesSolid } from "react-icons/lia";
+import { LuPercent } from "react-icons/lu";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
-import { WeightAndBalanceDataFromAPI } from "../../../services/weightBalanceClient";
-import useEditWeightBalanceData from "../hooks/useEditWeightBalanceData";
+import { RunwaySurfaceData } from "../../../hooks/useRunwaySurfaces";
+import DataList from "../../../components/common/datalist/index";
 
 const HtmlForm = styled.form`
   width: 100%;
   min-height: 200px;
+  height: 100%;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -46,11 +49,17 @@ const HtmlForm = styled.form`
 `;
 
 const HtmlInputContainer = styled.div`
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
   overflow-y: auto;
   padding: 20px 0;
+
+  & p:first-of-type {
+    margin: 20px;
+    text-wrap: wrap;
+  }
 
   border-top: 1px solid var(--color-grey);
   border-bottom: 1px solid var(--color-grey);
@@ -143,6 +152,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
 `;
 
 const HtmlButtons = styled.div`
+  max-height: 65px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -189,6 +199,11 @@ const SurfaceIcon = styled(GiConcreteBag)`
   margin: 0 10px;
 `;
 
+const PercentIcon = styled(LuPercent)`
+  font-size: 25px;
+  margin: 0 10px;
+`;
+
 const schema = z.object({
   surface: z
     .string()
@@ -209,11 +224,141 @@ interface Props {
   closeModal: () => void;
   isOpen: boolean;
   profileId: number;
+  surface_id: number;
+  percent: number;
   isTakeoff: boolean;
 }
 
-const EditSurfaceAdjustmentForm = () => {
-  return <div>EditSurfaceAdjustmentForm</div>;
+const EditSurfaceAdjustmentForm = ({
+  closeModal,
+  isOpen,
+  profileId,
+  isTakeoff,
+  surface_id,
+  percent,
+}: Props) => {
+  const queryClient = useQueryClient();
+
+  const surfaces = queryClient.getQueryData<RunwaySurfaceData[]>([
+    "runwaySurface",
+  ]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch,
+    setError,
+    clearErrors,
+    setValue,
+  } = useForm<FormDataType>({ resolver: zodResolver(schema) });
+
+  useEffect(() => {
+    if (isOpen) {
+      reset({
+        surface: surfaces?.find((s) => s.id === surface_id)?.surface || "",
+        percent: percent,
+      });
+    }
+  }, [isOpen]);
+
+  const submitHandler = (data: FieldValues) => {
+    closeModal();
+    console.log(data);
+  };
+
+  return (
+    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+      <h1>
+        <div>
+          <TitleIcon />
+          {`Edit ${isTakeoff ? "Takeoff" : "Landing"} Surface Adjustments`}
+        </div>
+        <CloseIcon onClick={closeModal} />
+      </h1>
+      <HtmlInputContainer>
+        <p>
+          {`This is the percentage of the ground roll, by which the ${
+            isTakeoff ? "takeoff" : "landing"
+          } distance will be increased, for a given runway surface.`}
+        </p>
+        <DataList
+          setError={(message) =>
+            setError("surface", {
+              type: "manual",
+              message: message,
+            })
+          }
+          clearErrors={() => clearErrors("surface")}
+          required={true}
+          value={watch("surface")}
+          hasError={!!errors.surface}
+          errorMessage={errors.surface?.message || ""}
+          options={surfaces ? surfaces.map((item) => item.surface) : []}
+          setValue={(value: string) => setValue("surface", value)}
+          name="runway_surface"
+          formIsOpen={isOpen}
+          resetValue={surfaces?.find((s) => s.id === surface_id)?.surface || ""}
+        >
+          <SurfaceIcon /> Surface
+        </DataList>
+        <HtmlInput
+          $required={true}
+          $hasValue={!!watch("percent") || watch("percent") === 0}
+          $accepted={!errors.percent}
+        >
+          <input
+            {...register("percent", {
+              valueAsNumber: true,
+            })}
+            id="percent"
+            step="any"
+            type="number"
+            autoComplete="off"
+          />
+          {errors.percent ? <p>{errors.percent.message}</p> : <p>&nbsp;</p>}
+          <label htmlFor="percent">
+            <PercentIcon />
+            {"of Ground Roll"}
+          </label>
+        </HtmlInput>
+      </HtmlInputContainer>
+      <HtmlButtons>
+        <Button
+          color="var(--color-primary-dark)"
+          hoverColor="var(--color-primary-dark)"
+          backgroundColor="var(--color-grey)"
+          backgroundHoverColor="var(--color-grey-bright)"
+          fontSize={15}
+          margin="5px 0"
+          borderRadious={4}
+          handleClick={closeModal}
+          btnType="button"
+          width="120px"
+          height="35px"
+        >
+          Cancel
+        </Button>
+        <Button
+          color="var(--color-primary-dark)"
+          hoverColor="var(--color-primary-dark)"
+          backgroundColor="var(--color-contrast)"
+          backgroundHoverColor="var(--color-contrast-hover)"
+          fontSize={15}
+          margin="5px 0"
+          borderRadious={4}
+          btnType="submit"
+          width="120px"
+          height="35px"
+          spaceChildren="space-evenly"
+        >
+          Save
+          <SaveIcon />
+        </Button>
+      </HtmlButtons>
+    </HtmlForm>
+  );
 };
 
 export default EditSurfaceAdjustmentForm;

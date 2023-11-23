@@ -1,6 +1,8 @@
 
 import APIClient from './apiClient';
-import {WindAdjustmentDataFromForm} from '../pages/performanceProfilePage/components/editWindAdjustmentsForm'
+import {
+    WindAdjustmentDataFromForm
+} from '../pages/performanceProfilePage/components/EditWindAdjustmentsForm'
 
 interface EditRunwayAdjustmentData {
     surface_id: number,
