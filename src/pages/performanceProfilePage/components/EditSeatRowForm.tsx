@@ -236,12 +236,14 @@ interface Props {
   closeModal: () => void;
   isOpen: boolean;
   profileId: number;
+  aircraftId: number;
 }
 const EditSeatRowForm = ({
   seatRowData,
   closeModal,
   isOpen,
   profileId,
+  aircraftId,
 }: Props) => {
   const {
     register,
@@ -251,7 +253,7 @@ const EditSeatRowForm = ({
     watch,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
-  const mutation = useEditSeatRow(profileId);
+  const mutation = useEditSeatRow(profileId, aircraftId);
 
   useEffect(() => {
     if (isOpen) {

@@ -17,7 +17,7 @@ interface AircraftArrangementContext {
     previousData?: AircraftArrangementDataFromAPI 
 }
 
-const useDeleteArrangementComponent = (profileId: number) => {
+const useDeleteArrangementComponent = (profileId: number, aircraftId: number) => {
     const queryClient = useQueryClient()
   return useMutation<string, APIClientError, DeleteData, AircraftArrangementContext>({
     mutationFn: (data) => {
@@ -78,6 +78,7 @@ const useDeleteArrangementComponent = (profileId: number) => {
             theme: "dark",
         });
         queryClient.invalidateQueries({queryKey: ['AircraftArrangementData', profileId]})
+        queryClient.invalidateQueries({queryKey: ["aircraft", aircraftId]})
     },
     onError: (error, _, context) => {
         errorToast(error)

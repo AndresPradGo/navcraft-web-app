@@ -226,6 +226,7 @@ interface Props {
   closeModal: () => void;
   isOpen: boolean;
   profileId: number;
+  aircraftId: number;
 }
 
 const EditBaggageCompartmentForm = ({
@@ -233,6 +234,7 @@ const EditBaggageCompartmentForm = ({
   closeModal,
   isOpen,
   profileId,
+  aircraftId,
 }: Props) => {
   const {
     register,
@@ -242,7 +244,7 @@ const EditBaggageCompartmentForm = ({
     watch,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
-  const mutation = useEditBaggageCompartment(profileId);
+  const mutation = useEditBaggageCompartment(profileId, aircraftId);
 
   useEffect(() => {
     if (isOpen) {

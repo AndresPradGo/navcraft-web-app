@@ -35,6 +35,7 @@ interface Props {
     name: string;
   };
   profileId: number;
+  aircraftId: number;
   handleAddBaggage: () => void;
   handleAddSeat: () => void;
   handleAddFuel: () => void;
@@ -43,6 +44,7 @@ interface Props {
 const ArrangementSection = ({
   fuel,
   profileId,
+  aircraftId,
   handleAddBaggage,
   handleAddSeat,
   handleAddFuel,
@@ -255,6 +257,7 @@ const ArrangementSection = ({
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             profileId={profileId}
+            aircraftId={aircraftId}
           />
         ) : currentForm === "addSeat" ? (
           <EditSeatRowForm
@@ -262,6 +265,7 @@ const ArrangementSection = ({
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             profileId={profileId}
+            aircraftId={aircraftId}
           />
         ) : currentForm === "addTank" ? (
           <EditFuelTankForm
@@ -269,6 +273,7 @@ const ArrangementSection = ({
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             profileId={profileId}
+            aircraftId={aircraftId}
           />
         ) : currentForm === "deleteCompartment" ? (
           <DeleteArrangementItemForm
@@ -277,6 +282,7 @@ const ArrangementSection = ({
             name={selectedCompartment.name}
             id={selectedId}
             profileId={profileId}
+            aircraftId={aircraftId}
           />
         ) : currentForm === "deleteSeat" ? (
           <DeleteArrangementItemForm
@@ -285,6 +291,7 @@ const ArrangementSection = ({
             name={selectedSeat.name}
             id={selectedId}
             profileId={profileId}
+            aircraftId={aircraftId}
           />
         ) : currentForm === "deleteTank" ? (
           <DeleteArrangementItemForm
@@ -293,6 +300,7 @@ const ArrangementSection = ({
             name={selectedTank.name}
             id={selectedId}
             profileId={profileId}
+            aircraftId={aircraftId}
           />
         ) : null}
       </Modal>

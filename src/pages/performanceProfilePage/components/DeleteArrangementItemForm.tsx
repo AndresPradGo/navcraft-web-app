@@ -115,6 +115,7 @@ interface Props {
   name: string;
   id: number;
   profileId: number;
+  aircraftId: number;
 }
 const DeleteArrangementItemForm = ({
   closeModal,
@@ -122,8 +123,9 @@ const DeleteArrangementItemForm = ({
   name,
   id,
   profileId,
+  aircraftId,
 }: Props) => {
-  const mutation = useDeleteArrangementComponent(profileId);
+  const mutation = useDeleteArrangementComponent(profileId, aircraftId);
 
   const handleDelete = () => {
     closeModal();

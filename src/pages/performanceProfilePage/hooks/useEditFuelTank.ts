@@ -11,7 +11,7 @@ interface AircraftArrangementContext {
     previousData?: AircraftArrangementDataFromAPI 
 }
 
-const useEditFuelTank = (profileId: number) => {
+const useEditFuelTank = (profileId: number, aircraftId: number) => {
     const queryClient = useQueryClient()
     return useMutation<FuelTankDataFromForm, APIClientError, FuelTankDataFromForm, AircraftArrangementContext>({
         mutationFn: (data) => {
@@ -73,6 +73,9 @@ const useEditFuelTank = (profileId: number) => {
                     }
                 }
             )
+            if (newData.id === 0 ) {
+                queryClient.invalidateQueries({queryKey: ["aircraft", aircraftId]})
+            }
         },
         onError: (error, _, context) => {
             errorToast(error)

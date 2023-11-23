@@ -250,6 +250,7 @@ interface Props {
   closeModal: () => void;
   isOpen: boolean;
   profileId: number;
+  aircraftId: number;
 }
 
 const EditFuelTankForm = ({
@@ -257,6 +258,7 @@ const EditFuelTankForm = ({
   closeModal,
   isOpen,
   profileId,
+  aircraftId,
 }: Props) => {
   const {
     register,
@@ -266,7 +268,7 @@ const EditFuelTankForm = ({
     watch,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
-  const mutation = useEditFuelTank(profileId);
+  const mutation = useEditFuelTank(profileId, aircraftId);
 
   useEffect(() => {
     if (isOpen) {

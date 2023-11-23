@@ -487,6 +487,7 @@ const PerformanceProfilePage = () => {
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             profileId={profileId}
+            aircraftId={aircraftId}
           />
         ) : currentForm === "addSeat" ? (
           <EditSeatRowForm
@@ -500,6 +501,7 @@ const PerformanceProfilePage = () => {
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             profileId={profileId}
+            aircraftId={aircraftId}
           />
         ) : currentForm === "addTank" ? (
           <EditFuelTankForm
@@ -514,6 +516,7 @@ const PerformanceProfilePage = () => {
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             profileId={profileId}
+            aircraftId={aircraftId}
           />
         ) : currentForm === "editWeightBalanceData" ? (
           <EditWeightAndBalanceDataForm
@@ -664,6 +667,7 @@ const PerformanceProfilePage = () => {
               handleAddBaggage={handleAddBaggage}
               handleAddSeat={handleAddSeat}
               handleAddFuel={handleAddFuel}
+              aircraftId={aircraftId}
             />
           ) : sectionIdx === 1 ? (
             <WeightBalanceSection

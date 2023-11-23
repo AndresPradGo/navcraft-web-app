@@ -11,7 +11,7 @@ interface AircraftArrangementContext {
     previousData?: AircraftArrangementDataFromAPI 
 }
 
-const useEditSeatRow = (profileId: number) => {
+const useEditSeatRow = (profileId: number, aircraftId: number) => {
     const queryClient = useQueryClient()
     return useMutation<SeatRowDataFromForm, APIClientError, SeatRowDataFromForm, AircraftArrangementContext>({
         mutationFn: (data) => {
@@ -73,6 +73,9 @@ const useEditSeatRow = (profileId: number) => {
                     }
                 }
             )
+            if (newData.id === 0 ) {
+                queryClient.invalidateQueries({queryKey: ["aircraft", aircraftId]})
+            }
         },
         onError: (error, _, context) => {
             errorToast(error)
