@@ -13,6 +13,7 @@ import { z } from "zod";
 import Button from "../../../components/common/button";
 import { RunwaySurfaceData } from "../../../hooks/useRunwaySurfaces";
 import DataList from "../../../components/common/datalist/index";
+import useEditSurfaceAdjustmentData from "../hooks/useEditSurfaceAdjustmentData";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -238,10 +239,11 @@ const EditSurfaceAdjustmentForm = ({
   percent,
 }: Props) => {
   const queryClient = useQueryClient();
-
   const surfaces = queryClient.getQueryData<RunwaySurfaceData[]>([
     "runwaySurface",
   ]);
+
+  const mutation = useEditSurfaceAdjustmentData(profileId, isTakeoff);
 
   const {
     register,
@@ -265,7 +267,10 @@ const EditSurfaceAdjustmentForm = ({
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
-    console.log(data);
+    mutation.mutate({
+      surface_id: surfaces?.find((s) => s.surface === data.surface)?.id || -1,
+      percent: data.percent,
+    });
   };
 
   return (

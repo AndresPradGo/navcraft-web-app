@@ -40,7 +40,7 @@ const PassengersTable = ({ editModal, passengerId, setPassengerId }: Props) => {
               setPassengerId(passenger.id);
               deleteModal.handleOpen();
             },
-            permissions: "delete" as "delete",
+            permissions: "edit-delete" as "edit-delete",
           }))
         : [],
     breakingPoint: 0,

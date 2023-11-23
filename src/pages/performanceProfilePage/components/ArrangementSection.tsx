@@ -90,7 +90,7 @@ const ArrangementSection = ({
             setCurrentForm("deleteCompartment");
             modal.handleOpen();
           },
-          permissions: "delete" as "delete",
+          permissions: "edit-delete" as "edit-delete",
         }))
       : [],
   };
@@ -135,7 +135,7 @@ const ArrangementSection = ({
             setCurrentForm("deleteSeat");
             modal.handleOpen();
           },
-          permissions: "delete" as "delete",
+          permissions: "edit-delete" as "edit-delete",
         }))
       : [],
   };
@@ -196,7 +196,7 @@ const ArrangementSection = ({
             setCurrentForm("deleteTank");
             modal.handleOpen();
           },
-          permissions: "delete" as "delete",
+          permissions: "edit-delete" as "edit-delete",
         }))
       : [],
   };

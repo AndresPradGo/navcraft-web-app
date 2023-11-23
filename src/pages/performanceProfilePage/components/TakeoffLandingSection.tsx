@@ -75,9 +75,7 @@ const TakeoffLandingSection = ({
             surface:
               surfaces.find((s) => s.id === item.surface_id)?.surface || "-",
             percent: item.percent,
-            handleEdit: () => {
-              editSurfaceAdjustment(item.surface_id);
-            },
+            handleEdit: () => {},
             handleDelete: () => {},
             permissions: "delete" as "delete",
           }))

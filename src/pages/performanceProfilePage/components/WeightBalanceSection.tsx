@@ -169,7 +169,7 @@ const WeightBalanceSection = ({
             setSelectedId(profile.id);
             modal.handleOpen();
           },
-          permissions: "delete" as "delete",
+          permissions: "edit-delete" as "edit-delete",
         }))
       : [],
   };

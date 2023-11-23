@@ -2,8 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { APIClientError } from '../../../services/apiClient';
-import apiClient, {TakeoffLandingDataFromAPI} from '../../../services/takeoffLandingPerformanceDataClient'
-import {WindAdjustmentDataFromForm} from '../components/EditWindAdjustmentsForm'
+import apiClient, {TakeoffLandingDataFromAPI, EditRunwayAdjustmentData} from '../../../services/takeoffLandingPerformanceDataClient'
 import errorToast from '../../../utils/errorToast';
 
 
@@ -13,20 +12,24 @@ interface TakeoffLandingContext {
 
 const useEditWindAdjustmentData = (profileId: number, isTakeoff: boolean) => {
     const queryClient = useQueryClient()
-  return useMutation<string, APIClientError, WindAdjustmentDataFromForm, TakeoffLandingContext>({
+  return useMutation<string, APIClientError, EditRunwayAdjustmentData, TakeoffLandingContext>({
     mutationFn: data => {
       const previousData = queryClient.getQueryData<TakeoffLandingDataFromAPI>(
         [`${isTakeoff ? 'takeoff' : 'landing'}Performance`, profileId]
       )
       const newData = (previousData ? {
         ...previousData, 
-        percent_decrease_knot_headwind: data.percent_decrease_knot_headwind,
-        percent_increase_knot_tailwind: data.percent_increase_knot_tailwind
+        percent_increase_runway_surfaces: previousData.percent_increase_runway_surfaces.find(
+            item => item.surface_id === data.surface_id
+        ) ? previousData.percent_increase_runway_surfaces.map(item => {
+            if (item.surface_id === data.surface_id) return data
+            else return item
+        }) : [...previousData.percent_increase_runway_surfaces, data]
       } : {
-        percent_increase_runway_surfaces: [],
-        performance_data: [],
-        percent_decrease_knot_headwind: data.percent_decrease_knot_headwind,
-        percent_increase_knot_tailwind: data.percent_increase_knot_tailwind
+          performance_data: [],
+          percent_decrease_knot_headwind: 0,
+          percent_increase_knot_tailwind: 0,
+          percent_increase_runway_surfaces: [data]
       }) as TakeoffLandingDataFromAPI
        
       return (apiClient.editAndGetOther<string>(newData, `/takeoff-landing-adjustments/${profileId}?is_takeoff=${isTakeoff}`))
@@ -38,16 +41,22 @@ const useEditWindAdjustmentData = (profileId: number, isTakeoff: boolean) => {
       queryClient.setQueryData<TakeoffLandingDataFromAPI>(
         [`${isTakeoff ? 'takeoff' : 'landing'}Performance`, profileId], 
         currentData => {
+            const surfaceExists = currentData?.percent_increase_runway_surfaces.find(
+                item => item.surface_id === newData.surface_id
+            )
           return (currentData ? {
               ...currentData,
-              percent_decrease_knot_headwind: newData.percent_decrease_knot_headwind,
-              percent_increase_knot_tailwind: newData.percent_increase_knot_tailwind
+              percent_increase_runway_surfaces: surfaceExists 
+                ? currentData.percent_increase_runway_surfaces.map(item => {
+                    if (item.surface_id === newData.surface_id) return newData
+                    else return item
+                }) : [...currentData.percent_increase_runway_surfaces, newData]
           }: undefined)
       })
       return {previousData}
     },
     onSuccess: () => {
-      toast.success(`${isTakeoff ? 'Takeoff' : 'Landing'} wind-adjustment data has been updated successfully.`, {
+      toast.success(`${isTakeoff ? 'Takeoff' : 'Landing'} performance adjustment value has been added successfully.`, {
           position: "top-center",
           autoClose: 10000,
           hideProgressBar: false,

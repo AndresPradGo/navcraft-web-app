@@ -4,7 +4,7 @@ import {
     WindAdjustmentDataFromForm
 } from '../pages/performanceProfilePage/components/EditWindAdjustmentsForm'
 
-interface EditRunwayAdjustmentData {
+export interface EditRunwayAdjustmentData {
     surface_id: number,
     percent: number
 }

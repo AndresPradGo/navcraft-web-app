@@ -67,7 +67,7 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
               setWaypointId(w.id);
               deleteModal.handleOpen();
             },
-            permissions: "delete" as "delete",
+            permissions: "edit-delete" as "edit-delete",
           }))
         : [],
     breakingPoint: 1400,

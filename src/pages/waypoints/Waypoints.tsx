@@ -263,7 +263,9 @@ const Waypoints = () => {
                 setRowToEditId(vw.id);
                 deleteModal.handleOpen();
               },
-              permissions: !userIsAdmin ? undefined : ("delete" as "delete"),
+              permissions: !userIsAdmin
+                ? undefined
+                : ("edit-delete" as "edit-delete"),
             })),
             ...userWaypoints.map((uw) => ({
               id: uw.id,
@@ -296,7 +298,7 @@ const Waypoints = () => {
                 setRowToEditId(uw.id);
                 deleteModal.handleOpen();
               },
-              permissions: "delete" as "delete",
+              permissions: "edit-delete" as "edit-delete",
             })),
           ]
         : tableOptions[tableIndex].title === "Aerodromes" && aerodromes
@@ -389,7 +391,9 @@ const Waypoints = () => {
               setRowToEditId(r.id);
               deleteModal.handleOpen();
             },
-            permissions: !userIsAdmin ? undefined : ("delete" as "delete"),
+            permissions: !userIsAdmin
+              ? undefined
+              : ("edit-delete" as "edit-delete"),
           }))
         : [],
     breakingPoint: userIsAdmin ? 1810 : 1400,

@@ -36,12 +36,12 @@ export type EditButtonsPropsTypeUnion =
 export interface Props {
   handleEdit: string | (() => void);
   handleDelete: () => void;
-  permissions?: "open" | "edit" | "delete" | "open-delete";
+  permissions?: "open" | "edit" | "delete" | "open-delete" | "edit-delete";
 }
 
 const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
   if (!permissions) return <HtmlButtonGroup />;
-  if (permissions === "delete")
+  if (permissions === "edit-delete")
     return (
       <HtmlButtonGroup>
         <Button
@@ -80,6 +80,24 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
           DETAILS
           <OpenIcon />
         </Button>
+        <Button
+          color="var(--color-grey-bright)"
+          hoverColor="var(--color-white)"
+          backgroundColor="var(--color-warning)"
+          backgroundHoverColor="var(--color-warning-hover)"
+          height="24px"
+          margin="10px"
+          borderRadious={40}
+          handleClick={handleDelete}
+        >
+          DELETE
+          <DeleteIcon />
+        </Button>
+      </HtmlButtonGroup>
+    );
+  if (permissions === "delete")
+    return (
+      <HtmlButtonGroup>
         <Button
           color="var(--color-grey-bright)"
           hoverColor="var(--color-white)"

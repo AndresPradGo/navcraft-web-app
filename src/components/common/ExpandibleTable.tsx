@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 
 import Button from "./button";
 import Table, { TableProps } from "./table/";
+import Loader from "../Loader";
 
 interface HtmlContainerProps {
   $marginTop: number;
@@ -73,6 +74,7 @@ interface Props extends TableProps {
   disableAdd?: boolean;
   otherComponent?: ReactNode;
   marginTop?: number;
+  dataIsLoading?: boolean;
 }
 
 const ExpandibleTable = ({
@@ -87,6 +89,7 @@ const ExpandibleTable = ({
   searchBarParameters,
   filterParameters,
   marginTop,
+  dataIsLoading,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -115,15 +118,21 @@ const ExpandibleTable = ({
         ) : null}
       </HtmlTitleContainer>
       <HtmlTableContainer $isOpen={isOpen}>
-        {otherComponent}
-        <Table
-          tableData={tableData}
-          emptyTableMessage={emptyTableMessage}
-          sortColumnOptions={sortColumnOptions}
-          pageSize={pageSize}
-          searchBarParameters={searchBarParameters}
-          filterParameters={filterParameters}
-        />
+        {dataIsLoading ? (
+          <Loader />
+        ) : (
+          <>
+            {otherComponent}
+            <Table
+              tableData={tableData}
+              emptyTableMessage={emptyTableMessage}
+              sortColumnOptions={sortColumnOptions}
+              pageSize={pageSize}
+              searchBarParameters={searchBarParameters}
+              filterParameters={filterParameters}
+            />
+          </>
+        )}
       </HtmlTableContainer>
     </HtmlContainer>
   );

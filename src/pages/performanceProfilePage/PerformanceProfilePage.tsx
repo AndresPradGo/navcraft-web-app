@@ -191,7 +191,6 @@ const PerformanceProfilePage = () => {
     error: takeoffError,
     isLoading: takeoffLoading,
   } = useTakeoffPerformanceData(profileId);
-  console.log(takeoffData);
 
   const {
     data: landingData,

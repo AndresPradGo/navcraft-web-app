@@ -86,7 +86,9 @@ const Users = () => {
               setUserId(user.id);
               deleteModal.handleOpen();
             },
-            permissions: user.is_master ? undefined : ("delete" as "delete"),
+            permissions: user.is_master
+              ? undefined
+              : ("edit-delete" as "edit-delete"),
           }))
         : [],
     breakingPoint: 0,
