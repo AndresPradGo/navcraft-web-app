@@ -7,6 +7,7 @@ import ExpandibleTable from "../../../components/common/ExpandibleTable";
 import { useModal, Modal } from "../../../components/common/modal";
 import { TakeoffLandingDataFromAPI } from "../../../services/takeoffLandingPerformanceDataClient";
 import { RunwaySurfaceData } from "../../../hooks/useRunwaySurfaces";
+import DeleteSurfaceAdjustmentValueForm from "./DeleteSurfaceAdjustmentValueForm";
 
 const HtmlInstructionsList = styled.ul`
   & li {
@@ -25,6 +26,7 @@ const TakeoffLandingSection = ({
   isTakeoff,
   editSurfaceAdjustment,
 }: Props) => {
+  const [idToDelete, setIdToDelete] = useState<number>(0);
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<TakeoffLandingDataFromAPI>([
     isTakeoff ? "takeoffPerformance" : "landingPerformance",
@@ -76,7 +78,10 @@ const TakeoffLandingSection = ({
               surfaces.find((s) => s.id === item.surface_id)?.surface || "-",
             percent: item.percent,
             handleEdit: () => {},
-            handleDelete: () => {},
+            handleDelete: () => {
+              deleteModal.handleOpen();
+              setIdToDelete(item.surface_id);
+            },
             permissions: "delete" as "delete",
           }))
         : [],
@@ -131,6 +136,15 @@ const TakeoffLandingSection = ({
 
   return (
     <>
+      <Modal isOpen={deleteModal.isOpen}>
+        <DeleteSurfaceAdjustmentValueForm
+          closeModal={deleteModal.handleClose}
+          surface={surfaces?.find((s) => s.id === idToDelete)?.surface || "-"}
+          surfaceId={idToDelete}
+          profileId={profileId}
+          isTakeoff={isTakeoff}
+        />
+      </Modal>
       <DataTableList dataList={dataList} maxWidth={800} margin="35px 0 0" />
       <ExpandibleTable
         tableData={surfaceTableData}
