@@ -11,6 +11,7 @@ import { z } from "zod";
 
 import Button from "../../../components/common/button";
 import { TakeoffLandingDataFromAPI } from "../../../services/takeoffLandingPerformanceDataClient";
+import useEditWindAdjustmentData from "../hooks/useEditWindAdjustmentData";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -231,6 +232,8 @@ const EditWindAdjustmentsForm = ({
     profileId,
   ]);
 
+  const mutation = useEditWindAdjustmentData(profileId, isTakeoff);
+
   const {
     register,
     handleSubmit,
@@ -245,14 +248,17 @@ const EditWindAdjustmentsForm = ({
         percent_decrease_knot_headwind:
           data?.percent_decrease_knot_headwind || 0,
         percent_increase_knot_tailwind:
-          data?.percent_decrease_knot_headwind || 0,
+          data?.percent_increase_knot_tailwind || 0,
       });
     }
   }, [isOpen]);
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
-    console.log(data);
+    mutation.mutate({
+      percent_decrease_knot_headwind: data.percent_decrease_knot_headwind,
+      percent_increase_knot_tailwind: data.percent_increase_knot_tailwind,
+    });
   };
 
   return (

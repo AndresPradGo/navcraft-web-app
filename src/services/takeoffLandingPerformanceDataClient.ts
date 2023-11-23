@@ -9,7 +9,7 @@ interface EditRunwayAdjustmentData {
     percent: number
 }
 
-interface EditTakeoffLandingData extends WindAdjustmentDataFromForm {
+export interface EditTakeoffLandingData extends WindAdjustmentDataFromForm {
     percent_increase_runway_surfaces: EditRunwayAdjustmentData[]
 }
 

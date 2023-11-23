@@ -297,7 +297,7 @@ const EditSurfaceAdjustmentForm = ({
           errorMessage={errors.surface?.message || ""}
           options={surfaces ? surfaces.map((item) => item.surface) : []}
           setValue={(value: string) => setValue("surface", value)}
-          name="runway_surface"
+          name={`${isTakeoff ? "takeoff" : "landing"}-surface`}
           formIsOpen={isOpen}
           resetValue={surfaces?.find((s) => s.id === surface_id)?.surface || ""}
         >
@@ -312,13 +312,13 @@ const EditSurfaceAdjustmentForm = ({
             {...register("percent", {
               valueAsNumber: true,
             })}
-            id="percent"
+            id={`${isTakeoff ? "takeoff" : "landing"}-percent`}
             step="any"
             type="number"
             autoComplete="off"
           />
           {errors.percent ? <p>{errors.percent.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="percent">
+          <label htmlFor={`${isTakeoff ? "takeoff" : "landing"}-percent`}>
             <PercentIcon />
             {"of Ground Roll"}
           </label>

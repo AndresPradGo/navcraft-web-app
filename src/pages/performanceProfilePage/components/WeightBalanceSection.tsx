@@ -107,7 +107,6 @@ const WeightBalanceSection = ({
       "AircraftWeightBalanceData",
       profileId,
     ]);
-
   const modal = useModal();
 
   const dataList = [

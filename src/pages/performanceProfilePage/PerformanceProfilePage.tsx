@@ -142,6 +142,7 @@ const ChangeIcon = styled(AiOutlineSwap)`
 `;
 
 const PerformanceProfilePage = () => {
+  const [toEditId, setToEditId] = useState<number>(0);
   const [sectionIdx, setSectionIdx] = useState(0);
   const [currentForm, setCurrentForm] = useState<
     | "deleteProfile"
@@ -185,11 +186,18 @@ const PerformanceProfilePage = () => {
     isLoading: weightBalanceLoading,
   } = useWeightBalanceData(profileId);
 
-  const { error: takeoffError, isLoading: takeoffLoading } =
-    useTakeoffPerformanceData(profileId);
+  const {
+    data: takeoffData,
+    error: takeoffError,
+    isLoading: takeoffLoading,
+  } = useTakeoffPerformanceData(profileId);
+  console.log(takeoffData);
 
-  const { error: landingError, isLoading: landingLoading } =
-    useLandingPerformanceData(profileId);
+  const {
+    data: landingData,
+    error: landingError,
+    isLoading: landingLoading,
+  } = useLandingPerformanceData(profileId);
 
   const { error: surfacesError, isLoading: surfacesLoading } =
     useRunwaySurfaces();
@@ -285,10 +293,30 @@ const PerformanceProfilePage = () => {
     modal.handleOpen();
   };
 
+  const handleEditTakeoffSurfaceAdjustment = (id: number) => {
+    takeoffModal.handleOpen();
+    setToEditId(id);
+  };
+
+  const handleEditLandingSurfaceAdjustment = (id: number) => {
+    landingModal.handleOpen();
+    setToEditId(id);
+  };
+
   const handleChangeToNextTable = () => {
     if (sectionIdx >= sections.length - 1) setSectionIdx(0);
     else setSectionIdx(sectionIdx + 1);
   };
+
+  const takeoffSurfaceToEdit =
+    takeoffData?.percent_increase_runway_surfaces.find(
+      (item) => item.surface_id === toEditId
+    ) || { surface_id: 0, percent: NaN };
+
+  const landingSurfaceToEdit =
+    landingData?.percent_increase_runway_surfaces.find(
+      (item) => item.surface_id === toEditId
+    ) || { surface_id: 0, percent: NaN };
 
   return (
     <>
@@ -297,8 +325,8 @@ const PerformanceProfilePage = () => {
           closeModal={takeoffModal.handleClose}
           isOpen={takeoffModal.isOpen}
           profileId={profileId}
-          surface_id={0}
-          percent={NaN}
+          surface_id={takeoffSurfaceToEdit.surface_id}
+          percent={takeoffSurfaceToEdit.percent}
           isTakeoff={true}
         />
       </Modal>
@@ -307,8 +335,8 @@ const PerformanceProfilePage = () => {
           closeModal={landingModal.handleClose}
           isOpen={landingModal.isOpen}
           profileId={profileId}
-          surface_id={0}
-          percent={NaN}
+          surface_id={landingSurfaceToEdit.surface_id}
+          percent={landingSurfaceToEdit.percent}
           isTakeoff={false}
         />
       </Modal>
@@ -443,7 +471,7 @@ const PerformanceProfilePage = () => {
               modal.handleOpen();
             }}
             handleAddTakeoffData={() => {
-              takeoffModal.handleOpen();
+              handleEditTakeoffSurfaceAdjustment(0);
             }}
             handleDownloadTakeoffData={() => {}}
             handleImportTakeoffData={() => {}}
@@ -457,7 +485,7 @@ const PerformanceProfilePage = () => {
               modal.handleOpen();
             }}
             handleAddLandData={() => {
-              landingModal.handleOpen();
+              handleEditTakeoffSurfaceAdjustment(0);
             }}
             handleDownloadLandData={() => {}}
             handleImportLandData={() => {}}
@@ -522,9 +550,17 @@ const PerformanceProfilePage = () => {
               profileId={profileId}
             />
           ) : sectionIdx === 2 ? (
-            <TakeoffLandingSection isTakeoff={true} profileId={profileId} />
+            <TakeoffLandingSection
+              isTakeoff={true}
+              profileId={profileId}
+              editSurfaceAdjustment={handleEditTakeoffSurfaceAdjustment}
+            />
           ) : sectionIdx === 5 ? (
-            <TakeoffLandingSection isTakeoff={false} profileId={profileId} />
+            <TakeoffLandingSection
+              isTakeoff={false}
+              profileId={profileId}
+              editSurfaceAdjustment={handleEditLandingSurfaceAdjustment}
+            />
           ) : null}
         </HtmlContainer>
       </ContentLayout>

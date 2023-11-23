@@ -9,7 +9,7 @@ import {CompletePerformanceProfileDataFromAPI} from '../../../services/aircraftC
 
 
 interface WeightBalanceDataContext {
-    previusData?: WeightAndBalanceDataFromAPI
+    previousData?: WeightAndBalanceDataFromAPI
 }
 
 const useEditWeightBalanceData = (profileId: number) => {
@@ -38,7 +38,7 @@ const useEditWeightBalanceData = (profileId: number) => {
             ))
         },
         onMutate: newData => {
-            const previusData = queryClient.getQueryData<WeightAndBalanceDataFromAPI>(['AircraftWeightBalanceData', profileId]) 
+            const previousData = queryClient.getQueryData<WeightAndBalanceDataFromAPI>(['AircraftWeightBalanceData', profileId]) 
             queryClient.setQueryData<WeightAndBalanceDataFromAPI>(['AircraftWeightBalanceData', profileId], currentData => {
                 return (currentData ? {
                     ...currentData,
@@ -50,7 +50,7 @@ const useEditWeightBalanceData = (profileId: number) => {
                     baggage_allowance_lb: newData.baggage_allowance_lb,
                 }: undefined)
             })
-            return {previusData}
+            return {previousData}
         },
         onSuccess: (savedData) => {
             toast.success(`W&B Data has been updated successfully.`, {
@@ -77,10 +77,10 @@ const useEditWeightBalanceData = (profileId: number) => {
         },
         onError: (error, _, context) => {
             errorToast(error)
-            if (context?.previusData) {
+            if (context?.previousData) {
                 queryClient.setQueryData<WeightAndBalanceDataFromAPI>(
                     ['AircraftWeightBalanceData', profileId], 
-                    context.previusData
+                    context.previousData
                 )
             }
         }

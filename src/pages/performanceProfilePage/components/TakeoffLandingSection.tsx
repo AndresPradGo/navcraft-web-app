@@ -7,7 +7,6 @@ import ExpandibleTable from "../../../components/common/ExpandibleTable";
 import { useModal, Modal } from "../../../components/common/modal";
 import { TakeoffLandingDataFromAPI } from "../../../services/takeoffLandingPerformanceDataClient";
 import { RunwaySurfaceData } from "../../../hooks/useRunwaySurfaces";
-import EditSurfaceAdjustmentForm from "./EditSurfaceAdjustmentForm";
 
 const HtmlInstructionsList = styled.ul`
   & li {
@@ -18,18 +17,20 @@ const HtmlInstructionsList = styled.ul`
 interface Props {
   profileId: number;
   isTakeoff: boolean;
+  editSurfaceAdjustment: (id: number) => void;
 }
 
-const TakeoffLandingSection = ({ profileId, isTakeoff }: Props) => {
+const TakeoffLandingSection = ({
+  profileId,
+  isTakeoff,
+  editSurfaceAdjustment,
+}: Props) => {
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<TakeoffLandingDataFromAPI>([
     isTakeoff ? "takeoffPerformance" : "landingPerformance",
     profileId,
   ]);
 
-  const [surfaceToEditId, setSurfaceToEditId] = useState<number>(0);
-
-  const editModal = useModal();
   const deleteModal = useModal();
 
   const surfaces = queryClient.getQueryData<RunwaySurfaceData[]>([
@@ -75,8 +76,7 @@ const TakeoffLandingSection = ({ profileId, isTakeoff }: Props) => {
               surfaces.find((s) => s.id === item.surface_id)?.surface || "-",
             percent: item.percent,
             handleEdit: () => {
-              setSurfaceToEditId(item.surface_id);
-              editModal.handleOpen();
+              editSurfaceAdjustment(item.surface_id);
             },
             handleDelete: () => {},
             permissions: "delete" as "delete",
@@ -131,29 +131,14 @@ const TakeoffLandingSection = ({ profileId, isTakeoff }: Props) => {
     "To import the data, open the form from the sidebar, and follow the instructions in the form.",
   ];
 
-  const surfaceToEdit = data?.percent_increase_runway_surfaces.find(
-    (item) => item.surface_id === surfaceToEditId
-  ) || { surface_id: 0, percent: NaN };
-
   return (
     <>
-      <Modal isOpen={editModal.isOpen} fullHeight={true}>
-        <EditSurfaceAdjustmentForm
-          closeModal={editModal.handleClose}
-          isOpen={editModal.isOpen}
-          profileId={profileId}
-          surface_id={surfaceToEdit.surface_id}
-          percent={surfaceToEdit.percent}
-          isTakeoff={isTakeoff}
-        />
-      </Modal>
       <DataTableList dataList={dataList} maxWidth={800} margin="35px 0 0" />
       <ExpandibleTable
         tableData={surfaceTableData}
         title="Surface Adjustments"
         hanldeAdd={() => {
-          setSurfaceToEditId(0);
-          editModal.handleOpen();
+          editSurfaceAdjustment(0);
         }}
         otherComponent={
           <HtmlInstructionsList>
