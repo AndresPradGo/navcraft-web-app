@@ -6,12 +6,13 @@ import errorToast from '../../../utils/errorToast';
 
 const apiClient = new APIClient<FormData, string>("/")
 
-const useUploadFile = (path: string, successMessage: string, queryKey: (string | number)[]) => {
+const useUploadFile = (path: string, successMessage: string, queryKeys: (string | number)[][]) => {
     const queryClient = useQueryClient()
     return useMutation<string, APIClientError, FormData>({
         mutationFn: (data) => apiClient.post(data, path),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey})
+            for (const queryKey of queryKeys)
+                queryClient.invalidateQueries({queryKey})
             toast.success(`${successMessage} data has been updated successfully`, {
                 position: "top-center",
                 autoClose: 10000,

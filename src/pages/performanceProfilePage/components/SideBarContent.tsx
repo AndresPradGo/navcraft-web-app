@@ -25,6 +25,7 @@ import SideBarIndex, {
 } from "../../../components/common/SideBarIndex";
 import SideBarBtnList from "../../../components/common/SideBarBtnList";
 import SideBarTitle from "../../../components/common/SideBarTitle";
+import useFetchFile from "../../../hooks/useFetchFile";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -140,6 +141,7 @@ const DownloadIcon = styled(FaDownload)`
 `;
 
 interface Props {
+  profileId: number;
   handleChangeSection: (index: number) => void;
   sectionIndex: number;
   sectionOptions: PageSectionDataType[];
@@ -155,21 +157,18 @@ interface Props {
   handleAddWBProfile: () => void;
   handleEditTakeoffData: () => void;
   handleAddTakeoffData: () => void;
-  handleDownloadTakeoffData: () => void;
   handleImportTakeoffData: () => void;
   handleEditClimbData: () => void;
-  handleDownloadClimbData: () => void;
   handleImportClimbData: () => void;
-  handleDownloadCruiseData: () => void;
   handleImportCruiseData: () => void;
   handleEditLandData: () => void;
   handleAddLandData: () => void;
-  handleDownloadLandData: () => void;
   handleImportLandData: () => void;
   disableAddFuelTank: boolean;
 }
 
 const SideBarContent = ({
+  profileId,
   handleChangeSection,
   sectionIndex,
   sectionOptions,
@@ -184,20 +183,18 @@ const SideBarContent = ({
   handleAddWBProfile,
   handleEditTakeoffData,
   handleAddTakeoffData,
-  handleDownloadTakeoffData,
   handleImportTakeoffData,
   handleEditClimbData,
-  handleDownloadClimbData,
   handleImportClimbData,
-  handleDownloadCruiseData,
   handleImportCruiseData,
   handleEditLandData,
   handleAddLandData,
-  handleDownloadLandData,
   handleImportLandData,
   disableAddFuelTank,
   disableAddWeightBalance,
 }: Props) => {
+  const fileFetcher = useFetchFile();
+
   const baseStyles = {
     width: "100%",
     height: "40px",
@@ -302,7 +299,11 @@ const SideBarContent = ({
       text: "Download Data",
       icon: <DownloadIcon />,
       styles: { ...baseStyles },
-      onClick: handleDownloadTakeoffData,
+      onClick: () => {
+        fileFetcher(
+          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=true`
+        );
+      },
     },
     {
       text: "Import Data",
@@ -323,7 +324,9 @@ const SideBarContent = ({
       text: "Download Data",
       icon: <DownloadIcon />,
       styles: { ...baseStyles },
-      onClick: handleDownloadClimbData,
+      onClick: () => {
+        fileFetcher(`aircraft-performance-data/climb/csv/${profileId}`);
+      },
     },
     {
       text: "Import Data",
@@ -338,7 +341,9 @@ const SideBarContent = ({
       text: "Download Data",
       icon: <DownloadIcon />,
       styles: { ...baseStyles },
-      onClick: handleDownloadCruiseData,
+      onClick: () => {
+        fileFetcher(`aircraft-performance-data/cruise/csv/${profileId}`);
+      },
     },
     {
       text: "Import Data",
@@ -365,7 +370,11 @@ const SideBarContent = ({
       text: "Download Data",
       icon: <DownloadIcon />,
       styles: { ...baseStyles },
-      onClick: handleDownloadLandData,
+      onClick: () => {
+        fileFetcher(
+          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=false`
+        );
+      },
     },
     {
       text: "Import Data",

@@ -1,6 +1,6 @@
 
 
-function getCsvUploadingInstructions(type: "waypoints" | "aerodromes" | "runways"): string[] {
+function getCsvUploadingInstructions(type: "waypoints" | "aerodromes" | "runways" | "takeoff" | "climb" | "cruise" | "landing"): string[] {
 
     const csvImportInstructions = {
         waypoints: [
@@ -33,6 +33,45 @@ function getCsvUploadingInstructions(type: "waypoints" | "aerodromes" | "runways
           'To ensure data integrity, enter all data in the correct colum, and double check the data for typos, repeated entries or invalid data.',
           'After uploading the updated CSV-File, download a new file to compare them and make sure the data has been updated correctly.',
         ],
+        takeoff:[
+          'Download the takeoff-data CSV File.',
+          'Do not delete or edit the existing column headers in any way, or the file will be rejected.',
+          "New columns can be added for your reference, but they won't be considered for updating the data.",
+          'Update the data in the file by adding or deleting rows, or editing the existing ones.',
+          "The takeoff performance data will be replaced by the data in the file, so make sure all entries are included in the file.",
+          'To ensure data integrity, enter all data in the correct colum, and double check the data for typos, repeated entries or invalid data.',
+          'After uploading the updated CSV-File, download a new file to compare them and make sure the data has been updated correctly.',
+        ],
+        climb:[
+          'Download the climb-data CSV File.',
+          'Do not delete or edit the existing column headers in any way, or the file will be rejected.',
+          "New columns can be added for your reference, but they won't be considered for updating the data.",
+          'Update the data in the file by adding or deleting rows, or editing the existing ones.',
+          "The climb performance data will be replaced by the data in the file, so make sure all entries are included in the file.",
+          'To ensure data integrity, enter all data in the correct colum, and double check the data for typos, repeated entries or invalid data.',
+          'The "Climb Speed[KIAS]" and "Rate of Climb[FPM]" columns are optional, so they can be left blank.',
+          'The "Fuel Burned from S.L.[gal]" column, accepts values of up to 99.94',
+          'After uploading the updated CSV-File, download a new file to compare them and make sure the data has been updated correctly.',
+        ],
+        cruise:[
+          'Download the cruise-data CSV File.',
+          'Do not delete or edit the existing column headers in any way, or the file will be rejected.',
+          "New columns can be added for your reference, but they won't be considered for updating the data.",
+          'Update the data in the file by adding or deleting rows, or editing the existing ones.',
+          "The cruise performance data will be replaced by the data in the file, so make sure all entries are included in the file.",
+          'To ensure data integrity, enter all data in the correct colum, and double check the data for typos, repeated entries or invalid data.',
+          'The "GPH" column, accepts values of up to 9999.94',
+          'After uploading the updated CSV-File, download a new file to compare them and make sure the data has been updated correctly.',
+        ],
+        landing:[
+          'Download the landing-data CSV File.',
+          'Do not delete or edit the existing column headers in any way, or the file will be rejected.',
+          "New columns can be added for your reference, but they won't be considered for updating the data.",
+          'Update the data in the file by adding or deleting rows, or editing the existing ones.',
+          "The landing performance data will be replaced by the data in the file, so make sure all entries are included in the file.",
+          'To ensure data integrity, enter all data in the correct colum, and double check the data for typos, repeated entries or invalid data.',
+          'After uploading the updated CSV-File, download a new file to compare them and make sure the data has been updated correctly.',
+        ]
       }
 
       return csvImportInstructions[type]

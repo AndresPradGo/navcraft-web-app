@@ -193,7 +193,7 @@ const CloseIcon = styled(LiaTimesSolid)`
 interface SubmissionsDataType {
   path: string;
   successMessage: string;
-  queryKey: (string | number)[];
+  queryKeys: (string | number)[][];
 }
 
 interface Props {
@@ -211,13 +211,13 @@ const FileForm = ({
   instructions,
   closeModal,
   modalIsOpen,
-  submissionData: { path, successMessage, queryKey },
+  submissionData: { path, successMessage, queryKeys },
 }: Props) => {
   const [submited, setSubmited] = useState(false);
   const [fileIsOver, setFileIsOver] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
-  const mutation = useUploadFile(path, successMessage, queryKey);
+  const mutation = useUploadFile(path, successMessage, queryKeys);
 
   useEffect(() => {
     if (!modalIsOpen) {

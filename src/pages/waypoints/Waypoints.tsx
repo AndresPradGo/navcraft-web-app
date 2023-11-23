@@ -672,18 +672,18 @@ const Waypoints = () => {
                 ? {
                     path: "manage-waypoints/aerodromes",
                     successMessage: "Official Aerodromes'",
-                    queryKey: [],
+                    queryKeys: [],
                   }
                 : typeItemToEdit === "Runway"
                 ? {
                     path: "runways/csv",
                     successMessage: "Runways'",
-                    queryKey: [],
+                    queryKeys: [],
                   }
                 : {
                     path: "manage-waypoints",
                     successMessage: "VFR Waypoints'",
-                    queryKey: [],
+                    queryKeys: [],
                   }
             }
             modalIsOpen={uploadCsvModal.isOpen}
