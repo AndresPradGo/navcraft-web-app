@@ -79,7 +79,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
     position: absolute;
     top: 0;
     left: 0;
-    font-size: 18px;
+    font-size: 15px;
     display: flex;
     align-items: center;
     transform: ${(props) =>
@@ -178,8 +178,8 @@ const CloseIcon = styled(LiaTimesSolid)`
 `;
 
 const TemperatureIcon = styled(FaTemperatureHalf)`
-  font-size: 23px;
-  margin: 0 5px 0 10px;
+  font-size: 20px;
+  margin: 0 0 0 10px;
 `;
 
 const FuelIcon = styled(BsFillFuelPumpFill)`
@@ -225,10 +225,10 @@ const schema = z.object({
     z.literal(null),
   ]),
 });
-export type FormDataType = z.infer<typeof schema>;
+export type ClimbAdjustmentValuesFromForm = z.infer<typeof schema>;
 
 interface Props {
-  data: FormDataType;
+  data: ClimbAdjustmentValuesFromForm;
   closeModal: () => void;
   isOpen: boolean;
   profileId: number;
@@ -241,7 +241,7 @@ const EditClimbDataForm = ({ data, closeModal, isOpen, profileId }: Props) => {
     formState: { errors },
     reset,
     watch,
-  } = useForm<FormDataType>({ resolver: zodResolver(schema) });
+  } = useForm<ClimbAdjustmentValuesFromForm>({ resolver: zodResolver(schema) });
 
   useEffect(() => {
     if (isOpen) {
@@ -336,7 +336,7 @@ const EditClimbDataForm = ({ data, closeModal, isOpen, profileId }: Props) => {
           )}
           <label htmlFor="percent_increase_climb_temperature_c">
             <TemperatureIcon />
-            {"Temperature Losses [%]"}
+            {"Temperature Losses [% per \u00B0C]"}
           </label>
         </HtmlInput>
       </HtmlInputContainer>

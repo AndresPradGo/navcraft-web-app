@@ -37,6 +37,7 @@ import EditSurfaceAdjustmentForm from "./components/EditSurfaceAdjustmentForm";
 import FileForm from "../../components/common/fileForm/index";
 import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions";
 import EditClimbDataForm from "./components/EditClimbDataForm";
+import useClimbData from "./hooks/useClimbData";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -247,6 +248,12 @@ const PerformanceProfilePage = () => {
     isLoading: landingLoading,
   } = useLandingPerformanceData(profileId);
 
+  const {
+    data: climbData,
+    error: climbError,
+    isLoading: climbLoading,
+  } = useClimbData(profileId);
+
   const { error: surfacesError, isLoading: surfacesLoading } =
     useRunwaySurfaces();
 
@@ -258,7 +265,8 @@ const PerformanceProfilePage = () => {
     weightBalanceError ||
     takeoffError ||
     landingError ||
-    surfacesError
+    surfacesError ||
+    climbError
   )
     throw new Error("");
   if (
@@ -268,7 +276,8 @@ const PerformanceProfilePage = () => {
     arrangementLoading ||
     takeoffLoading ||
     landingLoading ||
-    surfacesLoading
+    surfacesLoading ||
+    climbLoading
   )
     return <Loader />;
 
@@ -557,10 +566,19 @@ const PerformanceProfilePage = () => {
             profileId={profileId}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
-            data={{
-              take_off_taxi_fuel_gallons: null,
-              percent_increase_climb_temperature_c: null,
-            }}
+            data={
+              climbData
+                ? {
+                    take_off_taxi_fuel_gallons:
+                      climbData.take_off_taxi_fuel_gallons,
+                    percent_increase_climb_temperature_c:
+                      climbData.percent_increase_climb_temperature_c,
+                  }
+                : {
+                    take_off_taxi_fuel_gallons: null,
+                    percent_increase_climb_temperature_c: null,
+                  }
+            }
           />
         ) : null}
       </Modal>
