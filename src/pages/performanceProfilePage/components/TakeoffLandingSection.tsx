@@ -9,6 +9,17 @@ import { TakeoffLandingDataFromAPI } from "../../../services/takeoffLandingPerfo
 import { RunwaySurfaceData } from "../../../hooks/useRunwaySurfaces";
 import DeleteSurfaceAdjustmentValueForm from "./DeleteSurfaceAdjustmentValueForm";
 
+const HtmlDataContainer = styled.div`
+  transition: all 2s;
+  width: 100%;
+  display: flex;
+  margin: 0 0 35px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  align-content: center;
+`;
+
 const HtmlInstructionsList = styled.ul`
   & li {
     text-wrap: wrap;
@@ -130,8 +141,8 @@ const TakeoffLandingSection = ({
     `This is the list of data-points of the ${
       isTakeoff ? "takeoff" : "landing"
     } performance table.`,
-    "This list is only to display the data. To edit the data, you need to import it from a CSV-file.",
-    "To import the data, open the form from the sidebar, and follow the instructions in the form.",
+    "This table is only to display the performance data.",
+    "To edit the data, you need to import it from a CSV-file, by opening the form from the sidebar, and following the instructions in the form.",
   ];
 
   return (
@@ -145,38 +156,40 @@ const TakeoffLandingSection = ({
           isTakeoff={isTakeoff}
         />
       </Modal>
-      <DataTableList dataList={dataList} maxWidth={800} margin="35px 0 0" />
-      <ExpandibleTable
-        tableData={surfaceTableData}
-        title="Surface Adjustments"
-        hanldeAdd={() => {
-          editSurfaceAdjustment(0);
-        }}
-        otherComponent={
-          <HtmlInstructionsList>
-            {surfaceInstructions.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </HtmlInstructionsList>
-        }
-      />
-      <ExpandibleTable
-        tableData={performanceTableData}
-        title={`${isTakeoff ? "Takeoff" : "Landing"} Performance Data`}
-        hanldeAdd={() => {}}
-        pageSize={10}
-        emptyTableMessage={`${
-          isTakeoff ? "Takeoff" : "Landing"
-        } performance table is empty...`}
-        disableAdd={true}
-        otherComponent={
-          <HtmlInstructionsList>
-            {dataInstructions.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </HtmlInstructionsList>
-        }
-      />
+      <HtmlDataContainer>
+        <DataTableList dataList={dataList} maxWidth={800} margin="35px 0 0" />
+        <ExpandibleTable
+          tableData={surfaceTableData}
+          title="Surface Adjustments"
+          hanldeAdd={() => {
+            editSurfaceAdjustment(0);
+          }}
+          otherComponent={
+            <HtmlInstructionsList>
+              {surfaceInstructions.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </HtmlInstructionsList>
+          }
+        />
+        <ExpandibleTable
+          tableData={performanceTableData}
+          title={`${isTakeoff ? "Takeoff" : "Landing"} Performance Data`}
+          hanldeAdd={() => {}}
+          pageSize={10}
+          emptyTableMessage={`${
+            isTakeoff ? "Takeoff" : "Landing"
+          } performance table is empty...`}
+          disableAdd={true}
+          otherComponent={
+            <HtmlInstructionsList>
+              {dataInstructions.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </HtmlInstructionsList>
+          }
+        />
+      </HtmlDataContainer>
     </>
   );
 };

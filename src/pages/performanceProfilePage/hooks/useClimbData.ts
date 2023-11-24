@@ -6,7 +6,7 @@ import apiClient, {ClimbPerformanceDataFromAPI} from '../../../services/aircraft
 
 const useClimbData = (profileId: number) => {
     return useQuery<ClimbPerformanceDataFromAPI, APIClientError>({
-        queryKey: ['AircraftClimbData', profileId],
+        queryKey: ['aircraftClimbPerformance', profileId],
         queryFn: () => {
             return apiClient.get(`/climb/${profileId}`)
         }

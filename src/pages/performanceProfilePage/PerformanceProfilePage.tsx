@@ -38,6 +38,7 @@ import FileForm from "../../components/common/fileForm/index";
 import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions";
 import EditClimbDataForm from "./components/EditClimbDataForm";
 import useClimbData from "./hooks/useClimbData";
+import ClimbSection from "./components/ClimbSection";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -401,7 +402,7 @@ const PerformanceProfilePage = () => {
               path: `aircraft-performance-data/climb/csv/${profileId}`,
               successMessage: "Climb performance",
               queryKeys: [
-                ["climbPerformance", profileId],
+                ["aircraftClimbPerformance", profileId],
                 ["aircraft", aircraftId],
               ],
             }}
@@ -417,7 +418,7 @@ const PerformanceProfilePage = () => {
               path: `aircraft-performance-data/cruise/csv/${profileId}`,
               successMessage: "Cruise performance",
               queryKeys: [
-                ["cruisePerformance", profileId],
+                ["aircraftCruisePerformance", profileId],
                 ["aircraft", aircraftId],
               ],
             }}
@@ -714,6 +715,8 @@ const PerformanceProfilePage = () => {
               profileId={profileId}
               editSurfaceAdjustment={handleEditTakeoffSurfaceAdjustment}
             />
+          ) : sectionIdx === 3 ? (
+            <ClimbSection profileId={profileId} />
           ) : sectionIdx === 5 ? (
             <TakeoffLandingSection
               isTakeoff={false}

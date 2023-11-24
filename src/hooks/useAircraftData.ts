@@ -10,7 +10,7 @@ const useAircraftDataList = (id: number) => {
         queryFn: () => apiClient.getAndPreProcess<AircraftDataFromAPI[]>(
             dataList => dataList[0],
             `?aircraft_id=${id}`
-            )
+        )
     })
 }
 
