@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
+import useEditClimbData from "../hooks/useEditClimbData";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -243,6 +244,8 @@ const EditClimbDataForm = ({ data, closeModal, isOpen, profileId }: Props) => {
     watch,
   } = useForm<ClimbAdjustmentValuesFromForm>({ resolver: zodResolver(schema) });
 
+  const mutation = useEditClimbData(profileId);
+
   useEffect(() => {
     if (isOpen) {
       reset({
@@ -260,7 +263,11 @@ const EditClimbDataForm = ({ data, closeModal, isOpen, profileId }: Props) => {
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
-    console.log(data);
+    mutation.mutate({
+      take_off_taxi_fuel_gallons: data.take_off_taxi_fuel_gallons,
+      percent_increase_climb_temperature_c:
+        data.percent_increase_climb_temperature_c,
+    });
   };
 
   return (

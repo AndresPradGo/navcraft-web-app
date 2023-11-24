@@ -78,7 +78,7 @@ const useEditWindAdjustmentData = (profileId: number, isTakeoff: boolean) => {
             context.previousData
         )
       }
-  }
+    }
   })
 }
 
