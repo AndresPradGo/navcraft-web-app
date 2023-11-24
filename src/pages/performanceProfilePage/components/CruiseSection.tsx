@@ -1,11 +1,8 @@
-import { BsFillFuelPumpFill } from "react-icons/bs";
-import { FaTemperatureHalf } from "react-icons/fa6";
 import { useQueryClient } from "@tanstack/react-query";
 import { styled } from "styled-components";
 
-import DataTableList from "../../../components/common/DataTableList";
 import ExpandibleTable from "../../../components/common/ExpandibleTable";
-import { ClimbPerformanceDataFromAPI } from "../../../services/aircraftClimbDataClient";
+import { CruisePerformanceDataFromAPI } from "../hooks/useCruiseData";
 
 const HtmlDataContainer = styled.div`
   transition: all 2s;
@@ -24,50 +21,16 @@ const HtmlInstructionsList = styled.ul`
   }
 `;
 
-const FuelIcon = styled(BsFillFuelPumpFill)`
-  font-size: 20px;
-  margin: 0 5px 0 0;
-
-  @media screen and (min-width: 425px) {
-    margin: 0 5px 0 10px;
-  }
-`;
-
-const TemperatureIcon = styled(FaTemperatureHalf)`
-  font-size: 25px;
-  margin: 0 5px 0 0;
-
-  @media screen and (min-width: 425px) {
-    margin: 0 5px 0 10px;
-  }
-`;
-
 interface Props {
   profileId: number;
 }
 
-const ClimbSection = ({ profileId }: Props) => {
+const CruiseSection = ({ profileId }: Props) => {
   const queryClient = useQueryClient();
-  const data = queryClient.getQueryData<ClimbPerformanceDataFromAPI>([
-    "aircraftClimbPerformance",
+  const data = queryClient.getQueryData<CruisePerformanceDataFromAPI>([
+    "aircraftCruisePerformance",
     profileId,
   ]);
-
-  const dataList = [
-    {
-      key: "take_off_taxi_fuel_gallons",
-      title: "Fuel for engine start, taxi and takeoff [gal]",
-      icon: <FuelIcon />,
-      data: `${data?.take_off_taxi_fuel_gallons || "-"}`,
-    },
-    {
-      key: "percent_increase_climb_temperature_c",
-      title:
-        "% of performance loss for every \u00B0C of air temperature above standard",
-      icon: <TemperatureIcon />,
-      data: `${data?.percent_increase_climb_temperature_c || "-"}`,
-    },
-  ];
 
   const performanceTableData = {
     keys: [
@@ -75,22 +38,20 @@ const ClimbSection = ({ profileId }: Props) => {
       "weight_lb",
       "pressure_alt_ft",
       "temperature_c",
-      "kias",
-      "fpm",
-      "time_min",
-      "fuel_gal",
-      "distance_nm",
+      "bhp_percent",
+      "gph",
+      "rpm",
+      "ktas",
     ],
     headers: {
       data_point: "",
       weight_lb: "Weight [Lb]",
       pressure_alt_ft: "Pressure Alt [ft]",
       temperature_c: "OAT [\u00B0C]",
-      kias: "Climb Speed [KIAS]",
-      fpm: "Rate of Climb [FPM]",
-      time_min: "Time from S.L. [min]",
-      fuel_gal: "Fuel from S.L. [gal]",
-      distance_nm: "Distance from S.L. [NM]",
+      bhp_percent: "% BHP",
+      gph: "GPH",
+      rpm: "RPM",
+      ktas: "KTAS",
     },
     rows: data
       ? data.performance_data.map((item, idx) => ({
@@ -99,11 +60,10 @@ const ClimbSection = ({ profileId }: Props) => {
           weight_lb: item.weight_lb || "-",
           pressure_alt_ft: item.pressure_alt_ft || "-",
           temperature_c: item.temperature_c || "-",
-          kias: item.kias || "-",
-          fpm: item.fpm || "-",
-          time_min: item.time_min || "-",
-          fuel_gal: item.fuel_gal || "-",
-          distance_nm: item.distance_nm || "-",
+          bhp_percent: item.bhp_percent || "-",
+          gph: item.gph || "-",
+          rpm: item.rpm || "-",
+          ktas: item.ktas || "-",
           handleEdit: () => {},
           handleDelete: () => {},
           permissions: undefined,
@@ -113,14 +73,13 @@ const ClimbSection = ({ profileId }: Props) => {
   };
 
   const dataInstructions = [
-    "This is the list of data-points of the climb performance table.",
+    "This is the list of data-points of the cruise performance table.",
     "This table is only to display the performance data.",
     "To edit the data, you need to import it from a CSV-file, by opening the form from the sidebar, and following the instructions in the form.",
   ];
 
   return (
     <HtmlDataContainer>
-      <DataTableList dataList={dataList} maxWidth={800} margin="50px 0 0" />
       <ExpandibleTable
         tableData={performanceTableData}
         title="Climb Performance Data"
@@ -140,4 +99,4 @@ const ClimbSection = ({ profileId }: Props) => {
   );
 };
 
-export default ClimbSection;
+export default CruiseSection;

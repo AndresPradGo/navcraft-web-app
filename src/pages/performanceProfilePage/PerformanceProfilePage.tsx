@@ -38,7 +38,9 @@ import FileForm from "../../components/common/fileForm/index";
 import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions";
 import EditClimbDataForm from "./components/EditClimbDataForm";
 import useClimbData from "./hooks/useClimbData";
+import useCruiseData from "./hooks/useCruiseData";
 import ClimbSection from "./components/ClimbSection";
+import CruiseSection from "./components/CruiseSection";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -255,6 +257,9 @@ const PerformanceProfilePage = () => {
     isLoading: climbLoading,
   } = useClimbData(profileId);
 
+  const { error: cruiseError, isLoading: cruiseLoading } =
+    useCruiseData(profileId);
+
   const { error: surfacesError, isLoading: surfacesLoading } =
     useRunwaySurfaces();
 
@@ -267,7 +272,8 @@ const PerformanceProfilePage = () => {
     takeoffError ||
     landingError ||
     surfacesError ||
-    climbError
+    climbError ||
+    cruiseError
   )
     throw new Error("");
   if (
@@ -278,7 +284,8 @@ const PerformanceProfilePage = () => {
     takeoffLoading ||
     landingLoading ||
     surfacesLoading ||
-    climbLoading
+    climbLoading ||
+    cruiseLoading
   )
     return <Loader />;
 
@@ -717,6 +724,8 @@ const PerformanceProfilePage = () => {
             />
           ) : sectionIdx === 3 ? (
             <ClimbSection profileId={profileId} />
+          ) : sectionIdx === 4 ? (
+            <CruiseSection profileId={profileId} />
           ) : sectionIdx === 5 ? (
             <TakeoffLandingSection
               isTakeoff={false}
