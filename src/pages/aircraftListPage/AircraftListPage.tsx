@@ -18,6 +18,7 @@ import EditAircraftModelForm from "../../components/editAircraftModelForm";
 import DeleteAircraftForm from "../../components/deleteAircraftForm";
 import DeleteAircraftModelForm from "../../components/deleteAircraftModelForm";
 import formatUTCDate from "../../utils/formatUTCDate";
+import { useSearchParams } from "react-router-dom";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -103,7 +104,11 @@ const AircraftListPage = () => {
     error: aircraftModelsError,
   } = useAircraftModels();
 
-  const [tableIndex, setTableIndex] = useState<number>(0);
+  const [searchParams] = useSearchParams();
+
+  const [tableIndex, setTableIndex] = useState<number>(
+    searchParams.get("section") === "model" ? 1 : 0
+  );
   const [modalForm, setModalForm] = useState<
     "addAircraft" | "deleteAircraft" | "addModel" | "deleteModel"
   >("addAircraft");

@@ -27,6 +27,10 @@ const router = createBrowserRouter([
         path: "aircraft/:aircraftId/profile/:id",
         element: <PerformanceProfilePage />,
       },
+      {
+        path: "aircraft/model/:id",
+        element: <PerformanceProfilePage />,
+      },
       { path: "flights", element: <Flights /> },
       { path: "profile", element: <Profile /> },
       { path: "waypoints", element: <Waypoints /> },

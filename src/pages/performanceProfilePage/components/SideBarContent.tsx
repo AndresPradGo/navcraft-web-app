@@ -1,4 +1,5 @@
 import { BiSolidSelectMultiple, BiSolidEditAlt } from "react-icons/bi";
+import { IoAirplaneOutline } from "react-icons/io5";
 import { BsSpeedometer } from "react-icons/bs";
 import {
   FaPlaneDeparture,
@@ -26,6 +27,7 @@ import SideBarIndex, {
 import SideBarBtnList from "../../../components/common/SideBarBtnList";
 import SideBarTitle from "../../../components/common/SideBarTitle";
 import useFetchFile from "../../../hooks/useFetchFile";
+import useModelPermissions from "../useModelPermissions";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -76,6 +78,12 @@ const CruiseIcon = styled(TbPlaneInflight)`
 
 const LandingIcon = styled(FaPlaneArrival)`
   font-size: 23px;
+  margin-right: 8px;
+  padding-bottom: 3px;
+`;
+
+const DownloadTitleIcon = styled(FaDownload)`
+  font-size: 27px;
   margin-right: 8px;
   padding-bottom: 3px;
 `;
@@ -140,6 +148,11 @@ const DownloadIcon = styled(FaDownload)`
   margin-left: 5px;
 `;
 
+const ModelIcon = styled(IoAirplaneOutline)`
+  font-size: 20px;
+  margin-left: 5px;
+`;
+
 interface Props {
   profileId: number;
   handleChangeSection: (index: number) => void;
@@ -193,6 +206,7 @@ const SideBarContent = ({
   disableAddFuelTank,
   disableAddWeightBalance,
 }: Props) => {
+  const { isModel, userIsAdmin } = useModelPermissions();
   const fileFetcher = useFetchFile();
 
   const baseStyles = {
@@ -212,7 +226,7 @@ const SideBarContent = ({
     backgroundHoverColor: "var(--color-primary-light)",
   };
 
-  const generalButtons = [
+  const profileButtons = [
     {
       text: "Edit Profile",
       icon: <PerformanceIcon />,
@@ -236,6 +250,25 @@ const SideBarContent = ({
     },
     {
       text: "Delete Profile",
+      icon: <DeleteIcon />,
+      styles: {
+        ...commonStyles,
+        backgroundColor: "var(--color-warning)",
+        backgroundHoverColor: "var(--color-warning-hover)",
+      },
+      onClick: handleDeleteProfile,
+    },
+  ];
+
+  const modelButtons = [
+    {
+      text: "Edit Model",
+      icon: <ModelIcon />,
+      styles: { ...commonStyles },
+      onClick: handleEditProfile,
+    },
+    {
+      text: "Delete Model",
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
@@ -384,49 +417,110 @@ const SideBarContent = ({
     },
   ];
 
+  const downloadButtons = [
+    {
+      text: "Takeoff Performance",
+      icon: <TakeoffIcon />,
+      styles: { ...baseStyles },
+      onClick: () => {
+        fileFetcher(
+          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=true`
+        );
+      },
+    },
+    {
+      text: "Climb Performance",
+      icon: <ClimbIcon />,
+      styles: { ...baseStyles },
+      onClick: () => {
+        fileFetcher(`aircraft-performance-data/climb/csv/${profileId}`);
+      },
+    },
+    {
+      text: "Cruise Performance",
+      icon: <CruiseIcon />,
+      styles: { ...baseStyles },
+      onClick: () => {
+        fileFetcher(`aircraft-performance-data/cruise/csv/${profileId}`);
+      },
+    },
+    {
+      text: "Landing Performance",
+      icon: <LandingIcon />,
+      styles: { ...baseStyles },
+      onClick: () => {
+        fileFetcher(
+          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=false`
+        );
+      },
+    },
+  ];
+
   return (
     <HtmlContainer>
-      <SideBarTitle>Aircraft Performance Profile</SideBarTitle>
+      <SideBarTitle>{`Aircraft  ${
+        isModel ? "Model" : "Performance Profile"
+      }`}</SideBarTitle>
       <SideBarIndex
         handleChangeSection={handleChangeSection}
         selectedIdx={sectionIndex}
         sectionOptions={sectionOptions}
       />
-      <SideBarBtnList
-        titleIcon={<ToolsIcon />}
-        title="Performance Profile Tools"
-        buttons={generalButtons}
-      />
-      <SideBarBtnList
-        titleIcon={<ArrangementIcon />}
-        title="Aircraft Arrangement Tools"
-        buttons={arrangementButtons}
-      />
-      <SideBarBtnList
-        titleIcon={<BalanceIcon />}
-        title="Weight and Balance Tools"
-        buttons={weightBalanceButtons}
-      />
-      <SideBarBtnList
-        titleIcon={<TakeoffIcon />}
-        title="Takeoff Performance Tools"
-        buttons={takeoffButtons}
-      />
-      <SideBarBtnList
-        titleIcon={<ClimbIcon />}
-        title="Climb Performance Tools"
-        buttons={climbButtons}
-      />
-      <SideBarBtnList
-        titleIcon={<CruiseIcon />}
-        title="Cruise Performance Tools"
-        buttons={cruiseButtons}
-      />
-      <SideBarBtnList
-        titleIcon={<LandingIcon />}
-        title="Landing Performance Tools"
-        buttons={landButtons}
-      />
+      {isModel ? (
+        userIsAdmin ? (
+          <SideBarBtnList
+            titleIcon={<ToolsIcon />}
+            title="Aircraft Model Tools"
+            buttons={modelButtons}
+          />
+        ) : (
+          <SideBarBtnList
+            titleIcon={<DownloadTitleIcon />}
+            title="Export Data to CSV File"
+            buttons={downloadButtons}
+          />
+        )
+      ) : (
+        <SideBarBtnList
+          titleIcon={<ToolsIcon />}
+          title="Performance Profile Tools"
+          buttons={profileButtons}
+        />
+      )}
+      {(isModel && userIsAdmin) || !isModel ? (
+        <>
+          <SideBarBtnList
+            titleIcon={<ArrangementIcon />}
+            title="Aircraft Arrangement Tools"
+            buttons={arrangementButtons}
+          />
+          <SideBarBtnList
+            titleIcon={<BalanceIcon />}
+            title="Weight and Balance Tools"
+            buttons={weightBalanceButtons}
+          />
+          <SideBarBtnList
+            titleIcon={<TakeoffIcon />}
+            title="Takeoff Performance Tools"
+            buttons={takeoffButtons}
+          />
+          <SideBarBtnList
+            titleIcon={<ClimbIcon />}
+            title="Climb Performance Tools"
+            buttons={climbButtons}
+          />
+          <SideBarBtnList
+            titleIcon={<CruiseIcon />}
+            title="Cruise Performance Tools"
+            buttons={cruiseButtons}
+          />
+          <SideBarBtnList
+            titleIcon={<LandingIcon />}
+            title="Landing Performance Tools"
+            buttons={landButtons}
+          />
+        </>
+      ) : null}
     </HtmlContainer>
   );
 };

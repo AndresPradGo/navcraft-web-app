@@ -36,6 +36,10 @@ const SideBarProvider = ({ children }: Props) => {
       path: ["aircraft", "profile"],
       needsAdmin: false,
     },
+    {
+      path: ["aircraft", "model"],
+      needsAdmin: false,
+    },
   ];
 
   const user = useAuth();

@@ -12,6 +12,7 @@ import EditSeatRowForm from "./EditSeatRowForm";
 import EditFuelTankForm from "./EditFuelTankForm";
 import { AircraftArrangementDataFromAPI } from "../../../services/aircraftArrangementClient";
 import DeleteArrangementItemForm from "./DeleteArrangementItemForm";
+import useModelPermissions from "../useModelPermissions";
 
 const HtmlInstructionsList = styled.ul`
   & li {
@@ -49,6 +50,7 @@ const ArrangementSection = ({
   handleAddSeat,
   handleAddFuel,
 }: Props) => {
+  const { isModel, userIsAdmin } = useModelPermissions();
   const queryClient = useQueryClient();
   const arrangementData =
     queryClient.getQueryData<AircraftArrangementDataFromAPI>([
@@ -92,7 +94,10 @@ const ArrangementSection = ({
             setCurrentForm("deleteCompartment");
             modal.handleOpen();
           },
-          permissions: "edit-delete" as "edit-delete",
+          permissions:
+            (isModel && userIsAdmin) || !isModel
+              ? ("edit-delete" as "edit-delete")
+              : undefined,
         }))
       : [],
   };
@@ -137,7 +142,10 @@ const ArrangementSection = ({
             setCurrentForm("deleteSeat");
             modal.handleOpen();
           },
-          permissions: "edit-delete" as "edit-delete",
+          permissions:
+            (isModel && userIsAdmin) || !isModel
+              ? ("edit-delete" as "edit-delete")
+              : undefined,
         }))
       : [],
   };
@@ -198,7 +206,10 @@ const ArrangementSection = ({
             setCurrentForm("deleteTank");
             modal.handleOpen();
           },
-          permissions: "edit-delete" as "edit-delete",
+          permissions:
+            (isModel && userIsAdmin) || !isModel
+              ? ("edit-delete" as "edit-delete")
+              : undefined,
         }))
       : [],
   };
@@ -250,60 +261,62 @@ const ArrangementSection = ({
 
   return (
     <>
-      <Modal isOpen={modal.isOpen}>
-        {currentForm === "addCompartment" ? (
-          <EditBaggageCompartmentForm
-            compartmentData={selectedCompartment}
-            closeModal={modal.handleClose}
-            isOpen={modal.isOpen}
-            profileId={profileId}
-            aircraftId={aircraftId}
-          />
-        ) : currentForm === "addSeat" ? (
-          <EditSeatRowForm
-            seatRowData={selectedSeat}
-            closeModal={modal.handleClose}
-            isOpen={modal.isOpen}
-            profileId={profileId}
-            aircraftId={aircraftId}
-          />
-        ) : currentForm === "addTank" ? (
-          <EditFuelTankForm
-            fuelTankData={selectedTank}
-            closeModal={modal.handleClose}
-            isOpen={modal.isOpen}
-            profileId={profileId}
-            aircraftId={aircraftId}
-          />
-        ) : currentForm === "deleteCompartment" ? (
-          <DeleteArrangementItemForm
-            closeModal={modal.handleClose}
-            type={"Baggage Compartment"}
-            name={selectedCompartment.name}
-            id={selectedId}
-            profileId={profileId}
-            aircraftId={aircraftId}
-          />
-        ) : currentForm === "deleteSeat" ? (
-          <DeleteArrangementItemForm
-            closeModal={modal.handleClose}
-            type={"Seat Row"}
-            name={selectedSeat.name}
-            id={selectedId}
-            profileId={profileId}
-            aircraftId={aircraftId}
-          />
-        ) : currentForm === "deleteTank" ? (
-          <DeleteArrangementItemForm
-            closeModal={modal.handleClose}
-            type={"Fuel Tank"}
-            name={selectedTank.name}
-            id={selectedId}
-            profileId={profileId}
-            aircraftId={aircraftId}
-          />
-        ) : null}
-      </Modal>
+      {(isModel && userIsAdmin) || !isModel ? (
+        <Modal isOpen={modal.isOpen}>
+          {currentForm === "addCompartment" ? (
+            <EditBaggageCompartmentForm
+              compartmentData={selectedCompartment}
+              closeModal={modal.handleClose}
+              isOpen={modal.isOpen}
+              profileId={profileId}
+              aircraftId={aircraftId}
+            />
+          ) : currentForm === "addSeat" ? (
+            <EditSeatRowForm
+              seatRowData={selectedSeat}
+              closeModal={modal.handleClose}
+              isOpen={modal.isOpen}
+              profileId={profileId}
+              aircraftId={aircraftId}
+            />
+          ) : currentForm === "addTank" ? (
+            <EditFuelTankForm
+              fuelTankData={selectedTank}
+              closeModal={modal.handleClose}
+              isOpen={modal.isOpen}
+              profileId={profileId}
+              aircraftId={aircraftId}
+            />
+          ) : currentForm === "deleteCompartment" ? (
+            <DeleteArrangementItemForm
+              closeModal={modal.handleClose}
+              type={"Baggage Compartment"}
+              name={selectedCompartment.name}
+              id={selectedId}
+              profileId={profileId}
+              aircraftId={aircraftId}
+            />
+          ) : currentForm === "deleteSeat" ? (
+            <DeleteArrangementItemForm
+              closeModal={modal.handleClose}
+              type={"Seat Row"}
+              name={selectedSeat.name}
+              id={selectedId}
+              profileId={profileId}
+              aircraftId={aircraftId}
+            />
+          ) : currentForm === "deleteTank" ? (
+            <DeleteArrangementItemForm
+              closeModal={modal.handleClose}
+              type={"Fuel Tank"}
+              name={selectedTank.name}
+              id={selectedId}
+              profileId={profileId}
+              aircraftId={aircraftId}
+            />
+          ) : null}
+        </Modal>
+      ) : null}
       <DataTableList
         dataList={[
           {
@@ -324,29 +337,47 @@ const ArrangementSection = ({
         tableData={compartmentsTableData}
         sortColumnOptions={compartmentsSortData}
         pageSize={5}
-        emptyTableMessage="No Baggage Compartments have been added to this profile..."
+        emptyTableMessage={`No Baggage Compartments have been added to this ${
+          isModel ? "model" : "profile"
+        }...`}
         title="Baggage Compartments"
         hanldeAdd={handleAddBaggage}
+        disableAdd={isModel && !userIsAdmin}
       />
       <ExpandibleTable
         tableData={seatsTableData}
         sortColumnOptions={seatsSortData}
         pageSize={5}
-        emptyTableMessage="No Seat Rows have been added to this profile..."
+        emptyTableMessage={`No Seat Rows have been added to this ${
+          isModel ? "model" : "profile"
+        }...`}
         title="Seat Rows"
         hanldeAdd={handleAddSeat}
+        disableAdd={isModel && !userIsAdmin}
       />
       <ExpandibleTable
         tableData={tanksTableData}
         sortColumnOptions={tanksSortData}
-        disableAdd={tanksTableData.rows.length >= 4}
+        disableAdd={
+          tanksTableData.rows.length >= 4 || (isModel && !userIsAdmin)
+        }
         pageSize={5}
-        emptyTableMessage="No Fuel Tanks have been added to this profile..."
+        emptyTableMessage={`No Fuel Tanks have been added to this ${
+          isModel ? "model" : "profile"
+        }...`}
         title="Fuel Tanks"
         hanldeAdd={handleAddFuel}
         otherComponent={
           <HtmlInstructionsList>
-            <li>You can add up to 4 fuel tanks to this performance profile.</li>
+            {isModel ? (
+              userIsAdmin ? (
+                <li>You can add up to 4 fuel tanks to this aircraft model.</li>
+              ) : null
+            ) : (
+              <li>
+                You can add up to 4 fuel tanks to this performance profile.
+              </li>
+            )}
             <li>
               Tanks with lower burn sequence, will be assumed to burn fuel
               first.

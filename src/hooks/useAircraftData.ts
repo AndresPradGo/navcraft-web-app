@@ -7,10 +7,19 @@ import apiClient, {AircraftDataFromAPI} from '../services/aircraftClient';
 const useAircraftDataList = (id: number) => {
     return useQuery<AircraftDataFromAPI, APIClientError>({
         queryKey: ['aircraft', id],
-        queryFn: () => apiClient.getAndPreProcess<AircraftDataFromAPI[]>(
+        queryFn: () => id ? apiClient.getAndPreProcess<AircraftDataFromAPI[]>(
             dataList => dataList[0],
             `?aircraft_id=${id}`
-        )
+        ) : {
+            id: 0,
+            profiles: [],
+            created_at_utc: "",
+            last_updated_utc: "",
+            make: "",
+            model: "",
+            abbreviation: "",
+            registration: "",
+        }
     })
 }
 

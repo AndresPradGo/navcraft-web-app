@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 
 import ExpandibleTable from "../../../components/common/ExpandibleTable";
 import { CruisePerformanceDataFromAPI } from "../hooks/useCruiseData";
+import useModelPermissions from "../useModelPermissions";
 
 const HtmlDataContainer = styled.div`
   transition: all 2s;
@@ -31,6 +32,8 @@ const CruiseSection = ({ profileId }: Props) => {
     "aircraftCruisePerformance",
     profileId,
   ]);
+
+  const { isModel, userIsAdmin } = useModelPermissions();
 
   const performanceTableData = {
     keys: [
@@ -88,11 +91,13 @@ const CruiseSection = ({ profileId }: Props) => {
         emptyTableMessage="Climb performance table is empty..."
         disableAdd={true}
         otherComponent={
-          <HtmlInstructionsList>
-            {dataInstructions.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </HtmlInstructionsList>
+          (isModel && userIsAdmin) || !isModel ? (
+            <HtmlInstructionsList>
+              {dataInstructions.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </HtmlInstructionsList>
+          ) : null
         }
       />
     </HtmlDataContainer>

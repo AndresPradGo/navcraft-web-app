@@ -30,6 +30,7 @@ import EditUserAerodromeForm from "../../components/editUserAerodromeForm";
 import FileForm from "../../components/common/fileForm/index";
 import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions";
 import formatUTCDate from "../../utils/formatUTCDate";
+import { useSearchParams } from "react-router-dom";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -133,7 +134,11 @@ const Waypoints = () => {
   const user = useAuth();
   const userIsAdmin = user && user.is_active && user.is_admin;
 
-  const [tableIndex, setTableIndex] = useState<number>(0);
+  const [searchParams] = useSearchParams();
+
+  const [tableIndex, setTableIndex] = useState<number>(
+    searchParams.get("section") === "aerodromes" ? 1 : 0
+  );
   const [rowToEditId, setRowToEditId] = useState<number>(0);
   const [typeItemToEdit, setTypeItemToEdit] = useState<
     | "VFR Waypoint"

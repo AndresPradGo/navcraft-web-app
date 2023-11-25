@@ -119,7 +119,7 @@ interface Props {
 const DeleteAircraftModelForm = ({ closeModal, id, redirect }: Props) => {
   const navigate = useNavigate();
   const mutation = useDeleteAircraftModel(() => {
-    if (!!redirect) navigate("/aircraft-list");
+    if (!!redirect) navigate("/aircraft?section=model");
   });
   const handleDelete = () => {
     closeModal();

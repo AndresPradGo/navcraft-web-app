@@ -6,6 +6,7 @@ import { styled } from "styled-components";
 import DataTableList from "../../../components/common/DataTableList";
 import ExpandibleTable from "../../../components/common/ExpandibleTable";
 import { ClimbPerformanceDataFromAPI } from "../../../services/aircraftClimbDataClient";
+import useModelPermissions from "../useModelPermissions";
 
 const HtmlDataContainer = styled.div`
   transition: all 2s;
@@ -26,10 +27,10 @@ const HtmlInstructionsList = styled.ul`
 
 const FuelIcon = styled(BsFillFuelPumpFill)`
   font-size: 20px;
-  margin: 0 5px 0 0;
+  margin: 0 10px 0 0;
 
-  @media screen and (min-width: 425px) {
-    margin: 0 5px 0 10px;
+  @media screen and (min-width: 550px) {
+    margin: 0 10px 0 10px;
   }
 `;
 
@@ -37,7 +38,7 @@ const TemperatureIcon = styled(FaTemperatureHalf)`
   font-size: 25px;
   margin: 0 5px 0 0;
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 550px) {
     margin: 0 5px 0 10px;
   }
 `;
@@ -52,6 +53,8 @@ const ClimbSection = ({ profileId }: Props) => {
     "aircraftClimbPerformance",
     profileId,
   ]);
+
+  const { isModel, userIsAdmin } = useModelPermissions();
 
   const dataList = [
     {
@@ -120,7 +123,7 @@ const ClimbSection = ({ profileId }: Props) => {
 
   return (
     <HtmlDataContainer>
-      <DataTableList dataList={dataList} maxWidth={800} margin="50px 0 0" />
+      <DataTableList dataList={dataList} maxWidth={750} margin="35px 0" />
       <ExpandibleTable
         tableData={performanceTableData}
         title="Climb Performance Data"
@@ -129,11 +132,13 @@ const ClimbSection = ({ profileId }: Props) => {
         emptyTableMessage="Climb performance table is empty..."
         disableAdd={true}
         otherComponent={
-          <HtmlInstructionsList>
-            {dataInstructions.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </HtmlInstructionsList>
+          (isModel && userIsAdmin) || !isModel ? (
+            <HtmlInstructionsList>
+              {dataInstructions.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </HtmlInstructionsList>
+          ) : null
         }
       />
     </HtmlDataContainer>

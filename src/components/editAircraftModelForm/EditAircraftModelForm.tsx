@@ -1,7 +1,6 @@
 import { useForm, FieldValues } from "react-hook-form";
 import { AiOutlineSave, AiFillTag } from "react-icons/ai";
 import { BsFillFuelPumpFill } from "react-icons/bs";
-import { GrCompliance } from "react-icons/gr";
 import { IoAirplaneOutline } from "react-icons/io5";
 import { LiaTimesSolid } from "react-icons/lia";
 import { styled } from "styled-components";
@@ -11,6 +10,7 @@ import { useEffect } from "react";
 
 import Button from "../common/button";
 import useAddAircraftModel from "./useAddAircraftModel";
+import useEditAircraftModel from "./useEditAircraftModel";
 import { FuelTypeData } from "../../hooks/useFuelTypes";
 import DataList from "../common/datalist";
 
@@ -148,7 +148,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
 `;
 
 const HtmlCheckbox = styled.label`
-  width: 122px;
+  width: 270px;
   align-self: center;
   display: flex;
   min-width: 0;
@@ -156,8 +156,9 @@ const HtmlCheckbox = styled.label`
   justify-content: flex-start;
   align-items: center;
   transition: all 0.2s linear;
+  margin-bottom: 10px;
 
-  color: var(--color-grey-bright);
+  color: var(--color-contrast);
   padding: 10px 0 0 10px;
   cursor: pointer;
   flex-grow: 0;
@@ -180,7 +181,7 @@ const HtmlCheckbox = styled.label`
     align-items: center;
     text-align: left;
     cursor: pointer;
-    margin-left: 5px;
+    margin-left: 10px;
     text-wrap: wrap;
   }
 `;
@@ -233,11 +234,6 @@ const FuelIcon = styled(BsFillFuelPumpFill)`
   margin: 0 10px;
 `;
 
-const CompleteIcon = styled(GrCompliance)`
-  font-size: 20px;
-  margin: 0 10px;
-`;
-
 const SaveIcon = styled(AiOutlineSave)`
   font-size: 25px;
 `;
@@ -279,6 +275,8 @@ const EditAircraftModelForm = ({
   fuelOptions,
 }: Props) => {
   const addMutation = useAddAircraftModel();
+  const editMutation = useEditAircraftModel(aircraftModelData.id);
+
   const {
     register,
     handleSubmit,
@@ -311,6 +309,13 @@ const EditAircraftModelForm = ({
           is_complete: false,
           fuel_type_id: fuelId,
         });
+      } else {
+        editMutation.mutate({
+          id: aircraftModelData.id,
+          performance_profile_name: data.performance_profile_name,
+          is_complete: data.is_complete,
+          fuel_type_id: fuelId,
+        });
       }
     } else {
       setError("fuel_type", {
@@ -337,10 +342,7 @@ const EditAircraftModelForm = ({
               type="checkbox"
               id="is-complete"
             />
-            <span>
-              <CompleteIcon />
-              Profile is Complete
-            </span>
+            <span>Mark Model as Complete</span>
           </HtmlCheckbox>
         ) : null}
         <DataList

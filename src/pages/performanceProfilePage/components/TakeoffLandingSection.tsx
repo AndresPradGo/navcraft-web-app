@@ -8,6 +8,7 @@ import { useModal, Modal } from "../../../components/common/modal";
 import { TakeoffLandingDataFromAPI } from "../../../services/takeoffLandingPerformanceDataClient";
 import { RunwaySurfaceData } from "../../../hooks/useRunwaySurfaces";
 import DeleteSurfaceAdjustmentValueForm from "./DeleteSurfaceAdjustmentValueForm";
+import useModelPermissions from "../useModelPermissions";
 
 const HtmlDataContainer = styled.div`
   transition: all 2s;
@@ -21,6 +22,7 @@ const HtmlDataContainer = styled.div`
 `;
 
 const HtmlInstructionsList = styled.ul`
+  align-self: flex-start;
   & li {
     text-wrap: wrap;
   }
@@ -43,6 +45,8 @@ const TakeoffLandingSection = ({
     isTakeoff ? "takeoffPerformance" : "landingPerformance",
     profileId,
   ]);
+
+  const { isModel, userIsAdmin } = useModelPermissions();
 
   const deleteModal = useModal();
 
@@ -98,6 +102,16 @@ const TakeoffLandingSection = ({
         : [],
   };
 
+  if (isModel && !userIsAdmin) {
+    for (const item of surfaceTableData.rows) {
+      dataList.push({
+        key: `${item.surface}-percent-loss`,
+        title: `For operations on ${item.surface} runways, distance will be increased by [% of ground roll]:`,
+        data: `${item.percent}%`,
+      });
+    }
+  }
+
   const performanceTableData = {
     keys: [
       "data_point",
@@ -147,31 +161,35 @@ const TakeoffLandingSection = ({
 
   return (
     <>
-      <Modal isOpen={deleteModal.isOpen}>
-        <DeleteSurfaceAdjustmentValueForm
-          closeModal={deleteModal.handleClose}
-          surface={surfaces?.find((s) => s.id === idToDelete)?.surface || "-"}
-          surfaceId={idToDelete}
-          profileId={profileId}
-          isTakeoff={isTakeoff}
-        />
-      </Modal>
+      {(isModel && userIsAdmin) || !isModel ? (
+        <Modal isOpen={deleteModal.isOpen}>
+          <DeleteSurfaceAdjustmentValueForm
+            closeModal={deleteModal.handleClose}
+            surface={surfaces?.find((s) => s.id === idToDelete)?.surface || "-"}
+            surfaceId={idToDelete}
+            profileId={profileId}
+            isTakeoff={isTakeoff}
+          />
+        </Modal>
+      ) : null}
       <HtmlDataContainer>
-        <DataTableList dataList={dataList} maxWidth={800} margin="35px 0 0" />
-        <ExpandibleTable
-          tableData={surfaceTableData}
-          title="Surface Adjustments"
-          hanldeAdd={() => {
-            editSurfaceAdjustment(0);
-          }}
-          otherComponent={
-            <HtmlInstructionsList>
-              {surfaceInstructions.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </HtmlInstructionsList>
-          }
-        />
+        <DataTableList dataList={dataList} maxWidth={810} margin="35px 0" />
+        {(isModel && userIsAdmin) || !isModel ? (
+          <ExpandibleTable
+            tableData={surfaceTableData}
+            title="Surface Adjustments"
+            hanldeAdd={() => {
+              editSurfaceAdjustment(0);
+            }}
+            otherComponent={
+              <HtmlInstructionsList>
+                {surfaceInstructions.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </HtmlInstructionsList>
+            }
+          />
+        ) : null}
         <ExpandibleTable
           tableData={performanceTableData}
           title={`${isTakeoff ? "Takeoff" : "Landing"} Performance Data`}
@@ -182,11 +200,13 @@ const TakeoffLandingSection = ({
           } performance table is empty...`}
           disableAdd={true}
           otherComponent={
-            <HtmlInstructionsList>
-              {dataInstructions.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </HtmlInstructionsList>
+            (isModel && userIsAdmin) || !isModel ? (
+              <HtmlInstructionsList>
+                {dataInstructions.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </HtmlInstructionsList>
+            ) : undefined
           }
         />
       </HtmlDataContainer>

@@ -15,6 +15,7 @@ import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
 import DeleteWeightBalanceProfileForm from "./DeleteWeightBalanceProfileForm";
 import EditWeightBalanceProfileForm from "../components/EditWeightBalanceProfileForm";
 import { useQueryClient } from "@tanstack/react-query";
+import useModelPermissions from "../useModelPermissions";
 
 const HtmlDataContainer = styled.div`
   transition: all 2s;
@@ -100,6 +101,8 @@ const WeightBalanceSection = ({
 }: Props) => {
   const [currentForm, setCurrentForm] = useState<"delete" | "edit">("delete");
   const [selectedId, setSelectedId] = useState<number>(0);
+
+  const { isModel, userIsAdmin } = useModelPermissions();
 
   const queryClient = useQueryClient();
   const weightBalanceData =
@@ -199,43 +202,45 @@ const WeightBalanceSection = ({
 
   return (
     <>
-      <Modal
-        isOpen={modal.isOpen}
-        width={currentForm === "edit" ? 718 : 600}
-        fullHeight={currentForm === "edit"}
-      >
-        {currentForm === "delete" ? (
-          <DeleteWeightBalanceProfileForm
-            closeModal={modal.handleClose}
-            name={
-              weightBalanceData?.weight_balance_profiles.find(
-                (p) => p.id === selectedId
-              )?.name || ""
-            }
-            id={selectedId}
-            profileId={profileId}
-          />
-        ) : currentForm === "edit" ? (
-          <EditWeightBalanceProfileForm
-            performanceProfileId={profileId}
-            helpInstructions={instructions}
-            closeModal={modal.handleClose}
-            isOpen={modal.isOpen}
-            labelKey="edit"
-            data={{
-              id: selectedId,
-              name: profileToEdit?.name || "",
-              limits:
-                profileToEdit?.limits.map((l) => ({
-                  weight_lb: l.weight_lb,
-                  cg_location_in: l.cg_location_in,
-                })) || [],
-            }}
-          />
-        ) : null}
-      </Modal>
+      {(isModel && userIsAdmin) || !isModel ? (
+        <Modal
+          isOpen={modal.isOpen}
+          width={currentForm === "edit" ? 718 : 600}
+          fullHeight={currentForm === "edit"}
+        >
+          {currentForm === "delete" ? (
+            <DeleteWeightBalanceProfileForm
+              closeModal={modal.handleClose}
+              name={
+                weightBalanceData?.weight_balance_profiles.find(
+                  (p) => p.id === selectedId
+                )?.name || ""
+              }
+              id={selectedId}
+              profileId={profileId}
+            />
+          ) : currentForm === "edit" ? (
+            <EditWeightBalanceProfileForm
+              performanceProfileId={profileId}
+              helpInstructions={instructions}
+              closeModal={modal.handleClose}
+              isOpen={modal.isOpen}
+              labelKey="edit"
+              data={{
+                id: selectedId,
+                name: profileToEdit?.name || "",
+                limits:
+                  profileToEdit?.limits.map((l) => ({
+                    weight_lb: l.weight_lb,
+                    cg_location_in: l.cg_location_in,
+                  })) || [],
+              }}
+            />
+          ) : null}
+        </Modal>
+      ) : null}
       <HtmlDataContainer>
-        <DataTableList dataList={dataList} maxWidth={400} margin="35px 0 0" />
+        <DataTableList dataList={dataList} maxWidth={400} margin="35px 0" />
         {displayTable ? (
           <WeightBalanceGraph
             showMTOW={true}
@@ -246,20 +251,22 @@ const WeightBalanceSection = ({
           />
         ) : null}
       </HtmlDataContainer>
-      <ExpandibleTable
-        tableData={tableData}
-        disableAdd={tableData.rows.length >= 4}
-        emptyTableMessage="No W&B Profiles have been added..."
-        title="List of W&B Profiles"
-        hanldeAdd={handlAddWeightBalanceprofile}
-        otherComponent={
-          <HtmlInstructionsList>
-            {instructions.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </HtmlInstructionsList>
-        }
-      />
+      {(isModel && userIsAdmin) || !isModel ? (
+        <ExpandibleTable
+          tableData={tableData}
+          disableAdd={tableData.rows.length >= 4}
+          emptyTableMessage="No W&B Profiles have been added..."
+          title="List of W&B Profiles"
+          hanldeAdd={handlAddWeightBalanceprofile}
+          otherComponent={
+            <HtmlInstructionsList>
+              {instructions.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </HtmlInstructionsList>
+          }
+        />
+      ) : null}
     </>
   );
 };

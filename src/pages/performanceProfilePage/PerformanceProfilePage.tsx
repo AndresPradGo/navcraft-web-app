@@ -2,15 +2,20 @@ import { useState } from "react";
 import { AiOutlineSwap } from "react-icons/ai";
 import { BsSpeedometer } from "react-icons/bs";
 import { FaPlaneDeparture, FaPlaneArrival, FaSitemap } from "react-icons/fa";
-import { IoAirplane } from "react-icons/io5";
+import { IoAirplane, IoAirplaneOutline } from "react-icons/io5";
 import { MdBalance, MdOutlineStart } from "react-icons/md";
 import { TbPlaneInflight } from "react-icons/tb";
 import { TbTrendingUp2 } from "react-icons/tb";
 import { styled } from "styled-components";
 
+import modelPermissionsContext from "./modelPermissionsContext";
+import { usePathList } from "../../router";
+import useAuth from "../../hooks/useAuth";
 import ContentLayout from "../layout/ContentLayout";
 import SideBarContent from "./components/SideBarContent";
+import { PerformanceProfileBaseData } from "../../services/aircraftClient";
 import useAircraftData from "../../hooks/useAircraftData";
+import useAircraftModelData from "../../hooks/useAircraftModelData";
 import useFuelTypes from "../../hooks/useFuelTypes";
 import Loader from "../../components/Loader";
 import { useParams } from "react-router-dom";
@@ -25,8 +30,10 @@ import useWeightBalanceData from "../../hooks/useWeightBalanceData";
 import useTakeoffPerformanceData from "../../hooks/useTakeoffPerformanceData";
 import useLandingPerformanceData from "../../hooks/useLandingPerformanceData";
 import EditPerformanceProfileForm from "./components/EditPerformanceProfileForm";
+import EditAircraftModelForm from "../../components/editAircraftModelForm/index";
 import useSelectPerformanceProfile from "./hooks/useSelectPerformanceProfile";
 import DeletePerformanceProfileForm from "../../components/deletePerformanceProfileForm";
+import DeleteAircraftModelForm from "../../components/deleteAircraftModelForm";
 import WeightBalanceSection from "./components/WeightBalanceSection";
 import EditWeightAndBalanceDataForm from "./components/EditWeightAndBalanceDataForm";
 import EditWeightBalanceProfileForm from "./components/EditWeightBalanceProfileForm";
@@ -207,6 +214,11 @@ const PerformanceProfilePage = () => {
     | "editClimbAdjustments"
   >("deleteProfile");
 
+  const path = usePathList();
+  const isModel = path[1] === "model";
+  const user = useAuth();
+  const userIsAdmin = !!(user?.is_active && user?.is_admin);
+
   const modal = useModal();
   const editProfileModal = useModal();
   const takeoffModal = useModal();
@@ -220,6 +232,11 @@ const PerformanceProfilePage = () => {
   const selectProfileMutation = useSelectPerformanceProfile(aircraftId);
 
   const { data: aircraftData, error, isLoading } = useAircraftData(aircraftId);
+  const {
+    data: modelData,
+    error: modelError,
+    isLoading: modelLoading,
+  } = useAircraftModelData(profileId);
 
   const {
     data: fuelTypes,
@@ -263,9 +280,19 @@ const PerformanceProfilePage = () => {
   const { error: surfacesError, isLoading: surfacesLoading } =
     useRunwaySurfaces();
 
-  if (error && error.message !== "Network Error") throw new Error("notFound");
+  const profileNotFound = aircraftData
+    ? !aircraftData.profiles.find((p) => p.id === profileId)
+    : false;
+
+  if (
+    (error && error.message !== "Network Error") ||
+    (profileNotFound && !isModel) ||
+    (isModel && modelError && modelError.message !== "Network Error")
+  )
+    throw new Error("notFound");
   else if (
     (error && error.message === "Network Error") ||
+    (isModel && modelError && modelError.message === "Network Error") ||
     fuelTypesError ||
     arrangementError ||
     weightBalanceError ||
@@ -278,6 +305,7 @@ const PerformanceProfilePage = () => {
     throw new Error("");
   if (
     isLoading ||
+    modelLoading ||
     fuelTypesIsLoading ||
     weightBalanceLoading ||
     arrangementLoading ||
@@ -289,9 +317,10 @@ const PerformanceProfilePage = () => {
   )
     return <Loader />;
 
-  const profileBaseData = aircraftData?.profiles.find(
-    (profile) => profile.id === profileId
-  );
+  const profileBaseData = isModel
+    ? ({ ...modelData, is_preferred: false } as PerformanceProfileBaseData)
+    : aircraftData?.profiles.find((profile) => profile.id === profileId);
+
   const fuelType =
     fuelTypes.find((fuel) => fuel.id === profileBaseData?.fuel_type_id) ||
     fuelTypes[0];
@@ -384,7 +413,12 @@ const PerformanceProfilePage = () => {
     ) || { surface_id: 0, percent: NaN };
 
   return (
-    <>
+    <modelPermissionsContext.Provider
+      value={{
+        isModel,
+        userIsAdmin,
+      }}
+    >
       <Modal isOpen={fileModal.isOpen} fullHeight={true}>
         {currentForm === "importTakeoff" ? (
           <FileForm
@@ -473,14 +507,29 @@ const PerformanceProfilePage = () => {
         />
       </Modal>
       <Modal isOpen={editProfileModal.isOpen} fullHeight={true}>
-        <EditPerformanceProfileForm
-          closeModal={editProfileModal.handleClose}
-          isOpen={editProfileModal.isOpen}
-          aircraftId={aircraftId}
-          profileName={profileBaseData?.performance_profile_name || ""}
-          fuelType={fuelType.name}
-          profileId={profileId}
-        />
+        {!isModel ? (
+          <EditPerformanceProfileForm
+            closeModal={editProfileModal.handleClose}
+            isOpen={editProfileModal.isOpen}
+            aircraftId={aircraftId}
+            profileName={profileBaseData?.performance_profile_name || ""}
+            fuelType={fuelType.name}
+            profileId={profileId}
+          />
+        ) : userIsAdmin ? (
+          <EditAircraftModelForm
+            closeModal={editProfileModal.handleClose}
+            isOpen={editProfileModal.isOpen}
+            aircraftModelData={{
+              performance_profile_name:
+                profileBaseData?.performance_profile_name || "",
+              is_complete: !!profileBaseData?.is_complete,
+              fuel_type: fuelType.name,
+              id: profileId,
+            }}
+            fuelOptions={fuelTypes}
+          />
+        ) : null}
       </Modal>
       <Modal
         isOpen={modal.isOpen}
@@ -488,13 +537,23 @@ const PerformanceProfilePage = () => {
         fullHeight={currentForm === "addWeightBalanceProfile"}
       >
         {currentForm === "deleteProfile" ? (
-          <DeletePerformanceProfileForm
-            closeModal={modal.handleClose}
-            id={profileId}
-            name={profileBaseData?.performance_profile_name || ""}
-            aircraftId={aircraftId}
-            redirect={true}
-          />
+          isModel ? (
+            userIsAdmin ? (
+              <DeleteAircraftModelForm
+                closeModal={modal.handleClose}
+                id={profileId}
+                redirect={true}
+              />
+            ) : null
+          ) : (
+            <DeletePerformanceProfileForm
+              closeModal={modal.handleClose}
+              id={profileId}
+              name={profileBaseData?.performance_profile_name || ""}
+              aircraftId={aircraftId}
+              redirect={true}
+            />
+          )
         ) : currentForm === "addCompartment" ? (
           <EditBaggageCompartmentForm
             compartmentData={{
@@ -671,34 +730,62 @@ const PerformanceProfilePage = () => {
               <ChangeIcon onClick={handleChangeToNextTable} />
             </div>
             <div>
-              <span>
-                <i>Aircraft:</i>
-                <i>
-                  <IoAirplane />
-                  {aircraftData?.registration}
-                </i>
-                <MdOutlineStart />
-              </span>
-              <span>
-                <i>Performance Profile:</i>
-                <i>
-                  <BsSpeedometer />
-                  {profileBaseData?.performance_profile_name}
-                </i>
-              </span>
+              {isModel ? (
+                <span>
+                  <i>Aircraft</i>
+                  <MdOutlineStart />
+                  <i>Model:</i>
+                  <i>
+                    <IoAirplaneOutline />
+                    {profileBaseData?.performance_profile_name}
+                  </i>
+                </span>
+              ) : (
+                <>
+                  <span>
+                    <i>Aircraft:</i>
+                    <i>
+                      <IoAirplane />
+                      {aircraftData?.registration}
+                    </i>
+                    <MdOutlineStart />
+                  </span>
+                  <span>
+                    <i>Performance Profile:</i>
+                    <i>
+                      <BsSpeedometer />
+                      {profileBaseData?.performance_profile_name}
+                    </i>
+                  </span>
+                </>
+              )}
             </div>
           </HtmlTitleContainer>
           {!profileBaseData?.is_complete ? (
-            <AnnouncementBox
-              isWarning={true}
-              title="Incomplete Profile"
-              message="Complete every section of the profile, in order to be able to use it for flight-planing."
-            />
+            isModel && userIsAdmin ? (
+              <AnnouncementBox
+                isWarning={true}
+                title="Incomplete Model"
+                message="This model will not be visible to users, until it is marked as complete."
+              />
+            ) : (
+              <AnnouncementBox
+                isWarning={true}
+                title="Incomplete Profile"
+                message="Complete every section of the profile, in order to be able to use it for flight-planing."
+              />
+            )
           ) : profileBaseData?.is_preferred ? (
             <AnnouncementBox
               isWarning={false}
               title={`Selected profile`}
               message={`This profile has been selected for ${aircraftData?.registration}, and it will be used for flight-planing.`}
+            />
+          ) : isModel && userIsAdmin ? (
+            <AnnouncementBox
+              isWarning={false}
+              title="Complete Model"
+              message="This model has been marked as complete, and it is now visible to all users."
             />
           ) : null}
           {sectionIdx === 0 ? (
@@ -735,7 +822,7 @@ const PerformanceProfilePage = () => {
           ) : null}
         </HtmlContainer>
       </ContentLayout>
-    </>
+    </modelPermissionsContext.Provider>
   );
 };
 

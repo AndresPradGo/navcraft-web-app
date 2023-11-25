@@ -128,7 +128,7 @@ const DeleteUserAerodromeForm = ({
 }: Props) => {
   const navigate = useNavigate();
   const deleteMutation = useDeleteUserAerodrome(() => {
-    if (redirect) navigate("/waypoints");
+    if (redirect) navigate("/waypoints?section=aerodromes");
   }, queryKey);
 
   const handleDelete = () => {
