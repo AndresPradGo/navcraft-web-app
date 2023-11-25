@@ -7,7 +7,7 @@ import _ from "lodash";
 import { ContentLayout } from "../layout";
 import useFuelTypes from "../../hooks/useFuelTypes";
 import Loader from "../../components/Loader";
-import useAircraftDataList from "./useAircraftDataList";
+import useAircraftDataList from "../../hooks/useAircraftDataList";
 import useAuth from "../../hooks/useAuth";
 import Table from "../../components/common/table";
 import useAircraftModels from "../../hooks/useAircraftModels";

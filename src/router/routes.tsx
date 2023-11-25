@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import AircraftListPage from "../pages/aircraftListPage";
-import Flights from "../pages/Flights";
+import Flights from "../pages/flights/Flights";
 import Layout from "../pages/layout";
 import Profile from "../pages/profile";
 import Users from "../pages/users/Users";
