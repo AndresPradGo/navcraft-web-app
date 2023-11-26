@@ -4,10 +4,10 @@ import {APIClientError} from '../services/apiClient';
 import apiClient, {PerformanceModelDataFromAPI} from '../services/aircraftModelClient';
 
 
-const useAircraftModelData = (id: number) => {
+const useAircraftModelData = (id: number, isProfile?: boolean) => {
     return useQuery<PerformanceModelDataFromAPI, APIClientError>({
         queryKey: ['aircraftModel', id],
-        queryFn: () => id ? apiClient.getAndPreProcess<PerformanceModelDataFromAPI[]>(
+        queryFn: () => id && !isProfile?apiClient.getAndPreProcess<PerformanceModelDataFromAPI[]>(
             dataList => dataList[0],
             `?profile_id=${id}`
         ) : {

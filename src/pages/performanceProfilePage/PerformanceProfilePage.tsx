@@ -236,7 +236,7 @@ const PerformanceProfilePage = () => {
     data: modelData,
     error: modelError,
     isLoading: modelLoading,
-  } = useAircraftModelData(profileId);
+  } = useAircraftModelData(profileId, !isModel);
 
   const {
     data: fuelTypes,

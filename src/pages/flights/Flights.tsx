@@ -6,6 +6,10 @@ import { ContentLayout } from "../layout";
 import Table from "../../components/common/table";
 import Button from "../../components/common/button/index";
 import { Modal, useModal } from "../../components/common/modal";
+import AddFlightForm from "./AddFlightForm";
+import useAircraftDataList from "../../hooks/useAircraftDataList";
+import Loader from "../../components/Loader";
+import useAerodromesData from "../../hooks/useAerodromesData";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -57,6 +61,21 @@ const AddIcon = styled(IoAdd)`
 
 const flights = () => {
   const modal = useModal();
+  const {
+    data: aircraftList,
+    isLoading: aircraftListIsLoading,
+    error: aircraftListError,
+  } = useAircraftDataList(true);
+
+  const {
+    data: aerodromes,
+    isLoading: aerodromesIsLoading,
+    error: aerodromesError,
+  } = useAerodromesData();
+
+  if (aircraftListIsLoading || aerodromesIsLoading) return <Loader />;
+  if (aircraftListError || aerodromesError) throw new Error("");
+
   const tableData = {
     keys: ["route", "aircraft", "date", "etd", "duration"],
     headers: {
@@ -146,7 +165,9 @@ const flights = () => {
 
   return (
     <>
-      <Modal isOpen={modal.isOpen}>Form</Modal>
+      <Modal isOpen={modal.isOpen} fullHeight={true}>
+        <AddFlightForm closeModal={modal.handleClose} isOpen={modal.isOpen} />
+      </Modal>
       <ContentLayout>
         <HtmlContainer>
           <HtmlTitleContainer>

@@ -4,7 +4,7 @@ import {APIClientError} from '../services/apiClient';
 import apiClient, {AircraftDataFromAPI} from '../services/aircraftClient';
 
 
-const useAircraftDataList = (id: number) => {
+const useAircraftData = (id: number) => {
     return useQuery<AircraftDataFromAPI, APIClientError>({
         queryKey: ['aircraft', id],
         queryFn: () => id ? apiClient.getAndPreProcess<AircraftDataFromAPI[]>(
@@ -23,4 +23,4 @@ const useAircraftDataList = (id: number) => {
     })
 }
 
-export default useAircraftDataList
+export default useAircraftData
