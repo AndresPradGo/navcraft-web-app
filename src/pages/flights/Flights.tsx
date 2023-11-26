@@ -10,6 +10,9 @@ import AddFlightForm from "./AddFlightForm";
 import useAircraftDataList from "../../hooks/useAircraftDataList";
 import Loader from "../../components/Loader";
 import useAerodromesData from "../../hooks/useAerodromesData";
+import useFlightsList from "./useFlightsList";
+import formatUTCDate from "../../utils/formatUTCDate";
+import formatUTCTime from "../../utils/formatUTCTime";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -73,47 +76,58 @@ const flights = () => {
     error: aerodromesError,
   } = useAerodromesData();
 
-  if (aircraftListIsLoading || aerodromesIsLoading) return <Loader />;
-  if (aircraftListError || aerodromesError) throw new Error("");
+  const {
+    data: flights,
+    isLoading: flightsIsLoading,
+    error: flightsError,
+  } = useFlightsList();
+
+  if (flightsIsLoading || aircraftListIsLoading || aerodromesIsLoading)
+    return <Loader />;
+  if (flightsError || aircraftListError || aerodromesError) throw new Error("");
 
   const tableData = {
-    keys: ["route", "aircraft", "date", "etd", "duration"],
+    keys: ["route", "aircraft", "date", "etd", "duration", "waypoints"],
     headers: {
       route: "Route",
       aircraft: "Aircraft",
       date: "Date",
       etd: "ETD",
-      duration: "Duration",
+      waypoints: "Waypoints",
     },
-    rows: [
-      {
-        id: 1,
-        handleEdit: "flight/1",
-        handleDelete: () => {},
-        permissions: "open" as "open",
-        route: "CZBB - CAT1",
-        departure: "CZBB",
-        destination: "CAT1",
-        aircraft: "C-GQSS",
-        date: "March 6, 2023",
-        etd: "17:00 UTC",
-        duration: "00d:03h:30m",
-      },
-      {
-        id: 2,
-        handleEdit: "flights/2",
-        handleDelete: () => {},
-        permissions: "delete" as "delete",
+    rows:
+      flights && aerodromes && aircraftList
+        ? flights.map((flight) => {
+            const departure =
+              aerodromes.find((a) => a.id === flight.departure_aerodrome_id)
+                ?.code || "";
+            const arrival =
+              aerodromes.find((a) => a.id === flight.arrival_aerodrome_id)
+                ?.code || "";
+            const aircraft =
+              aircraftList.find((a) => a.id === flight.aircraft_id)
+                ?.registration || "";
 
-        route: "CYXX - CYPW",
-        departure: "CYXX",
-        destination: "CYPW",
-        aircraft: "C-GBJD",
-        date: "March 6, 2023",
-        etd: "17:00 UTC",
-        duration: "00d:02h:40m",
-      },
-    ],
+            const waypoints = flight.legs
+              .filter((l) => !!l.waypoint)
+              .map((l) => l.waypoint?.code || "");
+
+            return {
+              id: flight.id,
+              route: `${departure} - ${arrival}`,
+              departure: departure,
+              destination: arrival,
+              aircraft: aircraft,
+              date: formatUTCDate(flight.departure_time),
+              dateSort: flight.departure_time,
+              etd: formatUTCTime(flight.departure_time),
+              waypoints: waypoints.length > 0 ? waypoints.join(", ") : "-",
+              handleEdit: `flight/${flight.id}`,
+              handleDelete: () => {},
+              permissions: "open-delete" as "open-delete",
+            };
+          })
+        : [],
   };
   const sortData = [
     {
@@ -130,37 +144,52 @@ const flights = () => {
     },
     {
       title: "Date",
-      key: "date",
+      key: "dateSort",
     },
     {
       title: "ETD",
       key: "etd",
     },
-    {
-      title: "Duration",
-      key: "duration",
-    },
   ];
 
   const searchBarParameters = {
     placeHolder: "Search Flights",
-    columnKeys: ["departure", "destination", "aircraft"],
+    columnKeys: ["departure", "destination", "aircraft", "waypoints"],
   };
+
+  const flightsAircraft = flights.map((f) => {
+    const registration =
+      aircraftList.find((a) => a.id === f.aircraft_id)?.registration || "";
+    return {
+      key: "aircraft",
+      title: `Aircraft: ${registration}`,
+      value: registration,
+    };
+  });
+
+  const departures = flights.map((f) => {
+    const code =
+      aerodromes.find((a) => a.id === f.departure_aerodrome_id)?.code || "";
+    return {
+      key: "departure",
+      title: `Departure: ${code}`,
+      value: code,
+    };
+  });
+
+  const destinations = flights.map((f) => {
+    const code =
+      aerodromes.find((a) => a.id === f.arrival_aerodrome_id)?.code || "";
+    return {
+      key: "destination",
+      title: `Destination: ${code}`,
+      value: code,
+    };
+  });
 
   const filterParameters = {
     text: "Filter Flights",
-    filters: [
-      {
-        key: "departure",
-        title: "Official",
-        value: "Official",
-      },
-      {
-        key: "aircraft",
-        title: "User Added",
-        value: "User Added",
-      },
-    ],
+    filters: [...departures, ...destinations, ...flightsAircraft],
   };
 
   return (
