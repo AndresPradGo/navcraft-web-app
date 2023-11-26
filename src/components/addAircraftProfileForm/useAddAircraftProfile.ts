@@ -23,7 +23,7 @@ interface AddProfileFromModelDataWithType {
 }
 
 interface AircraftContext {
-    previusData?: AircraftDataFromAPI
+    previousData?: AircraftDataFromAPI
 }
 
 const apiClient = new APIClient<AddProfileData | undefined, PerformanceProfileBaseData>("/aircraft/performance-profile")
@@ -60,7 +60,7 @@ const useAddAircraftProfile = (aircraftId: number) => {
             ))
         },
         onMutate: newData => {
-            const previusData = queryClient.getQueryData<AircraftDataFromAPI>(['aircraft', aircraftId]) 
+            const previousData = queryClient.getQueryData<AircraftDataFromAPI>(['aircraft', aircraftId]) 
             queryClient.setQueryData<AircraftDataFromAPI>(['aircraft', aircraftId], currentData => {
                 return (currentData ? {
                     ...currentData, 
@@ -78,7 +78,7 @@ const useAddAircraftProfile = (aircraftId: number) => {
                     ]
                 }: undefined)
             })
-            return {previusData}
+            return {previousData}
         },
         onSuccess: (savedData) => {
             toast.success(`${savedData.performance_profile_name} has been added successfully.`, {
@@ -105,10 +105,10 @@ const useAddAircraftProfile = (aircraftId: number) => {
         },
         onError: (error, _, context) => {
             errorToast(error)
-            if (context?.previusData) {
+            if (context?.previousData) {
                 queryClient.setQueryData<AircraftDataFromAPI>(
                     ['aircraft', aircraftId], 
-                    context.previusData
+                    context.previousData
                 )
             }
         }

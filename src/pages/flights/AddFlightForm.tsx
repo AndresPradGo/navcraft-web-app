@@ -10,13 +10,13 @@ import { styled } from "styled-components";
 import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import _ from "lodash";
 
 import Button from "../../components/common/button";
 import DataList from "../../components/common/datalist";
 import getUTCNowString from "../../utils/getUTCNowString";
 import { AircraftDataFromAPI } from "../../services/aircraftClient";
 import { OfficialAerodromeDataFromAPI } from "../../services/officialAerodromeClient";
+import useAddFlight from "./useAddFlight";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -249,6 +249,8 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
     "all",
   ]);
 
+  const mutation = useAddFlight();
+
   const {
     register,
     handleSubmit,
@@ -323,10 +325,40 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
     const wrongDatatime = checkDepartureTime({
       departure_time: watch("departure_time"),
     });
-    if (!wrongDatatime) {
+    const aircraftId = aircraftList?.find(
+      (a) => a.registration === data.aircraft
+    )?.id;
+    const departureId = aerodromes?.find(
+      (a) => a.code === data.departure_aerodrome
+    )?.id;
+    const arrivalId = aerodromes?.find(
+      (a) => a.code === data.arrival_aerodrome
+    )?.id;
+
+    if (!aircraftId) {
+      setError("aircraft", {
+        type: "manual",
+        message: "Select a valid option",
+      });
+    } else if (!departureId) {
+      setError("departure_aerodrome", {
+        type: "manual",
+        message: "Select a valid option",
+      });
+    } else if (!arrivalId) {
+      setError("arrival_aerodrome", {
+        type: "manual",
+        message: "Select a valid option",
+      });
+    } else if (!wrongDatatime) {
       clearErrors("departure_time");
       closeModal();
-      console.log(data);
+      mutation.mutate({
+        departure_time: `${data.departure_time}:00Z`,
+        aircraft_id: aircraftId,
+        departure_aerodrome_id: departureId,
+        arrival_aerodrome_id: arrivalId,
+      });
     }
   };
 
@@ -340,50 +372,6 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
-        <HtmlInput
-          $hasValue={!!watch("departure_time")}
-          $accepted={!errors.departure_time}
-          $required={true}
-        >
-          <input
-            {...register("departure_time")}
-            id="departure_time"
-            type="datetime-local"
-            autoComplete="off"
-            required={true}
-          />
-          {errors.departure_time ? (
-            <p>{errors.departure_time.message}</p>
-          ) : (
-            <p>&nbsp;</p>
-          )}
-          <label htmlFor="departure_time">
-            <DateIcon />
-            {"ETD [UTC]"}
-          </label>
-        </HtmlInput>
-        <DataList
-          setError={(message) =>
-            setError("aircraft", {
-              type: "manual",
-              message: message,
-            })
-          }
-          clearErrors={() => clearErrors("aircraft")}
-          required={true}
-          value={watch("aircraft")}
-          hasError={!!errors.aircraft}
-          errorMessage={errors.aircraft?.message || ""}
-          options={
-            aircraftList ? aircraftList.map((item) => item.registration) : []
-          }
-          setValue={(value: string) => setValue("aircraft", value)}
-          name="aircraft"
-          formIsOpen={isOpen}
-          resetValue=""
-        >
-          <AircraftIcon /> Aircraft
-        </DataList>
         <DataList
           setError={(message) =>
             setError("departure_aerodrome", {
@@ -424,6 +412,50 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
         >
           <ArrivalIcon /> Destination Aerodrome
         </DataList>
+        <DataList
+          setError={(message) =>
+            setError("aircraft", {
+              type: "manual",
+              message: message,
+            })
+          }
+          clearErrors={() => clearErrors("aircraft")}
+          required={true}
+          value={watch("aircraft")}
+          hasError={!!errors.aircraft}
+          errorMessage={errors.aircraft?.message || ""}
+          options={
+            aircraftList ? aircraftList.map((item) => item.registration) : []
+          }
+          setValue={(value: string) => setValue("aircraft", value)}
+          name="aircraft"
+          formIsOpen={isOpen}
+          resetValue=""
+        >
+          <AircraftIcon /> Aircraft
+        </DataList>
+        <HtmlInput
+          $hasValue={!!watch("departure_time")}
+          $accepted={!errors.departure_time}
+          $required={true}
+        >
+          <input
+            {...register("departure_time")}
+            id="departure_time"
+            type="datetime-local"
+            autoComplete="off"
+            required={true}
+          />
+          {errors.departure_time ? (
+            <p>{errors.departure_time.message}</p>
+          ) : (
+            <p>&nbsp;</p>
+          )}
+          <label htmlFor="departure_time">
+            <DateIcon />
+            {"ETD [UTC]"}
+          </label>
+        </HtmlInput>
       </HtmlInputContainer>
       <HtmlButtons>
         <Button
