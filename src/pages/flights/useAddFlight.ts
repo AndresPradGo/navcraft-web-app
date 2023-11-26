@@ -5,13 +5,13 @@ import { APIClientError } from '../../services/apiClient';
 import apiClient, {FlightDataFromApi, AddFlightData} from '../../services/flightsClient'
 import errorToast from '../../utils/errorToast';
 
-interface AircraftContext {
+interface FlightContext {
     previousData?: FlightDataFromApi[]
 }
 
 const useAddFlight = () => {
   const queryClient = useQueryClient()
-  return useMutation<FlightDataFromApi, APIClientError, AddFlightData, AircraftContext>({
+  return useMutation<FlightDataFromApi, APIClientError, AddFlightData, FlightContext>({
     mutationFn: data => (apiClient.post(data)),
     onMutate: newData => {
         const previousData = queryClient.getQueryData<FlightDataFromApi[]>(['flights', 'all']) 

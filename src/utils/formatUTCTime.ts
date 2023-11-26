@@ -1,5 +1,5 @@
 
-const formatUTCTime = (dateString: string, monthNameFormat?: boolean): string => {
+const formatUTCTime = (dateString: string): string => {
 
     const date = new Date(dateString);
     const hours = date.getUTCHours().toString().padStart(2, '0')

@@ -13,6 +13,8 @@ import useAerodromesData from "../../hooks/useAerodromesData";
 import useFlightsList from "./useFlightsList";
 import formatUTCDate from "../../utils/formatUTCDate";
 import formatUTCTime from "../../utils/formatUTCTime";
+import DeleteFlightForm from "../../components/deleteFlightForm";
+import { useState } from "react";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -63,7 +65,12 @@ const AddIcon = styled(IoAdd)`
 `;
 
 const flights = () => {
-  const modal = useModal();
+  const [deleteFlightData, setDeleteFlightData] = useState({
+    route: "",
+    id: 0,
+  });
+  const addModal = useModal();
+  const deleteModal = useModal();
   const {
     data: aircraftList,
     isLoading: aircraftListIsLoading,
@@ -123,7 +130,13 @@ const flights = () => {
               etd: formatUTCTime(flight.departure_time),
               waypoints: waypoints.length > 0 ? waypoints.join(", ") : "-",
               handleEdit: `flight/${flight.id}`,
-              handleDelete: () => {},
+              handleDelete: () => {
+                setDeleteFlightData({
+                  id: flight.id,
+                  route: `from ${departure} to ${arrival}`,
+                });
+                deleteModal.handleOpen();
+              },
               permissions: "open-delete" as "open-delete",
             };
           })
@@ -194,8 +207,18 @@ const flights = () => {
 
   return (
     <>
-      <Modal isOpen={modal.isOpen} fullHeight={true}>
-        <AddFlightForm closeModal={modal.handleClose} isOpen={modal.isOpen} />
+      <Modal isOpen={deleteModal.isOpen}>
+        <DeleteFlightForm
+          closeModal={deleteModal.handleClose}
+          route={deleteFlightData.route}
+          flightId={deleteFlightData.id}
+        />
+      </Modal>
+      <Modal isOpen={addModal.isOpen} fullHeight={true}>
+        <AddFlightForm
+          closeModal={addModal.handleClose}
+          isOpen={addModal.isOpen}
+        />
       </Modal>
       <ContentLayout>
         <HtmlContainer>
@@ -219,7 +242,7 @@ const flights = () => {
           borderRadious={5}
           margin="50px 10px 20px"
           handleClick={() => {
-            modal.handleOpen();
+            addModal.handleOpen();
           }}
         >
           Add New Flight
