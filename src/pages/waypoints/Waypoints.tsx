@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { AiOutlineSwap } from "react-icons/ai";
-import { FaMapLocationDot } from "react-icons/fa6";
 import { GiRoad } from "react-icons/gi";
 import { PiAirTrafficControlDuotone } from "react-icons/pi";
-import { TbMapPin, TbRoad } from "react-icons/tb";
+import { RiMapPinFill } from "react-icons/ri";
+import { TbRoad } from "react-icons/tb";
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
@@ -100,7 +100,7 @@ const ChangeIcon = styled(AiOutlineSwap)`
   }
 `;
 
-const WaypointIcon = styled(TbMapPin)`
+const WaypointIcon = styled(RiMapPinFill)`
   flex-shrink: 0;
   font-size: 35px;
   margin: 0 10px 0 0;
@@ -212,7 +212,7 @@ const Waypoints = () => {
     {
       key: "waypoints",
       title: "Waypoints",
-      icon: <FaMapLocationDot />,
+      icon: <RiMapPinFill />,
     },
     {
       key: "aerodromes",

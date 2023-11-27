@@ -62,20 +62,22 @@ const HtmlContainer = styled.div`
 
 const HtmlTitleContainer = styled.div`
   margin-bottom: 30px;
+
   & div:first-of-type {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     max-width: 336px;
+    margin: 10px 0 25px 0;
 
     h1:first-of-type {
       display: flex;
       align-items: center;
-      margin: 10px 0 25px 0;
       font-size: 25px;
       text-wrap: wrap;
       line-height: 0.98;
+      margin: 0;
 
       & svg {
         flex-shrink: 0;
@@ -85,8 +87,9 @@ const HtmlTitleContainer = styled.div`
     }
 
     @media screen and (min-width: 425px) {
-      & h1 {
-        font-size: 35px;
+      max-width: 395px;
+      & h1:first-of-type {
+        font-size: 30px;
 
         & svg {
           margin: 0 10px 0 0;
@@ -141,6 +144,7 @@ const HtmlTitleContainer = styled.div`
 `;
 
 const ChangeIcon = styled(AiOutlineSwap)`
+  flex-shrink: 0;
   color: var(--color-contrast);
   cursor: pointer;
   font-size: 30px;

@@ -1,6 +1,7 @@
-import { FaMapLocationDot, FaUserGear, FaUsersGear } from "react-icons/fa6";
+import { FaUserGear, FaUsersGear } from "react-icons/fa6";
 import { IoAirplane } from "react-icons/io5";
 import { PiAirplaneInFlightDuotone } from "react-icons/pi";
+import { RiMapPinFill } from "react-icons/ri";
 import { IconType } from "react-icons";
 import useAuth from '../../hooks/useAuth';
 
@@ -23,7 +24,7 @@ const useNavLinks = (): NavLinkData[] => {
     {
       text: "Waypoints",
       href: "/waypoints",
-      icon: FaMapLocationDot,
+      icon: RiMapPinFill,
     },
     {
       text: "Aircraft",

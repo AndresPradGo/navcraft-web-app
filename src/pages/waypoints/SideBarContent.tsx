@@ -6,7 +6,8 @@ import {
   FaDownload,
 } from "react-icons/fa6";
 import { PiAirTrafficControlDuotone } from "react-icons/pi";
-import { TbMapPinPlus, TbMapPin, TbRoad } from "react-icons/tb";
+import { RiMapPinFill } from "react-icons/ri";
+import { TbMapPinPlus, TbRoad } from "react-icons/tb";
 import { styled } from "styled-components";
 
 import useFetchFile from "../../hooks/useFetchFile";
@@ -37,7 +38,7 @@ const AddWaypointIcon = styled(TbMapPinPlus)`
   margin-left: 5px;
 `;
 
-const WaypointIcon = styled(TbMapPin)`
+const WaypointIcon = styled(RiMapPinFill)`
   font-size: 20px;
   margin-left: 5px;
 `;

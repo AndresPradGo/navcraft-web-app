@@ -13,6 +13,7 @@ import RegisterPage from "../pages/register/index";
 import AerodromePage from "../pages/aerodromePage";
 import AircraftPage from "../pages/aircraftPage";
 import PerformanceProfilePage from "../pages/performanceProfilePage";
+import FlightPage from "../pages/flightPage";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
         element: <PerformanceProfilePage />,
       },
       { path: "flights", element: <Flights /> },
+      { path: "flights/flight/:id", element: <FlightPage /> },
       { path: "profile", element: <Profile /> },
       { path: "waypoints", element: <Waypoints /> },
       { path: "waypoints/private-aerodrome/:id", element: <AerodromePage /> },
