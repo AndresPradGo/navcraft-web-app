@@ -3,13 +3,12 @@ import { useParams } from "react-router-dom";
 import { AiOutlineSwap } from "react-icons/ai";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { BsCalendarDate } from "react-icons/bs";
-import { FaClipboardList, FaRoute } from "react-icons/fa";
+import { FaClipboardList, FaRoute, FaCloudSunRain } from "react-icons/fa";
 import {
   FaMapLocationDot,
   FaScaleUnbalanced,
   FaHandHoldingDroplet,
 } from "react-icons/fa6";
-import { GiWindsock } from "react-icons/gi";
 import { IoAirplane } from "react-icons/io5";
 import { MdOutlineStart } from "react-icons/md";
 import { styled } from "styled-components";
@@ -21,6 +20,7 @@ import useAerodromesData from "../../hooks/useAerodromesData";
 import useAircraftDataList from "../../hooks/useAircraftDataList";
 import formatUTCDate from "../../utils/formatUTCDate";
 import formatUTCTime from "../../utils/formatUTCTime";
+import SideBarContent from "./SideBarContent";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -41,7 +41,7 @@ const HtmlTitleContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 302px;
+    max-width: 292px;
     margin: 10px 0 25px 0;
 
     h1:first-of-type {
@@ -50,7 +50,7 @@ const HtmlTitleContainer = styled.div`
       font-size: 25px;
       text-wrap: wrap;
       line-height: 0.98;
-      width: 290px;
+      width: 257px;
       margin: 0;
 
       & svg {
@@ -61,9 +61,9 @@ const HtmlTitleContainer = styled.div`
     }
 
     @media screen and (min-width: 425px) {
-      max-width: 405px;
+      max-width: 395px;
       & h1:first-of-type {
-        width: 365px;
+        width: 352px;
         font-size: 35px;
 
         & svg {
@@ -165,12 +165,12 @@ const FlightPage = () => {
   const sections = [
     {
       key: "map",
-      title: "Map & Flight Plan",
+      title: "Flight-Route Map",
       icon: <FaMapLocationDot />,
     },
     {
       key: "navLog",
-      title: "VFR Navigation Log",
+      title: "Navigation Log",
       icon: <FaClipboardList />,
     },
     {
@@ -195,8 +195,8 @@ const FlightPage = () => {
     },
     {
       key: "weather",
-      title: "Weather & NOTAM",
-      icon: <GiWindsock />,
+      title: "Weather Briefings",
+      icon: <FaCloudSunRain />,
     },
   ];
 
@@ -216,7 +216,22 @@ const FlightPage = () => {
   };
 
   return (
-    <ContentLayout sideBarContent={""}>
+    <ContentLayout
+      sideBarContent={
+        <SideBarContent
+          flightId={flightId}
+          handleChangeSection={setSectionIdx}
+          sectionIndex={sectionIdx}
+          sectionOptions={sections}
+          handleEditFlight={() => {}}
+          handleEditDeparture={() => {}}
+          handleEditArrival={() => {}}
+          handleChangeAircraft={() => {}}
+          handleRefreshWeather={() => {}}
+          handleDeleteFlight={() => {}}
+        />
+      }
+    >
       <HtmlContainer>
         <HtmlTitleContainer>
           <div>
