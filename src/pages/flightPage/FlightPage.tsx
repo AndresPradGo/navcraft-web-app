@@ -23,7 +23,7 @@ import formatUTCTime from "../../utils/formatUTCTime";
 import SideBarContent from "./SideBarContent";
 import { useModal, Modal } from "../../components/common/modal";
 import DeleteFlightForm from "../../components/deleteFlightForm";
-import EditFlightForm from "../../components/editFlightForm";
+import EditFlightForm from "./components/EditFlightForm";
 
 const HtmlContainer = styled.div`
   width: 100%;

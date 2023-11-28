@@ -10,12 +10,12 @@ import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import Button from "../common/button";
+import Button from "../../../components/common/button";
 import { useQueryClient } from "@tanstack/react-query";
-import { FlightDataFromApi } from "../../services/flightsClient";
-import getUTCNowString from "../../utils/getUTCNowString";
-import { schema, EditFlightData } from "./entity";
-import useEditFlight from "./useEditFlight";
+import { FlightDataFromApi } from "../../../services/flightsClient";
+import getUTCNowString from "../../../utils/getUTCNowString";
+import { schema, EditFlightData } from "../entities";
+import useEditFlight from "../hooks/useEditFlight";
 
 const HtmlForm = styled.form`
   width: 100%;

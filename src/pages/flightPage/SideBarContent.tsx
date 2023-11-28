@@ -125,7 +125,7 @@ const SideBarContent = ({
       onClick: handleChangeAircraft,
     },
     {
-      text: "Refresh Weather",
+      text: "Refresh Weather Data",
       icon: <RefreshIcon />,
       styles: {
         ...commonStyles,
