@@ -199,7 +199,7 @@ const HtmlSelectElement = styled.select`
 `;
 
 const HtmlCheckbox = styled.label`
-  width: 122px;
+  width: 290px;
   align-self: center;
   display: flex;
   min-width: 0;
@@ -216,6 +216,10 @@ const HtmlCheckbox = styled.label`
   &:hover,
   &:focus {
     background-color: var(--color-primary);
+  }
+
+  &[for="hide-waypoint"] {
+    color: var(--color-contrast);
   }
 
   & input[type="checkbox"] {
@@ -547,7 +551,7 @@ const EditOfficialAerodromeForm = ({
           <input {...register("hide")} type="checkbox" id="hide-waypoint" />
           <span>
             <HideIcon />
-            Hide
+            Hide Aerodrome from Users
           </span>
         </HtmlCheckbox>
         <HtmlInput

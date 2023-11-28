@@ -27,6 +27,7 @@ import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm/index"
 import DataTableList, { DataType } from "../../components/common/DataTableList";
 import formatUTCDate from "../../utils/formatUTCDate";
 import getUTCNowString from "../../utils/getUTCNowString";
+import AnnouncementBox from "../../components/common/AnnouncementBox";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -455,6 +456,21 @@ const AerodromePage = () => {
               </span>
             </div>
           </HtmlTitleContainer>
+          {!isPrivateData ? (
+            aerodromeData?.hidden ? (
+              <AnnouncementBox
+                isWarning={true}
+                title="Hidden Aerodrome"
+                message="This aerodrome has been marked as hidden, and will not be visible to users."
+              />
+            ) : (
+              <AnnouncementBox
+                isWarning={false}
+                title="Visible Aerodrome"
+                message="This model is visible to users. To hide this aerodrome, mark it as hidden."
+              />
+            )
+          ) : null}
           <DataTableList dataList={aerodromeDataList as DataType[]} />
           <RunwaysTable
             aerodromeName={aerodromeData?.code || ""}
