@@ -60,7 +60,6 @@ const DeleteIcon = styled(RiDeleteBinLine)`
 `;
 
 interface Props {
-  flightId: number;
   handleChangeSection: (index: number) => void;
   sectionIndex: number;
   sectionOptions: PageSectionDataType[];
@@ -73,7 +72,6 @@ interface Props {
 }
 
 const SideBarContent = ({
-  flightId,
   handleChangeSection,
   sectionIndex,
   sectionOptions,

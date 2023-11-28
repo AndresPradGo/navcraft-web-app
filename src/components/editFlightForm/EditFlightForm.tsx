@@ -1,16 +1,21 @@
 import { useEffect } from "react";
 import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave, AiFillTag } from "react-icons/ai";
-import { BsDropletHalf, BsFillDropletFill } from "react-icons/bs";
-import { LiaTimesSolid, LiaRulerHorizontalSolid } from "react-icons/lia";
-import { MdPropaneTank } from "react-icons/md";
-import { TbReorder } from "react-icons/tb";
+import { AiOutlineSave } from "react-icons/ai";
+import { BsCalendarDate } from "react-icons/bs";
+import { LiaTimesSolid } from "react-icons/lia";
+import { MdMoreTime } from "react-icons/md";
+import { PiGearDuotone, PiEngineDuotone } from "react-icons/pi";
+import { TbDropletPlus, TbDropletHeart } from "react-icons/tb";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import Button from "../../../components/common/button";
-import useEditFuelTank from "../hooks/useEditFuelTank";
+import Button from "../common/button";
+import { useQueryClient } from "@tanstack/react-query";
+import { FlightDataFromApi } from "../../services/flightsClient";
+import getUTCNowString from "../../utils/getUTCNowString";
+import { schema, EditFlightData } from "./entity";
+import useEditFlight from "./useEditFlight";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -54,6 +59,7 @@ const HtmlInputContainer = styled.div`
   border-top: 1px solid var(--color-grey);
   border-bottom: 1px solid var(--color-grey);
 `;
+
 interface RequiredInputProps {
   $accepted: boolean;
   $hasValue: boolean;
@@ -73,7 +79,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
     position: absolute;
     top: 0;
     left: 0;
-    font-size: 20px;
+    font-size: 15px;
     display: flex;
     align-items: center;
     transform: ${(props) =>
@@ -90,6 +96,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
 
     & span {
       margin: 0 15px;
+    }
+
+    @media screen and (min-width: 425px) {
+      font-size: 20px;
+      transform: ${(props) =>
+        props.$hasValue
+          ? "translate(7px, 7px) scale(0.8)"
+          : "translate(17px, 42px)"};
     }
   }
 
@@ -109,7 +123,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
             : "var(--color-highlight)"
           : "var(--color-grey)"};
     color: var(--color-white);
-    font-size: 20px;
+    font-size: 15px;
 
     &:focus ~ label {
       cursor: default;
@@ -140,6 +154,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
     text-wrap: wrap;
   }
 `;
+
 const HtmlButtons = styled.div`
   display: flex;
   flex-direction: row;
@@ -149,12 +164,10 @@ const HtmlButtons = styled.div`
   width: 100%;
   padding: 10px 20px;
 `;
-const SaveIcon = styled(AiOutlineSave)`
-  font-size: 25px;
-`;
-const TitleIcon = styled(MdPropaneTank)`
+
+const TitleIcon = styled(PiGearDuotone)`
   flex-shrink: 0;
-  font-size: 30px;
+  font-size: 25px;
   margin: 0 10px;
 
   @media screen and (min-width: 510px) {
@@ -180,122 +193,127 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
-const NameIcon = styled(AiFillTag)`
+const DateIcon = styled(BsCalendarDate)`
   font-size: 25px;
   margin: 0 5px 0 10px;
+  flex-shrink: 0;
 `;
 
-const ArmIcon = styled(LiaRulerHorizontalSolid)`
+const BHPIcon = styled(PiEngineDuotone)`
   font-size: 25px;
   margin: 0 5px 0 10px;
+  flex-shrink: 0;
 `;
 
-const CapacityIcon = styled(BsFillDropletFill)`
+const TimeIcon = styled(MdMoreTime)`
   font-size: 25px;
   margin: 0 5px 0 10px;
+  flex-shrink: 0;
 `;
 
-const UnusableIcon = styled(BsDropletHalf)`
+const ContingencyIcon = styled(TbDropletPlus)`
   font-size: 25px;
   margin: 0 5px 0 10px;
+  flex-shrink: 0;
 `;
 
-const SequenceIcon = styled(TbReorder)`
-  font-size: 30px;
+const ReserveIcon = styled(TbDropletHeart)`
+  font-size: 25px;
   margin: 0 5px 0 10px;
+  flex-shrink: 0;
 `;
 
-const schema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(50, { message: "Must be at most 50 characters long" })
-    .regex(/^[\-a-zA-Z0-9 ]+$/, {
-      message: "Only letters, numbers white space, and hyphens -",
-    }),
-  arm_in: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(9999.94, { message: "Must be less than 9999.95" })
-    .min(0, { message: "Must be greater than zero" }),
-  fuel_capacity_gallons: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(999.94, { message: "Must be less than 999.94" })
-    .min(0, { message: "Must be greater than zero" }),
-  unusable_fuel_gallons: z.union([
-    z
-      .number({ invalid_type_error: "Enter a number or leave blank" })
-      .max(999.94, { message: "Must be less than 999.94" })
-      .min(0, { message: "Must be greater than zero" })
-      .nullable(),
-    z.literal(null),
-  ]),
-  burn_sequence: z.union([
-    z
-      .number({ invalid_type_error: "Enter a number or leave blank" })
-      .int("Enter a round number.")
-      .min(1, { message: "Must be greater than or equal to 1." })
-      .nullable(),
-    z.literal(null),
-  ]),
-});
-type FormDataType = z.infer<typeof schema>;
-
-export interface FuelTankDataFromForm extends FormDataType {
-  id: number;
-}
+const SaveIcon = styled(AiOutlineSave)`
+  font-size: 25px;
+  flex-shrink: 0;
+`;
 
 interface Props {
-  fuelTankData: FuelTankDataFromForm;
+  flightId: number;
   closeModal: () => void;
   isOpen: boolean;
-  profileId: number;
-  aircraftId: number;
 }
 
-const EditFuelTankForm = ({
-  fuelTankData,
-  closeModal,
-  isOpen,
-  profileId,
-  aircraftId,
-}: Props) => {
+const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
     watch,
-  } = useForm<FormDataType>({ resolver: zodResolver(schema) });
+    setError,
+    clearErrors,
+  } = useForm<EditFlightData>({ resolver: zodResolver(schema) });
 
-  const mutation = useEditFuelTank(profileId, aircraftId);
+  const mutation = useEditFlight(flightId);
+
+  const queryClient = useQueryClient();
+  const flightData = queryClient.getQueryData<FlightDataFromApi>([
+    "flight",
+    flightId,
+  ]);
 
   useEffect(() => {
     if (isOpen) {
       reset({
-        name: fuelTankData.name,
-        arm_in: fuelTankData.arm_in,
-        fuel_capacity_gallons: fuelTankData.fuel_capacity_gallons,
-        unusable_fuel_gallons: fuelTankData.unusable_fuel_gallons,
-        burn_sequence: fuelTankData.burn_sequence,
+        departure_time: flightData?.departure_time.slice(0, -4),
+        bhp_percent: flightData?.bhp_percent,
+        added_enroute_time_hours: flightData?.added_enroute_time_hours,
+        contingency_fuel_hours: flightData?.contingency_fuel_hours,
+        reserve_fuel_hours: flightData?.reserve_fuel_hours,
       });
     }
   }, [isOpen]);
 
-  const handleNullableNumberValue = (value: string): number | null => {
-    if (Number.isNaN(parseFloat(value))) return null;
-    return parseFloat(value);
+  const checkDepartureTime = (data: FieldValues): boolean => {
+    const dateValue = `${data.departure_time}:00Z`;
+    const wrongFormat = "Enter a valid date-time";
+    const futureDateMessage = "Departure Time must be in the future";
+
+    if (errors.departure_time) {
+      if (
+        errors.departure_time.message !== futureDateMessage &&
+        errors.departure_time.message !== wrongFormat
+      )
+        return true;
+    }
+
+    const datetimeSchema = z.string().datetime();
+    const result = datetimeSchema.safeParse(dateValue);
+    if (!result.success) {
+      setError("departure_time", {
+        type: "manual",
+        message: wrongFormat,
+      });
+      return false;
+    }
+
+    if (dateValue < getUTCNowString()) {
+      setError("departure_time", {
+        type: "manual",
+        message: futureDateMessage,
+      });
+      return true;
+    }
+    return false;
   };
 
   const submitHandler = (data: FieldValues) => {
-    closeModal();
-    mutation.mutate({
-      id: fuelTankData.id,
-      name: data.name,
-      arm_in: data.arm_in,
-      fuel_capacity_gallons: data.fuel_capacity_gallons,
-      unusable_fuel_gallons: data.unusable_fuel_gallons,
-      burn_sequence: data.burn_sequence,
+    const wrongDatatime = checkDepartureTime({
+      departure_time: watch("departure_time"),
     });
+    if (!wrongDatatime) {
+      clearErrors("departure_time");
+      const departureTime = `${data.departure_time}:00Z`;
+      mutation.mutate({
+        departure_time: departureTime,
+        bhp_percent: data.bhp_percent,
+        added_enroute_time_hours: data.added_enroute_time_hours,
+        contingency_fuel_hours: data.contingency_fuel_hours,
+        reserve_fuel_hours: data.reserve_fuel_hours,
+      });
+      closeModal();
+    }
   };
 
   return (
@@ -303,136 +321,126 @@ const EditFuelTankForm = ({
       <h1>
         <div>
           <TitleIcon />
-          {`${fuelTankData.id !== 0 ? "Edit" : "Add"} Fuel Tank`}
+          Edit Flight Settings
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
         <HtmlInput
+          $hasValue={!!watch("departure_time")}
+          $accepted={!errors.departure_time}
           $required={true}
-          $hasValue={!!watch("name")}
-          $accepted={!errors.name}
         >
           <input
-            {...register("name")}
-            id={`${fuelTankData ? fuelTankData.id : ""}-tank_name`}
-            type="text"
+            {...register("departure_time")}
+            id="editFlight-departure_time"
+            type="datetime-local"
             autoComplete="off"
             required={true}
           />
-          {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor={`${fuelTankData ? fuelTankData.id : ""}-tank_name`}>
-            <NameIcon />
-            Name
+          {errors.departure_time ? (
+            <p>{errors.departure_time.message}</p>
+          ) : (
+            <p>&nbsp;</p>
+          )}
+          <label htmlFor="editFlight-departure_time">
+            <DateIcon />
+            {"ETD [UTC]"}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("arm_in") || watch("arm_in") === 0}
-          $accepted={!errors.arm_in}
+          $hasValue={!!watch("bhp_percent") || watch("bhp_percent") === 0}
+          $accepted={!errors.bhp_percent}
         >
           <input
-            {...register("arm_in", { valueAsNumber: true })}
-            id={`${fuelTankData ? fuelTankData.id : ""}-tank_arm_in`}
-            step="any"
+            {...register("bhp_percent", { valueAsNumber: true })}
+            id={"editFlight-bhp_percent"}
             type="number"
             autoComplete="off"
           />
-          {errors.arm_in ? <p>{errors.arm_in.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor={`${fuelTankData ? fuelTankData.id : ""}-tank_arm_in`}>
-            <ArmIcon />
-            {"Arm [in]"}
+          {errors.bhp_percent ? (
+            <p>{errors.bhp_percent.message}</p>
+          ) : (
+            <p>&nbsp;</p>
+          )}
+          <label htmlFor="editFlight-bhp_percent">
+            <BHPIcon />
+            {"Cruise Prower [% of BHP]"}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
           $hasValue={
-            !!watch("fuel_capacity_gallons") ||
-            watch("fuel_capacity_gallons") === 0
+            !!watch("added_enroute_time_hours") ||
+            watch("added_enroute_time_hours") === 0
           }
-          $accepted={!errors.fuel_capacity_gallons}
+          $accepted={!errors.added_enroute_time_hours}
         >
           <input
-            {...register("fuel_capacity_gallons", { valueAsNumber: true })}
+            {...register("added_enroute_time_hours", { valueAsNumber: true })}
+            id={"editFlight-added_enroute_time_hours"}
             step="any"
-            id={`${
-              fuelTankData ? fuelTankData.id : ""
-            }-tank_fuel_capacity_gallons`}
             type="number"
             autoComplete="off"
           />
-          {errors.fuel_capacity_gallons ? (
-            <p>{errors.fuel_capacity_gallons.message}</p>
+          {errors.added_enroute_time_hours ? (
+            <p>{errors.added_enroute_time_hours.message}</p>
           ) : (
             <p>&nbsp;</p>
           )}
-          <label
-            htmlFor={`${
-              fuelTankData ? fuelTankData.id : ""
-            }-tank_fuel_capacity_gallons`}
-          >
-            <CapacityIcon />
-            {"Fuel Capacity [gal]"}
+          <label htmlFor="editFlight-added_enroute_time_hours">
+            <TimeIcon />
+            {"Additional Flight-Time [hours]"}
           </label>
         </HtmlInput>
         <HtmlInput
-          $required={false}
+          $required={true}
           $hasValue={
-            !!watch("unusable_fuel_gallons") ||
-            watch("unusable_fuel_gallons") === 0
+            !!watch("contingency_fuel_hours") ||
+            watch("contingency_fuel_hours") === 0
           }
-          $accepted={!errors.unusable_fuel_gallons}
+          $accepted={!errors.contingency_fuel_hours}
         >
           <input
-            {...register("unusable_fuel_gallons", {
-              setValueAs: handleNullableNumberValue,
-            })}
-            id={`${
-              fuelTankData ? fuelTankData.id : ""
-            }-tank_unusable_fuel_gallons`}
-            type="number"
+            {...register("contingency_fuel_hours", { valueAsNumber: true })}
+            id={"editFlight-contingency_fuel_hours"}
             step="any"
+            type="number"
             autoComplete="off"
           />
-          {errors.unusable_fuel_gallons ? (
-            <p>{errors.unusable_fuel_gallons.message}</p>
+          {errors.contingency_fuel_hours ? (
+            <p>{errors.contingency_fuel_hours.message}</p>
           ) : (
             <p>&nbsp;</p>
           )}
-          <label
-            htmlFor={`${
-              fuelTankData ? fuelTankData.id : ""
-            }-tank_unusable_fuel_gallons`}
-          >
-            <UnusableIcon />
-            {"Unusable Fuel [gal]"}
+          <label htmlFor="editFlight-contingency_fuel_hours">
+            <ContingencyIcon />
+            {"Contingency Fuel [hours]"}
           </label>
         </HtmlInput>
         <HtmlInput
-          $required={false}
-          $hasValue={!!watch("burn_sequence") || watch("burn_sequence") === 0}
-          $accepted={!errors.burn_sequence}
+          $required={true}
+          $hasValue={
+            !!watch("reserve_fuel_hours") || watch("reserve_fuel_hours") === 0
+          }
+          $accepted={!errors.reserve_fuel_hours}
         >
           <input
-            {...register("burn_sequence", {
-              setValueAs: handleNullableNumberValue,
-            })}
-            id={`${fuelTankData ? fuelTankData.id : ""}-tank_burn_sequence`}
+            {...register("reserve_fuel_hours", { valueAsNumber: true })}
+            id={"editFlight-reserve_fuel_hours"}
+            step="any"
             type="number"
             autoComplete="off"
           />
-          {errors.burn_sequence ? (
-            <p>{errors.burn_sequence.message}</p>
+          {errors.reserve_fuel_hours ? (
+            <p>{errors.reserve_fuel_hours.message}</p>
           ) : (
             <p>&nbsp;</p>
           )}
-          <label
-            htmlFor={`${
-              fuelTankData ? fuelTankData.id : ""
-            }-tank_burn_sequence`}
-          >
-            <SequenceIcon />
-            {"Burn Sequence"}
+          <label htmlFor="editFlight-reserve_fuel_hours">
+            <ReserveIcon />
+            {"Reserve Fuel [hours]"}
           </label>
         </HtmlInput>
       </HtmlInputContainer>
@@ -473,4 +481,4 @@ const EditFuelTankForm = ({
   );
 };
 
-export default EditFuelTankForm;
+export default EditFlightForm;

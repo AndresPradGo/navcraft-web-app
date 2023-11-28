@@ -23,6 +23,7 @@ import formatUTCTime from "../../utils/formatUTCTime";
 import SideBarContent from "./SideBarContent";
 import { useModal, Modal } from "../../components/common/modal";
 import DeleteFlightForm from "../../components/deleteFlightForm";
+import EditFlightForm from "../../components/editFlightForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -232,16 +233,24 @@ const FlightPage = () => {
             flightId={flightId}
             redirect={true}
           />
+        ) : formToDisplay === "edit" ? (
+          <EditFlightForm
+            closeModal={generalModal.handleClose}
+            flightId={flightId}
+            isOpen={generalModal.isOpen}
+          />
         ) : null}
       </Modal>
       <ContentLayout
         sideBarContent={
           <SideBarContent
-            flightId={flightId}
             handleChangeSection={setSectionIdx}
             sectionIndex={sectionIdx}
             sectionOptions={sections}
-            handleEditFlight={() => {}}
+            handleEditFlight={() => {
+              setFormToDisplay("edit");
+              generalModal.handleOpen();
+            }}
             handleEditDeparture={() => {}}
             handleEditArrival={() => {}}
             handleChangeAircraft={() => {}}
