@@ -21,6 +21,8 @@ import useAircraftDataList from "../../hooks/useAircraftDataList";
 import formatUTCDate from "../../utils/formatUTCDate";
 import formatUTCTime from "../../utils/formatUTCTime";
 import SideBarContent from "./SideBarContent";
+import { useModal, Modal } from "../../components/common/modal";
+import DeleteFlightForm from "../../components/deleteFlightForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -135,6 +137,11 @@ const ChangeIcon = styled(AiOutlineSwap)`
 
 const FlightPage = () => {
   const [sectionIdx, setSectionIdx] = useState<number>(0);
+  const [formToDisplay, setFormToDisplay] = useState<
+    "delete" | "edit" | "refreshWeather"
+  >("delete");
+
+  const generalModal = useModal();
 
   const { id: stringId } = useParams();
   const flightId = parseInt(stringId || "0");
@@ -216,67 +223,82 @@ const FlightPage = () => {
   };
 
   return (
-    <ContentLayout
-      sideBarContent={
-        <SideBarContent
-          flightId={flightId}
-          handleChangeSection={setSectionIdx}
-          sectionIndex={sectionIdx}
-          sectionOptions={sections}
-          handleEditFlight={() => {}}
-          handleEditDeparture={() => {}}
-          handleEditArrival={() => {}}
-          handleChangeAircraft={() => {}}
-          handleRefreshWeather={() => {}}
-          handleDeleteFlight={() => {}}
-        />
-      }
-    >
-      <HtmlContainer>
-        <HtmlTitleContainer>
-          <div>
-            <h1>
-              {sections[sectionIdx].icon}
-              {sections[sectionIdx].title}
-            </h1>
-            <ChangeIcon onClick={handleChangeToNextTable} />
-          </div>
-          <div>
-            <span>
-              Flight
-              <MdOutlineStart />
-            </span>
-            <span>
-              <i>Route:</i>
-              <i>
-                <FaRoute />
-                {`${departure} - ${arrival}`}
-              </i>
-            </span>
-            <span>|</span>
-            <span>
-              <i>Aircraft:</i>
-              <i>
-                <IoAirplane />
-                {aircraft}
-              </i>
-            </span>
-            <span>|</span>
-            <span>
-              <i>ETD:</i>
-              <i>
-                <BsCalendarDate />
-                {flightData
-                  ? `${formatUTCDate(
-                      flightData.departure_time
-                    )}@${formatUTCTime(flightData.departure_time)}`
-                  : ""}
-              </i>
-            </span>
-          </div>
-        </HtmlTitleContainer>
-      </HtmlContainer>
-    </ContentLayout>
+    <>
+      <Modal isOpen={generalModal.isOpen}>
+        {formToDisplay === "delete" ? (
+          <DeleteFlightForm
+            closeModal={generalModal.handleClose}
+            route={`from ${departure} to ${arrival}`}
+            flightId={flightId}
+            redirect={true}
+          />
+        ) : null}
+      </Modal>
+      <ContentLayout
+        sideBarContent={
+          <SideBarContent
+            flightId={flightId}
+            handleChangeSection={setSectionIdx}
+            sectionIndex={sectionIdx}
+            sectionOptions={sections}
+            handleEditFlight={() => {}}
+            handleEditDeparture={() => {}}
+            handleEditArrival={() => {}}
+            handleChangeAircraft={() => {}}
+            handleRefreshWeather={() => {}}
+            handleDeleteFlight={() => {
+              setFormToDisplay("delete");
+              generalModal.handleOpen();
+            }}
+          />
+        }
+      >
+        <HtmlContainer>
+          <HtmlTitleContainer>
+            <div>
+              <h1>
+                {sections[sectionIdx].icon}
+                {sections[sectionIdx].title}
+              </h1>
+              <ChangeIcon onClick={handleChangeToNextTable} />
+            </div>
+            <div>
+              <span>
+                Flight
+                <MdOutlineStart />
+              </span>
+              <span>
+                <i>Route:</i>
+                <i>
+                  <FaRoute />
+                  {`${departure} - ${arrival}`}
+                </i>
+              </span>
+              <span>|</span>
+              <span>
+                <i>Aircraft:</i>
+                <i>
+                  <IoAirplane />
+                  {aircraft}
+                </i>
+              </span>
+              <span>|</span>
+              <span>
+                <i>ETD:</i>
+                <i>
+                  <BsCalendarDate />
+                  {flightData
+                    ? `${formatUTCDate(
+                        flightData.departure_time
+                      )}@${formatUTCTime(flightData.departure_time)}`
+                    : ""}
+                </i>
+              </span>
+            </div>
+          </HtmlTitleContainer>
+        </HtmlContainer>
+      </ContentLayout>
+    </>
   );
 };
 

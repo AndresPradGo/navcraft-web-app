@@ -120,7 +120,7 @@ interface Props {
 const DeleteFlightForm = ({ closeModal, route, flightId, redirect }: Props) => {
   const navigate = useNavigate();
   const mutation = useDeleteFlight(() => {
-    if (!!redirect) navigate(`/aircraft/${flightId}`);
+    if (!!redirect) navigate("/flights");
   });
 
   const handleDelete = () => {
