@@ -170,35 +170,65 @@ const flights = () => {
     columnKeys: ["departure", "destination", "aircraft", "waypoints"],
   };
 
-  const flightsAircraft = flights.map((f) => {
-    const registration =
-      aircraftList.find((a) => a.id === f.aircraft_id)?.registration || "";
-    return {
-      key: "aircraft",
-      title: `Aircraft: ${registration}`,
-      value: registration,
-    };
-  });
+  const uniqueValues = new Set();
 
-  const departures = flights.map((f) => {
-    const code =
-      aerodromes.find((a) => a.id === f.departure_aerodrome_id)?.code || "";
-    return {
-      key: "departure",
-      title: `Departure: ${code}`,
-      value: code,
-    };
-  });
+  const flightsAircraft = flights
+    .map((f) => {
+      const registration =
+        aircraftList.find((a) => a.id === f.aircraft_id)?.registration || "";
+      return {
+        key: "aircraft",
+        title: `Aircraft: ${registration}`,
+        value: registration,
+      };
+    })
+    .filter((aircraft) => {
+      if (!uniqueValues.has(aircraft.value)) {
+        uniqueValues.add(aircraft.value);
+        return true;
+      }
+      return false;
+    });
 
-  const destinations = flights.map((f) => {
-    const code =
-      aerodromes.find((a) => a.id === f.arrival_aerodrome_id)?.code || "";
-    return {
-      key: "destination",
-      title: `Destination: ${code}`,
-      value: code,
-    };
-  });
+  uniqueValues.clear();
+
+  const departures = flights
+    .map((f) => {
+      const code =
+        aerodromes.find((a) => a.id === f.departure_aerodrome_id)?.code || "";
+      return {
+        key: "departure",
+        title: `Departure: ${code}`,
+        value: code,
+      };
+    })
+    .filter((aerodrome) => {
+      if (!uniqueValues.has(aerodrome.value)) {
+        uniqueValues.add(aerodrome.value);
+        return true;
+      }
+      return false;
+    });
+
+  uniqueValues.clear();
+
+  const destinations = flights
+    .map((f) => {
+      const code =
+        aerodromes.find((a) => a.id === f.arrival_aerodrome_id)?.code || "";
+      return {
+        key: "destination",
+        title: `Destination: ${code}`,
+        value: code,
+      };
+    })
+    .filter((aerodrome) => {
+      if (!uniqueValues.has(aerodrome.value)) {
+        uniqueValues.add(aerodrome.value);
+        return true;
+      }
+      return false;
+    });
 
   const filterParameters = {
     text: "Filter Flights",
