@@ -4,33 +4,33 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { APIClientError } from '../../../services/apiClient';
 import apiClient, {FlightDataFromApi} from '../../../services/flightsClient'
 import errorToast from '../../../utils/errorToast';
-import { EditFlightData } from '../components/EditFlightForm';
 
+
+interface ChangeAircraftDataType {
+    aircraftId: number;
+    aircraft: string;
+}
 
 interface FlightContext {
     previousData?: FlightDataFromApi
 }
 
-const useEditFlight = (flightId: number) => {
+const useChangeAircraft = (flightId: number) => {
     const queryClient = useQueryClient();
-    return useMutation<FlightDataFromApi, APIClientError, EditFlightData, FlightContext>({
-        mutationFn: data => (apiClient.editOther<EditFlightData>(data, `/${flightId}`)),
+    return useMutation<FlightDataFromApi, APIClientError, ChangeAircraftDataType, FlightContext>({
+        mutationFn: data => (apiClient.editOther<null>(null, `/change-aircraft/${flightId}/${data.aircraftId}`)),
         onMutate: newData => {
             const previousData = queryClient.getQueryData<FlightDataFromApi>(['flight', flightId]) 
             queryClient.setQueryData<FlightDataFromApi>(['flight', flightId], currentData => {
                 return (currentData ? {
                     ...currentData,
-                    departure_time: newData.departure_time,
-                    bhp_percent: newData.bhp_percent,
-                    added_enroute_time_hours: newData.added_enroute_time_hours,
-                    reserve_fuel_hours: newData.reserve_fuel_hours,
-                    contingency_fuel_hours: newData.contingency_fuel_hours,
+                    aircraft_id: newData.aircraftId
                 } : undefined)
             })
             return {previousData}
         },
-        onSuccess: (savedData) => {
-            toast.success("Flight settings have been updated successfully.", {
+        onSuccess: (savedData, newData) => {
+            toast.success(`Aircarft has been Changed to "${newData.aircraft}"`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
@@ -54,4 +54,4 @@ const useEditFlight = (flightId: number) => {
     })
 }
 
-export default useEditFlight
+export default useChangeAircraft

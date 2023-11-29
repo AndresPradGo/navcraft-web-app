@@ -2,15 +2,16 @@ import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { FaTools } from "react-icons/fa";
 import { IoAirplane } from "react-icons/io5";
 import { LuRefreshCw } from "react-icons/lu";
+import { MdConnectingAirports } from "react-icons/md";
 import { PiGearDuotone } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { styled } from "styled-components";
 
 import SideBarIndex, {
   PageSectionDataType,
-} from "../../components/common/SideBarIndex";
-import SideBarBtnList from "../../components/common/SideBarBtnList";
-import SideBarTitle from "../../components/common/SideBarTitle";
+} from "../../../components/common/SideBarIndex";
+import SideBarBtnList from "../../../components/common/SideBarBtnList";
+import SideBarTitle from "../../../components/common/SideBarTitle";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -44,8 +45,8 @@ const ArrivalIcon = styled(BiSolidPlaneLand)`
   margin-left: 5px;
 `;
 
-const AircraftIcon = styled(IoAirplane)`
-  font-size: 20px;
+const AircraftIcon = styled(MdConnectingAirports)`
+  font-size: 30px;
   margin-left: 5px;
 `;
 

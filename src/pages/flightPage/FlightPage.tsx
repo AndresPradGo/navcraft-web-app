@@ -14,16 +14,17 @@ import { MdOutlineStart } from "react-icons/md";
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
-import useFlightData from "./useFlightData";
+import useFlightData from "./hooks/useFlightData";
 import Loader from "../../components/Loader";
 import useAerodromesData from "../../hooks/useAerodromesData";
 import useAircraftDataList from "../../hooks/useAircraftDataList";
 import formatUTCDate from "../../utils/formatUTCDate";
 import formatUTCTime from "../../utils/formatUTCTime";
-import SideBarContent from "./SideBarContent";
+import SideBarContent from "./components/SideBarContent";
 import { useModal, Modal } from "../../components/common/modal";
 import DeleteFlightForm from "../../components/deleteFlightForm";
 import EditFlightForm from "./components/EditFlightForm";
+import ChangeAircraftForm from "./components/ChangeAircraftForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -143,6 +144,7 @@ const FlightPage = () => {
   >("delete");
 
   const generalModal = useModal();
+  const aircraftModal = useModal();
 
   const { id: stringId } = useParams();
   const flightId = parseInt(stringId || "0");
@@ -225,6 +227,14 @@ const FlightPage = () => {
 
   return (
     <>
+      <Modal isOpen={aircraftModal.isOpen} fullHeight={true}>
+        <ChangeAircraftForm
+          flightId={flightId}
+          closeModal={aircraftModal.handleClose}
+          isOpen={aircraftModal.isOpen}
+          aircraft={aircraft}
+        />
+      </Modal>
       <Modal isOpen={generalModal.isOpen}>
         {formToDisplay === "delete" ? (
           <DeleteFlightForm
@@ -253,7 +263,9 @@ const FlightPage = () => {
             }}
             handleEditDeparture={() => {}}
             handleEditArrival={() => {}}
-            handleChangeAircraft={() => {}}
+            handleChangeAircraft={() => {
+              aircraftModal.handleOpen();
+            }}
             handleRefreshWeather={() => {}}
             handleDeleteFlight={() => {
               setFormToDisplay("delete");
