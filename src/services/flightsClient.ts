@@ -22,6 +22,16 @@ interface LegDataFromAPI {
     waypoint?: FlightWaypointDataFromAPI
 }
 
+export interface DepartureArrivalWeather {
+    temperature_c: number, 
+    altimeter_inhg: number, 
+    wind_direction: number | null, 
+    wind_magnitude_knot: number, 
+    temperature_last_updated: string, 
+    wind_last_updated: string, 
+    altimeter_last_updated: string, 
+}
+
 
 export interface FlightDataFromApi extends AddFlightData {
     id: number,
@@ -31,7 +41,9 @@ export interface FlightDataFromApi extends AddFlightData {
     contingency_fuel_hours: number,
     departure_aerodrome_is_private: boolean,
     arrival_aerodrome_is_private: boolean,
-    legs: LegDataFromAPI[]
+    legs: LegDataFromAPI[],
+    departure_weather: DepartureArrivalWeather,
+    arrival_weather: DepartureArrivalWeather,
 }
 
 const apiClient = new APIClient<AddFlightData, FlightDataFromApi>("/flights")

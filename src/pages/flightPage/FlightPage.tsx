@@ -25,6 +25,8 @@ import { useModal, Modal } from "../../components/common/modal";
 import DeleteFlightForm from "../../components/deleteFlightForm";
 import EditFlightForm from "./components/EditFlightForm";
 import ChangeAircraftForm from "./components/ChangeAircraftForm";
+import EditDepartureArrivalForm from "./components/EditDepartureArrivalForm";
+import getUTCNowString from "../../utils/getUTCNowString";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -145,6 +147,8 @@ const FlightPage = () => {
 
   const generalModal = useModal();
   const aircraftModal = useModal();
+  const departureModal = useModal();
+  const arrivalModal = useModal();
 
   const { id: stringId } = useParams();
   const flightId = parseInt(stringId || "0");
@@ -227,6 +231,74 @@ const FlightPage = () => {
 
   return (
     <>
+      <Modal isOpen={departureModal.isOpen}>
+        <EditDepartureArrivalForm
+          flightId={flightId}
+          temperature_last_updated={
+            flightData?.departure_weather.temperature_last_updated ||
+            getUTCNowString()
+          }
+          wind_last_updated={
+            flightData?.departure_weather.wind_last_updated || getUTCNowString()
+          }
+          altimeter_last_updated={
+            flightData?.departure_weather.altimeter_last_updated ||
+            getUTCNowString()
+          }
+          currentData={{
+            aerodrome: departure,
+            wind_magnitude_knot: flightData
+              ? flightData.departure_weather.wind_magnitude_knot
+              : 0,
+            wind_direction: flightData
+              ? flightData.departure_weather.wind_direction
+              : null,
+            temperature_c: flightData
+              ? flightData.departure_weather.temperature_c
+              : 15,
+            altimeter_inhg: flightData
+              ? flightData.departure_weather.altimeter_inhg
+              : 29.92,
+          }}
+          closeModal={departureModal.handleClose}
+          isOpen={departureModal.isOpen}
+          isDeparture={true}
+        />
+      </Modal>
+      <Modal isOpen={arrivalModal.isOpen}>
+        <EditDepartureArrivalForm
+          flightId={flightId}
+          temperature_last_updated={
+            flightData?.arrival_weather.temperature_last_updated ||
+            getUTCNowString()
+          }
+          wind_last_updated={
+            flightData?.arrival_weather.wind_last_updated || getUTCNowString()
+          }
+          altimeter_last_updated={
+            flightData?.arrival_weather.altimeter_last_updated ||
+            getUTCNowString()
+          }
+          currentData={{
+            aerodrome: arrival,
+            wind_magnitude_knot: flightData
+              ? flightData.arrival_weather.wind_magnitude_knot
+              : 0,
+            wind_direction: flightData
+              ? flightData.arrival_weather.wind_direction
+              : null,
+            temperature_c: flightData
+              ? flightData.arrival_weather.temperature_c
+              : 15,
+            altimeter_inhg: flightData
+              ? flightData.arrival_weather.altimeter_inhg
+              : 29.92,
+          }}
+          closeModal={arrivalModal.handleClose}
+          isOpen={arrivalModal.isOpen}
+          isDeparture={false}
+        />
+      </Modal>
       <Modal isOpen={aircraftModal.isOpen} fullHeight={true}>
         <ChangeAircraftForm
           flightId={flightId}
@@ -261,11 +333,9 @@ const FlightPage = () => {
               setFormToDisplay("edit");
               generalModal.handleOpen();
             }}
-            handleEditDeparture={() => {}}
-            handleEditArrival={() => {}}
-            handleChangeAircraft={() => {
-              aircraftModal.handleOpen();
-            }}
+            handleEditDeparture={departureModal.handleOpen}
+            handleEditArrival={arrivalModal.handleOpen}
+            handleChangeAircraft={aircraftModal.handleOpen}
             handleRefreshWeather={() => {}}
             handleDeleteFlight={() => {
               setFormToDisplay("delete");

@@ -231,6 +231,7 @@ export const schema = z.object({
   departure_time: z.string(),
   bhp_percent: z
     .number({ invalid_type_error: "Enter a number" })
+    .int("Must be a round number.")
     .max(100, { message: "Must be less than 100" })
     .min(20, { message: "Must be greater than 20" }),
   added_enroute_time_hours: z
@@ -306,7 +307,7 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
         type: "manual",
         message: wrongFormat,
       });
-      return false;
+      return true;
     }
 
     if (dateValue < getUTCNowString()) {

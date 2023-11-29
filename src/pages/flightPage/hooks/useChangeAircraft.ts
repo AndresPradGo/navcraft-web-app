@@ -40,13 +40,13 @@ const useChangeAircraft = (flightId: number) => {
                 progress: undefined,
                 theme: "dark",
             });
-            queryClient.setQueryData<FlightDataFromApi>(['flights', flightId], () => (savedData))
+            queryClient.setQueryData<FlightDataFromApi>(['flight', flightId], () => (savedData))
         },
         onError: (error, _, context) => {
             errorToast(error)
             if (context?.previousData) {
                 queryClient.setQueryData<FlightDataFromApi>(
-                    ['flights', flightId], 
+                    ['flight', flightId], 
                     context.previousData
                 )
             }

@@ -183,7 +183,7 @@ const ChangeAircraftForm = ({
       <h1>
         <div>
           <TitleIcon />
-          Add New Flight
+          Change Aircraft
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
