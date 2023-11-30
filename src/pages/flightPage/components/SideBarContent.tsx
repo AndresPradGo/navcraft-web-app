@@ -1,6 +1,5 @@
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { FaTools } from "react-icons/fa";
-import { IoAirplane } from "react-icons/io5";
 import { LuRefreshCw } from "react-icons/lu";
 import { MdConnectingAirports } from "react-icons/md";
 import { PiGearDuotone } from "react-icons/pi";

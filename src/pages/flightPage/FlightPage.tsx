@@ -27,6 +27,7 @@ import EditFlightForm from "./components/EditFlightForm";
 import ChangeAircraftForm from "./components/ChangeAircraftForm";
 import EditDepartureArrivalForm from "./components/EditDepartureArrivalForm";
 import getUTCNowString from "../../utils/getUTCNowString";
+import RefreshWeatherForm from "./components/RefreshWeatherForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -141,14 +142,15 @@ const ChangeIcon = styled(AiOutlineSwap)`
 
 const FlightPage = () => {
   const [sectionIdx, setSectionIdx] = useState<number>(0);
-  const [formToDisplay, setFormToDisplay] = useState<
-    "delete" | "edit" | "refreshWeather"
-  >("delete");
+  const [formToDisplay, setFormToDisplay] = useState<"delete" | "edit">(
+    "delete"
+  );
 
   const generalModal = useModal();
   const aircraftModal = useModal();
   const departureModal = useModal();
   const arrivalModal = useModal();
+  const weatherModal = useModal();
 
   const { id: stringId } = useParams();
   const flightId = parseInt(stringId || "0");
@@ -323,6 +325,12 @@ const FlightPage = () => {
           />
         ) : null}
       </Modal>
+      <Modal isOpen={weatherModal.isOpen}>
+        <RefreshWeatherForm
+          closeModal={weatherModal.handleClose}
+          flightId={flightId}
+        />
+      </Modal>
       <ContentLayout
         sideBarContent={
           <SideBarContent
@@ -336,7 +344,7 @@ const FlightPage = () => {
             handleEditDeparture={departureModal.handleOpen}
             handleEditArrival={arrivalModal.handleOpen}
             handleChangeAircraft={aircraftModal.handleOpen}
-            handleRefreshWeather={() => {}}
+            handleRefreshWeather={weatherModal.handleOpen}
             handleDeleteFlight={() => {
               setFormToDisplay("delete");
               generalModal.handleOpen();
