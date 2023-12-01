@@ -13,7 +13,7 @@ interface HtmlNavBarContainerProps {
 }
 const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
   transition: all 0.2s linear;
-  z-index: 100;
+  z-index: 1001;
   position: fixed;
   top: 0;
   left: 0;
@@ -32,7 +32,7 @@ const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
   backdrop-filter: blur(4px) saturate(180%);
 
   @media screen and (min-width: 768px) {
-    max-height: 72px;
+    max-height: 71px;
     flex-direction: row;
   }
 `;
@@ -78,6 +78,12 @@ const HtmlNavbar = styled.div`
       margin-left: calc(5vw - 10px);
     }
   }
+
+  @media screen and (min-width: 1024px) {
+    & div:last-of-type {
+      margin-left: calc(5vw - 25px);
+    }
+  }
 `;
 
 interface HtmlNavbarProps {
@@ -119,6 +125,7 @@ const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
 
   @media screen and (min-width: 1024px) {
     padding: 5px 20px 5px 0px;
+    margin-left: calc(5vw - 25px);
   }
 `;
 

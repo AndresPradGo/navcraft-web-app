@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaWeightScale } from "react-icons/fa6";
+import { TbMail } from "react-icons/tb";
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
@@ -28,15 +29,26 @@ const HtmlContainer = styled.div`
 
 const HtmlTitleContainer = styled.div`
   & h1:first-of-type {
-    margin: 0;
-    font-size: 40px;
+    margin: 10px 0 0;
+    font-size: 25px;
     text-wrap: wrap;
     line-height: 0.98;
+
+    @media screen and (min-width: 425px) {
+      font-size: 35px;
+    }
   }
   & p:first-of-type {
+    display: flex;
+    align-items: center;
     margin: 5px 0 0;
     padding-left: 10px;
-    color: var(--color-grey-bright);
+    color: var(--color-grey);
+
+    & svg {
+      margin-right: 5px;
+      font-size: 20px;
+    }
   }
 `;
 
@@ -187,7 +199,10 @@ const Profile = () => {
         <HtmlContainer>
           <HtmlTitleContainer>
             <h1>{profileData?.name}</h1>
-            <p>{profileData?.email}</p>
+            <p>
+              <TbMail />
+              {profileData?.email}
+            </p>
           </HtmlTitleContainer>
           <HtmlWeightCardContainer>
             <HtmlWeightCard>

@@ -4,11 +4,7 @@ import { AiOutlineSwap } from "react-icons/ai";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { BsCalendarDate } from "react-icons/bs";
 import { FaClipboardList, FaRoute, FaCloudSunRain } from "react-icons/fa";
-import {
-  FaMapLocationDot,
-  FaScaleUnbalanced,
-  FaHandHoldingDroplet,
-} from "react-icons/fa6";
+import { FaScaleUnbalanced, FaHandHoldingDroplet } from "react-icons/fa6";
 import { IoAirplane } from "react-icons/io5";
 import { MdOutlineStart } from "react-icons/md";
 import { styled } from "styled-components";
@@ -28,10 +24,12 @@ import ChangeAircraftForm from "./components/ChangeAircraftForm";
 import EditDepartureArrivalForm from "./components/EditDepartureArrivalForm";
 import getUTCNowString from "../../utils/getUTCNowString";
 import RefreshWeatherForm from "./components/RefreshWeatherForm";
+import MapSection from "./components/MapSection";
+import { useSideBar } from "../../components/sidebar";
 
 const HtmlContainer = styled.div`
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-wrap: wrap;
   text-wrap: nowrap;
@@ -40,8 +38,19 @@ const HtmlContainer = styled.div`
   align-items: flex-start;
 `;
 
-const HtmlTitleContainer = styled.div`
-  margin-bottom: 30px;
+interface TitleData {
+  $isMap: boolean;
+}
+const HtmlTitleContainer = styled.div<TitleData>`
+  margin-bottom: ${(props) => (props.$isMap ? "0" : "30px")};
+  width: 100%;
+  max-width: 1380px;
+  align-self: center;
+  padding: 0 ${(props) => (props.$isMap ? "3%" : "0")};
+
+  @media screen and (min-width: 1000px) {
+    padding: 0 ${(props) => (props.$isMap ? "30px" : "0")};
+  }
 
   & div:first-of-type {
     display: flex;
@@ -49,7 +58,8 @@ const HtmlTitleContainer = styled.div`
     justify-content: space-between;
     width: 100%;
     max-width: 292px;
-    margin: 10px 0 25px 0;
+    flex-wrap: nowrap !important;
+    margin: 10px 0 25px 0 !important;
 
     h1:first-of-type {
       display: flex;
@@ -142,6 +152,7 @@ const ChangeIcon = styled(AiOutlineSwap)`
 
 const FlightPage = () => {
   const [sectionIdx, setSectionIdx] = useState<number>(0);
+  const [mapIsOpen, setMapIsOpen] = useState<boolean>(false);
   const [formToDisplay, setFormToDisplay] = useState<"delete" | "edit">(
     "delete"
   );
@@ -151,6 +162,8 @@ const FlightPage = () => {
   const departureModal = useModal();
   const arrivalModal = useModal();
   const weatherModal = useModal();
+
+  const { handleExpandSideBar } = useSideBar();
 
   const { id: stringId } = useParams();
   const flightId = parseInt(stringId || "0");
@@ -179,11 +192,6 @@ const FlightPage = () => {
     return <Loader />;
 
   const sections = [
-    {
-      key: "map",
-      title: "Flight-Route Map",
-      icon: <FaMapLocationDot />,
-    },
     {
       key: "navLog",
       title: "Navigation Log",
@@ -216,12 +224,12 @@ const FlightPage = () => {
     },
   ];
 
-  const departure =
-    aerodromes.find((a) => a.id === flightData?.departure_aerodrome_id)?.code ||
-    "";
-  const arrival =
-    aerodromes.find((a) => a.id === flightData?.arrival_aerodrome_id)?.code ||
-    "";
+  const departure = aerodromes.find(
+    (a) => a.id === flightData?.departure_aerodrome_id
+  );
+  const arrival = aerodromes.find(
+    (a) => a.id === flightData?.arrival_aerodrome_id
+  );
   const aircraft =
     aircraftList.find((a) => a.id === flightData?.aircraft_id)?.registration ||
     "";
@@ -248,7 +256,7 @@ const FlightPage = () => {
             getUTCNowString()
           }
           currentData={{
-            aerodrome: departure,
+            aerodrome: `${departure?.code}: ${departure?.name}` || "",
             wind_magnitude_knot: flightData
               ? flightData.departure_weather.wind_magnitude_knot
               : 0,
@@ -282,7 +290,7 @@ const FlightPage = () => {
             getUTCNowString()
           }
           currentData={{
-            aerodrome: arrival,
+            aerodrome: `${arrival?.code}: ${arrival?.name}` || "",
             wind_magnitude_knot: flightData
               ? flightData.arrival_weather.wind_magnitude_knot
               : 0,
@@ -313,7 +321,7 @@ const FlightPage = () => {
         {formToDisplay === "delete" ? (
           <DeleteFlightForm
             closeModal={generalModal.handleClose}
-            route={`from ${departure} to ${arrival}`}
+            route={`from ${departure?.code} to ${arrival?.code}`}
             flightId={flightId}
             redirect={true}
           />
@@ -332,9 +340,29 @@ const FlightPage = () => {
         />
       </Modal>
       <ContentLayout
+        map={{
+          isOpen: mapIsOpen,
+          component: (
+            <MapSection
+              flightId={flightId}
+              departureAerodrome={departure || aerodromes[0]}
+              arrivalAerodrome={arrival || aerodromes[0]}
+            />
+          ),
+        }}
         sideBarContent={
           <SideBarContent
-            handleChangeSection={setSectionIdx}
+            mapIsOpen={{
+              value: mapIsOpen,
+              setter: (value: boolean) => {
+                setMapIsOpen(value);
+                handleExpandSideBar(false);
+              },
+            }}
+            handleChangeSection={(id: number) => {
+              setSectionIdx(id);
+              setMapIsOpen(false);
+            }}
             sectionIndex={sectionIdx}
             sectionOptions={sections}
             handleEditFlight={() => {
@@ -353,7 +381,7 @@ const FlightPage = () => {
         }
       >
         <HtmlContainer>
-          <HtmlTitleContainer>
+          <HtmlTitleContainer $isMap={mapIsOpen}>
             <div>
               <h1>
                 {sections[sectionIdx].icon}
@@ -370,7 +398,7 @@ const FlightPage = () => {
                 <i>Route:</i>
                 <i>
                   <FaRoute />
-                  {`${departure} - ${arrival}`}
+                  {`${departure?.code} - ${arrival?.code}`}
                 </i>
               </span>
               <span>|</span>
