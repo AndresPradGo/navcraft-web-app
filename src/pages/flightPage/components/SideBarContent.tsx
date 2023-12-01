@@ -1,11 +1,9 @@
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { FaTools } from "react-icons/fa";
-import { GrMapLocation } from "react-icons/gr";
 import { LuRefreshCw } from "react-icons/lu";
 import { MdConnectingAirports } from "react-icons/md";
 import { PiGearDuotone } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { TbMapOff } from "react-icons/tb";
 import { styled } from "styled-components";
 
 import SideBarIndex, {
@@ -13,7 +11,10 @@ import SideBarIndex, {
 } from "../../../components/common/SideBarIndex";
 import SideBarBtnList from "../../../components/common/SideBarBtnList";
 import SideBarTitle from "../../../components/common/SideBarTitle";
-import Button from "../../../components/common/button/index";
+import SideBarMapOptions, {
+  MapStateType,
+  MapInputStyleType,
+} from "../../../components/SideBarMapOptions";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -62,19 +63,10 @@ const DeleteIcon = styled(RiDeleteBinLine)`
   margin-left: 5px;
 `;
 
-const MapIcon = styled(GrMapLocation)`
-  font-size: 23px;
-`;
-
-const CloseMapIcon = styled(TbMapOff)`
-  font-size: 25px;
-`;
-
 interface Props {
-  mapIsOpen: {
-    value: boolean;
-    setter: (value: boolean) => void;
-  };
+  mapState: MapStateType;
+  mapStateSetter: (key: keyof MapStateType, value: boolean) => void;
+  mapInputs: MapInputStyleType[];
   handleChangeSection: (index: number) => void;
   sectionIndex: number;
   sectionOptions: PageSectionDataType[];
@@ -87,7 +79,9 @@ interface Props {
 }
 
 const SideBarContent = ({
-  mapIsOpen,
+  mapState,
+  mapStateSetter,
+  mapInputs,
   handleChangeSection,
   sectionIndex,
   sectionOptions,
@@ -161,49 +155,11 @@ const SideBarContent = ({
   return (
     <HtmlContainer>
       <SideBarTitle>Flight</SideBarTitle>
-      {mapIsOpen.value ? (
-        <Button
-          color="var(--color-primary-dark)"
-          hoverColor="var(--color-grey-dark)"
-          backgroundColor="var(--color-contrast)"
-          backgroundHoverColor="var(--color-contrast-hover)"
-          width="250px"
-          height="45px"
-          fontSize={18}
-          shadow={true}
-          spaceChildren="space-evenly"
-          borderRadious={5}
-          onlyHover={true}
-          margin="20px 10px 20px"
-          handleClick={() => {
-            mapIsOpen.setter(false);
-          }}
-        >
-          Close Map
-          <CloseMapIcon />
-        </Button>
-      ) : (
-        <Button
-          color="var(--color-primary-dark)"
-          hoverColor="var(--color-grey-dark)"
-          backgroundColor="var(--color-contrast)"
-          backgroundHoverColor="var(--color-contrast-hover)"
-          width="250px"
-          height="45px"
-          fontSize={18}
-          shadow={true}
-          spaceChildren="space-evenly"
-          borderRadious={5}
-          margin="20px 10px 20px"
-          onlyHover={true}
-          handleClick={() => {
-            mapIsOpen.setter(true);
-          }}
-        >
-          Open Map
-          <MapIcon />
-        </Button>
-      )}
+      <SideBarMapOptions
+        mapState={mapState}
+        mapStateSetter={mapStateSetter}
+        inputs={mapInputs}
+      />
       <SideBarIndex
         handleChangeSection={handleChangeSection}
         selectedIdx={sectionIndex}

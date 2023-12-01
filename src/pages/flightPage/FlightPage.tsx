@@ -5,8 +5,9 @@ import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { BsCalendarDate } from "react-icons/bs";
 import { FaClipboardList, FaRoute, FaCloudSunRain } from "react-icons/fa";
 import { FaScaleUnbalanced, FaHandHoldingDroplet } from "react-icons/fa6";
-import { IoAirplane } from "react-icons/io5";
+import { IoAirplane, IoMapSharp } from "react-icons/io5";
 import { MdOutlineStart } from "react-icons/md";
+import { PiAirTrafficControlDuotone, PiMapPinDuotone } from "react-icons/pi";
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
@@ -26,6 +27,10 @@ import getUTCNowString from "../../utils/getUTCNowString";
 import RefreshWeatherForm from "./components/RefreshWeatherForm";
 import MapSection from "./components/MapSection";
 import { useSideBar } from "../../components/sidebar";
+import {
+  MapStateType,
+  MapInputStyleType,
+} from "../../components/SideBarMapOptions";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -152,7 +157,14 @@ const ChangeIcon = styled(AiOutlineSwap)`
 
 const FlightPage = () => {
   const [sectionIdx, setSectionIdx] = useState<number>(0);
-  const [mapIsOpen, setMapIsOpen] = useState<boolean>(false);
+  const [mapState, setMapState] = useState<MapStateType>({
+    open: false,
+    showAerodromes: true,
+    showVfrWaypoints: false,
+    showSavedAerodromes: false,
+    showSavedWaypoints: false,
+    showCharts: false,
+  });
   const [formToDisplay, setFormToDisplay] = useState<"delete" | "edit">(
     "delete"
   );
@@ -224,6 +236,15 @@ const FlightPage = () => {
     },
   ];
 
+  const handleMapStateChange = (key: keyof MapStateType, value: boolean) => {
+    if (key === "open") handleExpandSideBar(false);
+    setMapState((prev) => {
+      const newMapState = { ...prev };
+      newMapState[key] = value;
+      return newMapState;
+    });
+  };
+
   const departure = aerodromes.find(
     (a) => a.id === flightData?.departure_aerodrome_id
   );
@@ -238,6 +259,39 @@ const FlightPage = () => {
     if (sectionIdx >= sections.length - 1) setSectionIdx(0);
     else setSectionIdx(sectionIdx + 1);
   };
+
+  const mapInputs = [
+    {
+      key: "showAerodromes",
+      icon: <PiAirTrafficControlDuotone />,
+      text: "Aerodromes",
+      color: "var(--color-highlight)",
+    },
+    {
+      key: "showVfrWaypoints",
+      icon: <PiMapPinDuotone />,
+      text: "VFR Waypoints",
+      color: "var(--color-highlight)",
+    },
+    {
+      key: "showSavedAerodromes",
+      icon: <PiAirTrafficControlDuotone />,
+      text: "Saved Aerodromes",
+      color: "var(--color-contrast)",
+    },
+    {
+      key: "showSavedWaypoints",
+      icon: <PiMapPinDuotone />,
+      text: "Saved Waypoints",
+      color: "var(--color-contrast)",
+    },
+    {
+      key: "showCharts",
+      icon: <IoMapSharp />,
+      text: "Charts",
+      color: "var(--color-white)",
+    },
+  ] as MapInputStyleType[];
 
   return (
     <>
@@ -341,7 +395,7 @@ const FlightPage = () => {
       </Modal>
       <ContentLayout
         map={{
-          isOpen: mapIsOpen,
+          isOpen: mapState.open,
           component: (
             <MapSection
               flightId={flightId}
@@ -352,16 +406,12 @@ const FlightPage = () => {
         }}
         sideBarContent={
           <SideBarContent
-            mapIsOpen={{
-              value: mapIsOpen,
-              setter: (value: boolean) => {
-                setMapIsOpen(value);
-                handleExpandSideBar(false);
-              },
-            }}
+            mapState={mapState}
+            mapStateSetter={handleMapStateChange}
+            mapInputs={mapInputs}
             handleChangeSection={(id: number) => {
               setSectionIdx(id);
-              setMapIsOpen(false);
+              handleMapStateChange("open", false);
             }}
             sectionIndex={sectionIdx}
             sectionOptions={sections}
@@ -381,7 +431,7 @@ const FlightPage = () => {
         }
       >
         <HtmlContainer>
-          <HtmlTitleContainer $isMap={mapIsOpen}>
+          <HtmlTitleContainer $isMap={mapState.open}>
             <div>
               <h1>
                 {sections[sectionIdx].icon}
