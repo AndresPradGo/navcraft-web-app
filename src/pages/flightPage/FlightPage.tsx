@@ -27,6 +27,8 @@ import getUTCNowString from "../../utils/getUTCNowString";
 import RefreshWeatherForm from "./components/RefreshWeatherForm";
 import MapSection from "./components/MapSection";
 import { useSideBar } from "../../components/sidebar";
+import useNavLogData from "./hooks/useNavLogData";
+
 import {
   MapStateType,
   MapInputStyleType,
@@ -182,6 +184,12 @@ const FlightPage = () => {
   const { data: flightData, error, isLoading } = useFlightData(flightId);
 
   const {
+    data: legsData,
+    isLoading: legsIsLoading,
+    error: legsError,
+  } = useNavLogData(flightId);
+
+  const {
     data: aerodromes,
     isLoading: aerodromesIsLoading,
     error: aerodromesError,
@@ -197,11 +205,18 @@ const FlightPage = () => {
   else if (
     (error && error.message === "Network Error") ||
     aerodromesError ||
-    aircraftListError
+    aircraftListError ||
+    legsError
   )
     throw new Error("");
-  if (isLoading || aerodromesIsLoading || aircraftListIsLoading)
+  if (
+    isLoading ||
+    aerodromesIsLoading ||
+    aircraftListIsLoading ||
+    legsIsLoading
+  )
     return <Loader />;
+  console.log(legsData);
 
   const sections = [
     {
