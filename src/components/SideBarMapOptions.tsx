@@ -32,6 +32,7 @@ const HtmlButtonList = styled.div`
   & div {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     width: 100%;
     padding: 10px 8px;
     border-top: 1px solid var(--color-grey);

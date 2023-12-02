@@ -8,7 +8,7 @@ interface Waypoint {
     longitude_degrees: number;
 }
 
-interface NavLogLegData {
+export interface NavLogLegData {
     from_waypoint: Waypoint,
     to_waypoint: Waypoint,
     desired_altitude_ft: number;

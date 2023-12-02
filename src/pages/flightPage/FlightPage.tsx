@@ -183,11 +183,8 @@ const FlightPage = () => {
   const flightId = parseInt(stringId || "0");
   const { data: flightData, error, isLoading } = useFlightData(flightId);
 
-  const {
-    data: legsData,
-    isLoading: legsIsLoading,
-    error: legsError,
-  } = useNavLogData(flightId);
+  const { isLoading: legsIsLoading, error: legsError } =
+    useNavLogData(flightId);
 
   const {
     data: aerodromes,
@@ -216,7 +213,6 @@ const FlightPage = () => {
     legsIsLoading
   )
     return <Loader />;
-  console.log(legsData);
 
   const sections = [
     {

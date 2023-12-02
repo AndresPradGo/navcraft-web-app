@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { MapContainer, TileLayer } from "react-leaflet";
+import { styled } from "styled-components";
 
 import getDegreeCoordinates from "../../../utils/getDegreeCoordinates";
 import { OfficialAerodromeDataFromAPI } from "../../../services/officialAerodromeClient";
 import { FlightDataFromApi } from "../../../services/flightsClient";
-import { styled } from "styled-components";
+import { NavLogLegData } from "../hooks/useNavLogData";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -27,6 +28,11 @@ const MapSection = ({
   const queryClient = useQueryClient();
   const flightData = queryClient.getQueryData<FlightDataFromApi>([
     "flight",
+    flightId,
+  ]);
+
+  const legsData = queryClient.getQueryData<NavLogLegData[]>([
+    "navLog",
     flightId,
   ]);
 
@@ -57,13 +63,21 @@ const MapSection = ({
     lon_seconds: midWaypoint.lon_seconds,
     lon_direction: midWaypoint.lon_direction,
   });
+  const totalDistance = legsData
+    ? legsData.reduce((sum, obj) => sum + obj.total_distance, 0)
+    : 0;
+  const zoomLevel = Math.round(
+    Math.log2(
+      (40008000 * Math.cos((center.lat * Math.PI) / 180)) / (totalDistance / 2)
+    ) - 11
+  );
 
   return (
     <HtmlContainer>
       {renderMap ? (
         <MapContainer
           center={center}
-          zoom={7}
+          zoom={zoomLevel}
           scrollWheelZoom={true}
           minZoom={2}
           maxZoom={16}
