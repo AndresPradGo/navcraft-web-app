@@ -2,12 +2,18 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { AiOutlineSwap } from "react-icons/ai";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { BsCalendarDate } from "react-icons/bs";
-import { FaClipboardList, FaRoute, FaCloudSunRain } from "react-icons/fa";
+import { BsCalendarDate, BsPersonCircle } from "react-icons/bs";
+import {
+  FaClipboardList,
+  FaRoute,
+  FaCloudSunRain,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 import { FaScaleUnbalanced, FaHandHoldingDroplet } from "react-icons/fa6";
+import { ImTarget } from "react-icons/im";
 import { IoAirplane, IoMapSharp } from "react-icons/io5";
 import { MdOutlineStart } from "react-icons/md";
-import { PiAirTrafficControlDuotone, PiMapPinDuotone } from "react-icons/pi";
+import { RiMapPinUserFill } from "react-icons/ri";
 import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
@@ -28,7 +34,8 @@ import RefreshWeatherForm from "./components/RefreshWeatherForm";
 import MapSection from "./components/MapSection";
 import { useSideBar } from "../../components/sidebar";
 import useNavLogData from "./hooks/useNavLogData";
-
+import useVfrWaypointsData from "../../hooks/useVfrWaypointsData";
+import useUserWaypointsData from "../../hooks/useUserWaypointsData";
 import {
   MapStateType,
   MapInputStyleType,
@@ -190,7 +197,13 @@ const FlightPage = () => {
     data: aerodromes,
     isLoading: aerodromesIsLoading,
     error: aerodromesError,
-  } = useAerodromesData();
+  } = useAerodromesData(true);
+
+  const { isLoading: vfrWaypointsIsLoading, error: vfrWaypointsError } =
+    useVfrWaypointsData(false);
+
+  const { isLoading: userWaypointsIsLoading, error: userWaypointsError } =
+    useUserWaypointsData();
 
   const {
     data: aircraftList,
@@ -203,14 +216,18 @@ const FlightPage = () => {
     (error && error.message === "Network Error") ||
     aerodromesError ||
     aircraftListError ||
-    legsError
+    legsError ||
+    vfrWaypointsError ||
+    userWaypointsError
   )
     throw new Error("");
   if (
     isLoading ||
     aerodromesIsLoading ||
     aircraftListIsLoading ||
-    legsIsLoading
+    legsIsLoading ||
+    vfrWaypointsIsLoading ||
+    userWaypointsIsLoading
   )
     return <Loader />;
 
@@ -274,27 +291,27 @@ const FlightPage = () => {
   const mapInputs = [
     {
       key: "showAerodromes",
-      icon: <PiAirTrafficControlDuotone />,
+      icon: <ImTarget />,
       text: "Aerodromes",
-      color: "var(--color-highlight)",
+      color: "var(--color-marker-purple)",
     },
     {
       key: "showVfrWaypoints",
-      icon: <PiMapPinDuotone />,
+      icon: <FaMapMarkerAlt />,
       text: "VFR Waypoints",
-      color: "var(--color-highlight)",
+      color: "var(--color-warning-hover)",
     },
     {
       key: "showSavedAerodromes",
-      icon: <PiAirTrafficControlDuotone />,
+      icon: <BsPersonCircle />,
       text: "Saved Aerodromes",
-      color: "var(--color-contrast)",
+      color: "var(--color-marker-purple)",
     },
     {
       key: "showSavedWaypoints",
-      icon: <PiMapPinDuotone />,
+      icon: <RiMapPinUserFill />,
       text: "Saved Waypoints",
-      color: "var(--color-contrast)",
+      color: "var(--color-warning-hover)",
     },
     {
       key: "showCharts",
@@ -409,6 +426,8 @@ const FlightPage = () => {
           isOpen: mapState.open,
           component: (
             <MapSection
+              mapState={mapState}
+              markers={mapInputs}
               flightId={flightId}
               departureAerodrome={departure || aerodromes[0]}
               arrivalAerodrome={arrival || aerodromes[0]}

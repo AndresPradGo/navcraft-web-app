@@ -4,11 +4,16 @@ import {APIClientError} from '../services/apiClient';
 import apiClient, {OfficialAerodromeDataFromAPI} from '../services/officialAerodromeClient';
 
 
-const useAerodromesData = () => {
+const useAerodromesData = (forPlanning?: boolean) => {
     return useQuery<OfficialAerodromeDataFromAPI[], APIClientError>({
         queryKey: ['aerodromes', 'all'],
         queryFn: () => {
-            return apiClient.getAll("/waypoints/aerodromes")
+            return apiClient.getAndPreProcessAll<OfficialAerodromeDataFromAPI>(
+                (data) => {
+                    return data.filter(item => !forPlanning || !item.hidden)
+                },
+                "/waypoints/aerodromes"
+                )
         }
     })
 }

@@ -90,7 +90,12 @@ const WeightBalanceGraph = ({
   const { sideBarIsExpanded } = useSideBar();
   const [selected, setSelected] = useState(profiles.map(() => false));
   const [mouseOver, setMouseOver] = useState(profiles.map(() => false));
-  const colors = ["#5CD3FF", "#FF33E4", "#31F500", "#FFC71F"];
+  const colors = [
+    "var(--color-nav-1)",
+    "var(--color-nav-2)",
+    "var(--color-nav-3)",
+    "var(--color-nav-4)",
+  ];
 
   const getYDomain = (dataMin: number, dataMax: number): [number, number] => {
     const MTOW = maxTakeoff ? maxTakeoff / 1000 : undefined;

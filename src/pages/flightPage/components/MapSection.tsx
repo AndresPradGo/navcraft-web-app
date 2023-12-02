@@ -1,12 +1,20 @@
 import { useState, useEffect } from "react";
+import { renderToString } from "react-dom/server";
 import { useQueryClient } from "@tanstack/react-query";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import L from "leaflet";
 import { styled } from "styled-components";
 
 import getDegreeCoordinates from "../../../utils/getDegreeCoordinates";
 import { OfficialAerodromeDataFromAPI } from "../../../services/officialAerodromeClient";
 import { FlightDataFromApi } from "../../../services/flightsClient";
 import { NavLogLegData } from "../hooks/useNavLogData";
+import { VfrWaypointDataFromAPI } from "../../../services/vfrWaypointClient";
+import { WaypointDataFromAPI } from "../../../services/userWaypointClient";
+import {
+  MapStateType,
+  MapInputStyleType,
+} from "../../../components/SideBarMapOptions";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -15,12 +23,27 @@ const HtmlContainer = styled.div`
   overflow: hidden;
 `;
 
+const HtmlPopupMessage = styled.h2`
+  color: var(--color-primary-dark);
+`;
+
+const HtmlIcon = styled.span`
+  width: 100%;
+  height: 100%;
+  font-size: 30px;
+  font-weight: bold;
+`;
+
 interface Props {
+  mapState: MapStateType;
+  markers: MapInputStyleType[];
   flightId: number;
   departureAerodrome: OfficialAerodromeDataFromAPI;
   arrivalAerodrome: OfficialAerodromeDataFromAPI;
 }
 const MapSection = ({
+  mapState,
+  markers,
   flightId,
   departureAerodrome,
   arrivalAerodrome,
@@ -29,6 +52,21 @@ const MapSection = ({
   const flightData = queryClient.getQueryData<FlightDataFromApi>([
     "flight",
     flightId,
+  ]);
+
+  const aerodromes = queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>([
+    "aerodromes",
+    "all",
+  ]);
+
+  const vfrWaypoints = queryClient.getQueryData<VfrWaypointDataFromAPI[]>([
+    "waypoints",
+    "vfr",
+  ]);
+
+  const userWaypoints = queryClient.getQueryData<WaypointDataFromAPI[]>([
+    "waypoints",
+    "user",
   ]);
 
   const legsData = queryClient.getQueryData<NavLogLegData[]>([
@@ -48,21 +86,32 @@ const MapSection = ({
     };
   }, []);
 
+  const flightWaypoints = new Set(
+    (legsData?.map((l) => l.from_waypoint.code) || []).concat(
+      legsData?.map((l) => l.to_waypoint.code) || []
+    )
+  );
+
+  const userAerodromesToDisplay =
+    aerodromes?.filter((a) => !a.registered && !flightWaypoints.has(a.code)) ||
+    [];
+
+  const officialAerodromesToDisplay =
+    aerodromes?.filter((a) => a.registered && !flightWaypoints.has(a.code)) ||
+    [];
+
+  const vfrWaypointsToDisplay =
+    vfrWaypoints?.filter((w) => !flightWaypoints.has(w.code)) || [];
+
+  const userWaypointsToDisplay =
+    userWaypoints?.filter((w) => !flightWaypoints.has(w.code)) || [];
+
   const midLeg = flightData
     ? flightData.legs[Math.floor(flightData.legs.length / 2)]
     : null;
   const midWaypoint = midLeg?.waypoint || departureAerodrome;
 
-  const center = getDegreeCoordinates({
-    lat_degrees: midWaypoint.lat_degrees,
-    lat_minutes: midWaypoint.lat_minutes,
-    lat_seconds: midWaypoint.lat_seconds,
-    lat_direction: midWaypoint.lat_direction,
-    lon_degrees: midWaypoint.lon_degrees,
-    lon_minutes: midWaypoint.lon_minutes,
-    lon_seconds: midWaypoint.lon_seconds,
-    lon_direction: midWaypoint.lon_direction,
-  });
+  const center = getDegreeCoordinates(midWaypoint);
   const totalDistance = legsData
     ? legsData.reduce((sum, obj) => sum + obj.total_distance, 0)
     : 0;
@@ -86,6 +135,120 @@ const MapSection = ({
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          {mapState.showAerodromes
+            ? officialAerodromesToDisplay.map((a) => {
+                const marker = markers.find((m) => m.key === "showAerodromes");
+                return (
+                  <Marker
+                    icon={L.divIcon({
+                      className: "custom--icon",
+                      html: renderToString(
+                        <HtmlIcon style={{ color: marker?.color }}>
+                          {marker?.icon}
+                        </HtmlIcon>
+                      ),
+                      iconSize: [45, 45],
+                    })}
+                    key={`showAerodromes-${a.code}`}
+                    position={getDegreeCoordinates(a)}
+                  >
+                    <Popup offset={[-6.7, 0]}>
+                      <HtmlPopupMessage>
+                        <b>{`${a.code}: `}</b>
+                        {`${a.name}`}
+                      </HtmlPopupMessage>
+                    </Popup>
+                  </Marker>
+                );
+              })
+            : null}
+          {mapState.showVfrWaypoints
+            ? vfrWaypointsToDisplay.map((w) => {
+                const marker = markers.find(
+                  (m) => m.key === "showVfrWaypoints"
+                );
+                return (
+                  <Marker
+                    icon={L.divIcon({
+                      className: "custom--icon",
+                      html: renderToString(
+                        <HtmlIcon style={{ color: marker?.color }}>
+                          {marker?.icon}
+                        </HtmlIcon>
+                      ),
+                      iconSize: [30, 30],
+                    })}
+                    key={`showVfrWaypoints-${w.code}`}
+                    position={getDegreeCoordinates(w)}
+                  >
+                    <Popup>
+                      <HtmlPopupMessage>
+                        <b>{`${w.code}: `}</b>
+                        {`${w.name}`}
+                      </HtmlPopupMessage>
+                    </Popup>
+                  </Marker>
+                );
+              })
+            : null}
+          {mapState.showSavedAerodromes
+            ? userAerodromesToDisplay.map((a) => {
+                const marker = markers.find(
+                  (m) => m.key === "showSavedAerodromes"
+                );
+                return (
+                  <Marker
+                    icon={L.divIcon({
+                      className: "custom--icon",
+                      html: renderToString(
+                        <HtmlIcon style={{ color: marker?.color }}>
+                          {marker?.icon}
+                        </HtmlIcon>
+                      ),
+                      iconSize: [30, 30],
+                    })}
+                    key={`showSavedAerodromes-${a.code}`}
+                    position={getDegreeCoordinates(a)}
+                  >
+                    <Popup>
+                      <HtmlPopupMessage>
+                        <b>{`${a.code}: `}</b>
+                        {`${a.name}`}
+                      </HtmlPopupMessage>
+                    </Popup>
+                  </Marker>
+                );
+              })
+            : null}
+          {mapState.showSavedWaypoints
+            ? userWaypointsToDisplay.map((w) => {
+                const marker = markers.find(
+                  (m) => m.key === "showSavedWaypoints"
+                );
+                return (
+                  <Marker
+                    icon={L.divIcon({
+                      className: "custom--icon",
+                      html: renderToString(
+                        <HtmlIcon style={{ color: marker?.color }}>
+                          {marker?.icon}
+                        </HtmlIcon>
+                      ),
+                      iconSize: [30, 30],
+                    })}
+                    key={`showSavedWaypoints-${w.code}`}
+                    position={getDegreeCoordinates(w)}
+                  >
+                    <Popup>
+                      <HtmlPopupMessage>
+                        <b>{`${w.code}: `}</b>
+                        {`${w.name}`}
+                      </HtmlPopupMessage>
+                    </Popup>
+                  </Marker>
+                );
+              })
+            : null}
         </MapContainer>
       ) : null}
     </HtmlContainer>
