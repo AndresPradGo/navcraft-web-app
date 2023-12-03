@@ -39,7 +39,7 @@ const HtmlPopupMessage = styled.div`
     font-weight: bold;
     font-size: 16px;
     margin: 0;
-    color: var(--color-nav-1-dark);
+    color: var(--color-highlight);
   }
 
   & h3 {
@@ -159,8 +159,8 @@ const MapSection = ({
           maxZoom={16}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors'
+            url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
           />
           {mapState.showAerodromes
             ? officialAerodromesToDisplay.map((a) => {
@@ -288,7 +288,7 @@ const MapSection = ({
             icon={L.divIcon({
               className: "custom--icon",
               html: renderToString(
-                <HtmlIcon style={{ color: "var(--color-nav-1-dark)" }}>
+                <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
                   {<BiTargetLock />}
                 </HtmlIcon>
               ),
@@ -310,7 +310,7 @@ const MapSection = ({
             icon={L.divIcon({
               className: "custom--icon",
               html: renderToString(
-                <HtmlIcon style={{ color: "var(--color-nav-1-dark)" }}>
+                <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
                   {<BiTargetLock />}
                 </HtmlIcon>
               ),
@@ -341,7 +341,7 @@ const MapSection = ({
             return (
               <Polyline
                 key={`path-${idx}`}
-                pathOptions={{ color: "var(--color-nav-2-dark)", weight: 4 }}
+                pathOptions={{ color: "var(--color-nav-2)", weight: 4 }}
                 positions={[fromCoordinates, toCoordinates]}
               />
             );
@@ -354,7 +354,7 @@ const MapSection = ({
                   icon={L.divIcon({
                     className: "custom--icon",
                     html: renderToString(
-                      <HtmlIcon style={{ color: "var(--color-nav-1-dark)" }}>
+                      <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
                         {<IoMdRadioButtonOn />}
                       </HtmlIcon>
                     ),
