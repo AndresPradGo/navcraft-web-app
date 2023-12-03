@@ -2,17 +2,16 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { AiOutlineSwap } from "react-icons/ai";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { BsCalendarDate, BsPersonCircle } from "react-icons/bs";
-import {
-  FaClipboardList,
-  FaRoute,
-  FaCloudSunRain,
-  FaMapMarkerAlt,
-} from "react-icons/fa";
+import { BsCalendarDate } from "react-icons/bs";
+import { FaClipboardList, FaRoute, FaCloudSunRain } from "react-icons/fa";
 import { FaScaleUnbalanced, FaHandHoldingDroplet } from "react-icons/fa6";
-import { ImTarget } from "react-icons/im";
 import { IoAirplane, IoMapSharp } from "react-icons/io5";
 import { MdOutlineStart } from "react-icons/md";
+import {
+  PiMapPinDuotone,
+  PiChartPolarDuotone,
+  PiCircleDuotone,
+} from "react-icons/pi";
 import { RiMapPinUserFill } from "react-icons/ri";
 import { styled } from "styled-components";
 
@@ -168,7 +167,7 @@ const FlightPage = () => {
   const [sectionIdx, setSectionIdx] = useState<number>(0);
   const [mapState, setMapState] = useState<MapStateType>({
     open: false,
-    showAerodromes: true,
+    showAerodromes: false,
     showVfrWaypoints: false,
     showSavedAerodromes: false,
     showSavedWaypoints: false,
@@ -291,19 +290,19 @@ const FlightPage = () => {
   const mapInputs = [
     {
       key: "showAerodromes",
-      icon: <ImTarget />,
+      icon: <PiChartPolarDuotone />,
       text: "Aerodromes",
       color: "var(--color-marker-purple)",
     },
     {
       key: "showVfrWaypoints",
-      icon: <FaMapMarkerAlt />,
+      icon: <PiMapPinDuotone />,
       text: "VFR Waypoints",
       color: "var(--color-warning-hover)",
     },
     {
       key: "showSavedAerodromes",
-      icon: <BsPersonCircle />,
+      icon: <PiCircleDuotone />,
       text: "Saved Aerodromes",
       color: "var(--color-marker-purple)",
     },

@@ -17,18 +17,18 @@ interface LatLngLiteral {
     alt?: number;
 }
 
-const getDegreeCoordinates = (coordinate: Coordinate): LatLngLiteral => {
+const getDegreeCoordinates = (coordinate: Coordinate, offset?: [number, number]): LatLngLiteral => {
   const direction = {N: 1, S: -1, E: 1, W: -1}
 
   let latitude = coordinate.lat_degrees 
   latitude += coordinate.lat_minutes / 60
-  latitude += (coordinate.lat_seconds ? coordinate.lat_seconds : 0) / 60 / 60
-  latitude = Math.round(latitude * direction[coordinate.lat_direction] * 100) / 100
+  latitude += ((coordinate.lat_seconds ? coordinate.lat_seconds : 0) + (offset ? offset[0] : 0)) / 60 / 60
+  latitude = Math.round(latitude * direction[coordinate.lat_direction] * 10000) / 10000
 
   let longitude = coordinate.lon_degrees 
   longitude += coordinate.lon_minutes / 60
-  longitude += (coordinate.lon_seconds ? coordinate.lon_seconds : 0) / 60 / 60
-  longitude = Math.round(longitude * direction[coordinate.lon_direction] * 100) / 100
+  longitude += ((coordinate.lon_seconds ? coordinate.lon_seconds : 0) + (offset ? offset[1] : 0)) / 60 / 60
+  longitude = Math.round(longitude * direction[coordinate.lon_direction] * 10000) / 10000
 
   return {
     lat: latitude,

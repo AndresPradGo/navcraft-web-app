@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import { renderToString } from "react-dom/server";
 import { useQueryClient } from "@tanstack/react-query";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+} from "react-leaflet";
+import { BiTargetLock } from "react-icons/bi";
+import { IoMdRadioButtonOn } from "react-icons/io";
 import L from "leaflet";
 import { styled } from "styled-components";
 
@@ -23,15 +31,34 @@ const HtmlContainer = styled.div`
   overflow: hidden;
 `;
 
-const HtmlPopupMessage = styled.h2`
-  color: var(--color-primary-dark);
+const HtmlPopupMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & h2 {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+    color: var(--color-nav-1-dark);
+  }
+
+  & h3 {
+    font-size: 12px;
+    margin: 0;
+    color: var(--color-primary-dark);
+  }
 `;
 
-const HtmlIcon = styled.span`
+const HtmlIcon = styled.div`
   width: 100%;
   height: 100%;
   font-size: 30px;
   font-weight: bold;
+
+  & svg {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 interface Props {
@@ -147,15 +174,17 @@ const MapSection = ({
                           {marker?.icon}
                         </HtmlIcon>
                       ),
-                      iconSize: [45, 45],
+                      iconSize: [30, 30],
                     })}
                     key={`showAerodromes-${a.code}`}
                     position={getDegreeCoordinates(a)}
                   >
-                    <Popup offset={[-6.7, 0]}>
+                    <Popup offset={[0, 0]}>
                       <HtmlPopupMessage>
-                        <b>{`${a.code}: `}</b>
-                        {`${a.name}`}
+                        <h3>
+                          <b>{`${a.code}: `}</b>
+                          {`${a.name}`}
+                        </h3>
                       </HtmlPopupMessage>
                     </Popup>
                   </Marker>
@@ -183,8 +212,10 @@ const MapSection = ({
                   >
                     <Popup>
                       <HtmlPopupMessage>
-                        <b>{`${w.code}: `}</b>
-                        {`${w.name}`}
+                        <h3>
+                          <b>{`${w.code}: `}</b>
+                          {`${w.name}`}
+                        </h3>
                       </HtmlPopupMessage>
                     </Popup>
                   </Marker>
@@ -212,8 +243,10 @@ const MapSection = ({
                   >
                     <Popup>
                       <HtmlPopupMessage>
-                        <b>{`${a.code}: `}</b>
-                        {`${a.name}`}
+                        <h3>
+                          <b>{`${a.code}: `}</b>
+                          {`${a.name}`}
+                        </h3>
                       </HtmlPopupMessage>
                     </Popup>
                   </Marker>
@@ -241,14 +274,110 @@ const MapSection = ({
                   >
                     <Popup>
                       <HtmlPopupMessage>
-                        <b>{`${w.code}: `}</b>
-                        {`${w.name}`}
+                        <h3>
+                          <b>{`${w.code}: `}</b>
+                          {`${w.name}`}
+                        </h3>
                       </HtmlPopupMessage>
                     </Popup>
                   </Marker>
                 );
               })
             : null}
+          <Marker
+            icon={L.divIcon({
+              className: "custom--icon",
+              html: renderToString(
+                <HtmlIcon style={{ color: "var(--color-nav-1-dark)" }}>
+                  {<BiTargetLock />}
+                </HtmlIcon>
+              ),
+              iconSize: [40, 40],
+            })}
+            position={getDegreeCoordinates(departureAerodrome)}
+          >
+            <Popup>
+              <HtmlPopupMessage>
+                <h2>Departure</h2>
+                <h3>
+                  <b>{`${departureAerodrome.code}: `}</b>
+                  {`${departureAerodrome.name}`}
+                </h3>
+              </HtmlPopupMessage>
+            </Popup>
+          </Marker>
+          <Marker
+            icon={L.divIcon({
+              className: "custom--icon",
+              html: renderToString(
+                <HtmlIcon style={{ color: "var(--color-nav-1-dark)" }}>
+                  {<BiTargetLock />}
+                </HtmlIcon>
+              ),
+              iconSize: [40, 40],
+            })}
+            position={getDegreeCoordinates(arrivalAerodrome)}
+          >
+            <Popup>
+              <HtmlPopupMessage>
+                <h2>Arrival</h2>
+                <h3>
+                  <b>{`${arrivalAerodrome.code}: `}</b>
+                  {`${arrivalAerodrome.name}`}
+                </h3>
+              </HtmlPopupMessage>
+            </Popup>
+          </Marker>
+          {legsData?.map((l, idx) => {
+            const fromCoordinates = {
+              lat: l.from_waypoint.latitude_degrees,
+              lng: l.from_waypoint.longitude_degrees,
+            };
+
+            const toCoordinates = {
+              lat: l.to_waypoint.latitude_degrees,
+              lng: l.to_waypoint.longitude_degrees,
+            };
+            return (
+              <Polyline
+                key={`path-${idx}`}
+                pathOptions={{ color: "var(--color-nav-2-dark)", weight: 4 }}
+                positions={[fromCoordinates, toCoordinates]}
+              />
+            );
+          })}
+          {legsData?.map((l, idx) => {
+            if (idx) {
+              return (
+                <Marker
+                  key={`waypoint-${idx}`}
+                  icon={L.divIcon({
+                    className: "custom--icon",
+                    html: renderToString(
+                      <HtmlIcon style={{ color: "var(--color-nav-1-dark)" }}>
+                        {<IoMdRadioButtonOn />}
+                      </HtmlIcon>
+                    ),
+                    iconSize: [30, 30],
+                  })}
+                  position={{
+                    lat: l.from_waypoint.latitude_degrees,
+                    lng: l.from_waypoint.longitude_degrees,
+                  }}
+                >
+                  <Popup>
+                    <HtmlPopupMessage>
+                      <h2>{`WP-${idx}`}</h2>
+                      <h3>
+                        <b>{`${l.from_waypoint.code}: `}</b>
+                        {`${l.from_waypoint.name}`}
+                      </h3>
+                    </HtmlPopupMessage>
+                  </Popup>
+                </Marker>
+              );
+            } else return null;
+          })}
         </MapContainer>
       ) : null}
     </HtmlContainer>

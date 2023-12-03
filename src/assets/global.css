@@ -29,8 +29,11 @@ html {
     --color-modal-background: rgba(6, 10, 15, 0.7);
     --color-marker-purple: #8765C5;
     --color-nav-1: #5CD3FF;
+    --color-nav-1-dark: #0096CC;
+    --color-nav-2-dark: #E000C2;
     --color-nav-2: #FF33E4;
     --color-nav-3: #31F500;
+    --color-nav-3-dark: #25B800;
     --color-nav-4: #FFC71F;
 
 
@@ -118,4 +121,5 @@ a {
 
   custom--icon {
     border: 0;
+    margin:0;
   }
