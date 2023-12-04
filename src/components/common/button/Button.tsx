@@ -19,6 +19,7 @@ interface HtmlButtonProps {
   $margin: string;
   $padding: string;
   $onlyHover: boolean;
+  $alignSelf: "center" | "flex-start" | "flex-end" | undefined;
 }
 
 const HtmlButton = styled.button<HtmlButtonProps>`
@@ -27,6 +28,7 @@ const HtmlButton = styled.button<HtmlButtonProps>`
   flex-direction: row;
   justify-content: ${(props) => props.$spaceChildren};
   align-items: center;
+  ${(props) => (props.$alignSelf ? "align-self:" + props.$alignSelf + ";" : "")}
   min-width: ${(props) => props.$minWidth};
   max-width: ${(props) => props.$maxWidth};
   height: ${(props) => props.$height};
@@ -119,6 +121,7 @@ export interface Props {
   width?: string;
   height?: string;
   spaceChildren?: "center" | "space-between" | "space-evenly" | "flex-start";
+  alignSelf?: "center" | "flex-start" | "flex-end";
   fontSize?: number;
   borderRadious?: number;
   borderWidth?: number;
@@ -157,6 +160,7 @@ const Button = ({
   disabled,
   disabledText,
   onlyHover,
+  alignSelf,
 }: Props) => {
   const defaultColor = color
     ? color
@@ -190,6 +194,7 @@ const Button = ({
         $maxWidth={width ? width : "100%"}
         $height={height ? height : "30px"}
         $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
+        $alignSelf={alignSelf}
         $fontSize={fontSize ? fontSize : 12}
         $borderRadious={borderRadious ? borderRadious : 10}
         $borderWidth={borderWidth ? borderWidth : 0}
@@ -223,6 +228,7 @@ const Button = ({
       $maxWidth={width ? width : "100%"}
       $height={height ? height : "30px"}
       $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
+      $alignSelf={alignSelf}
       $fontSize={fontSize ? fontSize : 12}
       $borderRadious={borderRadious ? borderRadious : 10}
       $borderWidth={borderWidth ? borderWidth : 2}

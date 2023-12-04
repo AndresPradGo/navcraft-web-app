@@ -9,6 +9,7 @@ interface Waypoint {
 }
 
 export interface NavLogLegData {
+    leg_id: number;
     from_waypoint: Waypoint,
     to_waypoint: Waypoint,
     desired_altitude_ft: number;

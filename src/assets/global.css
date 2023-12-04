@@ -28,9 +28,13 @@ html {
     --color-shadow: rgb(112 112 112 / 60%);
     --color-modal-background: rgba(6, 10, 15, 0.7);
     --color-nav-1: #5CD3FF;
+    --color-nav-1-dark: #0078A3;
     --color-nav-2: #FF1FE1;
+    --color-nav-2-dark: #A3008D;
     --color-nav-3: #31F500;
-    --color-nav-4: #CC6600;
+    --color-nav-3-dark: #1D8F00;
+    --color-nav-4: #ff8000;
+    --color-nav-4-dark: #A35200;
 
 
     scrollbar-width: thin;

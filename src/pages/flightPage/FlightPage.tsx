@@ -30,7 +30,7 @@ import ChangeAircraftForm from "./components/ChangeAircraftForm";
 import EditDepartureArrivalForm from "./components/EditDepartureArrivalForm";
 import getUTCNowString from "../../utils/getUTCNowString";
 import RefreshWeatherForm from "./components/RefreshWeatherForm";
-import MapSection from "./components/MapSection";
+import MapSection from "./components/map/MapSection";
 import { useSideBar } from "../../components/sidebar";
 import useNavLogData from "./hooks/useNavLogData";
 import useVfrWaypointsData from "../../hooks/useVfrWaypointsData";
@@ -425,6 +425,8 @@ const FlightPage = () => {
           isOpen: mapState.open,
           component: (
             <MapSection
+              handleEditDeparture={departureModal.handleOpen}
+              handleEditArrival={arrivalModal.handleOpen}
               mapState={mapState}
               markers={mapInputs}
               flightId={flightId}

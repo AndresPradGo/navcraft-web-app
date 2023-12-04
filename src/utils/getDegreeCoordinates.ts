@@ -11,7 +11,7 @@ interface Coordinate {
     lon_direction: "E" | "W";
 }
 
-interface LatLngLiteral {
+export interface LatLngLiteral {
     lat: number;
     lng: number;
     alt?: number;
@@ -23,12 +23,12 @@ const getDegreeCoordinates = (coordinate: Coordinate, offset?: [number, number])
   let latitude = coordinate.lat_degrees 
   latitude += coordinate.lat_minutes / 60
   latitude += ((coordinate.lat_seconds ? coordinate.lat_seconds : 0) + (offset ? offset[0] : 0)) / 60 / 60
-  latitude = Math.round(latitude * direction[coordinate.lat_direction] * 10000) / 10000
+  latitude = latitude * direction[coordinate.lat_direction] 
 
   let longitude = coordinate.lon_degrees 
   longitude += coordinate.lon_minutes / 60
   longitude += ((coordinate.lon_seconds ? coordinate.lon_seconds : 0) + (offset ? offset[1] : 0)) / 60 / 60
-  longitude = Math.round(longitude * direction[coordinate.lon_direction] * 10000) / 10000
+  longitude = longitude * direction[coordinate.lon_direction] 
 
   return {
     lat: latitude,
