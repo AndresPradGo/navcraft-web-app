@@ -9,7 +9,7 @@ const useDeleteAccount = (onDelete: () => void) => {
     return useMutation<string, APIClientError, undefined>({
         mutationFn: () => apiClient.delete("/me"),
         onSuccess: () => {
-            toast.info("Your Account has been deleted successfully...", {
+            toast.success("Your Account has been deleted successfully.", {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

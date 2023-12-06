@@ -48,7 +48,7 @@ const useDeleteSurfaceAdjustmentValue = (profileId: number, isTakeoff: boolean) 
       return {previousData}
     },
     onSuccess: () => {
-      toast.info(`${isTakeoff ? 'Takeoff' : 'Landing'} performance adjustment value has been deleted successfully.`, {
+      toast.success(`${isTakeoff ? 'Takeoff' : 'Landing'} performance adjustment value has been deleted successfully.`, {
           position: "top-center",
           autoClose: 10000,
           hideProgressBar: false,

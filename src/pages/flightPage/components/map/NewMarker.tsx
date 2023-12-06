@@ -4,24 +4,31 @@ import L from "leaflet";
 import { LatLngLiteral } from "../../../../utils/getDegreeCoordinates";
 
 interface Props {
+  dropped: boolean;
   iconString: string;
   newWaypoint: LatLngLiteral | null;
   handleFocusLegIdx: (idx: number) => void;
   handleNewWaypointCoordinates: (waypoint: LatLngLiteral | null) => void;
   handleMarkerDrop: () => void;
+  openModal: () => void;
 }
 const NewMarker = ({
+  dropped,
   iconString,
   newWaypoint,
   handleFocusLegIdx,
   handleNewWaypointCoordinates,
   handleMarkerDrop,
+  openModal,
 }: Props) => {
   const map = useMapEvents({
     click() {
       if (newWaypoint) {
-        handleNewWaypointCoordinates(null);
-        handleFocusLegIdx(-1);
+        if (dropped) openModal();
+        else {
+          handleNewWaypointCoordinates(null);
+          handleFocusLegIdx(-1);
+        }
       }
     },
   });
@@ -33,8 +40,11 @@ const NewMarker = ({
           draggable={true}
           eventHandlers={{
             click: () => {
-              handleFocusLegIdx(-1);
-              handleNewWaypointCoordinates(null);
+              if (dropped) openModal();
+              else {
+                handleNewWaypointCoordinates(null);
+                handleFocusLegIdx(-1);
+              }
             },
             dragend: (e) => {
               handleNewWaypointCoordinates({
@@ -42,6 +52,7 @@ const NewMarker = ({
                 lng: e.target._latlng.lng,
               });
               handleMarkerDrop();
+              openModal();
             },
           }}
           zIndexOffset={999}

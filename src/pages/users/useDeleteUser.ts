@@ -33,7 +33,7 @@ const useDeleteUser = () => {
         },
         onSuccess: (_, user) => {
             queryClient.invalidateQueries({queryKey: ['users']})
-            toast.info(`"${user.name}'s" profile has been deleted.`, {
+            toast.success(`"${user.name}'s" profile has been deleted successfully.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

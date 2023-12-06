@@ -31,7 +31,7 @@ const useDeleteUserAerodrome = (onDelete: () => void, key: "user" | "all") => {
         },
         onSuccess: (_, data) => {
             queryClient.invalidateQueries({queryKey: ['aerodromes', key]})
-            toast.info(`"${data.name}" has been deleted from your private aerodromes' list.`, {
+            toast.success(`"${data.name}" has been deleted from your private aerodromes' list.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

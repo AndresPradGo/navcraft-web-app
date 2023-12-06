@@ -31,7 +31,7 @@ const useDeleteUserWaypoint = () => {
         },
         onSuccess: (_, data) => {
             queryClient.invalidateQueries({queryKey: ['waypoints', 'user']})
-            toast.info(`"${data.name}" has been deleted from your waypoints' list.`, {
+            toast.success(`"${data.name}" has been deleted from your waypoints' list.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

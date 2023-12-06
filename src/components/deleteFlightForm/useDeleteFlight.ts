@@ -29,7 +29,7 @@ const useDeleteFlight = (onDelete: () => void) => {
             return { previousData }
         },
         onSuccess: (_, newData) => {
-            toast.info(`The flight ${newData.route} has been deleted successfully.`, {
+            toast.success(`The flight ${newData.route} has been deleted successfully.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

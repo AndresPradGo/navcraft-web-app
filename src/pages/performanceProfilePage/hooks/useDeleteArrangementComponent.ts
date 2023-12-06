@@ -67,7 +67,7 @@ const useDeleteArrangementComponent = (profileId: number, aircraftId: number) =>
         return { previousData }
     }, 
     onSuccess: (_, data) => {
-        toast.info(`${data.type} "${data.name}", has been deleted.`, {
+        toast.success(`${data.type} "${data.name}", has been deleted successfully.`, {
             position: "top-center",
             autoClose: 10000,
             hideProgressBar: false,

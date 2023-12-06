@@ -27,7 +27,7 @@ const useDeleteAircraftModel = (onDelete: () => void) => {
         },
         onSuccess: (_, modelId) => {
             queryClient.invalidateQueries({queryKey: ['aircraftModel', 'list']})
-            toast.info(`Aircraft Model with ID ${modelId} has been deleted.`, {
+            toast.success(`Aircraft Model with ID ${modelId} has been deleted successfully.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

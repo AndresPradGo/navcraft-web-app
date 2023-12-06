@@ -32,7 +32,7 @@ const useDeleteAircraft = (onDelete: () => void) => {
         },
         onSuccess: (_, data) => {
             queryClient.invalidateQueries({queryKey: ['aircraft', 'list']})
-            toast.info(`"${data.registration}" has been deleted from your fleet.`, {
+            toast.success(`"${data.registration}" has been deleted from your fleet.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

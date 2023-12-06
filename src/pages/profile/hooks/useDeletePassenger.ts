@@ -34,7 +34,7 @@ const useDeletePassenger = () => {
         },
         onSuccess: (_, passenger) => {
             queryClient.invalidateQueries({queryKey: ['Passengers']})
-            toast.info(`"${passenger.name}" has been deleted from your passengers' list.`, {
+            toast.success(`"${passenger.name}" has been deleted from your passengers' list.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

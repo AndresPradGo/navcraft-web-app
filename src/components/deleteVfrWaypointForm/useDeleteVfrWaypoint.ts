@@ -31,7 +31,7 @@ const useDeleteVfrWaypoint = () => {
         },
         onSuccess: (_, data) => {
             queryClient.invalidateQueries({queryKey: ['waypoints', 'vfr']})
-            toast.info(`"${data.name}" has been deleted from the official VFR waypoints' list.`, {
+            toast.success(`"${data.name}" has been deleted from the official VFR waypoints' list.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

@@ -45,17 +45,15 @@ const ExpandibleMessage = ({ reset, children, messageList }: Props) => {
   return (
     <HtmlContainer>
       <Button
-        color={
-          !helpExpanded ? "var(--color-primary-dark)" : "var(--color-grey)"
-        }
+        color={helpExpanded ? "var(--color-primary-dark)" : "var(--color-grey)"}
         hoverColor={
-          !helpExpanded
+          helpExpanded
             ? "var(--color-primary-dark)"
             : "var(--color-grey-bright)"
         }
         backgroundColor="var(--color-grey)"
         backgroundHoverColor="var(--color-grey-bright)"
-        fill={!helpExpanded}
+        fill={helpExpanded}
         width="100px"
         spaceChildren="center"
         fontSize={16}

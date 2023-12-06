@@ -9,12 +9,11 @@ import {
   Polyline,
 } from "react-leaflet";
 import { BiTargetLock, BiSolidEditAlt } from "react-icons/bi";
-import { IoMdRadioButtonOn } from "react-icons/io";
+import { GoDotFill } from "react-icons/go";
 import { LuCircleDotDashed } from "react-icons/lu";
 import { TbMapPinOff } from "react-icons/tb";
 import L from "leaflet";
 import { styled } from "styled-components";
-
 import getDegreeCoordinates, {
   LatLngLiteral,
 } from "../../../../utils/getDegreeCoordinates";
@@ -31,6 +30,7 @@ import Button from "../../../../components/common/button";
 import { Modal, useModal } from "../../../../components/common/modal";
 
 import NewMarker from "./NewMarker";
+import DropMarkerForm from "./DropMarkerForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -95,6 +95,7 @@ const MapSection = ({
 }: Props) => {
   const [focusLegIdx, setFocusLegIdx] = useState(-1);
   const [newWaypoint, setNewWaypoint] = useState<LatLngLiteral | null>(null);
+  const [droppedMarker, setDroppedMarker] = useState<boolean>(false);
 
   const modal = useModal();
 
@@ -168,7 +169,21 @@ const MapSection = ({
 
   return (
     <>
-      <Modal isOpen={modal.isOpen}>form</Modal>
+      <Modal isOpen={modal.isOpen} fullHeight={true}>
+        <DropMarkerForm
+          flightId={flightId}
+          sequence={focusLegIdx + 1}
+          latitude={newWaypoint ? newWaypoint.lat : center.lat}
+          longitude={newWaypoint ? newWaypoint.lng : center.lng}
+          closeModal={modal.handleClose}
+          isOpen={modal.isOpen}
+          restoreFlight={() => {
+            setFocusLegIdx(-1);
+            setNewWaypoint(null);
+            setDroppedMarker(false);
+          }}
+        />
+      </Modal>
       <HtmlContainer>
         {renderMap ? (
           <MapContainer
@@ -180,7 +195,11 @@ const MapSection = ({
             maxZoom={16}
           >
             <NewMarker
-              handleMarkerDrop={modal.handleOpen}
+              dropped={droppedMarker}
+              handleMarkerDrop={() => {
+                setDroppedMarker(true);
+              }}
+              openModal={modal.handleOpen}
               newWaypoint={newWaypoint}
               iconString={renderToString(
                 <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
@@ -204,11 +223,13 @@ const MapSection = ({
                       icon={L.divIcon({
                         className: "custom--icon",
                         html: renderToString(
-                          <HtmlIcon style={{ color: marker?.color }}>
+                          <HtmlIcon
+                            style={{ color: marker?.color, opacity: "0.6" }}
+                          >
                             {marker?.icon}
                           </HtmlIcon>
                         ),
-                        iconSize: [40, 40],
+                        iconSize: [30, 30],
                       })}
                       key={`showAerodromes-${a.code}`}
                       position={getDegreeCoordinates(a)}
@@ -235,11 +256,13 @@ const MapSection = ({
                       icon={L.divIcon({
                         className: "custom--icon",
                         html: renderToString(
-                          <HtmlIcon style={{ color: marker?.color }}>
+                          <HtmlIcon
+                            style={{ color: marker?.color, opacity: "0.6" }}
+                          >
                             {marker?.icon}
                           </HtmlIcon>
                         ),
-                        iconSize: [40, 40],
+                        iconSize: [30, 30],
                       })}
                       key={`showVfrWaypoints-${w.code}`}
                       position={getDegreeCoordinates(w)}
@@ -266,11 +289,13 @@ const MapSection = ({
                       icon={L.divIcon({
                         className: "custom--icon",
                         html: renderToString(
-                          <HtmlIcon style={{ color: marker?.color }}>
+                          <HtmlIcon
+                            style={{ color: marker?.color, opacity: "0.6" }}
+                          >
                             {marker?.icon}
                           </HtmlIcon>
                         ),
-                        iconSize: [40, 40],
+                        iconSize: [30, 30],
                       })}
                       key={`showSavedAerodromes-${a.code}`}
                       position={getDegreeCoordinates(a)}
@@ -297,11 +322,13 @@ const MapSection = ({
                       icon={L.divIcon({
                         className: "custom--icon",
                         html: renderToString(
-                          <HtmlIcon style={{ color: marker?.color }}>
+                          <HtmlIcon
+                            style={{ color: marker?.color, opacity: "0.6" }}
+                          >
                             {marker?.icon}
                           </HtmlIcon>
                         ),
-                        iconSize: [40, 40],
+                        iconSize: [30, 30],
                       })}
                       key={`showSavedWaypoints-${w.code}`}
                       position={getDegreeCoordinates(w)}
@@ -412,11 +439,8 @@ const MapSection = ({
                 <Polyline
                   key={`path-${idx}`}
                   pathOptions={{
-                    color:
-                      focusLegIdx === idx
-                        ? "var(--color-nav-2-dark)"
-                        : "var(--color-nav-2)",
-                    weight: focusLegIdx === idx ? 10 : 6,
+                    color: "var(--color-nav-2)",
+                    weight: 6,
                   }}
                   positions={
                     midWaypoint
@@ -452,10 +476,10 @@ const MapSection = ({
                       className: "custom--icon",
                       html: renderToString(
                         <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
-                          {<IoMdRadioButtonOn />}
+                          {<GoDotFill />}
                         </HtmlIcon>
                       ),
-                      iconSize: [40, 40],
+                      iconSize: [30, 30],
                     })}
                     position={{
                       lat: l.from_waypoint.latitude_degrees,
@@ -478,9 +502,7 @@ const MapSection = ({
                           margin="10px 0 0"
                           alignSelf={"center"}
                           shadow={true}
-                          handleClick={() => {
-                            console.log(l.leg_id);
-                          }}
+                          handleClick={() => {}}
                           width="120px"
                         >
                           Remove

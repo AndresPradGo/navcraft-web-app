@@ -28,7 +28,7 @@ const useDeletePerformanceProfile = (aircraftId: number, onDelete: () => void) =
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['aircraft', aircraftId]})
-            toast.info("The performance Profile has been deleted successfully.", {
+            toast.success("The performance Profile has been deleted successfully.", {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

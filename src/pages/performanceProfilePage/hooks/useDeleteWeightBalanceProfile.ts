@@ -36,7 +36,7 @@ const useDeleteWeightBalanceProfile = (profileId: number) => {
             return { previousData }
         },
         onSuccess: (_, data) => {
-            toast.info(`W&B Profile "${data.name}" has been deleted.`, {
+            toast.success(`W&B Profile "${data.name}" has been deleted successfully.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

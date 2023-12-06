@@ -31,7 +31,7 @@ const useDeleteOfficialAerodrome = (onDelete: () => void) => {
         },
         onSuccess: (_, data) => {
             queryClient.invalidateQueries({queryKey: ['aerodromes', 'all']})
-            toast.info(`"${data.name}" has been deleted from the official aerodromes' list.`, {
+            toast.success(`"${data.name}" has been deleted from the official aerodromes' list.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,

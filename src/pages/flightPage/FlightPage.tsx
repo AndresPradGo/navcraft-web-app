@@ -201,8 +201,11 @@ const FlightPage = () => {
   const { isLoading: vfrWaypointsIsLoading, error: vfrWaypointsError } =
     useVfrWaypointsData(false);
 
-  const { isLoading: userWaypointsIsLoading, error: userWaypointsError } =
-    useUserWaypointsData();
+  const {
+    data: userWaypointsData,
+    isLoading: userWaypointsIsLoading,
+    error: userWaypointsError,
+  } = useUserWaypointsData();
 
   const {
     data: aircraftList,
@@ -319,6 +322,13 @@ const FlightPage = () => {
       color: "var(--color-white)",
     },
   ] as MapInputStyleType[];
+
+  if (!aerodromes.filter((a) => !a.registered).length) {
+    mapInputs.splice(2, 1);
+  }
+  if (!userWaypointsData.length) {
+    mapInputs.splice(3, 1);
+  }
 
   return (
     <>

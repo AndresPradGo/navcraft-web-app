@@ -591,7 +591,10 @@ const EditWeightBalanceProfileForm = ({
             <HtmlPairedInputsContainer>
               <HtmlInput
                 $required={true}
-                $hasValue={limitValues.cg_location_in >= 0}
+                $hasValue={
+                  limitValues.cg_location_in >= 0 ||
+                  limitValues.cg_location_in < 0
+                }
                 $accepted={!limitErrors.cg_location_in}
               >
                 <input
@@ -618,7 +621,9 @@ const EditWeightBalanceProfileForm = ({
               </HtmlInput>
               <HtmlInput
                 $required={true}
-                $hasValue={limitValues.weight_lb >= 0}
+                $hasValue={
+                  limitValues.weight_lb >= 0 || limitValues.weight_lb < 0
+                }
                 $accepted={!limitErrors.weight_lb}
               >
                 <input
@@ -648,7 +653,7 @@ const EditWeightBalanceProfileForm = ({
               backgroundColor="var(--color-grey)"
               backgroundHoverColor="var(--color-grey-bright)"
               fontSize={15}
-              margin="10px 5px 20px 0"
+              margin="5px 5px 25px 0"
               borderRadious={4}
               handleClick={handleAddLimit}
               btnType="button"

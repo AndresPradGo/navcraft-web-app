@@ -18,9 +18,11 @@ export interface APIClientError extends Error {
 
 class APIClient<TPost, TGet> {
     endpoint: string;
+    _controller: AbortController
 
     constructor(endpoint: string) {
         this.endpoint = endpoint;
+        this._controller = new AbortController()
     }
 
     _setAuthHeader = () => {
@@ -32,9 +34,13 @@ class APIClient<TPost, TGet> {
         return `${this.endpoint}${endpointPostfix ? endpointPostfix : ""}`
     }
 
+    cancelRequest = () => {this._controller.abort()}
+
     getAll = (endpointPostfix?: string): Promise<TGet[]> => {
         this._setAuthHeader()
-        return axiosInstance.get<TGet[]>(this._getEndpoint(endpointPostfix)).then(res => res.data)
+        return axiosInstance.get<TGet[]>(this._getEndpoint(endpointPostfix), {
+            signal: this._controller.signal
+         }).then(res => res.data)
     }
 
     getAndPreProcessAll = <TFromAPI>(
@@ -42,12 +48,16 @@ class APIClient<TPost, TGet> {
         endpointPostfix?: string
     ): Promise<TGet[] | []> => {
         this._setAuthHeader()
-        return axiosInstance.get<TFromAPI[]>(this._getEndpoint(endpointPostfix)).then(res => handlePreProcess(res.data))
+        return axiosInstance.get<TFromAPI[]>(this._getEndpoint(endpointPostfix), {
+            signal: this._controller.signal
+         }).then(res => handlePreProcess(res.data))
     }
 
     get = (endpointPostfix?: string): Promise<TGet> => {
         this._setAuthHeader()
-        return axiosInstance.get<TGet>(this._getEndpoint(endpointPostfix)).then(res => res.data)
+        return axiosInstance.get<TGet>(this._getEndpoint(endpointPostfix), {
+            signal: this._controller.signal
+         }).then(res => res.data)
     }
 
     getAndPreProcess = <TFromAPI>(
@@ -60,19 +70,24 @@ class APIClient<TPost, TGet> {
 
     getCsvFile = (endpointPostfix?: string): Promise<AxiosResponse<TGet>> => {
         this._setAuthHeader()
-        return axiosInstance.get<TGet>(this._getEndpoint(endpointPostfix))
+        return axiosInstance.get<TGet>(this._getEndpoint(endpointPostfix), {
+            signal: this._controller.signal
+         })
     }
 
     getZip = (endpointPostfix?: string): Promise<AxiosResponse<Blob>> => {
         this._setAuthHeader()
         return axiosInstance.get<Blob>(this._getEndpoint(endpointPostfix), {
-            responseType: 'arraybuffer'
+            responseType: 'arraybuffer',
+            signal: this._controller.signal
           })
     }
 
     post = (data: TPost, endpointPostfix?: string): Promise<TGet> => {
         this._setAuthHeader()
-        return axiosInstance.post<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
+        return axiosInstance.post<TGet>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => res.data)
     }
 
     postAndPreProcess = <TFromAPI>(
@@ -81,31 +96,43 @@ class APIClient<TPost, TGet> {
         endpointPostfix?: string
     ): Promise<TGet> => {
         this._setAuthHeader()
-        return axiosInstance.post<TFromAPI>(this._getEndpoint(endpointPostfix), data).then(res => handlePreProcess(res.data))
+        return axiosInstance.post<TFromAPI>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => handlePreProcess(res.data))
     }
 
     postWithoutAuth = (data: TPost, endpointPostfix?: string): Promise<TGet> => {
-        return axiosInstance.post<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
+        return axiosInstance.post<TGet>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => res.data)
     }
 
     postOther = <TPostOther>(data: TPostOther, endpointPostfix?: string): Promise<TGet> => {
         this._setAuthHeader()
-        return axiosInstance.post<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
+        return axiosInstance.post<TGet>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => res.data)
     }
 
     postAndGetOther = <TGetOther>(data: TPost, endpointPostfix?: string): Promise<TGetOther> => {
         this._setAuthHeader()
-        return axiosInstance.post<TGetOther>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
+        return axiosInstance.post<TGetOther>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => res.data)
     }
 
     edit = (data: TPost, endpointPostfix?: string): Promise<TGet> => {
         this._setAuthHeader()
-        return axiosInstance.put<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
+        return axiosInstance.put<TGet>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => res.data)
     }
 
     editOther = <TPostOther>(data: TPostOther, endpointPostfix?: string): Promise<TGet> => {
         this._setAuthHeader()
-        return axiosInstance.put<TGet>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
+        return axiosInstance.put<TGet>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => res.data)
     }
 
     editAndPreProcess = <TFromAPI>(
@@ -114,12 +141,16 @@ class APIClient<TPost, TGet> {
         endpointPostfix?: string
     ): Promise<TGet> => {
         this._setAuthHeader()
-        return axiosInstance.put<TFromAPI>(this._getEndpoint(endpointPostfix), data).then(res => handlePreProcess(res.data))
+        return axiosInstance.put<TFromAPI>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => handlePreProcess(res.data))
     }
 
     editAndGetOther = <TGetOther>(data: TPost, endpointPostfix?: string): Promise<TGetOther> => {
         this._setAuthHeader()
-        return axiosInstance.put<TGetOther>(this._getEndpoint(endpointPostfix), data).then(res => res.data)
+        return axiosInstance.put<TGetOther>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => res.data)
     }
 
     editOtherAndPreProcess = <TPostOther, TFromAPI>(
@@ -128,7 +159,9 @@ class APIClient<TPost, TGet> {
         endpointPostfix?: string
     ): Promise<TGet> => {
         this._setAuthHeader()
-        return axiosInstance.put<TFromAPI>(this._getEndpoint(endpointPostfix), data).then(res => handlePreProcess(res.data))
+        return axiosInstance.put<TFromAPI>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => handlePreProcess(res.data))
     }
 
     editOtherAndPreProcessWithHeader = <TPostOther, TFromAPI>(
@@ -137,7 +170,9 @@ class APIClient<TPost, TGet> {
         endpointPostfix?: string
     ): Promise<TGet> => {
         this._setAuthHeader()
-        return axiosInstance.put<TFromAPI>(this._getEndpoint(endpointPostfix), data).then(res => {
+        return axiosInstance.put<TFromAPI>(this._getEndpoint(endpointPostfix), data, {
+            signal: this._controller.signal
+         }).then(res => {
             return handlePreProcess(res.data, res.headers["x-access-token"], res.headers["x-token-type"])
         }
         )
@@ -145,7 +180,9 @@ class APIClient<TPost, TGet> {
 
     delete = (endpointPostfix?: string): Promise<string> => {
         this._setAuthHeader()
-        return axiosInstance.delete(this._getEndpoint(endpointPostfix)).then(() => "Deleted successfully.")
+        return axiosInstance.delete(this._getEndpoint(endpointPostfix), {
+            signal: this._controller.signal
+         }).then(() => "Deleted successfully.")
     }
 }
 

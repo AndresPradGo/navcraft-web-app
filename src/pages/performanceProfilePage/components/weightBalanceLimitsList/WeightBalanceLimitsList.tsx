@@ -27,8 +27,11 @@ const HtmlContainer = styled.div`
   border-radius: 3px;
 
   & h3 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 14px;
     align-self: flex-start;
-    margin: 10px 0;
+    margin: 10px;
     color: var(--color-grey);
   }
 `;
@@ -72,7 +75,7 @@ const WeightBalanceLimitsList = ({ limits, setLimits }: Props) => {
           items={limits.map((l) => l.id)}
           strategy={verticalListSortingStrategy}
         >
-          <h3>Added Points:</h3>
+          <h3>POINTS:</h3>
           {limits.map((limit, idx) => (
             <SortableLimit
               key={limit.id}

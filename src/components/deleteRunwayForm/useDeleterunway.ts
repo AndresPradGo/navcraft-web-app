@@ -46,7 +46,7 @@ const useDeleterunway = (fromAerodrome: boolean) => {
 
         },
         onSuccess: (_, newData) => {
-            toast.info(`"Runway ${newData.name}" has been deleted.`, {
+            toast.success(`"Runway ${newData.name}" has been deleted successfully.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
