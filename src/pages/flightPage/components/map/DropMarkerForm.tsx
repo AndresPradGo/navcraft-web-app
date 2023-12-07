@@ -14,6 +14,8 @@ import APIClient from "../../../../services/apiClient";
 import ExpandibleMessage from "../../../../components/common/ExpandibleMessage";
 import WaypointsList from "./WaypointsList";
 import formatCoordinate from "../../../../utils/formatCoordinate";
+import usePostNewLeg from "../../hooks/usePostNewLeg";
+import Loader from "../../../../components/Loader";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -49,9 +51,13 @@ const HtmlForm = styled.form`
   }
 `;
 
-const HtmlInputContainer = styled.div`
+interface InputContainerProps {
+  $loading: boolean;
+}
+const HtmlInputContainer = styled.div<InputContainerProps>`
   display: flex;
   flex-direction: column;
+  justify-content: ${(props) => (props.$loading ? "center" : "flex-start")};
   width: 100%;
   overflow-y: auto;
   padding: 20px 10px;
@@ -305,7 +311,7 @@ const coordinateSchema = z.object({
   lon_direction: z.enum(["E", "W"]),
 });
 export type CoordinateDataType = z.infer<typeof coordinateSchema>;
-type IdentifierDataType = z.infer<typeof identifierSchema>;
+export type IdentifierDataType = z.infer<typeof identifierSchema>;
 
 export interface NearbyWaypointType
   extends CoordinateDataType,
@@ -358,6 +364,17 @@ const DropMarkerForm = ({
     | "Enter a valid code and name for the new location"
     | null
   >(null);
+
+  const [submited, setSubmited] = useState(false);
+
+  const mutation = usePostNewLeg(flightId);
+
+  useEffect(() => {
+    if (submited && !mutation.isLoading) {
+      closeModal();
+      restoreFlight();
+    }
+  }, [submited, mutation.isLoading]);
 
   useEffect(() => {
     if (isOpen) {
@@ -413,7 +430,7 @@ const DropMarkerForm = ({
   };
 
   const handleCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newCode = e.target.value.trim();
+    const newCode = e.target.value;
     const result = identifierSchema.safeParse({
       code: newCode,
       name: "newName",
@@ -429,7 +446,7 @@ const DropMarkerForm = ({
   };
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newName = e.target.value.trim();
+    const newName = e.target.value;
     const result = identifierSchema.safeParse({
       name: newName,
       code: "newCode",
@@ -455,29 +472,52 @@ const DropMarkerForm = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (selectedWaypointId === null) setError("Select a waypoint");
-    else if (selectedWaypointId === 0) {
-      const result = identifierSchema.safeParse(identifier);
-      if (result.success) {
-        setIdentifierError({ code: null, name: null });
-        const newCoordinates = formatCoordinate(latitude, longitude);
-        console.log({
+    if (!mutation.isLoading) {
+      if (selectedWaypointId === null) setError("Select a waypoint");
+      else if (selectedWaypointId === 0) {
+        const result = identifierSchema.safeParse(identifier);
+        if (result.success) {
+          setIdentifierError({ code: null, name: null });
+          const newCoordinates = formatCoordinate(latitude, longitude);
+          mutation.mutate({
+            existing_waypoint_id: 0,
+            new_waypoint: {
+              ...identifier,
+              ...newCoordinates,
+            },
+            sequence,
+          });
+          setSubmited(true);
+        } else {
+          const newError = { ...identifierError };
+          for (const e of result.error.errors) {
+            newError[e.path[0] as "name" | "code"] = e.message;
+          }
+          setIdentifierError(newError);
+          setError("Enter a valid code and name for the new location");
+        }
+      } else {
+        const waypoint = nearbyWaypoints.find(
+          (w) => w.id === selectedWaypointId
+        );
+        mutation.mutate({
+          existing_waypoint_id: selectedWaypointId,
           new_waypoint: {
-            ...identifier,
-            ...newCoordinates,
+            code: waypoint?.code || "",
+            name: waypoint?.name || "",
+            lat_degrees: waypoint?.lat_degrees || 1,
+            lat_minutes: waypoint?.lat_minutes || 1,
+            lat_seconds: waypoint?.lat_seconds || 1,
+            lat_direction: waypoint?.lat_direction || "N",
+            lon_degrees: waypoint?.lon_degrees || 1,
+            lon_minutes: waypoint?.lon_minutes || 1,
+            lon_seconds: waypoint?.lon_seconds || 1,
+            lon_direction: waypoint?.lon_direction || "W",
           },
           sequence,
         });
-      } else {
-        const newError = { ...identifierError };
-        for (const e of result.error.errors) {
-          newError[e.path[0] as "name" | "code"] = e.message;
-        }
-        setIdentifierError(newError);
-        setError("Enter a valid code and name for the new location");
+        setSubmited(true);
       }
-    } else {
-      console.log({ existing_waypoint_id: selectedWaypointId, sequence });
     }
   };
 
@@ -490,66 +530,72 @@ const DropMarkerForm = ({
         </div>
         <CloseIcon onClick={handleCancel} />
       </h1>
-      <HtmlInputContainer>
-        <ExpandibleMessage reset={!isOpen} messageList={instructions}>
-          Help <HelpIcon />
-        </ExpandibleMessage>
-        <HtmlPairedInputsContainer $hidden={selectedWaypointId !== 0}>
-          <HtmlInput
-            $required={selectedWaypointId === 0}
-            $hasValue={identifier.code !== ""}
-            $accepted={!identifierError.code}
-          >
-            <input
-              id="location-code"
-              type="text"
-              autoComplete="off"
-              required={selectedWaypointId === 0}
-              onChange={handleCodeChange}
-              value={identifier.code}
+      <HtmlInputContainer $loading={mutation.isLoading}>
+        {mutation.isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <ExpandibleMessage reset={!isOpen} messageList={instructions}>
+              Help <HelpIcon />
+            </ExpandibleMessage>
+            <HtmlPairedInputsContainer $hidden={selectedWaypointId !== 0}>
+              <HtmlInput
+                $required={selectedWaypointId === 0}
+                $hasValue={identifier.code !== ""}
+                $accepted={!identifierError.code}
+              >
+                <input
+                  id="location-code"
+                  type="text"
+                  autoComplete="off"
+                  required={selectedWaypointId === 0}
+                  onChange={handleCodeChange}
+                  value={identifier.code}
+                />
+                {identifierError.code ? (
+                  <p>{identifierError.code}</p>
+                ) : (
+                  <p>&nbsp;</p>
+                )}
+                <label htmlFor="location-code">
+                  <CodeIcon />
+                  {"Code"}
+                </label>
+              </HtmlInput>
+              <HtmlInput
+                $required={selectedWaypointId === 0}
+                $hasValue={identifier.name !== ""}
+                $accepted={!identifierError.name}
+              >
+                <input
+                  id="location-name"
+                  type="text"
+                  autoComplete="off"
+                  required={selectedWaypointId === 0}
+                  onChange={handleNameChange}
+                  value={identifier.name}
+                />
+                {identifierError.name ? (
+                  <p>{identifierError.name}</p>
+                ) : (
+                  <p>&nbsp;</p>
+                )}
+                <label htmlFor="location-name">
+                  <NameIcon />
+                  {"Name"}
+                </label>
+              </HtmlInput>
+            </HtmlPairedInputsContainer>
+            <WaypointsList
+              latitude={latitude}
+              longitude={longitude}
+              waypoints={nearbyWaypoints}
+              selectedId={selectedWaypointId}
+              handleSelectedId={handleSelect}
             />
-            {identifierError.code ? (
-              <p>{identifierError.code}</p>
-            ) : (
-              <p>&nbsp;</p>
-            )}
-            <label htmlFor="location-code">
-              <CodeIcon />
-              {"Code"}
-            </label>
-          </HtmlInput>
-          <HtmlInput
-            $required={selectedWaypointId === 0}
-            $hasValue={identifier.name !== ""}
-            $accepted={!identifierError.name}
-          >
-            <input
-              id="location-name"
-              type="text"
-              autoComplete="off"
-              required={selectedWaypointId === 0}
-              onChange={handleNameChange}
-              value={identifier.name}
-            />
-            {identifierError.name ? (
-              <p>{identifierError.name}</p>
-            ) : (
-              <p>&nbsp;</p>
-            )}
-            <label htmlFor="location-name">
-              <NameIcon />
-              {"Name"}
-            </label>
-          </HtmlInput>
-        </HtmlPairedInputsContainer>
-        <WaypointsList
-          latitude={latitude}
-          longitude={longitude}
-          waypoints={nearbyWaypoints}
-          selectedId={selectedWaypointId}
-          handleSelectedId={handleSelect}
-        />
-        {error ? <p>{error}</p> : <p>&nbsp;</p>}
+            {error ? <p>{error}</p> : <p>&nbsp;</p>}
+          </>
+        )}
       </HtmlInputContainer>
       <HtmlButtons>
         <Button
@@ -564,6 +610,7 @@ const DropMarkerForm = ({
           btnType="button"
           width="120px"
           height="35px"
+          disabled={mutation.isLoading}
         >
           Cancel
         </Button>
@@ -576,6 +623,7 @@ const DropMarkerForm = ({
           width="135px"
           height="35px"
           spaceChildren="space-evenly"
+          disabled={mutation.isLoading}
         >
           Peek Map
           <MapIcon />
@@ -592,6 +640,8 @@ const DropMarkerForm = ({
           width="120px"
           height="35px"
           spaceChildren="space-evenly"
+          disabled={mutation.isLoading}
+          disabledText="Saving..."
         >
           Save
           <SaveIcon />

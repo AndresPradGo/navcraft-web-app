@@ -21,7 +21,7 @@ const NewMarker = ({
   handleMarkerDrop,
   openModal,
 }: Props) => {
-  const map = useMapEvents({
+  useMapEvents({
     click() {
       if (newWaypoint) {
         if (dropped) openModal();

@@ -331,6 +331,7 @@ const FileForm = ({
           btnType="button"
           width="120px"
           height="35px"
+          disabled={mutation.isLoading}
         >
           Cancel
         </Button>

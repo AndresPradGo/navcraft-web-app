@@ -9,7 +9,7 @@ import getUTCNowString from '../../utils/getUTCNowString';
 
 
 interface AircraftContext {
-    previusData?: AircraftDataFromAPI[]
+    previousData?: AircraftDataFromAPI[]
 }
 
 const useAddAircraft = () => {
@@ -17,7 +17,7 @@ const useAddAircraft = () => {
     return useMutation<AircraftDataFromAPI, APIClientError, AircraftDataFromForm, AircraftContext>({
         mutationFn: (data) => apiClient.post(data),
         onMutate: newData => {
-            const previusData = queryClient.getQueryData<AircraftDataFromAPI[]>(['aircraft', 'list']) 
+            const previousData = queryClient.getQueryData<AircraftDataFromAPI[]>(['aircraft', 'list']) 
             queryClient.setQueryData<AircraftDataFromAPI[]>(['aircraft', 'list'], currentData => {
                 return (
                     currentData 
@@ -35,7 +35,7 @@ const useAddAircraft = () => {
                         }]
                 )
             })
-            return {previusData}
+            return {previousData}
         },
         onSuccess: (savedData) => {
             toast.success(`"${savedData.registration}" has been added to your aircraft fleet.`, {
@@ -65,10 +65,10 @@ const useAddAircraft = () => {
         },
         onError: (error, _, context) => {
             errorToast(error)
-            if (context?.previusData) {
+            if (context?.previousData) {
                 queryClient.setQueryData<AircraftDataFromAPI[]>(
                     ['aircraft', 'list'], 
-                    context.previusData
+                    context.previousData
                 )
             }
         }

@@ -16,7 +16,7 @@ const errorToast = (error: APIClientError) => {
                 theme: "dark",
             });
         } else {
-            toast.error("There's some invalid data in the file, please make sure all data is consistent with the expected data-format.", 
+            toast.error("There's some invalid data in your request, please make sure all data is consistent with the expected data-format.", 
             {
                 position: "top-center",
                 autoClose: 10000,

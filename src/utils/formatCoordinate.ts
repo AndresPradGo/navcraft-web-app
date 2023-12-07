@@ -14,11 +14,11 @@ const formatCoordinate = (lat: number, lon: number): CoordinateDataType => {
     return {
         lat_degrees,
         lat_minutes,
-        lat_seconds: (latMinutesNotRounded - lat_minutes) * 60,
+        lat_seconds: Math.round((latMinutesNotRounded - lat_minutes) * 60),
         lat_direction: lat >= 0 ? "N" : "S",
         lon_degrees,
         lon_minutes,
-        lon_seconds: (lonMinutesNotRounded - lon_minutes) * 60,
+        lon_seconds: Math.round((lonMinutesNotRounded - lon_minutes) * 60),
         lon_direction: lon >= 0 ? "E" : "W"
     }
 }

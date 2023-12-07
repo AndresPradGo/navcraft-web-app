@@ -31,6 +31,7 @@ import { Modal, useModal } from "../../../../components/common/modal";
 
 import NewMarker from "./NewMarker";
 import DropMarkerForm from "./DropMarkerForm";
+import getPath from "../../../../utils/getPath";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -162,10 +163,7 @@ const MapSection = ({
     ) - 11
   );
 
-  const path = legsData?.map((l) => ({
-    from_waypoint: l.from_waypoint,
-    to_waypoint: l.to_waypoint,
-  }));
+  const path = getPath(departureAerodrome, flightData, arrivalAerodrome);
 
   return (
     <>
@@ -187,10 +185,10 @@ const MapSection = ({
       <HtmlContainer>
         {renderMap ? (
           <MapContainer
-            dragging={!(focusLegIdx + 1)}
+            dragging={true}
             center={center}
             zoom={zoomLevel}
-            scrollWheelZoom={!(focusLegIdx + 1)}
+            scrollWheelZoom={true}
             minZoom={2}
             maxZoom={16}
           >
@@ -432,7 +430,7 @@ const MapSection = ({
                 lng: l.to_waypoint.longitude_degrees,
               };
 
-              const midWaypoint =
+              const midLegWaypoint =
                 newWaypoint && focusLegIdx === idx ? newWaypoint : null;
 
               return (
@@ -443,8 +441,8 @@ const MapSection = ({
                     weight: 6,
                   }}
                   positions={
-                    midWaypoint
-                      ? [fromCoordinates, midWaypoint, toCoordinates]
+                    midLegWaypoint
+                      ? [fromCoordinates, midLegWaypoint, toCoordinates]
                       : [fromCoordinates, toCoordinates]
                   }
                   eventHandlers={{
@@ -466,9 +464,9 @@ const MapSection = ({
                 />
               );
             })}
-            {legsData?.map((l, idx) => {
+            {flightData?.legs.map((leg, idx) => {
               if (idx) {
-                return (
+                return leg.waypoint ? (
                   <Marker
                     zIndexOffset={999}
                     key={`waypoint-${idx}`}
@@ -481,17 +479,14 @@ const MapSection = ({
                       ),
                       iconSize: [30, 30],
                     })}
-                    position={{
-                      lat: l.from_waypoint.latitude_degrees,
-                      lng: l.from_waypoint.longitude_degrees,
-                    }}
+                    position={getDegreeCoordinates(leg.waypoint)}
                   >
                     <Popup>
                       <HtmlPopupMessage>
                         <h2>{`WP-${idx}`}</h2>
                         <h3>
-                          <b>{`${l.from_waypoint.code}: `}</b>
-                          {`${l.from_waypoint.name}`}
+                          <b>{`${leg.waypoint.code}: `}</b>
+                          {`${leg.waypoint.name}`}
                         </h3>
                         <Button
                           color="var(--color-grey-bright)"
@@ -511,7 +506,7 @@ const MapSection = ({
                       </HtmlPopupMessage>
                     </Popup>
                   </Marker>
-                );
+                ) : null;
               } else return null;
             })}
           </MapContainer>

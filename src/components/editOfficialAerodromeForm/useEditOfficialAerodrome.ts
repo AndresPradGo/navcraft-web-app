@@ -8,8 +8,8 @@ import getUTCNowString from '../../utils/getUTCNowString'
 import errorToast from '../../utils/errorToast';
 
 interface AerodromeContext {
-    previusData?: OfficialAerodromeDataFromAPI
-    previusDataArray?: OfficialAerodromeDataFromAPI[]
+    previousData?: OfficialAerodromeDataFromAPI
+    previousDataArray?: OfficialAerodromeDataFromAPI[]
 }
 
 
@@ -41,10 +41,10 @@ const useEditOfficialAerodrome = () => {
         },
         onMutate: (newData) => {
             const aerodromeId = newData.id
-            const previusData = newData.id 
+            const previousData = newData.id 
                 ? queryClient.getQueryData<OfficialAerodromeDataFromAPI>(['aerodrome', aerodromeId]) 
                 : undefined
-            const previusDataArray = newData.id 
+            const previousDataArray = newData.id 
                 ? undefined
                 : queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>(['aerodromes', "all"])
             const utcNow = getUTCNowString()
@@ -92,7 +92,7 @@ const useEditOfficialAerodrome = () => {
                 )
             }
 
-            return { previusData, previusDataArray  }
+            return { previousData, previousDataArray  }
         },
         onSuccess: (savedData, newData) => {
             toast.success(newData.id !== 0 
@@ -136,15 +136,15 @@ const useEditOfficialAerodrome = () => {
         },
         onError: (error, newData, context) => {
             errorToast(error)
-            if (newData.id !== 0 && context?.previusData) {
+            if (newData.id !== 0 && context?.previousData) {
                 queryClient.setQueryData<OfficialAerodromeDataFromAPI>(
                     ['aerodrome', newData.id], 
-                    context.previusData
+                    context.previousData
                 )
-            } else if (context?.previusDataArray) {
+            } else if (context?.previousDataArray) {
                 queryClient.setQueryData<OfficialAerodromeDataFromAPI[]>(
                     ['aerodromes', "all"], 
-                    context.previusDataArray
+                    context.previousDataArray
                 )
             }
         }

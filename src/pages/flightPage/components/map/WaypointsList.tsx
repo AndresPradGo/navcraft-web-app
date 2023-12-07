@@ -50,8 +50,7 @@ const HtmlWaypointTag = styled.div<WaypointTagProps>`
   margin: 5px 0;
   padding: 10px;
   border: 1px solid
-    ${(props) =>
-      props.$selected ? "var(--color-grey-bright)" : "var(--color-grey)"};
+    ${(props) => (props.$selected ? "var(--color-white)" : "var(--color-grey)")};
   background-color: ${(props) =>
     props.$selected
       ? "var(--color-primary-light)"
@@ -60,7 +59,6 @@ const HtmlWaypointTag = styled.div<WaypointTagProps>`
   border-radius: 3px;
 
   &:hover {
-    border: 1px solid var(--color-grey-bright);
     background-color: var(--color-primary-light);
 
     & span i:last-of-type {
