@@ -184,6 +184,13 @@ class APIClient<TPost, TGet> {
             signal: this._controller.signal
          }).then(() => "Deleted successfully.")
     }
+
+    deleteWithReturn = (endpointPostfix?: string): Promise<TGet> => {
+        this._setAuthHeader()
+        return axiosInstance.delete(this._getEndpoint(endpointPostfix), {
+            signal: this._controller.signal
+         }).then(res => res.data)
+    }
 }
 
 export default APIClient

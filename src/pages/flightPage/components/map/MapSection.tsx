@@ -32,6 +32,7 @@ import { Modal, useModal } from "../../../../components/common/modal";
 import NewMarker from "./NewMarker";
 import DropMarkerForm from "./DropMarkerForm";
 import getPath from "../../../../utils/getPath";
+import useDeleteLeg from "../../hooks/useDeleteLeg";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -99,6 +100,7 @@ const MapSection = ({
   const [droppedMarker, setDroppedMarker] = useState<boolean>(false);
 
   const modal = useModal();
+  const deleteMutation = useDeleteLeg(flightId);
 
   const queryClient = useQueryClient();
   const flightData = queryClient.getQueryData<FlightDataFromApi>([
@@ -465,49 +467,52 @@ const MapSection = ({
               );
             })}
             {flightData?.legs.map((leg, idx) => {
-              if (idx) {
-                return leg.waypoint ? (
-                  <Marker
-                    zIndexOffset={999}
-                    key={`waypoint-${idx}`}
-                    icon={L.divIcon({
-                      className: "custom--icon",
-                      html: renderToString(
-                        <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
-                          {<GoDotFill />}
-                        </HtmlIcon>
-                      ),
-                      iconSize: [30, 30],
-                    })}
-                    position={getDegreeCoordinates(leg.waypoint)}
-                  >
-                    <Popup>
-                      <HtmlPopupMessage>
-                        <h2>{`WP-${idx}`}</h2>
-                        <h3>
-                          <b>{`${leg.waypoint.code}: `}</b>
-                          {`${leg.waypoint.name}`}
-                        </h3>
-                        <Button
-                          color="var(--color-grey-bright)"
-                          hoverColor="var(--color-white)"
-                          backgroundColor="var(--color-warning)"
-                          backgroundHoverColor="var(--color-warning-hover)"
-                          borderRadious={40}
-                          margin="10px 0 0"
-                          alignSelf={"center"}
-                          shadow={true}
-                          handleClick={() => {}}
-                          width="120px"
-                        >
-                          Remove
-                          <TbMapPinOff />
-                        </Button>
-                      </HtmlPopupMessage>
-                    </Popup>
-                  </Marker>
-                ) : null;
-              } else return null;
+              return leg.waypoint ? (
+                <Marker
+                  zIndexOffset={999}
+                  key={`waypoint-${idx}`}
+                  icon={L.divIcon({
+                    className: "custom--icon",
+                    html: renderToString(
+                      <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
+                        {<GoDotFill />}
+                      </HtmlIcon>
+                    ),
+                    iconSize: [30, 30],
+                  })}
+                  position={getDegreeCoordinates(leg.waypoint)}
+                >
+                  <Popup>
+                    <HtmlPopupMessage>
+                      <h2>{`WP-${idx}`}</h2>
+                      <h3>
+                        <b>{`${leg.waypoint.code}: `}</b>
+                        {`${leg.waypoint.name}`}
+                      </h3>
+                      <Button
+                        color="var(--color-grey-bright)"
+                        hoverColor="var(--color-white)"
+                        backgroundColor="var(--color-warning)"
+                        backgroundHoverColor="var(--color-warning-hover)"
+                        borderRadious={40}
+                        margin="10px 0 0"
+                        alignSelf={"center"}
+                        shadow={true}
+                        handleClick={() => {
+                          deleteMutation.mutate({
+                            id: leg.id,
+                            waypoint: leg.waypoint?.name || "",
+                          });
+                        }}
+                        width="120px"
+                      >
+                        Remove
+                        <TbMapPinOff />
+                      </Button>
+                    </HtmlPopupMessage>
+                  </Popup>
+                </Marker>
+              ) : null;
             })}
           </MapContainer>
         ) : null}
