@@ -1,5 +1,6 @@
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { FaTools } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa6";
 import { LuRefreshCw } from "react-icons/lu";
 import { MdConnectingAirports } from "react-icons/md";
 import { PiGearDuotone } from "react-icons/pi";
@@ -15,6 +16,7 @@ import SideBarMapOptions, {
   MapStateType,
   MapInputStyleType,
 } from "../../../components/SideBarMapOptions";
+import useFetchFile from "../../../hooks/useFetchFile";
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -58,12 +60,18 @@ const RefreshIcon = styled(LuRefreshCw)`
   margin-left: 5px;
 `;
 
+const DownloadIcon = styled(FaDownload)`
+  font-size: 20px;
+  margin-left: 5px;
+`;
+
 const DeleteIcon = styled(RiDeleteBinLine)`
   font-size: 20px;
   margin-left: 5px;
 `;
 
 interface Props {
+  flightId: number;
   mapState: MapStateType;
   mapStateSetter: (key: keyof MapStateType, value: boolean) => void;
   mapInputs: MapInputStyleType[];
@@ -79,6 +87,7 @@ interface Props {
 }
 
 const SideBarContent = ({
+  flightId,
   mapState,
   mapStateSetter,
   mapInputs,
@@ -92,6 +101,8 @@ const SideBarContent = ({
   handleRefreshWeather,
   handleDeleteFlight,
 }: Props) => {
+  const fileFetcher = useFetchFile();
+
   const baseStyles = {
     width: "100%",
     height: "40px",
@@ -137,8 +148,16 @@ const SideBarContent = ({
     {
       text: "Refresh Weather Data",
       icon: <RefreshIcon />,
-      styles: { ...baseStyles },
+      styles: { ...commonStyles },
       onClick: handleRefreshWeather,
+    },
+    {
+      text: "Download Nav Log",
+      icon: <DownloadIcon />,
+      styles: { ...baseStyles },
+      onClick: () => {
+        fileFetcher(`flight-plans/nav-log/csv/${flightId}`);
+      },
     },
     {
       text: "Delete Flight",
@@ -167,7 +186,7 @@ const SideBarContent = ({
       />
       <SideBarBtnList
         titleIcon={<ToolsIcon />}
-        title="Edit-Flight Tools"
+        title="Flight Tools"
         buttons={buttons}
       />
     </HtmlContainer>

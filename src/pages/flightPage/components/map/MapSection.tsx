@@ -420,15 +420,15 @@ const MapSection = ({
                 </HtmlPopupMessage>
               </Popup>
             </Marker>
-            {path?.map((l, idx) => {
+            {path?.map((leg, idx) => {
               const fromCoordinates = {
-                lat: l.from_waypoint.latitude_degrees,
-                lng: l.from_waypoint.longitude_degrees,
+                lat: leg.from_waypoint.latitude_degrees,
+                lng: leg.from_waypoint.longitude_degrees,
               };
 
               const toCoordinates = {
-                lat: l.to_waypoint.latitude_degrees,
-                lng: l.to_waypoint.longitude_degrees,
+                lat: leg.to_waypoint.latitude_degrees,
+                lng: leg.to_waypoint.longitude_degrees,
               };
 
               const midLegWaypoint =

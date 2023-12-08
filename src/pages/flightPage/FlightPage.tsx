@@ -194,6 +194,7 @@ const FlightPage = () => {
     isLoading: legsIsLoading,
     error: legsError,
     isFetching,
+    isStale,
   } = useNavLogData(flightId);
 
   const {
@@ -451,6 +452,7 @@ const FlightPage = () => {
         }}
         sideBarContent={
           <SideBarContent
+            flightId={flightId}
             mapState={mapState}
             mapStateSetter={handleMapStateChange}
             mapInputs={mapInputs}
@@ -519,7 +521,10 @@ const FlightPage = () => {
             </div>
           </HtmlTitleContainer>
           {sectionIdx === 0 ? (
-            <NavLogSection flightId={flightId} isLoading={isFetching} />
+            <NavLogSection
+              flightId={flightId}
+              isLoading={isFetching && isStale}
+            />
           ) : null}
         </HtmlContainer>
       </ContentLayout>
