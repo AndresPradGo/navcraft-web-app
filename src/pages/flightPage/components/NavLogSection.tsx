@@ -15,6 +15,7 @@ import DataTableList from "../../../components/common/DataTableList";
 import formatUTCDate from "../../../utils/formatUTCDate";
 import formatUTCTime from "../../../utils/formatUTCTime";
 import Table from "../../../components/common/ExpandibleTable";
+import FlightWarningList from "../../../components/FlightWarningList";
 
 const BHPIcon = styled(PiEngineDuotone)`
   font-size: 25px;
@@ -189,13 +190,32 @@ const NavLogSection = ({ flightId, isLoading }: Props) => {
     breakingPoint: 1024,
   };
 
+  const warnings = legsData
+    ? legsData.map((leg) => {
+        const warning = [];
+        if (leg.desired_altitude_ft > leg.actual_altitud_ft)
+          warning.push(
+            `There may not be enough distance from ${leg.from_waypoint.code} to ${leg.to_waypoint.code}, to climb up to ${leg.truncated_altitude} ft ASL, under the forecasted weather conditions.`
+          );
+        if (leg.desired_altitude_ft > leg.truncated_altitude)
+          warning.push(
+            `Performance from ${leg.from_waypoint.code} to ${leg.to_waypoint.code}, is not guaranteed at altitudes above ${leg.truncated_altitude} ft ASL, under the forecasted weather conditions.`
+          );
+        if (leg.temperature_c > leg.truncated_temperature_c)
+          warning.push(
+            `Performance from ${leg.from_waypoint.code} to ${leg.to_waypoint.code}, is not guaranteed at temperatures above ${leg.truncated_temperature_c}\u00B0C at ${leg.desired_altitude_ft} ft ASL.`
+          );
+        return warning;
+      })
+    : [];
+
   return (
     <>
       <DataTableList dataList={dataListData} margin="0 0 40px" />
       <Table
         title="Flight Log"
         hanldeAdd={() => {}}
-        otherComponent={""}
+        otherComponent={<FlightWarningList warnings={warnings} />}
         dataIsLoading={isLoading}
         tableData={tableData}
       />
