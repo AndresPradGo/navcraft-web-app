@@ -97,6 +97,7 @@ const MapSection = ({
   const [focusLegIdx, setFocusLegIdx] = useState(-1);
   const [newWaypoint, setNewWaypoint] = useState<LatLngLiteral | null>(null);
   const [droppedMarker, setDroppedMarker] = useState<boolean>(false);
+  const [mapRef, setMapRef] = useState<L.Map | null>(null);
 
   const modal = useModal();
   const deleteMutation = useDeleteLeg(flightId);
@@ -186,6 +187,7 @@ const MapSection = ({
       <HtmlContainer>
         {renderMap ? (
           <MapContainer
+            ref={setMapRef}
             dragging={true}
             center={center}
             zoom={zoomLevel}
@@ -373,7 +375,10 @@ const MapSection = ({
                     margin="10px 0 0"
                     alignSelf={"center"}
                     shadow={true}
-                    handleClick={handleEditDeparture}
+                    handleClick={() => {
+                      if (mapRef) mapRef.closePopup();
+                      handleEditDeparture();
+                    }}
                     width="100px"
                   >
                     Edit
@@ -411,7 +416,10 @@ const MapSection = ({
                     margin="10px 0 0"
                     alignSelf={"center"}
                     shadow={true}
-                    handleClick={handleEditArrival}
+                    handleClick={() => {
+                      if (mapRef) mapRef.closePopup();
+                      handleEditArrival();
+                    }}
                     width="100px"
                   >
                     Edit
@@ -498,6 +506,7 @@ const MapSection = ({
                         alignSelf={"center"}
                         shadow={true}
                         handleClick={() => {
+                          if (mapRef) mapRef.closePopup();
                           deleteMutation.mutate({
                             id: leg.id,
                             waypoint: leg.waypoint?.name || "",
