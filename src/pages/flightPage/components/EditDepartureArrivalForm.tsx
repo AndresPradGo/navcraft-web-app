@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
@@ -18,6 +18,7 @@ import DataList from "../../../components/common/datalist";
 import getUTCNowString from "../../../utils/getUTCNowString";
 import useEditDepartureArrival from "../hooks/useEditDepartureArrival";
 import { OfficialAerodromeDataFromAPI } from "../../../services/officialAerodromeClient";
+import Loader from "../../../components/Loader";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -360,7 +361,15 @@ const EditDepartureArrivalForm = ({
     setValue,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
+  const [submited, setSubmited] = useState(false);
+
   const mutation = useEditDepartureArrival(flightId, isDeparture);
+
+  useEffect(() => {
+    if (submited && !mutation.isLoading) {
+      closeModal();
+    }
+  }, [submited, mutation.isLoading]);
 
   useEffect(() => {
     register("aerodrome");
@@ -425,7 +434,6 @@ const EditDepartureArrivalForm = ({
         message: "Select a valid option",
       });
     } else if (!wrongWindDirection) {
-      closeModal();
       mutation.mutate({
         aerodrome_id: aerodromeId,
         temperature_c: data.temperature_c,
@@ -446,6 +454,7 @@ const EditDepartureArrivalForm = ({
             ? getUTCNowString()
             : altimeter_last_updated,
       });
+      setSubmited(true);
     }
   };
 
@@ -459,139 +468,147 @@ const EditDepartureArrivalForm = ({
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
-        <DataList
-          setError={(message) =>
-            setError("aerodrome", {
-              type: "manual",
-              message: message,
-            })
-          }
-          clearErrors={() => clearErrors("aerodrome")}
-          required={true}
-          value={watch("aerodrome")}
-          hasError={!!errors.aerodrome}
-          errorMessage={errors.aerodrome?.message || ""}
-          options={
-            aerodromes
-              ? aerodromes.map((item) => `${item.code}: ${item.name}`)
-              : []
-          }
-          setValue={(value: string) => setValue("aerodrome", value)}
-          name="editDepartureArrival-aerodrome"
-          formIsOpen={isOpen}
-          resetValue={currentData.aerodrome}
-        >
-          <AerodromeIcon />
-          {`${isDeparture ? "Departure" : "Arrival"} Aerodrome`}
-        </DataList>
-        <HtmlInputGroup>
-          <h2>
-            <WeatherIcon />
-            Weather at Aerodrome
-          </h2>
-          <p>
-            Manually entered weather, will overwrite the weather captured from
-            official sources.
-          </p>
-          <HtmlInput
-            $required={true}
-            $hasValue={
-              !!watch("wind_magnitude_knot") ||
-              watch("wind_magnitude_knot") === 0
-            }
-            $accepted={!errors.wind_magnitude_knot}
-          >
-            <input
-              {...register("wind_magnitude_knot", { valueAsNumber: true })}
-              id="editDepartureArrival-wind_magnitude_knot"
-              type="number"
-              autoComplete="off"
+        {mutation.isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <DataList
+              setError={(message) =>
+                setError("aerodrome", {
+                  type: "manual",
+                  message: message,
+                })
+              }
+              clearErrors={() => clearErrors("aerodrome")}
               required={true}
-            />
-            {errors.wind_magnitude_knot ? (
-              <p>{errors.wind_magnitude_knot.message}</p>
-            ) : (
-              <p>&nbsp;</p>
-            )}
-            <label htmlFor="editDepartureArrival-wind_magnitude_knot">
-              <WindMagnitudeIcon />
-              {"Wind Magnitude [Knots]"}
-            </label>
-          </HtmlInput>
-          <HtmlInput
-            $required={false}
-            $hasValue={
-              !!watch("wind_direction") || watch("wind_direction") === 0
-            }
-            $accepted={!errors.wind_direction}
-          >
-            <input
-              {...register("wind_direction", {
-                setValueAs: handleWindDirectionValue,
-              })}
-              id="editDepartureArrival-wind_direction"
-              type="number"
-              autoComplete="off"
-              required={false}
-            />
-            {errors.wind_direction ? (
-              <p>{errors.wind_direction.message}</p>
-            ) : (
-              <p>&nbsp;</p>
-            )}
-            <label htmlFor="editDepartureArrival-wind_direction">
-              <WindDirectionIcon />
-              {"Wind Direction [\u00B0True]"}
-            </label>
-          </HtmlInput>
-          <HtmlInput
-            $required={true}
-            $hasValue={!!watch("temperature_c") || watch("temperature_c") === 0}
-            $accepted={!errors.temperature_c}
-          >
-            <input
-              {...register("temperature_c", { valueAsNumber: true })}
-              id="editDepartureArrival-temperature_c"
-              type="number"
-              autoComplete="off"
-              required={true}
-            />
-            {errors.temperature_c ? (
-              <p>{errors.temperature_c.message}</p>
-            ) : (
-              <p>&nbsp;</p>
-            )}
-            <label htmlFor="editDepartureArrival-temperature_c">
-              <TemperatureIcon />
-              {"Temperature [\u00B0C]"}
-            </label>
-          </HtmlInput>
-          <HtmlInput
-            $required={true}
-            $hasValue={
-              !!watch("altimeter_inhg") || watch("altimeter_inhg") === 0
-            }
-            $accepted={!errors.altimeter_inhg}
-          >
-            <input
-              {...register("altimeter_inhg", { valueAsNumber: true })}
-              id="editDepartureArrival-altimeter_inhg"
-              type="number"
-              autoComplete="off"
-              required={true}
-              step="any"
-            />
-            {errors.altimeter_inhg ? (
-              <p>{errors.altimeter_inhg.message}</p>
-            ) : (
-              <p>&nbsp;</p>
-            )}
-            <label htmlFor="editDepartureArrival-altimeter_inhg">
-              <AltimeterIcon />
-              {"Altimeter [in Hg]"}
-            </label>
-          </HtmlInput>
-        </HtmlInputGroup>
+              value={watch("aerodrome")}
+              hasError={!!errors.aerodrome}
+              errorMessage={errors.aerodrome?.message || ""}
+              options={
+                aerodromes
+                  ? aerodromes.map((item) => `${item.code}: ${item.name}`)
+                  : []
+              }
+              setValue={(value: string) => setValue("aerodrome", value)}
+              name="editDepartureArrival-aerodrome"
+              formIsOpen={isOpen}
+              resetValue={currentData.aerodrome}
+            >
+              <AerodromeIcon />
+              {`${isDeparture ? "Departure" : "Arrival"} Aerodrome`}
+            </DataList>
+            <HtmlInputGroup>
+              <h2>
+                <WeatherIcon />
+                Weather at Aerodrome
+              </h2>
+              <p>
+                Manually updated weather, will overwrite the weather captured
+                from official sources.
+              </p>
+              <HtmlInput
+                $required={true}
+                $hasValue={
+                  !!watch("wind_magnitude_knot") ||
+                  watch("wind_magnitude_knot") === 0
+                }
+                $accepted={!errors.wind_magnitude_knot}
+              >
+                <input
+                  {...register("wind_magnitude_knot", { valueAsNumber: true })}
+                  id="editDepartureArrival-wind_magnitude_knot"
+                  type="number"
+                  autoComplete="off"
+                  required={true}
+                />
+                {errors.wind_magnitude_knot ? (
+                  <p>{errors.wind_magnitude_knot.message}</p>
+                ) : (
+                  <p>&nbsp;</p>
+                )}
+                <label htmlFor="editDepartureArrival-wind_magnitude_knot">
+                  <WindMagnitudeIcon />
+                  {"Wind Magnitude [Knots]"}
+                </label>
+              </HtmlInput>
+              <HtmlInput
+                $required={false}
+                $hasValue={
+                  !!watch("wind_direction") || watch("wind_direction") === 0
+                }
+                $accepted={!errors.wind_direction}
+              >
+                <input
+                  {...register("wind_direction", {
+                    setValueAs: handleWindDirectionValue,
+                  })}
+                  id="editDepartureArrival-wind_direction"
+                  type="number"
+                  autoComplete="off"
+                  required={false}
+                />
+                {errors.wind_direction ? (
+                  <p>{errors.wind_direction.message}</p>
+                ) : (
+                  <p>&nbsp;</p>
+                )}
+                <label htmlFor="editDepartureArrival-wind_direction">
+                  <WindDirectionIcon />
+                  {"Wind Direction [\u00B0True]"}
+                </label>
+              </HtmlInput>
+              <HtmlInput
+                $required={true}
+                $hasValue={
+                  !!watch("temperature_c") || watch("temperature_c") === 0
+                }
+                $accepted={!errors.temperature_c}
+              >
+                <input
+                  {...register("temperature_c", { valueAsNumber: true })}
+                  id="editDepartureArrival-temperature_c"
+                  type="number"
+                  autoComplete="off"
+                  required={true}
+                />
+                {errors.temperature_c ? (
+                  <p>{errors.temperature_c.message}</p>
+                ) : (
+                  <p>&nbsp;</p>
+                )}
+                <label htmlFor="editDepartureArrival-temperature_c">
+                  <TemperatureIcon />
+                  {"Temperature [\u00B0C]"}
+                </label>
+              </HtmlInput>
+              <HtmlInput
+                $required={true}
+                $hasValue={
+                  !!watch("altimeter_inhg") || watch("altimeter_inhg") === 0
+                }
+                $accepted={!errors.altimeter_inhg}
+              >
+                <input
+                  {...register("altimeter_inhg", { valueAsNumber: true })}
+                  id="editDepartureArrival-altimeter_inhg"
+                  type="number"
+                  autoComplete="off"
+                  required={true}
+                  step="any"
+                />
+                {errors.altimeter_inhg ? (
+                  <p>{errors.altimeter_inhg.message}</p>
+                ) : (
+                  <p>&nbsp;</p>
+                )}
+                <label htmlFor="editDepartureArrival-altimeter_inhg">
+                  <AltimeterIcon />
+                  {"Altimeter [in Hg]"}
+                </label>
+              </HtmlInput>
+            </HtmlInputGroup>
+          </>
+        )}
       </HtmlInputContainer>
       <HtmlButtons>
         <Button
@@ -606,6 +623,7 @@ const EditDepartureArrivalForm = ({
           btnType="button"
           width="120px"
           height="35px"
+          disabled={mutation.isLoading}
         >
           Cancel
         </Button>
@@ -621,6 +639,8 @@ const EditDepartureArrivalForm = ({
           width="120px"
           height="35px"
           spaceChildren="space-evenly"
+          disabled={mutation.isLoading}
+          disabledText="Saving..."
         >
           Save
           <SaveIcon />

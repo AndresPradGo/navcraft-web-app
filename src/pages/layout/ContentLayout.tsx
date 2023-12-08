@@ -35,7 +35,7 @@ const HtmlMapContainer = styled.div<MapProps>`
 `;
 
 const HtmlMainContainer = styled.div<MapProps>`
-  transition: all 0.5s;
+  transition: transform 0.5s, max-width 0.5s, padding 0.5s;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -45,6 +45,8 @@ const HtmlMainContainer = styled.div<MapProps>`
 
   padding: ${(props) => (!props.$mapIsOpen ? "10px 3%" : "10px 0")};
   max-width: ${(props) => (!props.$mapIsOpen ? "1380px" : "0")};
+  max-height: ${(props) =>
+    !props.$mapIsOpen ? "300000vh" : "calc(100vh - 61px)"};
   transform: ${(props) => (!props.$mapIsOpen ? "none" : "translate(100vw)")};
 
   @media screen and (min-width: 425px) {
@@ -53,6 +55,8 @@ const HtmlMainContainer = styled.div<MapProps>`
 
   @media screen and (min-width: 768px) {
     padding: ${(props) => (!props.$mapIsOpen ? "40px 3%" : "40px 0")};
+    max-height: ${(props) =>
+      !props.$mapIsOpen ? "300000vh" : "calc(100vh - 71px)"};
   }
 
   @media screen and (min-width: 1000px) {

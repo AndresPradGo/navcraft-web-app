@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { AiOutlineSave } from "react-icons/ai";
-import { BsCalendarDate } from "react-icons/bs";
+import { BsCalendarWeek } from "react-icons/bs";
 import { LiaTimesSolid } from "react-icons/lia";
 import { MdMoreTime } from "react-icons/md";
 import { PiGearDuotone, PiEngineDuotone } from "react-icons/pi";
@@ -15,6 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { FlightDataFromApi } from "../../../services/flightsClient";
 import getUTCNowString from "../../../utils/getUTCNowString";
 import useEditFlight from "../hooks/useEditFlight";
+import Loader from "../../../components/Loader";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -192,7 +193,7 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
-const DateIcon = styled(BsCalendarDate)`
+const DateIcon = styled(BsCalendarWeek)`
   font-size: 25px;
   margin: 0 5px 0 10px;
   flex-shrink: 0;
@@ -267,6 +268,8 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
     clearErrors,
   } = useForm<EditFlightData>({ resolver: zodResolver(schema) });
 
+  const [submited, setSubmited] = useState(false);
+
   const mutation = useEditFlight(flightId);
 
   const queryClient = useQueryClient();
@@ -274,6 +277,12 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
     "flight",
     flightId,
   ]);
+
+  useEffect(() => {
+    if (submited && !mutation.isLoading) {
+      closeModal();
+    }
+  }, [submited, mutation.isLoading]);
 
   useEffect(() => {
     if (isOpen) {
@@ -334,7 +343,7 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
         contingency_fuel_hours: data.contingency_fuel_hours,
         reserve_fuel_hours: data.reserve_fuel_hours,
       });
-      closeModal();
+      setSubmited(true);
     }
   };
 
@@ -348,123 +357,132 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
-        <HtmlInput
-          $hasValue={!!watch("departure_time")}
-          $accepted={!errors.departure_time}
-          $required={true}
-        >
-          <input
-            {...register("departure_time")}
-            id="editFlight-departure_time"
-            type="datetime-local"
-            autoComplete="off"
-            required={true}
-          />
-          {errors.departure_time ? (
-            <p>{errors.departure_time.message}</p>
-          ) : (
-            <p>&nbsp;</p>
-          )}
-          <label htmlFor="editFlight-departure_time">
-            <DateIcon />
-            {"ETD [UTC]"}
-          </label>
-        </HtmlInput>
-        <HtmlInput
-          $required={true}
-          $hasValue={!!watch("bhp_percent") || watch("bhp_percent") === 0}
-          $accepted={!errors.bhp_percent}
-        >
-          <input
-            {...register("bhp_percent", { valueAsNumber: true })}
-            id={"editFlight-bhp_percent"}
-            type="number"
-            autoComplete="off"
-          />
-          {errors.bhp_percent ? (
-            <p>{errors.bhp_percent.message}</p>
-          ) : (
-            <p>&nbsp;</p>
-          )}
-          <label htmlFor="editFlight-bhp_percent">
-            <BHPIcon />
-            {"Cruise Prower [% of BHP]"}
-          </label>
-        </HtmlInput>
-        <HtmlInput
-          $required={true}
-          $hasValue={
-            !!watch("added_enroute_time_hours") ||
-            watch("added_enroute_time_hours") === 0
-          }
-          $accepted={!errors.added_enroute_time_hours}
-        >
-          <input
-            {...register("added_enroute_time_hours", { valueAsNumber: true })}
-            id={"editFlight-added_enroute_time_hours"}
-            step="any"
-            type="number"
-            autoComplete="off"
-          />
-          {errors.added_enroute_time_hours ? (
-            <p>{errors.added_enroute_time_hours.message}</p>
-          ) : (
-            <p>&nbsp;</p>
-          )}
-          <label htmlFor="editFlight-added_enroute_time_hours">
-            <TimeIcon />
-            {"Additional Flight-Time [hours]"}
-          </label>
-        </HtmlInput>
-        <HtmlInput
-          $required={true}
-          $hasValue={
-            !!watch("contingency_fuel_hours") ||
-            watch("contingency_fuel_hours") === 0
-          }
-          $accepted={!errors.contingency_fuel_hours}
-        >
-          <input
-            {...register("contingency_fuel_hours", { valueAsNumber: true })}
-            id={"editFlight-contingency_fuel_hours"}
-            step="any"
-            type="number"
-            autoComplete="off"
-          />
-          {errors.contingency_fuel_hours ? (
-            <p>{errors.contingency_fuel_hours.message}</p>
-          ) : (
-            <p>&nbsp;</p>
-          )}
-          <label htmlFor="editFlight-contingency_fuel_hours">
-            <ContingencyIcon />
-            {"Contingency Fuel [hours]"}
-          </label>
-        </HtmlInput>
-        <HtmlInput
-          $required={true}
-          $hasValue={
-            !!watch("reserve_fuel_hours") || watch("reserve_fuel_hours") === 0
-          }
-          $accepted={!errors.reserve_fuel_hours}
-        >
-          <input
-            {...register("reserve_fuel_hours", { valueAsNumber: true })}
-            id={"editFlight-reserve_fuel_hours"}
-            step="any"
-            type="number"
-            autoComplete="off"
-          />
-          {errors.reserve_fuel_hours ? (
-            <p>{errors.reserve_fuel_hours.message}</p>
-          ) : (
-            <p>&nbsp;</p>
-          )}
-          <label htmlFor="editFlight-reserve_fuel_hours">
-            <ReserveIcon />
-            {"Reserve Fuel [hours]"}
-          </label>
-        </HtmlInput>
+        {mutation.isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <HtmlInput
+              $hasValue={!!watch("departure_time")}
+              $accepted={!errors.departure_time}
+              $required={true}
+            >
+              <input
+                {...register("departure_time")}
+                id="editFlight-departure_time"
+                type="datetime-local"
+                autoComplete="off"
+                required={true}
+              />
+              {errors.departure_time ? (
+                <p>{errors.departure_time.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="editFlight-departure_time">
+                <DateIcon />
+                {"ETD [UTC]"}
+              </label>
+            </HtmlInput>
+            <HtmlInput
+              $required={true}
+              $hasValue={!!watch("bhp_percent") || watch("bhp_percent") === 0}
+              $accepted={!errors.bhp_percent}
+            >
+              <input
+                {...register("bhp_percent", { valueAsNumber: true })}
+                id={"editFlight-bhp_percent"}
+                type="number"
+                autoComplete="off"
+              />
+              {errors.bhp_percent ? (
+                <p>{errors.bhp_percent.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="editFlight-bhp_percent">
+                <BHPIcon />
+                {"Cruise Prower [% of BHP]"}
+              </label>
+            </HtmlInput>
+            <HtmlInput
+              $required={true}
+              $hasValue={
+                !!watch("added_enroute_time_hours") ||
+                watch("added_enroute_time_hours") === 0
+              }
+              $accepted={!errors.added_enroute_time_hours}
+            >
+              <input
+                {...register("added_enroute_time_hours", {
+                  valueAsNumber: true,
+                })}
+                id={"editFlight-added_enroute_time_hours"}
+                step="any"
+                type="number"
+                autoComplete="off"
+              />
+              {errors.added_enroute_time_hours ? (
+                <p>{errors.added_enroute_time_hours.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="editFlight-added_enroute_time_hours">
+                <TimeIcon />
+                {"Additional Flight-Time [hours]"}
+              </label>
+            </HtmlInput>
+            <HtmlInput
+              $required={true}
+              $hasValue={
+                !!watch("contingency_fuel_hours") ||
+                watch("contingency_fuel_hours") === 0
+              }
+              $accepted={!errors.contingency_fuel_hours}
+            >
+              <input
+                {...register("contingency_fuel_hours", { valueAsNumber: true })}
+                id={"editFlight-contingency_fuel_hours"}
+                step="any"
+                type="number"
+                autoComplete="off"
+              />
+              {errors.contingency_fuel_hours ? (
+                <p>{errors.contingency_fuel_hours.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="editFlight-contingency_fuel_hours">
+                <ContingencyIcon />
+                {"Contingency Fuel [hours]"}
+              </label>
+            </HtmlInput>
+            <HtmlInput
+              $required={true}
+              $hasValue={
+                !!watch("reserve_fuel_hours") ||
+                watch("reserve_fuel_hours") === 0
+              }
+              $accepted={!errors.reserve_fuel_hours}
+            >
+              <input
+                {...register("reserve_fuel_hours", { valueAsNumber: true })}
+                id={"editFlight-reserve_fuel_hours"}
+                step="any"
+                type="number"
+                autoComplete="off"
+              />
+              {errors.reserve_fuel_hours ? (
+                <p>{errors.reserve_fuel_hours.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="editFlight-reserve_fuel_hours">
+                <ReserveIcon />
+                {"Reserve Fuel [hours]"}
+              </label>
+            </HtmlInput>
+          </>
+        )}
       </HtmlInputContainer>
       <HtmlButtons>
         <Button
@@ -479,6 +497,7 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
           btnType="button"
           width="120px"
           height="35px"
+          disabled={mutation.isLoading}
         >
           Cancel
         </Button>
@@ -494,6 +513,8 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
           width="120px"
           height="35px"
           spaceChildren="space-evenly"
+          disabled={mutation.isLoading}
+          disabledText="Saving..."
         >
           Save
           <SaveIcon />

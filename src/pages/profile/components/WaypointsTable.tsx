@@ -35,7 +35,7 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
       name: "Name",
       latitude: "Latitude",
       longitude: "Longitude",
-      variation: "Magnetic Var",
+      variation: "Magnetic Var.",
       updated: "Date Updated",
     },
     rows:

@@ -58,7 +58,7 @@ const AerodromesTable = ({ editModal }: Props) => {
       longitude: "Longitude",
       elevation_ft: "Elevation [ft]",
       runways: "Runways",
-      variation: "Magnetic Var",
+      variation: "Magnetic Var.",
       updated: "Date Updated",
     },
     rows:

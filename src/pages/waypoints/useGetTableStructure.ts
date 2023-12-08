@@ -62,7 +62,7 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         type: "Type",
         latitude: "Latitude",
         longitude: "Longitude",
-        variation: "Magnetic Var",
+        variation: "Magnetic Var.",
         updated: "Date Updated"
     } as WaypointHeaders
     const waypointsSortData = [
@@ -121,7 +121,7 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         longitude: "Longitude",
         elevation_ft: "Elevation [ft]",
         runways: "Runways",
-        variation: "Magnetic Var",
+        variation: "Magnetic Var.",
         weather: "Available Weather",
         updated: "Date Updated"
     } as AerodromeHeaders

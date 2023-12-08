@@ -30,7 +30,6 @@ const HtmlTableHead = styled.thead<HtmlTagProps>`
   height: 1px;
   width: 1px;
   overflow: hidden;
-  text-transform: uppercase;
 
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
     position: ${(props) =>
@@ -206,7 +205,6 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
     margin-right: 10px;
     float: left;
     color: var(--color-white);
-    text-transform: uppercase;
     font-weight: bold;
   }
 

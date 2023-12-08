@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { BsCalendarDate } from "react-icons/bs";
+import { BsCalendarWeek } from "react-icons/bs";
 import { MdOutlineStart } from "react-icons/md";
 import { SlBadge } from "react-icons/sl";
 import { LiaMapSignsSolid, LiaMountainSolid } from "react-icons/lia";
@@ -153,7 +153,7 @@ const WeatherIcon = styled(WiDayCloudyGusts)`
   margin: 0 10px 0 0;
 `;
 
-const DateIcon = styled(BsCalendarDate)`
+const DateIcon = styled(BsCalendarWeek)`
   font-size: 25px;
   margin: 0 10px 0 0;
 `;
@@ -467,7 +467,7 @@ const AerodromePage = () => {
               <AnnouncementBox
                 isWarning={false}
                 title="Visible Aerodrome"
-                message="This model is visible to users. To hide this aerodrome, mark it as hidden."
+                message="This aerodrome is visible to users. To hide this aerodrome, mark it as hidden."
               />
             )
           ) : null}

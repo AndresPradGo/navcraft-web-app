@@ -39,6 +39,7 @@ import {
   MapStateType,
   MapInputStyleType,
 } from "../../components/SideBarMapOptions";
+import NavLogSection from "./components/NavLogSection";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -189,8 +190,11 @@ const FlightPage = () => {
   const flightId = parseInt(stringId || "0");
   const { data: flightData, error, isLoading } = useFlightData(flightId);
 
-  const { isLoading: legsIsLoading, error: legsError } =
-    useNavLogData(flightId);
+  const {
+    isLoading: legsIsLoading,
+    error: legsError,
+    isFetching,
+  } = useNavLogData(flightId);
 
   const {
     data: aerodromes,
@@ -236,7 +240,7 @@ const FlightPage = () => {
   const sections = [
     {
       key: "navLog",
-      title: "Navigation Log",
+      title: "Flight Summary",
       icon: <FaClipboardList />,
     },
     {
@@ -514,6 +518,9 @@ const FlightPage = () => {
               </span>
             </div>
           </HtmlTitleContainer>
+          {sectionIdx === 0 ? (
+            <NavLogSection flightId={flightId} isLoading={isFetching} />
+          ) : null}
         </HtmlContainer>
       </ContentLayout>
     </>

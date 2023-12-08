@@ -82,6 +82,7 @@ const SideBarIndex = ({
         delay: 200,
         smooth: true,
       });
+      handleChangeSection(index);
     } else {
       handleChangeSection(index);
     }

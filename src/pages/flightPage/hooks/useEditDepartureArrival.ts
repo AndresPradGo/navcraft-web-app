@@ -69,6 +69,7 @@ const useEditDepartureArrival = (flightId: number, isDeparture: boolean) => {
                 theme: "dark",
             });
             queryClient.setQueryData<FlightDataFromApi>(['flight', flightId], () => (savedData))
+            queryClient.invalidateQueries({queryKey: ["navLog",flightId,]})
         },
         onError: (error, _, context) => {
             errorToast(error)

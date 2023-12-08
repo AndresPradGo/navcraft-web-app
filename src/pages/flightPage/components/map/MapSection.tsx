@@ -28,7 +28,6 @@ import {
 } from "../../../../components/SideBarMapOptions";
 import Button from "../../../../components/common/button";
 import { Modal, useModal } from "../../../../components/common/modal";
-
 import NewMarker from "./NewMarker";
 import DropMarkerForm from "./DropMarkerForm";
 import getPath from "../../../../utils/getPath";
@@ -484,7 +483,7 @@ const MapSection = ({
                 >
                   <Popup>
                     <HtmlPopupMessage>
-                      <h2>{`WP-${idx}`}</h2>
+                      <h2>{`WP-${idx + 1}`}</h2>
                       <h3>
                         <b>{`${leg.waypoint.code}: `}</b>
                         {`${leg.waypoint.name}`}

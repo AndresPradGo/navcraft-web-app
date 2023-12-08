@@ -213,7 +213,7 @@ const Profile = () => {
                 </h2>
                 <p>
                   <span>{profileData?.weight}</span>
-                  <span onClick={() => setWeightInKg(!weightInKg)}>Lb</span>
+                  <span onClick={() => setWeightInKg(!weightInKg)}>lb</span>
                 </p>
               </HtmlWeightCardFront>
               <HtmlWeightCardBack $inKg={weightInKg}>

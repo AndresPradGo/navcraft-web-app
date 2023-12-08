@@ -48,7 +48,7 @@ const CruiseSection = ({ profileId }: Props) => {
     ],
     headers: {
       data_point: "",
-      weight_lb: "Weight [Lb]",
+      weight_lb: "Weight [lb]",
       pressure_alt_ft: "Pressure Alt [ft]",
       temperature_c: "OAT [\u00B0C]",
       bhp_percent: "% BHP",

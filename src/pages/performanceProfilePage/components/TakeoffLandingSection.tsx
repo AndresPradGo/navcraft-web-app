@@ -123,7 +123,7 @@ const TakeoffLandingSection = ({
     ],
     headers: {
       data_point: "",
-      weight_lb: "Weight [Lb]",
+      weight_lb: "Weight [lb]",
       pressure_alt_ft: "Pressure alt [ft]",
       temperature_c: "Air Temperature [\u00B0C]",
       groundroll_ft: "Ground Roll [ft]",

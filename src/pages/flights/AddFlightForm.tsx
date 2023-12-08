@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { BsCalendarDate } from "react-icons/bs";
+import { BsCalendarWeek } from "react-icons/bs";
 import { IoAirplane } from "react-icons/io5";
 import { LiaTimesSolid } from "react-icons/lia";
 import { PiAirplaneInFlightDuotone } from "react-icons/pi";
@@ -185,7 +185,7 @@ const TitleIcon = styled(PiAirplaneInFlightDuotone)`
   }
 `;
 
-const DateIcon = styled(BsCalendarDate)`
+const DateIcon = styled(BsCalendarWeek)`
   font-size: 25px;
   margin: 0 10px;
   flex-shrink: 0;

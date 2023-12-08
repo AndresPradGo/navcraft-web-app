@@ -1,7 +1,9 @@
 
-const formatUTCTime = (dateString: string): string => {
+const formatUTCTime = (dateString: string, elapsedMinutes?: number): string => {
 
-    const date = new Date(dateString);
+    const originalDate = new Date(dateString);
+    const totalMinutes = originalDate.getTime() + (elapsedMinutes ? elapsedMinutes : 0) * 60000;
+    const date = new Date(totalMinutes);
     const hours = date.getUTCHours().toString().padStart(2, '0')
     const minutes = date.getUTCMinutes().toString().padStart(2, '0')
 

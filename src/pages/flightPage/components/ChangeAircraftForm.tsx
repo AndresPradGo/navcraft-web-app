@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
@@ -13,6 +13,7 @@ import Button from "../../../components/common/button";
 import DataList from "../../../components/common/datalist";
 import { AircraftDataFromAPI } from "../../../services/aircraftClient";
 import useChangeAircraft from "../hooks/useChangeAircraft";
+import Loader from "../../../components/Loader";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -134,8 +135,6 @@ const ChangeAircraftForm = ({
     "list",
   ]);
 
-  const mutation = useChangeAircraft(flightId);
-
   const {
     register,
     handleSubmit,
@@ -146,6 +145,16 @@ const ChangeAircraftForm = ({
     reset,
     setValue,
   } = useForm<ChangeAircraftType>({ resolver: zodResolver(schema) });
+
+  const [submited, setSubmited] = useState(false);
+
+  const mutation = useChangeAircraft(flightId);
+
+  useEffect(() => {
+    if (submited && !mutation.isLoading) {
+      closeModal();
+    }
+  }, [submited, mutation.isLoading]);
 
   useEffect(() => {
     register("aircraft");
@@ -170,11 +179,11 @@ const ChangeAircraftForm = ({
         message: "Select a valid option",
       });
     } else {
-      closeModal();
       mutation.mutate({
         aircraftId,
         aircraft: data.aircraft,
       });
+      setSubmited(true);
     }
   };
 
@@ -188,28 +197,36 @@ const ChangeAircraftForm = ({
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
-        <DataList
-          setError={(message) =>
-            setError("aircraft", {
-              type: "manual",
-              message: message,
-            })
-          }
-          clearErrors={() => clearErrors("aircraft")}
-          required={true}
-          value={watch("aircraft")}
-          hasError={!!errors.aircraft}
-          errorMessage={errors.aircraft?.message || ""}
-          options={
-            aircraftList ? aircraftList.map((item) => item.registration) : []
-          }
-          setValue={(value: string) => setValue("aircraft", value)}
-          name="changeAircraft"
-          formIsOpen={isOpen}
-          resetValue={aircraft}
-        >
-          <AircraftIcon /> Aircraft
-        </DataList>
+        {mutation.isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <DataList
+              setError={(message) =>
+                setError("aircraft", {
+                  type: "manual",
+                  message: message,
+                })
+              }
+              clearErrors={() => clearErrors("aircraft")}
+              required={true}
+              value={watch("aircraft")}
+              hasError={!!errors.aircraft}
+              errorMessage={errors.aircraft?.message || ""}
+              options={
+                aircraftList
+                  ? aircraftList.map((item) => item.registration)
+                  : []
+              }
+              setValue={(value: string) => setValue("aircraft", value)}
+              name="changeAircraft"
+              formIsOpen={isOpen}
+              resetValue={aircraft}
+            >
+              <AircraftIcon /> Aircraft
+            </DataList>
+          </>
+        )}
       </HtmlInputContainer>
       <HtmlButtons>
         <Button
@@ -224,6 +241,7 @@ const ChangeAircraftForm = ({
           btnType="button"
           width="120px"
           height="35px"
+          disabled={mutation.isLoading}
         >
           Cancel
         </Button>
@@ -239,6 +257,8 @@ const ChangeAircraftForm = ({
           width="120px"
           height="35px"
           spaceChildren="space-evenly"
+          disabled={mutation.isLoading}
+          disabledText="Saving..."
         >
           Save
           <SaveIcon />

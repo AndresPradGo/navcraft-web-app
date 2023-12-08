@@ -380,7 +380,7 @@ const EditSeatRowForm = ({
             }-seat_weight_limit_lb`}
           >
             <WeightIcon />
-            {"Weight Limit [Lb]"}
+            {"Weight Limit [lb]"}
           </label>
         </HtmlInput>
       </HtmlInputContainer>
