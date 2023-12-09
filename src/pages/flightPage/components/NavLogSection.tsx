@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { MdMoreTime } from "react-icons/md";
 import {
@@ -16,6 +17,8 @@ import formatUTCDate from "../../../utils/formatUTCDate";
 import formatUTCTime from "../../../utils/formatUTCTime";
 import Table from "../../../components/common/ExpandibleTable";
 import FlightWarningList from "../../../components/FlightWarningList";
+import { Modal, useModal } from "../../../components/common/modal";
+import DeleteLegForm from "./DeleteLegForm";
 
 const BHPIcon = styled(PiEngineDuotone)`
   font-size: 25px;
@@ -69,6 +72,10 @@ const NavLogSection = ({ flightId, isLoading }: Props) => {
     "navLog",
     flightId,
   ]);
+
+  const [idToEdit, setIdToEdit] = useState(0);
+
+  const deleteModal = useModal();
 
   const elapsedTime = legsData
     ? legsData.reduce(
@@ -178,8 +185,13 @@ const NavLogSection = ({ flightId, isLoading }: Props) => {
             ground_speed: leg.ground_speed,
             total_distance: leg.total_distance,
             total_time: leg.time_to_climb_min + leg.time_enroute_min,
-            handleEdit: () => {},
-            handleDelete: () => {},
+            handleEdit: () => {
+              setIdToEdit(leg.leg_id);
+            },
+            handleDelete: () => {
+              deleteModal.handleOpen();
+              setIdToEdit(leg.leg_id);
+            },
             permissions:
               idx < legsData.length - 1
                 ? ("edit-delete" as "edit-delete")
@@ -209,8 +221,19 @@ const NavLogSection = ({ flightId, isLoading }: Props) => {
       })
     : [];
 
+  const legToEdit = legsData?.find((leg) => leg.leg_id === idToEdit);
+
   return (
     <>
+      <Modal isOpen={deleteModal.isOpen}>
+        <DeleteLegForm
+          closeModal={deleteModal.handleClose}
+          id={idToEdit}
+          fromWaypoint={legToEdit?.from_waypoint.code || ""}
+          toWaypoint={legToEdit?.to_waypoint.code || ""}
+          flightId={flightId}
+        />
+      </Modal>
       <DataTableList dataList={dataListData} margin="0 0 40px" />
       <Table
         title="Flight Log"

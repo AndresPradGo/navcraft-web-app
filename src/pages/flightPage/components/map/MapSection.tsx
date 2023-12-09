@@ -509,7 +509,7 @@ const MapSection = ({
                           if (mapRef) mapRef.closePopup();
                           deleteMutation.mutate({
                             id: leg.id,
-                            waypoint: leg.waypoint?.name || "",
+                            identifier: leg.waypoint?.name || "",
                           });
                         }}
                         width="120px"

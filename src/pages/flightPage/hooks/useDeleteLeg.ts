@@ -8,7 +8,7 @@ import { FlightDataFromApi } from '../../../services/flightsClient';
 
 
 interface DeleteLegData {
-    waypoint: string;
+    identifier: string;
     id: number;
 }
 
@@ -16,7 +16,7 @@ interface FlightContext {
     previousData?: FlightDataFromApi
 }
 
-const useDeleteLeg = (flightId: number) => {
+const useDeleteLeg = (flightId: number, isLeg?: boolean) => {
     const queryClient = useQueryClient()
     return useMutation<FlightDataFromApi, APIClientError, DeleteLegData, FlightContext>({
         mutationFn: (data) => apiClient.deleteWithReturn(`/${data.id}`),
@@ -32,7 +32,9 @@ const useDeleteLeg = (flightId: number) => {
             return { previousData }
         },
         onSuccess: (savedData, newData) => {
-            toast.success(`${newData.waypoint} waypoint has been successfully removed from your flight plan.`, {
+            toast.success(!isLeg 
+                ? `${newData.identifier} waypoint has been successfully removed from your flight plan.`
+                : `The leg ${newData.identifier}, has been successfully removed from your flight plan.`, {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
