@@ -4,6 +4,7 @@ import getDegreeCoordinates from "./getDegreeCoordinates"
 
 
 interface WaypointType {
+  id: number
     code: string,
     name: string,
     latitude_degrees: number,
@@ -24,12 +25,14 @@ const getPath = (
     let degreeCoordinates = getDegreeCoordinates(departureAerodrome)
     const path = [{
       from_waypoint: {
+        id: departureAerodrome.id,
         code: departureAerodrome.code,
         name: departureAerodrome.name,
         latitude_degrees: degreeCoordinates.lat,
         longitude_degrees: degreeCoordinates.lng
       },
       to_waypoint: {
+        id: 0,
         code: "",
         name: "",
         latitude_degrees: 0,
@@ -43,6 +46,7 @@ const getPath = (
         if(waypoint) {
           degreeCoordinates = getDegreeCoordinates(waypoint)
           path[i].to_waypoint = {
+            id: waypoint.id,
             code: waypoint.code,
             name: waypoint.name,
             latitude_degrees: degreeCoordinates.lat,
@@ -50,12 +54,14 @@ const getPath = (
           }
           path.push({
             from_waypoint: {
+              id: waypoint.id,
               code: waypoint.code,
               name: waypoint.name,
               latitude_degrees: degreeCoordinates.lat,
               longitude_degrees: degreeCoordinates.lng
             },
             to_waypoint: {
+              id: 0,
               code: "",
               name: "",
               latitude_degrees: 0,
@@ -68,6 +74,7 @@ const getPath = (
 
     degreeCoordinates = getDegreeCoordinates(arrivalAerodrome)
     path[path.length - 1].to_waypoint = {
+      id: arrivalAerodrome.id,
         code: arrivalAerodrome.code,
         name: arrivalAerodrome.name,
         latitude_degrees: degreeCoordinates.lat,

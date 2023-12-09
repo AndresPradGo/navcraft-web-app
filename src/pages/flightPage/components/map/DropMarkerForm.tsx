@@ -322,6 +322,8 @@ export interface NearbyWaypointType
 }
 
 interface Props {
+  waypointCode: string;
+  waypointName: string;
   flightId: number;
   sequence: number;
   latitude: number;
@@ -331,6 +333,8 @@ interface Props {
   isOpen: boolean;
 }
 const DropMarkerForm = ({
+  waypointCode,
+  waypointName,
   flightId,
   sequence,
   latitude,
@@ -365,6 +369,8 @@ const DropMarkerForm = ({
     | null
   >(null);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [submited, setSubmited] = useState(false);
 
   const mutation = usePostNewLeg(flightId);
@@ -387,13 +393,19 @@ const DropMarkerForm = ({
         code: null,
         name: null,
       });
+      setIsLoading(true);
 
       apiClient
         .getAll(`/${latitude}/${longitude}?distance=3`)
         .then((res) => {
-          setNearbyWaypoints(res);
+          setNearbyWaypoints(
+            res.filter(
+              (item) => item.code !== waypointCode && item.name !== waypointName
+            )
+          );
           if (res.length > 0) setSelectedWaypointId(null);
           else setSelectedWaypointId(0);
+          setIsLoading(false);
         })
         .catch((err) => {
           if (isOpen && err.name !== "CanceledError") {
@@ -408,6 +420,7 @@ const DropMarkerForm = ({
               theme: "dark",
             });
             handleCancel();
+            setIsLoading(false);
           }
         });
     }
@@ -587,6 +600,7 @@ const DropMarkerForm = ({
               </HtmlInput>
             </HtmlPairedInputsContainer>
             <WaypointsList
+              isLoading={isLoading}
               latitude={latitude}
               longitude={longitude}
               waypoints={nearbyWaypoints}

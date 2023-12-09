@@ -11,6 +11,7 @@ import { NearbyWaypointType } from "./DropMarkerForm";
 import getDegreeCoordinates, {
   LatLngLiteral,
 } from "../../../../utils/getDegreeCoordinates";
+import Loader from "../../../../components/Loader";
 
 const HtmlContainer = styled.div`
   align-self: center;
@@ -50,7 +51,8 @@ const HtmlWaypointTag = styled.div<WaypointTagProps>`
   margin: 5px 0;
   padding: 10px;
   border: 1px solid
-    ${(props) => (props.$selected ? "var(--color-white)" : "var(--color-grey)")};
+    ${(props) =>
+      props.$selected ? "var(--color-white)" : "var(--color-primary-bright)"};
   background-color: ${(props) =>
     props.$selected
       ? "var(--color-primary-light)"
@@ -59,6 +61,9 @@ const HtmlWaypointTag = styled.div<WaypointTagProps>`
   border-radius: 3px;
 
   &:hover {
+    border: 1px solid
+      ${(props) =>
+        props.$selected ? "var(--color-white)" : "var(--color-primary-light)"};
     background-color: var(--color-primary-light);
 
     & span i:last-of-type {
@@ -122,6 +127,7 @@ interface Props {
   waypoints: NearbyWaypointType[];
   selectedId: number | null;
   handleSelectedId: (id: number) => void;
+  isLoading: boolean;
 }
 
 const WaypointsList = ({
@@ -130,6 +136,7 @@ const WaypointsList = ({
   waypoints,
   selectedId,
   handleSelectedId,
+  isLoading,
 }: Props) => {
   const styleCoordinates = (coordinate: LatLngLiteral): string => {
     const styledLat = Math.round(Math.abs(coordinate.lat) * 100) / 100;
@@ -156,33 +163,37 @@ const WaypointsList = ({
         </span>
       </HtmlWaypointTag>
       <h3>Nearby:</h3>
-      {waypoints.map((w) => {
-        return (
-          <HtmlWaypointTag
-            key={w.id}
-            $selected={selectedId === w.id}
-            onClick={() => {
-              handleSelectedId(w.id);
-            }}
-          >
-            {w.type === "aerodrome" ? (
-              <AerodromeIcon />
-            ) : w.type === "waypoint" ? (
-              <WaypointIcon />
-            ) : w.type === "user aerodrome" ? (
-              <UserAerodromeIcon />
-            ) : (
-              <UserWaypointIcon />
-            )}
-            <span>
-              <i>{`${w.code}: ${w.name}`}</i>
-              <i>{`${styleCoordinates(
-                getDegreeCoordinates(w)
-              )} (${w.distance.toFixed(1)}nm away)`}</i>
-            </span>
-          </HtmlWaypointTag>
-        );
-      })}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        waypoints.map((w) => {
+          return (
+            <HtmlWaypointTag
+              key={w.id}
+              $selected={selectedId === w.id}
+              onClick={() => {
+                handleSelectedId(w.id);
+              }}
+            >
+              {w.type === "aerodrome" ? (
+                <AerodromeIcon />
+              ) : w.type === "waypoint" ? (
+                <WaypointIcon />
+              ) : w.type === "user aerodrome" ? (
+                <UserAerodromeIcon />
+              ) : (
+                <UserWaypointIcon />
+              )}
+              <span>
+                <i>{`${w.code}: ${w.name}`}</i>
+                <i>{`${styleCoordinates(
+                  getDegreeCoordinates(w)
+                )} (${w.distance.toFixed(1)}nm away)`}</i>
+              </span>
+            </HtmlWaypointTag>
+          );
+        })
+      )}
     </HtmlContainer>
   );
 };
