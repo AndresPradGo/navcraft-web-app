@@ -1,35 +1,35 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
-import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { BsThermometerSun } from "react-icons/bs";
 import { FaCloudSunRain } from "react-icons/fa";
 import { FaArrowUpFromGroundWater } from "react-icons/fa6";
 import { LiaTimesSolid } from "react-icons/lia";
-import { PiAirTrafficControlDuotone, PiWindLight } from "react-icons/pi";
-import { TbWindsock } from "react-icons/tb";
+import { PiWindLight } from "react-icons/pi";
+import { RiDashboard2Line } from "react-icons/ri";
+import { TbRoute, TbWindsock } from "react-icons/tb";
 import { styled } from "styled-components";
 import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
-import DataList from "../../../components/common/datalist";
+import useUpdateFlightLeg from "../hooks/useUpdateFlightLeg";
 import getUTCNowString from "../../../utils/getUTCNowString";
-import useEditDepartureArrival from "../hooks/useEditDepartureArrival";
-import { OfficialAerodromeDataFromAPI } from "../../../services/officialAerodromeClient";
+import { FlightDataFromApi } from "../../../services/flightsClient";
 import Loader from "../../../components/Loader";
 
 const HtmlForm = styled.form`
   width: 100%;
   flex-grow: 1;
-  min-height: 200px;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start;
   padding: 0;
   overflow: hidden;
+  text-wrap: wrap;
 
   & h1 {
     width: 100%;
@@ -45,14 +45,22 @@ const HtmlForm = styled.form`
       align-items: center;
     }
 
-    @media screen and (min-width: 425px) {
+    @media screen and (min-width: 600px) {
       padding: 10px;
       font-size: 32px;
     }
   }
 `;
 
-const HtmlInputContainer = styled.div`
+interface HtmlInputContainerProps {
+  $isLoading: boolean;
+}
+
+const HtmlInputContainer = styled.div<HtmlInputContainerProps>`
+  display: flex;
+  flex-direction: column;
+  justify-content: ${(props) => (props.$isLoading ? "center" : "flex-start")};
+  min-height: 100%;
   width: 100%;
   overflow-y: auto;
   padding: 20px 0;
@@ -194,33 +202,22 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
+const TitleIcon = styled(TbRoute)`
+  flex-shrink: 0;
+  font-size: 30px;
+  margin: 0 5px 0 0;
+
+  @media screen and (min-width: 600px) {
+    font-size: 40px;
+    margin: 0 10px 0 0;
+  }
+`;
+
 const SaveIcon = styled(AiOutlineSave)`
   font-size: 25px;
 `;
 
-const DepartureIcon = styled(BiSolidPlaneTakeOff)`
-  font-size: 35px;
-  margin: 0 5px;
-  flex-shrink: 0;
-
-  @media screen and (min-width: 425px) {
-    margin: 0 10px;
-    font-size: 40px;
-  }
-`;
-
-const ArrivalIcon = styled(BiSolidPlaneLand)`
-  font-size: 35px;
-  margin: 0 5px;
-  flex-shrink: 0;
-
-  @media screen and (min-width: 425px) {
-    margin: 0 10px;
-    font-size: 40px;
-  }
-`;
-
-const AerodromeIcon = styled(PiAirTrafficControlDuotone)`
+const AltitudeIcon = styled(RiDashboard2Line)`
   font-size: 25px;
   margin: 0 3px 0 5px;
   flex-shrink: 0;
@@ -282,6 +279,7 @@ const AltimeterIcon = styled(FaArrowUpFromGroundWater)`
 `;
 
 const CloseIcon = styled(LiaTimesSolid)`
+  flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
   cursor: pointer;
@@ -299,7 +297,6 @@ const CloseIcon = styled(LiaTimesSolid)`
 `;
 
 const schema = z.object({
-  aerodrome: z.string(),
   wind_magnitude_knot: z
     .number({ invalid_type_error: "Enter a number" })
     .int("Must be a round number.")
@@ -318,37 +315,33 @@ const schema = z.object({
     .int("Must be a round number."),
   altimeter_inhg: z
     .number({ invalid_type_error: "Enter a number" })
-    .max(99.94, { message: "Must be greater than 99.95" })
-    .min(-99.94, { message: "Must be less than -99.95" }),
+    .max(99.94, { message: "Must be less than 99.95" })
+    .min(-99.94, { message: "Must be greater than -99.95" }),
+  altitude_ft: z
+    .number({ invalid_type_error: "Enter a number" })
+    .min(500, { message: "Must be at least 500 ft" }),
 });
 type FormDataType = z.infer<typeof schema>;
-
-interface Props {
-  flightId: number;
-  currentData: FormDataType;
-  closeModal: () => void;
-  isOpen: boolean;
-  isDeparture: boolean;
-  temperature_last_updated: string;
-  wind_last_updated: string;
-  altimeter_last_updated: string;
+export interface EditFlightLegDataFromForm extends FormDataType {
+  id: number;
 }
 
-const EditDepartureArrivalForm = ({
-  flightId,
-  currentData,
-  temperature_last_updated,
-  wind_last_updated,
-  altimeter_last_updated,
-  closeModal,
-  isOpen,
-  isDeparture,
-}: Props) => {
+interface Props {
+  route: string;
+  id: number;
+  flightId: number;
+  closeModal: () => void;
+  isOpen: boolean;
+}
+const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
   const queryClient = useQueryClient();
-  const aerodromes = queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>([
-    "aerodromes",
-    "all",
+  const flightData = queryClient.getQueryData<FlightDataFromApi>([
+    "flight",
+    flightId,
   ]);
+  const currentLegData = flightData?.legs.find((l) => l.id === id);
+
+  const mutation = useUpdateFlightLeg(flightId);
 
   const {
     register,
@@ -358,12 +351,9 @@ const EditDepartureArrivalForm = ({
     setError,
     watch,
     clearErrors,
-    setValue,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
   const [submited, setSubmited] = useState(false);
-
-  const mutation = useEditDepartureArrival(flightId, isDeparture);
 
   useEffect(() => {
     if (submited && !mutation.isLoading) {
@@ -372,17 +362,13 @@ const EditDepartureArrivalForm = ({
   }, [submited, mutation.isLoading]);
 
   useEffect(() => {
-    register("aerodrome");
-  }, []);
-
-  useEffect(() => {
     if (isOpen) {
       reset({
-        aerodrome: currentData.aerodrome,
-        wind_magnitude_knot: currentData.wind_magnitude_knot,
-        wind_direction: currentData.wind_direction,
-        temperature_c: currentData.temperature_c,
-        altimeter_inhg: currentData.altimeter_inhg,
+        wind_magnitude_knot: currentLegData?.wind_magnitude_knot,
+        wind_direction: currentLegData?.wind_direction,
+        temperature_c: currentLegData?.temperature_c,
+        altimeter_inhg: currentLegData?.altimeter_inhg,
+        altitude_ft: currentLegData?.altitude_ft,
       });
     }
   }, [isOpen]);
@@ -419,42 +405,36 @@ const EditDepartureArrivalForm = ({
   };
 
   const submitHandler = (data: FieldValues) => {
-    const aerodromeId = aerodromes?.find(
-      (a) =>
-        `${a.code}: ${a.name}${a.registered ? "" : " (saved)"}` ===
-        data.aerodrome
-    )?.id;
-
     const wrongWindDirection = checkWindMagnitude({
       wind_direction: data.wind_direction,
       wind_magnitude_knot: data.wind_magnitude_knot,
     });
 
-    if (!aerodromeId) {
-      setError("aerodrome", {
-        type: "manual",
-        message: "Select a valid option",
-      });
-    } else if (!wrongWindDirection) {
+    if (!wrongWindDirection) {
       mutation.mutate({
-        aerodrome_id: aerodromeId,
+        id: id,
+        route,
         temperature_c: data.temperature_c,
         altimeter_inhg: data.altimeter_inhg,
         wind_direction: data.wind_direction,
         wind_magnitude_knot: data.wind_magnitude_knot,
-        temperature_last_updated:
-          data.temperature_c !== currentData.temperature_c
+        altitude_ft: data.altitude_ft,
+        temperature_last_updated: currentLegData
+          ? data.temperature_c !== currentLegData.temperature_c
             ? getUTCNowString()
-            : temperature_last_updated,
-        wind_last_updated:
-          data.wind_direction !== currentData.wind_direction ||
-          data.wind_magnitude_knot !== currentData.wind_magnitude_knot
+            : currentLegData.temperature_last_updated
+          : getUTCNowString(),
+        wind_last_updated: currentLegData
+          ? data.wind_direction !== currentLegData?.wind_direction ||
+            data.wind_magnitude_knot !== currentLegData?.wind_magnitude_knot
             ? getUTCNowString()
-            : wind_last_updated,
-        altimeter_last_updated:
-          data.altimeter_inhg !== currentData.altimeter_inhg
+            : currentLegData.wind_last_updated
+          : getUTCNowString(),
+        altimeter_last_updated: currentLegData
+          ? data.altimeter_inhg !== currentLegData.altimeter_inhg
             ? getUTCNowString()
-            : altimeter_last_updated,
+            : currentLegData.altimeter_last_updated
+          : getUTCNowString(),
       });
       setSubmited(true);
     }
@@ -464,50 +444,42 @@ const EditDepartureArrivalForm = ({
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <h1>
         <div>
-          {isDeparture ? <DepartureIcon /> : <ArrivalIcon />}
-          {`Edit ${isDeparture ? "Departure" : "Arrival"} Settings`}
+          <TitleIcon />
+          {`Edit Leg ${route}`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
-      <HtmlInputContainer>
+      <HtmlInputContainer $isLoading={mutation.isLoading}>
         {mutation.isLoading ? (
           <Loader />
         ) : (
           <>
-            <DataList
-              setError={(message) =>
-                setError("aerodrome", {
-                  type: "manual",
-                  message: message,
-                })
-              }
-              clearErrors={() => clearErrors("aerodrome")}
-              required={true}
-              value={watch("aerodrome")}
-              hasError={!!errors.aerodrome}
-              errorMessage={errors.aerodrome?.message || ""}
-              options={
-                aerodromes
-                  ? aerodromes.map(
-                      (item) =>
-                        `${item.code}: ${item.name}${
-                          item.registered ? "" : " (saved)"
-                        }`
-                    )
-                  : []
-              }
-              setValue={(value: string) => setValue("aerodrome", value)}
-              name="editDepartureArrival-aerodrome"
-              formIsOpen={isOpen}
-              resetValue={currentData.aerodrome}
+            <HtmlInput
+              $required={true}
+              $hasValue={!!watch("altitude_ft") || watch("altitude_ft") === 0}
+              $accepted={!errors.altitude_ft}
             >
-              <AerodromeIcon />
-              {`${isDeparture ? "Departure" : "Arrival"} Aerodrome`}
-            </DataList>
+              <input
+                {...register("altitude_ft", { valueAsNumber: true })}
+                id="editFlightLeg-altitude_ft"
+                type="number"
+                autoComplete="off"
+                required={true}
+              />
+              {errors.altitude_ft ? (
+                <p>{errors.altitude_ft.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="editFlightLeg-altitude_ft">
+                <AltitudeIcon />
+                {"Altitude [ft]"}
+              </label>
+            </HtmlInput>
             <HtmlInputGroup>
               <h2>
                 <WeatherIcon />
-                Weather at Aerodrome
+                Enroute Weather
               </h2>
               <p>
                 Manually updated weather, will overwrite the weather captured
@@ -523,7 +495,7 @@ const EditDepartureArrivalForm = ({
               >
                 <input
                   {...register("wind_magnitude_knot", { valueAsNumber: true })}
-                  id="editDepartureArrival-wind_magnitude_knot"
+                  id="editFlightLeg-wind_magnitude_knot"
                   type="number"
                   autoComplete="off"
                   required={true}
@@ -533,7 +505,7 @@ const EditDepartureArrivalForm = ({
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor="editDepartureArrival-wind_magnitude_knot">
+                <label htmlFor="editFlightLeg-wind_magnitude_knot">
                   <WindMagnitudeIcon />
                   {"Wind Magnitude [Knots]"}
                 </label>
@@ -549,7 +521,7 @@ const EditDepartureArrivalForm = ({
                   {...register("wind_direction", {
                     setValueAs: handleWindDirectionValue,
                   })}
-                  id="editDepartureArrival-wind_direction"
+                  id="editFlightLeg-wind_direction"
                   type="number"
                   autoComplete="off"
                   required={false}
@@ -559,7 +531,7 @@ const EditDepartureArrivalForm = ({
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor="editDepartureArrival-wind_direction">
+                <label htmlFor="editFlightLeg-wind_direction">
                   <WindDirectionIcon />
                   {"Wind Direction [\u00B0True]"}
                 </label>
@@ -573,7 +545,7 @@ const EditDepartureArrivalForm = ({
               >
                 <input
                   {...register("temperature_c", { valueAsNumber: true })}
-                  id="editDepartureArrival-temperature_c"
+                  id="editFlightLeg-temperature_c"
                   type="number"
                   autoComplete="off"
                   required={true}
@@ -583,7 +555,7 @@ const EditDepartureArrivalForm = ({
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor="editDepartureArrival-temperature_c">
+                <label htmlFor="editFlightLeg-temperature_c">
                   <TemperatureIcon />
                   {"Temperature [\u00B0C]"}
                 </label>
@@ -597,7 +569,7 @@ const EditDepartureArrivalForm = ({
               >
                 <input
                   {...register("altimeter_inhg", { valueAsNumber: true })}
-                  id="editDepartureArrival-altimeter_inhg"
+                  id="editFlightLeg-altimeter_inhg"
                   type="number"
                   autoComplete="off"
                   required={true}
@@ -608,7 +580,7 @@ const EditDepartureArrivalForm = ({
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor="editDepartureArrival-altimeter_inhg">
+                <label htmlFor="editFlightLeg-altimeter_inhg">
                   <AltimeterIcon />
                   {"Altimeter [in Hg]"}
                 </label>
@@ -657,4 +629,4 @@ const EditDepartureArrivalForm = ({
   );
 };
 
-export default EditDepartureArrivalForm;
+export default EditLegForm;

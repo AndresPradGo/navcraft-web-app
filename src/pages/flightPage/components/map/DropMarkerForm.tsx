@@ -526,6 +526,7 @@ const DropMarkerForm = ({
           (w) => w.id === selectedWaypointId
         );
         mutation.mutate({
+          type: waypoint?.type,
           existing_waypoint_id: selectedWaypointId,
           new_waypoint: {
             code: waypoint?.code || "",

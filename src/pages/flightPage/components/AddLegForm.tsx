@@ -216,20 +216,35 @@ const AddLegForm = ({
 
   const submitHandler = (data: FieldValues) => {
     const sequence = flightWaypoints.indexOf(data.interceptingWaypoint) + 1;
-    let waypointId = aerodromes?.find(
+    const aerodromeData = aerodromes?.find(
       (a) =>
         `${a.code}: ${a.name}${a.registered ? "" : " (saved)"}` ===
         data.newWaypoint
-    )?.id;
+    );
+    let waypointId = aerodromeData?.id;
+    let type:
+      | "aerodrome"
+      | "waypoint"
+      | "user aerodrome"
+      | "user waypoint"
+      | undefined = aerodromeData?.registered
+      ? "aerodrome"
+      : waypointId
+      ? "user aerodrome"
+      : undefined;
     if (!waypointId) {
-      waypointId = vfrWaypoints?.find(
+      const waypointData = vfrWaypoints?.find(
         (v) => `${v.code}: ${v.name}` === data.newWaypoint
-      )?.id;
+      );
+      waypointId = waypointData?.id;
+      type = waypointId ? "waypoint" : undefined;
     }
     if (!waypointId) {
-      waypointId = userWaypoints?.find(
+      const waypointData = userWaypoints?.find(
         (u) => `${u.code}: ${u.name} (saved)` === data.newWaypoint
-      )?.id;
+      );
+      waypointId = waypointData?.id;
+      type = waypointId ? "user waypoint" : undefined;
     }
 
     if (sequence === 0) {
@@ -244,6 +259,7 @@ const AddLegForm = ({
       });
     } else {
       mutation.mutate({
+        type,
         existing_waypoint_id: waypointId,
         new_waypoint: {
           code: "",

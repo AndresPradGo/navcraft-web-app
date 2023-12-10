@@ -11,12 +11,16 @@ interface FlightContext {
     previousData?: FlightDataFromApi
 }
 
+interface NewLegData extends PostLegFromExistingWaypoint, PostLegFromNewLocation {
+    type?: "aerodrome" | "waypoint" | "user aerodrome" | "user waypoint";
+}
+
 const usePostNewLeg = (flightId: number, isLeg?: boolean) => {
     const queryClient = useQueryClient()
     return useMutation<
         FlightDataFromApi, 
         APIClientError, 
-        PostLegFromExistingWaypoint & PostLegFromNewLocation,
+        NewLegData,
         FlightContext
     >({
         mutationFn: (data) => {
@@ -53,8 +57,10 @@ const usePostNewLeg = (flightId: number, isLeg?: boolean) => {
                         id: newData.existing_waypoint_id,
                         ...newData.new_waypoint,
                         magnetic_variation: 0,
-                        from_vfr_waypoint: false,
-                        from_user_waypoint: false
+                        from_vfr_waypoint: (newData.existing_waypoint_id !== 0) 
+                            && (newData.type === "aerodrome" || newData.type === "waypoint"),
+                        from_user_waypoint: (newData.existing_waypoint_id !== 0)
+                            && (newData.type === "user aerodrome" || newData.type === "user waypoint")
                     }
                 })
                 return (

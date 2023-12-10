@@ -19,6 +19,7 @@ import Table from "../../../components/common/ExpandibleTable";
 import FlightWarningList from "../../../components/FlightWarningList";
 import { Modal, useModal } from "../../../components/common/modal";
 import DeleteLegForm from "./DeleteLegForm";
+import EditLegForm from "./EditLegForm";
 
 const BHPIcon = styled(PiEngineDuotone)`
   font-size: 25px;
@@ -77,6 +78,7 @@ const NavLogSection = ({ flightId, isLoading, handleAdd }: Props) => {
   const [idToEdit, setIdToEdit] = useState(0);
 
   const deleteModal = useModal();
+  const editModal = useModal();
 
   const elapsedTime = legsData
     ? legsData.reduce(
@@ -187,6 +189,7 @@ const NavLogSection = ({ flightId, isLoading, handleAdd }: Props) => {
             total_distance: leg.total_distance,
             total_time: leg.time_to_climb_min + leg.time_enroute_min,
             handleEdit: () => {
+              editModal.handleOpen();
               setIdToEdit(leg.leg_id);
             },
             handleDelete: () => {
@@ -232,6 +235,19 @@ const NavLogSection = ({ flightId, isLoading, handleAdd }: Props) => {
           id={idToEdit}
           fromWaypoint={legToEdit?.from_waypoint.code || ""}
           toWaypoint={legToEdit?.to_waypoint.code || ""}
+          flightId={flightId}
+        />
+      </Modal>
+      <Modal isOpen={editModal.isOpen}>
+        <EditLegForm
+          closeModal={editModal.handleClose}
+          id={idToEdit}
+          isOpen={editModal.isOpen}
+          route={
+            legToEdit
+              ? `from ${legToEdit.from_waypoint.code} to ${legToEdit.to_waypoint.code}`
+              : ""
+          }
           flightId={flightId}
         />
       </Modal>
