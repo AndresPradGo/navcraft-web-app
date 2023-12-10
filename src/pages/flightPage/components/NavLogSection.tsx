@@ -59,9 +59,10 @@ const ChronometerIcon = styled(BsStopwatch)`
 interface Props {
   flightId: number;
   isLoading: boolean;
+  handleAdd: () => void;
 }
 
-const NavLogSection = ({ flightId, isLoading }: Props) => {
+const NavLogSection = ({ flightId, isLoading, handleAdd }: Props) => {
   const queryClient = useQueryClient();
   const flightData = queryClient.getQueryData<FlightDataFromApi>([
     "flight",
@@ -236,8 +237,9 @@ const NavLogSection = ({ flightId, isLoading }: Props) => {
       </Modal>
       <DataTableList dataList={dataListData} margin="0 0 40px" />
       <Table
+        disableAdd={isLoading}
         title="Flight Log"
-        hanldeAdd={() => {}}
+        hanldeAdd={handleAdd}
         otherComponent={<FlightWarningList warnings={warnings} />}
         dataIsLoading={isLoading}
         tableData={tableData}

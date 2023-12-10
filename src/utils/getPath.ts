@@ -5,21 +5,23 @@ import getDegreeCoordinates from "./getDegreeCoordinates"
 
 interface WaypointType {
   id: number
-    code: string,
-    name: string,
-    latitude_degrees: number,
-    longitude_degrees: number
+  code: string,
+  name: string,
+  latitude_degrees: number,
+  longitude_degrees: number,
+  from_user_waypoint: boolean,
+  from_vfr_waypoint: boolean
 }
 
 interface ReturnType {
-        from_waypoint: WaypointType
-        to_waypoint: WaypointType
+  from_waypoint: WaypointType
+  to_waypoint: WaypointType
 }
 
 const getPath = (
-    departureAerodrome: OfficialAerodromeDataFromAPI, 
-    flightData: FlightDataFromApi | undefined, 
-    arrivalAerodrome: OfficialAerodromeDataFromAPI
+  departureAerodrome: OfficialAerodromeDataFromAPI, 
+  flightData: FlightDataFromApi | undefined, 
+  arrivalAerodrome: OfficialAerodromeDataFromAPI
 ): ReturnType[] => {
 
     let degreeCoordinates = getDegreeCoordinates(departureAerodrome)
@@ -29,14 +31,18 @@ const getPath = (
         code: departureAerodrome.code,
         name: departureAerodrome.name,
         latitude_degrees: degreeCoordinates.lat,
-        longitude_degrees: degreeCoordinates.lng
+        longitude_degrees: degreeCoordinates.lng,
+        from_user_waypoint: !departureAerodrome.registered,
+        from_vfr_waypoint: departureAerodrome.registered
       },
       to_waypoint: {
         id: 0,
         code: "",
         name: "",
         latitude_degrees: 0,
-        longitude_degrees: 0
+        longitude_degrees: 0,
+        from_user_waypoint: false,
+from_vfr_waypoint: false
       },
     }]
   
@@ -50,7 +56,9 @@ const getPath = (
             code: waypoint.code,
             name: waypoint.name,
             latitude_degrees: degreeCoordinates.lat,
-            longitude_degrees: degreeCoordinates.lng
+            longitude_degrees: degreeCoordinates.lng,
+            from_user_waypoint: waypoint.from_user_waypoint,
+from_vfr_waypoint: waypoint.from_vfr_waypoint,
           }
           path.push({
             from_waypoint: {
@@ -58,14 +66,18 @@ const getPath = (
               code: waypoint.code,
               name: waypoint.name,
               latitude_degrees: degreeCoordinates.lat,
-              longitude_degrees: degreeCoordinates.lng
+              longitude_degrees: degreeCoordinates.lng,
+              from_user_waypoint: waypoint.from_user_waypoint,
+              from_vfr_waypoint: waypoint.from_vfr_waypoint
             },
             to_waypoint: {
               id: 0,
               code: "",
               name: "",
               latitude_degrees: 0,
-              longitude_degrees: 0
+              longitude_degrees: 0,
+              from_user_waypoint: false,
+              from_vfr_waypoint: false
             },
           })
         }
@@ -78,7 +90,9 @@ const getPath = (
         code: arrivalAerodrome.code,
         name: arrivalAerodrome.name,
         latitude_degrees: degreeCoordinates.lat,
-        longitude_degrees: degreeCoordinates.lng
+        longitude_degrees: degreeCoordinates.lng,
+        from_user_waypoint: !arrivalAerodrome.registered,
+        from_vfr_waypoint:  arrivalAerodrome.registered
     }
 
     return path

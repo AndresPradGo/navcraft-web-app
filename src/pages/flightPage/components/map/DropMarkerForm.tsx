@@ -321,9 +321,15 @@ export interface NearbyWaypointType
   distance: number;
 }
 
+interface CurrentWaypointType {
+  code: string;
+  name: string;
+  isVFR: boolean;
+  isUser: boolean;
+}
+
 interface Props {
-  waypointCode: string;
-  waypointName: string;
+  currentWaypoint: CurrentWaypointType;
   flightId: number;
   sequence: number;
   latitude: number;
@@ -333,8 +339,7 @@ interface Props {
   isOpen: boolean;
 }
 const DropMarkerForm = ({
-  waypointCode,
-  waypointName,
+  currentWaypoint,
   flightId,
   sequence,
   latitude,
@@ -399,9 +404,16 @@ const DropMarkerForm = ({
         .getAll(`/${latitude}/${longitude}?distance=3`)
         .then((res) => {
           setNearbyWaypoints(
-            res.filter(
-              (item) => item.code !== waypointCode && item.name !== waypointName
-            )
+            res.filter((item) => {
+              const nearbyWPIsVFR =
+                item.type === "aerodrome" || item.type === "waypoint";
+              return (
+                item.code !== currentWaypoint.code ||
+                item.name !== currentWaypoint.name ||
+                currentWaypoint.isVFR !== nearbyWPIsVFR ||
+                currentWaypoint.isUser !== !nearbyWPIsVFR
+              );
+            })
           );
           if (res.length > 0) setSelectedWaypointId(null);
           else setSelectedWaypointId(0);

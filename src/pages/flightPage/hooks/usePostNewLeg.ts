@@ -11,7 +11,7 @@ interface FlightContext {
     previousData?: FlightDataFromApi
 }
 
-const usePostNewLeg = (flightId: number) => {
+const usePostNewLeg = (flightId: number, isLeg?: boolean) => {
     const queryClient = useQueryClient()
     return useMutation<
         FlightDataFromApi, 
@@ -52,7 +52,9 @@ const usePostNewLeg = (flightId: number) => {
                     waypoint: {
                         id: newData.existing_waypoint_id,
                         ...newData.new_waypoint,
-                        magnetic_variation: 0
+                        magnetic_variation: 0,
+                        from_vfr_waypoint: false,
+                        from_user_waypoint: false
                     }
                 })
                 return (
@@ -65,16 +67,20 @@ const usePostNewLeg = (flightId: number) => {
             return {previousData}
         },
         onSuccess: (savedData, newData) => {
-            toast.success(`${newData.new_waypoint.name} has been successfully added as a flight waypoint.`, {
-                position: "top-center",
-                autoClose: 10000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            toast.success(
+                isLeg ? "A new leg has been successfully added to the flight path." 
+                : `${newData.new_waypoint.name} has been successfully added to the flight path.`, 
+                {
+                    position: "top-center",
+                    autoClose: 10000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                }
+            );
             queryClient.setQueryData<FlightDataFromApi>(["flight",flightId], () => savedData)
             queryClient.invalidateQueries({queryKey: ["navLog",flightId,]})
         },

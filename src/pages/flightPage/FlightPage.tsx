@@ -40,6 +40,7 @@ import {
   MapInputStyleType,
 } from "../../components/SideBarMapOptions";
 import NavLogSection from "./components/NavLogSection";
+import AddLegForm from "./components/AddLegForm";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -183,6 +184,7 @@ const FlightPage = () => {
   const departureModal = useModal();
   const arrivalModal = useModal();
   const weatherModal = useModal();
+  const addLegModal = useModal();
 
   const { handleExpandSideBar } = useSideBar();
 
@@ -337,6 +339,15 @@ const FlightPage = () => {
 
   return (
     <>
+      <Modal isOpen={addLegModal.isOpen} fullHeight={true}>
+        <AddLegForm
+          flightId={flightId}
+          closeModal={addLegModal.handleClose}
+          isOpen={addLegModal.isOpen}
+          departureAerodrome={departure || aerodromes[0]}
+          arrivalAerodrome={arrival || aerodromes[0]}
+        />
+      </Modal>
       <Modal isOpen={departureModal.isOpen}>
         <EditDepartureArrivalForm
           flightId={flightId}
@@ -522,6 +533,7 @@ const FlightPage = () => {
           </HtmlTitleContainer>
           {sectionIdx === 0 ? (
             <NavLogSection
+              handleAdd={addLegModal.handleOpen}
               flightId={flightId}
               isLoading={isFetching && isStale}
             />

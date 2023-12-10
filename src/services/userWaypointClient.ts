@@ -27,6 +27,8 @@ export interface FlightWaypointDataFromAPI {
     lon_seconds: number;
     lon_direction: "E" | "W";
     magnetic_variation: number;
+    from_user_waypoint: boolean,
+    from_vfr_waypoint: boolean
 }
 
 export interface WaypointDataFromAPI extends FlightWaypointDataFromAPI{

@@ -240,10 +240,14 @@ interface Props {
 }
 const AddFlightForm = ({ closeModal, isOpen }: Props) => {
   const queryClient = useQueryClient();
-  const aircraftList = queryClient.getQueryData<AircraftDataFromAPI[]>([
+  const completeAircraftList = queryClient.getQueryData<AircraftDataFromAPI[]>([
     "aircraft",
     "list",
   ]);
+  const aircraftList =
+    completeAircraftList?.filter((a) =>
+      a.profiles.find((p) => p.is_preferred)
+    ) || [];
   const aerodromes = queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>([
     "aerodromes",
     "all",
@@ -325,14 +329,18 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
     const wrongDatatime = checkDepartureTime({
       departure_time: watch("departure_time"),
     });
-    const aircraftId = aircraftList?.find(
+    const aircraftId = aircraftList.find(
       (a) => a.registration === data.aircraft
     )?.id;
     const departureId = aerodromes?.find(
-      (a) => `${a.code}: ${a.name}` === data.departure_aerodrome
+      (a) =>
+        `${a.code}: ${a.name}${a.registered ? "" : " (saved)"}` ===
+        data.departure_aerodrome
     )?.id;
     const arrivalId = aerodromes?.find(
-      (a) => `${a.code}: ${a.name}` === data.arrival_aerodrome
+      (a) =>
+        `${a.code}: ${a.name}${a.registered ? "" : " (saved)"}` ===
+        data.arrival_aerodrome
     )?.id;
 
     if (!aircraftId) {
@@ -386,7 +394,12 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
           errorMessage={errors.departure_aerodrome?.message || ""}
           options={
             aerodromes
-              ? aerodromes.map((item) => `${item.code}: ${item.name}`)
+              ? aerodromes.map(
+                  (item) =>
+                    `${item.code}: ${item.name}${
+                      item.registered ? "" : " (saved)"
+                    }`
+                )
               : []
           }
           setValue={(value: string) => setValue("departure_aerodrome", value)}
@@ -410,7 +423,12 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
           errorMessage={errors.arrival_aerodrome?.message || ""}
           options={
             aerodromes
-              ? aerodromes.map((item) => `${item.code}: ${item.name}`)
+              ? aerodromes.map(
+                  (item) =>
+                    `${item.code}: ${item.name}${
+                      item.registered ? "" : " (saved)"
+                    }`
+                )
               : []
           }
           setValue={(value: string) => setValue("arrival_aerodrome", value)}
@@ -432,9 +450,7 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
           value={watch("aircraft")}
           hasError={!!errors.aircraft}
           errorMessage={errors.aircraft?.message || ""}
-          options={
-            aircraftList ? aircraftList.map((item) => item.registration) : []
-          }
+          options={aircraftList.map((item) => item.registration)}
           setValue={(value: string) => setValue("aircraft", value)}
           name="aircraft"
           formIsOpen={isOpen}

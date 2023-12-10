@@ -120,7 +120,7 @@ const HtmlList = styled.ul<HtmlListProps>`
   padding: ${(props) => (props.$expanded ? "5px 0" : "0")};
   list-style-type: none;
   border: ${(props) =>
-    props.$expanded ? "1px groove var(--color-grey)" : "none"};
+    props.$expanded ? "1px solid var(--color-grey)" : "none"};
   border-radius: 5px;
   background-color: var(--color-grey-dark);
 `;

@@ -171,8 +171,12 @@ const MapSection = ({
     <>
       <Modal isOpen={modal.isOpen} fullHeight={true}>
         <DropMarkerForm
-          waypointCode={path[focusLegIdx]?.to_waypoint.code}
-          waypointName={path[focusLegIdx]?.to_waypoint.name}
+          currentWaypoint={{
+            code: path[focusLegIdx]?.to_waypoint.code,
+            name: path[focusLegIdx]?.to_waypoint.name,
+            isVFR: path[focusLegIdx]?.to_waypoint.from_vfr_waypoint,
+            isUser: path[focusLegIdx]?.to_waypoint.from_user_waypoint,
+          }}
           flightId={flightId}
           sequence={focusLegIdx + 1}
           latitude={newWaypoint ? newWaypoint.lat : center.lat}

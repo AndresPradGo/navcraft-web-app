@@ -420,7 +420,9 @@ const EditDepartureArrivalForm = ({
 
   const submitHandler = (data: FieldValues) => {
     const aerodromeId = aerodromes?.find(
-      (a) => `${a.code}: ${a.name}` === data.aerodrome
+      (a) =>
+        `${a.code}: ${a.name}${a.registered ? "" : " (saved)"}` ===
+        data.aerodrome
     )?.id;
 
     const wrongWindDirection = checkWindMagnitude({
@@ -486,7 +488,12 @@ const EditDepartureArrivalForm = ({
               errorMessage={errors.aerodrome?.message || ""}
               options={
                 aerodromes
-                  ? aerodromes.map((item) => `${item.code}: ${item.name}`)
+                  ? aerodromes.map(
+                      (item) =>
+                        `${item.code}: ${item.name}${
+                          item.registered ? "" : " (saved)"
+                        }`
+                    )
                   : []
               }
               setValue={(value: string) => setValue("aerodrome", value)}
