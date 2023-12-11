@@ -8,6 +8,7 @@ import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
 import Loader from "../../../components/Loader";
 import Table from "../../../components/common/ExpandibleTable";
 import usePersonsOnBoard from "../hooks/usePersonsOnBoard";
+import useLuggage from "../hooks/useLuggage";
 import useAircraftArrangementData from "../../../hooks/useAircraftArrangementData";
 
 const HtmlLoaderContainer = styled.div`
@@ -36,6 +37,12 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
   } = usePersonsOnBoard(flightId);
 
   const {
+    data: luggage,
+    error: luggageError,
+    isLoading: luggageLoading,
+  } = useLuggage(flightId);
+
+  const {
     data: aircraftWeightBalanceData,
     error: aircraftWeightBalanceError,
     isLoading: aircraftWeightBalanceLoading,
@@ -47,12 +54,18 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     isLoading: arrangementLoading,
   } = useAircraftArrangementData(profileId);
 
-  if (aircraftWeightBalanceError || personsOnBoardError || arrangementError)
+  if (
+    aircraftWeightBalanceError ||
+    personsOnBoardError ||
+    arrangementError ||
+    luggageError
+  )
     throw new Error("");
   if (
     aircraftWeightBalanceLoading ||
     personsOnBoardLoading ||
-    arrangementLoading
+    arrangementLoading ||
+    luggageLoading
   )
     return (
       <HtmlLoaderContainer>
@@ -89,33 +102,34 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
       });
     }
   }
-
   const seatsTableData = {
-    keys: ["seat", "weight_lb", "arm_in", "moment_lb_in"],
+    keys: ["seat", "name", "weight_lb", "arm_in", "moment_lb_in"],
     headers: {
       seat: "Seat",
+      name: "Name",
       weight_lb: "Weight [lb]",
       arm_in: "Arm [in]",
       moment_lb_in: "Moment [lb-in]",
     },
     rows: seats.map((seat) => {
-      const weight = personsOnBoard.find(
+      const person = personsOnBoard.find(
         (p) => p.seat_row_id === seat.id && p.seat_number === p.seat_number
-      )?.weight_lb;
+      );
       return {
         id: seat.id + seat.seatNumber / 10,
+        name: person ? person.name : "-",
         seat: seat.name,
         seatRow: seat.seatRow,
-        weight_lb: weight ? weight : 0,
+        weight_lb: person ? person.weight_lb : 0,
         arm_in: seat.arm_in,
         moment_lb_in:
-          Math.round(seat.arm_in * (weight ? weight : 0) * 100) / 100,
+          Math.round(seat.arm_in * (person ? person.weight_lb : 0) * 100) / 100,
         handleEdit: () => {},
         handleDelete: () => {},
         permissions: "edit" as "edit",
       };
     }),
-    breakingPoint: 0,
+    breakingPoint: 1024,
   };
   const seatsSortData = [
     {
@@ -125,6 +139,10 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     {
       title: "Seat",
       key: "seat",
+    },
+    {
+      title: "Name",
+      key: "name",
     },
     {
       title: "Weight",
@@ -141,6 +159,48 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         title: row.name,
       })),
   };
+
+  const luggageTableData = {
+    keys: ["compartment", "weight_lb", "arm_in", "moment_lb_in"],
+    headers: {
+      compartment: "Compartment",
+      weight_lb: "Weight [lb]",
+      arm_in: "Arm [in]",
+      moment_lb_in: "Moment [lb-in]",
+    },
+    rows: arrangementData.baggage_compartments.map((item) => {
+      const weight = luggage.reduce(
+        (total, bag) =>
+          (total += bag.baggage_compartment_id === item.id ? bag.weight_lb : 0),
+        0
+      );
+      return {
+        id: item.id,
+        compartment: item.name,
+        weight_lb: weight,
+        arm_in: item.arm_in,
+        moment_lb_in: Math.round(item.arm_in * weight * 100) / 100,
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: "edit" as "edit",
+      };
+    }),
+    breakingPoint: 1024,
+  };
+  const luggageSortData = [
+    {
+      title: "Arm",
+      key: "arm_in",
+    },
+    {
+      title: "Compartment",
+      key: "compartment",
+    },
+    {
+      title: "Weight",
+      key: "weight_lb",
+    },
+  ];
 
   return (
     <>
@@ -161,6 +221,15 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         filterParameters={
           seatsFilterData.filters.length >= 1 ? seatsFilterData : undefined
         }
+        pageSize={10}
+      />
+      <Table
+        title="Luggage"
+        hanldeAdd={() => {}}
+        disableAdd={true}
+        tableData={luggageTableData}
+        emptyTableMessage=""
+        sortColumnOptions={luggageSortData}
         pageSize={10}
       />
     </>
