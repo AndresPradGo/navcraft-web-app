@@ -276,7 +276,7 @@ const Table = ({
     headersWithButtons.buttons = "";
   }
 
-  const truncatedBreakingPoint = breakingPoint < 526 ? 526 : breakingPoint;
+  const truncatedBreakingPoint = breakingPoint < 0 ? 526 : breakingPoint;
   return (
     <>
       <HtmlTable

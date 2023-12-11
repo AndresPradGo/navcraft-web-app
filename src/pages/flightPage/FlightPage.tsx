@@ -33,6 +33,7 @@ import RefreshWeatherForm from "./components/RefreshWeatherForm";
 import MapSection from "./components/map/MapSection";
 import { useSideBar } from "../../components/sidebar";
 import useNavLogData from "./hooks/useNavLogData";
+import useWeightBalanceReport from "./hooks/useWeightBalanceReport";
 import useVfrWaypointsData from "../../hooks/useVfrWaypointsData";
 import useUserWaypointsData from "../../hooks/useUserWaypointsData";
 import {
@@ -41,6 +42,7 @@ import {
 } from "../../components/SideBarMapOptions";
 import NavLogSection from "./components/NavLogSection";
 import AddLegForm from "./components/AddLegForm";
+import WeightBalanceSection from "./components/WeightBalanceSection";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -195,9 +197,16 @@ const FlightPage = () => {
   const {
     isLoading: legsIsLoading,
     error: legsError,
-    isFetching,
-    isStale,
+    isFetching: legsIsFetching,
+    isStale: legsIsStale,
   } = useNavLogData(flightId);
+
+  const {
+    isLoading: weightBalanceIsLoading,
+    error: weightBalanceError,
+    isFetching: weightBalanceIsFetching,
+    isStale: weightBalanceIsStale,
+  } = useWeightBalanceReport(flightId);
 
   const {
     data: aerodromes,
@@ -219,6 +228,8 @@ const FlightPage = () => {
     isLoading: aircraftListIsLoading,
     error: aircraftListError,
   } = useAircraftDataList(true);
+  const aircraft = aircraftList?.find((a) => a.id === flightData?.aircraft_id);
+  const aircraftProfile = aircraft?.profiles.find((p) => p.is_preferred);
 
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if (
@@ -227,7 +238,8 @@ const FlightPage = () => {
     aircraftListError ||
     legsError ||
     vfrWaypointsError ||
-    userWaypointsError
+    userWaypointsError ||
+    weightBalanceError
   )
     throw new Error("");
   if (
@@ -236,7 +248,8 @@ const FlightPage = () => {
     aircraftListIsLoading ||
     legsIsLoading ||
     vfrWaypointsIsLoading ||
-    userWaypointsIsLoading
+    userWaypointsIsLoading ||
+    weightBalanceIsLoading
   )
     return <Loader />;
 
@@ -288,9 +301,8 @@ const FlightPage = () => {
   const arrival = aerodromes.find(
     (a) => a.id === flightData?.arrival_aerodrome_id
   );
-  const aircraft =
-    aircraftList.find((a) => a.id === flightData?.aircraft_id)?.registration ||
-    "";
+
+  const aircraftRegistration = aircraft?.registration || "";
 
   const handleChangeToNextTable = () => {
     if (sectionIdx >= sections.length - 1) setSectionIdx(0);
@@ -421,7 +433,7 @@ const FlightPage = () => {
           flightId={flightId}
           closeModal={aircraftModal.handleClose}
           isOpen={aircraftModal.isOpen}
-          aircraft={aircraft}
+          aircraft={aircraftRegistration}
         />
       </Modal>
       <Modal isOpen={generalModal.isOpen}>
@@ -514,7 +526,7 @@ const FlightPage = () => {
                 <i>Aircraft:</i>
                 <i>
                   <IoAirplane />
-                  {aircraft}
+                  {aircraftRegistration}
                 </i>
               </span>
               <span>|</span>
@@ -535,7 +547,13 @@ const FlightPage = () => {
             <NavLogSection
               handleAdd={addLegModal.handleOpen}
               flightId={flightId}
-              isLoading={isFetching && isStale}
+              isLoading={legsIsFetching && legsIsStale}
+            />
+          ) : sectionIdx === 1 ? (
+            <WeightBalanceSection
+              profileId={aircraftProfile ? aircraftProfile.id : 0}
+              flightId={flightId}
+              isLoading={weightBalanceIsFetching && weightBalanceIsStale}
             />
           ) : null}
         </HtmlContainer>

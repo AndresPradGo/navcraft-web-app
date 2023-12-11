@@ -43,7 +43,7 @@ const PassengersTable = ({ editModal, passengerId, setPassengerId }: Props) => {
             permissions: "edit-delete" as "edit-delete",
           }))
         : [],
-    breakingPoint: 0,
+    breakingPoint: 450,
   };
 
   const sortData = [

@@ -148,13 +148,13 @@ const TableContainer = ({
           )}
         </HtmlButtonContainer>
       )}
-      {filterParameters && (
+      {filterParameters && filters.length > 0 ? (
         <FilterTags
           filters={filterParameters.filters}
           selectedFilters={filters}
           dispatch={dispatchFilters}
         />
-      )}
+      ) : null}
       <Table
         rows={processedData}
         headers={tableData.headers}

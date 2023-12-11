@@ -27,8 +27,8 @@ const HtmlContainer = styled.div<HtmlTagProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-self: center;
   justify-content: center;
-  align-self: flex-start;
   margin: ${(props) => props.$margin};
 
   & ul {

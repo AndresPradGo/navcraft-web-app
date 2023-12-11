@@ -253,11 +253,10 @@ const NavLogSection = ({ flightId, isLoading, handleAdd }: Props) => {
       </Modal>
       <DataTableList dataList={dataListData} margin="0 0 40px" />
       <Table
-        disableAdd={isLoading}
-        title="Flight Log"
+        title={isLoading ? "Flight Log" : "Flight Log"}
+        disableAdd={false}
         hanldeAdd={handleAdd}
         otherComponent={<FlightWarningList warnings={warnings} />}
-        dataIsLoading={isLoading}
         tableData={tableData}
       />
     </>

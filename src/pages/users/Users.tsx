@@ -91,7 +91,7 @@ const Users = () => {
               : ("edit-delete" as "edit-delete"),
           }))
         : [],
-    breakingPoint: 0,
+    breakingPoint: 1024,
   };
 
   const sortData = [

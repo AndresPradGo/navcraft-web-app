@@ -75,6 +75,8 @@ interface Props extends TableProps {
   otherComponent?: ReactNode;
   marginTop?: number;
   dataIsLoading?: boolean;
+  notExpandible?: boolean;
+  icon?: ReactNode;
 }
 
 const ExpandibleTable = ({
@@ -90,6 +92,8 @@ const ExpandibleTable = ({
   filterParameters,
   marginTop,
   dataIsLoading,
+  notExpandible,
+  icon,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -97,7 +101,11 @@ const ExpandibleTable = ({
     <HtmlContainer $marginTop={marginTop || 50}>
       <HtmlTitleContainer>
         <div>
-          <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
+          {!notExpandible ? (
+            <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
+          ) : icon ? (
+            <>{icon}</>
+          ) : null}
           <h3>{title}</h3>
         </div>
         {!disableAdd ? (

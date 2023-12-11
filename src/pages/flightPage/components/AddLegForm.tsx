@@ -340,7 +340,7 @@ const AddLegForm = ({
               resetValue=""
             >
               <InterceptingWaypointIcon />
-              Interception Point
+              Interception Waypoint
             </DataList>
             <DataList
               setError={(message) =>
