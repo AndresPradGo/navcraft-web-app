@@ -1,4 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { PiClipboardTextDuotone } from "react-icons/pi";
 import _ from "lodash";
 import { styled } from "styled-components";
 
@@ -11,11 +12,22 @@ import usePersonsOnBoard from "../hooks/usePersonsOnBoard";
 import useLuggage from "../hooks/useLuggage";
 import useFuelOnBoard from "../hooks/useFuelOnBoard";
 import useAircraftArrangementData from "../../../hooks/useAircraftArrangementData";
+import FlightWarningList from "../../../components/FlightWarningList";
 
 const HtmlLoaderContainer = styled.div`
   margin: 35px 0 0;
   align-self: center;
   width: 100%;
+`;
+
+const ReportIcon = styled(PiClipboardTextDuotone)`
+  font-size: 30px;
+  margin: 0 5px 0 0;
+  flex-shrink: 0;
+
+  @media screen and (min-width: 425px) {
+    margin-right: 20px;
+  }
 `;
 
 interface Props {
@@ -98,6 +110,216 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         };
       })
     : [];
+
+  const seatsWeightSummary = weightBalanceData?.seats.reduce(
+    (total, seat) => ({
+      weight_lb: Math.round((total.weight_lb + seat.weight_lb) * 100) / 100,
+      arm_in: total.arm_in,
+      moment_lb_in:
+        Math.round((total.moment_lb_in + seat.weight_lb * seat.arm_in) * 100) /
+        100,
+    }),
+    { weight_lb: 0, arm_in: 0, moment_lb_in: 0 }
+  );
+  if (seatsWeightSummary)
+    seatsWeightSummary.arm_in =
+      seatsWeightSummary.weight_lb === 0
+        ? 0
+        : Math.round(
+            (seatsWeightSummary.moment_lb_in / seatsWeightSummary.weight_lb) *
+              100
+          ) / 100;
+
+  const luggageWeightSummary = weightBalanceData?.compartments.reduce(
+    (total, compartment) => ({
+      weight_lb:
+        Math.round((total.weight_lb + compartment.weight_lb) * 100) / 100,
+      arm_in: total.arm_in,
+      moment_lb_in:
+        Math.round(
+          (total.moment_lb_in + compartment.weight_lb * compartment.arm_in) *
+            100
+        ) / 100,
+    }),
+    { weight_lb: 0, arm_in: 0, moment_lb_in: 0 }
+  );
+  if (luggageWeightSummary)
+    luggageWeightSummary.arm_in =
+      luggageWeightSummary.weight_lb === 0
+        ? 0
+        : Math.round(
+            (luggageWeightSummary.moment_lb_in /
+              luggageWeightSummary.weight_lb) *
+              100
+          ) / 100;
+
+  const fuelOnBoardWeightSummary = weightBalanceData?.fuel_on_board.reduce(
+    (total, tank) => ({
+      gallons: Math.round((total.gallons + tank.gallons) * 100) / 100,
+      weight_lb: Math.round((total.weight_lb + tank.weight_lb) * 100) / 100,
+      arm_in: total.arm_in,
+      moment_lb_in:
+        Math.round((total.moment_lb_in + tank.weight_lb * tank.arm_in) * 100) /
+        100,
+    }),
+    { gallons: 0, weight_lb: 0, arm_in: 0, moment_lb_in: 0 }
+  );
+  if (fuelOnBoardWeightSummary)
+    fuelOnBoardWeightSummary.arm_in =
+      fuelOnBoardWeightSummary.weight_lb === 0
+        ? 0
+        : Math.round(
+            (fuelOnBoardWeightSummary.moment_lb_in /
+              fuelOnBoardWeightSummary.weight_lb) *
+              100
+          ) / 100;
+  console.log(weightBalanceData?.warnings);
+  const fuelBurnWeightSummary = weightBalanceData?.fuel_burned.reduce(
+    (total, tank) => ({
+      gallons: Math.round((total.gallons + tank.gallons) * 100) / 100,
+      weight_lb: Math.round((total.weight_lb + tank.weight_lb) * 100) / 100,
+      arm_in: total.arm_in,
+      moment_lb_in:
+        Math.round((total.moment_lb_in + tank.weight_lb * tank.arm_in) * 100) /
+        100,
+    }),
+    { gallons: 0, weight_lb: 0, arm_in: 0, moment_lb_in: 0 }
+  );
+  if (fuelBurnWeightSummary)
+    fuelBurnWeightSummary.arm_in =
+      fuelBurnWeightSummary.weight_lb === 0
+        ? 0
+        : Math.round(
+            (fuelBurnWeightSummary.moment_lb_in /
+              fuelBurnWeightSummary.weight_lb) *
+              100
+          ) / 100;
+
+  const weightBalanceTable = {
+    keys: ["item", "weight_lb", "arm_in", "moment_lb_in"],
+    headers: {
+      item: "Item",
+      weight_lb: "Weight [lb]",
+      arm_in: "Arm [in]",
+      moment_lb_in: "Moment [lb-in]",
+    },
+    rows: [
+      {
+        item: "Empty Weight",
+        id: 1,
+        weight_lb: weightBalanceData?.empty_weight.weight_lb || "-",
+        arm_in: weightBalanceData?.empty_weight.arm_in || "-",
+        moment_lb_in: weightBalanceData?.empty_weight.moment_lb_in || "-",
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: undefined,
+      },
+      {
+        item: "Passengers/Crew",
+        id: 2,
+        weight_lb: seatsWeightSummary?.weight_lb || "-",
+        arm_in: seatsWeightSummary?.arm_in || "-",
+        moment_lb_in: seatsWeightSummary?.moment_lb_in || "-",
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: undefined,
+      },
+      {
+        item: "Luggage",
+        id: 3,
+        weight_lb: luggageWeightSummary?.weight_lb || "-",
+        arm_in: luggageWeightSummary?.arm_in || "-",
+        moment_lb_in: luggageWeightSummary?.moment_lb_in || "-",
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: undefined,
+      },
+      {
+        item: "Zero Fuel Weight",
+        id: 4,
+        weight_lb: weightBalanceData?.zero_fuel_weight.weight_lb || "-",
+        arm_in: weightBalanceData?.zero_fuel_weight.arm_in || "-",
+        moment_lb_in: weightBalanceData?.zero_fuel_weight.moment_lb_in || "-",
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: undefined,
+        isResult: true,
+      },
+      {
+        item: `Fuel on Board (gal: ${
+          fuelOnBoardWeightSummary ? fuelOnBoardWeightSummary.gallons : 0
+        })`,
+        id: 5,
+        weight_lb: fuelOnBoardWeightSummary?.weight_lb || "-",
+        arm_in: fuelOnBoardWeightSummary?.arm_in || "-",
+        moment_lb_in: fuelOnBoardWeightSummary?.moment_lb_in || "-",
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: undefined,
+      },
+      {
+        item: `Ramp Weight (Max: ${aircraftWeightBalanceData.max_ramp_weight_lb}lb)`,
+        id: 6,
+        weight_lb: weightBalanceData?.ramp_weight.weight_lb || "-",
+        arm_in: weightBalanceData?.ramp_weight.arm_in || "-",
+        moment_lb_in: weightBalanceData?.ramp_weight.moment_lb_in || "-",
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: undefined,
+        isResult: true,
+      },
+      {
+        item: `Taxi Fuel (gal: ${
+          weightBalanceData
+            ? weightBalanceData.fuel_burned_pre_takeoff.gallons
+            : 0
+        })`,
+        id: 7,
+        weight_lb: weightBalanceData?.fuel_burned_pre_takeoff.weight_lb || "-",
+        arm_in: weightBalanceData?.fuel_burned_pre_takeoff.arm_in || "-",
+        moment_lb_in:
+          weightBalanceData?.fuel_burned_pre_takeoff.moment_lb_in || "-",
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: undefined,
+      },
+      {
+        item: `Takeoff Weight (Max: ${aircraftWeightBalanceData.max_takeoff_weight_lb}lb)`,
+        id: 8,
+        weight_lb: weightBalanceData?.takeoff_weight.weight_lb || "-",
+        arm_in: weightBalanceData?.takeoff_weight.arm_in || "-",
+        moment_lb_in: weightBalanceData?.takeoff_weight.moment_lb_in || "-",
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: undefined,
+        isResult: true,
+      },
+      {
+        item: `Fuel Burn (gal: ${
+          fuelBurnWeightSummary ? fuelBurnWeightSummary.gallons : 0
+        })`,
+        id: 9,
+        weight_lb: fuelBurnWeightSummary?.weight_lb || "-",
+        arm_in: fuelBurnWeightSummary?.arm_in || "-",
+        moment_lb_in: fuelBurnWeightSummary?.moment_lb_in || "-",
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: undefined,
+      },
+      {
+        item: `Landing Weight (Max: ${aircraftWeightBalanceData.max_landing_weight_lb}lb)`,
+        id: 10,
+        weight_lb: weightBalanceData?.landing_weight.weight_lb || "-",
+        arm_in: weightBalanceData?.landing_weight.arm_in || "-",
+        moment_lb_in: weightBalanceData?.landing_weight.moment_lb_in || "-",
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: undefined,
+        isResult: true,
+      },
+    ],
+    breakingPoint: 768,
+  };
 
   const seats = [];
   for (const row of arrangementData.seat_rows || []) {
@@ -260,6 +482,20 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         title="Weight & Balance Graph"
         maxTakeoff={aircraftWeightBalanceData?.max_takeoff_weight_lb}
         margin={"0"}
+      />
+      <Table
+        title={
+          isLoading ? "Weight & Balance Report" : "Weight & Balance Report"
+        }
+        hanldeAdd={() => {}}
+        disableAdd={true}
+        tableData={weightBalanceTable}
+        emptyTableMessage=""
+        notExpandible={true}
+        icon={<ReportIcon />}
+        otherComponent={
+          <FlightWarningList warnings={[weightBalanceData?.warnings || []]} />
+        }
       />
       <Table
         title="Passengers / Crew"

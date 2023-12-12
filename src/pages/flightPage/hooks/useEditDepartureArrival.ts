@@ -70,6 +70,7 @@ const useEditDepartureArrival = (flightId: number, isDeparture: boolean) => {
             });
             queryClient.setQueryData<FlightDataFromApi>(['flight', flightId], () => (savedData))
             queryClient.invalidateQueries({queryKey: ["navLog",flightId,]})
+            queryClient.invalidateQueries({queryKey: ["weightBalanceReport",flightId,]})
         },
         onError: (error, _, context) => {
             errorToast(error)

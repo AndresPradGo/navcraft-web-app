@@ -15,13 +15,19 @@ const HtmlContainer = styled.div<HtmlContainerProps>`
   width: 100%;
 `;
 
-const HtmlTitleContainer = styled.div`
+interface HtmlHighlightedTableProps {
+  $highlight: boolean;
+}
+
+const HtmlTitleContainer = styled.div<HtmlHighlightedTableProps>`
   text-wrap: wrap;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 0 5px 5px;
-  border-bottom: 1px solid var(--color-grey);
+  border-bottom: 1px solid
+    ${(props) =>
+      props.$highlight ? "var(--color-white)" : "var(--color-grey)"};
 
   & div {
     display: flex;
@@ -29,7 +35,8 @@ const HtmlTitleContainer = styled.div`
 
     & h3:first-of-type {
       margin: 0;
-      color: var(--color-grey-bright);
+      color: ${(props) =>
+        props.$highlight ? "var(--color-white)" : "var(--color-grey-bright)"};
     }
   }
 
@@ -38,7 +45,7 @@ const HtmlTitleContainer = styled.div`
   }
 `;
 
-interface HtmlTagProps {
+interface HtmlTagProps extends HtmlHighlightedTableProps {
   $isOpen: boolean;
 }
 const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
@@ -61,7 +68,9 @@ const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
 
 const HtmlTableContainer = styled.div<HtmlTagProps>`
   transition: padding 0.6s, max-height 0.3s, opacity 0.6s;
-  border-bottom: 1px solid var(--color-grey);
+  border-bottom: 1px solid
+    ${(props) =>
+      props.$highlight ? "var(--color-white)" : "var(--color-grey)"};
   padding: ${(props) => (props.$isOpen ? "15px" : "0px 15px")};
   max-height: ${(props) => (props.$isOpen ? "10000vh" : "0px")};
   opacity: ${(props) => (props.$isOpen ? "1" : "0")};
@@ -99,7 +108,7 @@ const ExpandibleTable = ({
 
   return (
     <HtmlContainer $marginTop={marginTop || 50}>
-      <HtmlTitleContainer>
+      <HtmlTitleContainer $highlight={!!notExpandible}>
         <div>
           {!notExpandible ? (
             <ToggleIcon onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen} />
@@ -125,7 +134,7 @@ const ExpandibleTable = ({
           </Button>
         ) : null}
       </HtmlTitleContainer>
-      <HtmlTableContainer $isOpen={isOpen}>
+      <HtmlTableContainer $isOpen={isOpen} $highlight={!!notExpandible}>
         {dataIsLoading ? (
           <Loader />
         ) : (

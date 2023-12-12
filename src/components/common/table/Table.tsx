@@ -9,6 +9,7 @@ import EditTableButtons, {
 interface HtmlTagProps {
   $sideBarIsExpanded: boolean;
   $breakingPoint: number;
+  $isResult: boolean;
 }
 
 const HtmlTable = styled.table<HtmlTagProps>`
@@ -109,8 +110,16 @@ const HtmlTableRow = styled.tr<HtmlTagProps>`
   text-align: left;
   white-space: normal;
   border-radius: 3px;
+  border: 2px solid
+    ${(props) =>
+      props.$isResult ? "var(--color-highlight)" : "var(--color-primary)"};
+  font-weight: ${(props) => (props.$isResult ? "bold" : "normal")};
+  font-style: ${(props) => (props.$isResult ? "italic" : "normal")};
+  overflow: hidden;
+  perspective: 1px;
 
-  background-color: var(--color-primary-bright);
+  background-color: ${(props) =>
+    props.$isResult ? "var(--color-primary)" : "var(--color-primary-bright)"};
   overflow: hidden;
   perspective: 1px;
 
@@ -161,9 +170,7 @@ const HtmlTableBodyHeaderCell = styled(HtmlTableHeaderCell)`
     background-color: ${(props) =>
       props.$sideBarIsExpanded ? "var(--color-highlight)" : "transparent"};
     color: ${(props) =>
-      props.$sideBarIsExpanded
-        ? "var(--color-grey-dark)"
-        : "var(--color-white)"};
+      props.$sideBarIsExpanded ? "var(--color-white)" : "var(--color-white)"};
     text-align: ${(props) => (props.$sideBarIsExpanded ? "center" : "left")};
 
     &:first-of-type {
@@ -173,7 +180,8 @@ const HtmlTableBodyHeaderCell = styled(HtmlTableHeaderCell)`
 
   @media screen and (min-width: ${(props) => props.$breakingPoint + 315}px) {
     background-color: transparent;
-    color: var(--color-white);
+    color: ${(props) =>
+      props.$isResult ? "var(--color-white)" : "var(--color-white)"};
     text-align: left;
 
     &:first-of-type {
@@ -188,7 +196,8 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
   vertical-align: middle;
   text-align: right;
   padding: 8px 16px;
-  color: var(--color-grey-bright);
+  color: ${(props) =>
+    props.$isResult ? "var(--color-grey-bright)" : "var(--color-grey-bright)"};
   text-wrap: wrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -204,7 +213,8 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
     content: attr(data-title);
     margin-right: 10px;
     float: left;
-    color: var(--color-white);
+    color: ${(props) =>
+      props.$isResult ? "var(--color-white)" : "var(--color-white)"};
     font-weight: bold;
   }
 
@@ -247,6 +257,7 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
 export interface RowType extends EditButtonsProps {
   id: number;
   [key: string]: ReactNode | EditButtonsPropsTypeUnion;
+  isResult?: boolean;
 }
 
 export interface Props {
@@ -282,20 +293,24 @@ const Table = ({
       <HtmlTable
         $sideBarIsExpanded={sideBarIsExpanded}
         $breakingPoint={truncatedBreakingPoint}
+        $isResult={false}
       >
         <HtmlTableHead
           $sideBarIsExpanded={sideBarIsExpanded}
           $breakingPoint={truncatedBreakingPoint}
+          $isResult={false}
         >
           <HtmlTableRow
             $sideBarIsExpanded={sideBarIsExpanded}
             $breakingPoint={truncatedBreakingPoint}
+            $isResult={false}
           >
             {keysWithButtons.map((key) => (
               <HtmlTableHeaderCell
                 key={key}
                 $sideBarIsExpanded={sideBarIsExpanded}
                 $breakingPoint={truncatedBreakingPoint}
+                $isResult={false}
               >
                 {headersWithButtons[key]}
               </HtmlTableHeaderCell>
@@ -305,12 +320,14 @@ const Table = ({
         <HtmlTableBody
           $sideBarIsExpanded={sideBarIsExpanded}
           $breakingPoint={truncatedBreakingPoint}
+          $isResult={false}
         >
           {rows.map((row) => (
             <HtmlTableRow
               key={row.id}
               $sideBarIsExpanded={sideBarIsExpanded}
               $breakingPoint={truncatedBreakingPoint}
+              $isResult={!!row.isResult}
             >
               {keysWithButtons.map((key, idx) =>
                 idx ? (
@@ -319,6 +336,7 @@ const Table = ({
                       key={`${key}${row.id}`}
                       $sideBarIsExpanded={sideBarIsExpanded}
                       $breakingPoint={truncatedBreakingPoint}
+                      $isResult={!!row.isResult}
                     >
                       <EditTableButtons
                         handleEdit={row.handleEdit}
@@ -332,6 +350,7 @@ const Table = ({
                       key={`${key}${row.id}`}
                       $sideBarIsExpanded={sideBarIsExpanded}
                       $breakingPoint={truncatedBreakingPoint}
+                      $isResult={!!row.isResult}
                     >
                       {row[key] as ReactNode}
                     </HtmlTableDataCell>
@@ -341,6 +360,7 @@ const Table = ({
                     key={`${key}${row.id}`}
                     $sideBarIsExpanded={sideBarIsExpanded}
                     $breakingPoint={truncatedBreakingPoint}
+                    $isResult={!!row.isResult}
                   >
                     {row[key] as ReactNode}
                   </HtmlTableBodyHeaderCell>

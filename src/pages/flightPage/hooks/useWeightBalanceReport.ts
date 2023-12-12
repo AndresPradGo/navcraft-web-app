@@ -33,6 +33,7 @@ export interface WeightBalanceReportType {
     fuel_on_board: FuelTankWeightData[],
     fuel_burned_pre_takeoff: BaseFuelWeightData,
     fuel_burned: FuelTankWeightData[],
+    empty_weight: BaseWeightData,
     zero_fuel_weight: BaseWeightData,
     ramp_weight: BaseWeightData,
     takeoff_weight: BaseWeightData,
