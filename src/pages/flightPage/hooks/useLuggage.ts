@@ -3,7 +3,7 @@ import { APIClientError } from '../../../services/apiClient';
 import apiClient, {BaggageDataFromAPI} from '../services/luggageClient'
 
 
-const usePersonsOnBoard = (flightId: number) => {
+const useLuggage = (flightId: number) => {
     return useQuery<BaggageDataFromAPI[], APIClientError>({
         queryKey: ['luggage', flightId],
         queryFn: () => {
@@ -12,4 +12,4 @@ const usePersonsOnBoard = (flightId: number) => {
     })
 }
 
-export default usePersonsOnBoard
+export default useLuggage

@@ -9,6 +9,7 @@ import Loader from "../../../components/Loader";
 import Table from "../../../components/common/ExpandibleTable";
 import usePersonsOnBoard from "../hooks/usePersonsOnBoard";
 import useLuggage from "../hooks/useLuggage";
+import useFuelOnBoard from "../hooks/useFuelOnBoard";
 import useAircraftArrangementData from "../../../hooks/useAircraftArrangementData";
 
 const HtmlLoaderContainer = styled.div`
@@ -43,6 +44,12 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
   } = useLuggage(flightId);
 
   const {
+    data: fuelOnBoard,
+    error: fuelOnBoardError,
+    isLoading: fuelOnBoardLoading,
+  } = useFuelOnBoard(flightId);
+
+  const {
     data: aircraftWeightBalanceData,
     error: aircraftWeightBalanceError,
     isLoading: aircraftWeightBalanceLoading,
@@ -58,14 +65,16 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     aircraftWeightBalanceError ||
     personsOnBoardError ||
     arrangementError ||
-    luggageError
+    luggageError ||
+    fuelOnBoardError
   )
     throw new Error("");
   if (
     aircraftWeightBalanceLoading ||
     personsOnBoardLoading ||
     arrangementLoading ||
-    luggageLoading
+    luggageLoading ||
+    fuelOnBoardLoading
   )
     return (
       <HtmlLoaderContainer>
@@ -202,6 +211,47 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     },
   ];
 
+  const fuelOnBoardTableData = {
+    keys: ["tank", "gallons", "weight_lb", "arm_in", "moment_lb_in"],
+    headers: {
+      tank: "Tank",
+      gallons: "Gallons",
+      weight_lb: "Weight [lb]",
+      arm_in: "Arm [in]",
+      moment_lb_in: "Moment [lb-in]",
+    },
+    rows: arrangementData.fuel_tanks.map((tank) => {
+      const fuel = fuelOnBoard.find((item) => item.fuel_tank_id === tank.id);
+      return {
+        id: tank.id,
+        tank: tank.name,
+        gallons: fuel ? fuel.gallons : 0,
+        weight_lb: fuel ? fuel.weight_lb : 0,
+        arm_in: tank.arm_in,
+        moment_lb_in:
+          Math.round(tank.arm_in * (fuel ? fuel.weight_lb : 0) * 100) / 100,
+        handleEdit: () => {},
+        handleDelete: () => {},
+        permissions: "edit" as "edit",
+      };
+    }),
+    breakingPoint: 1024,
+  };
+  const fuelOnBoardSortData = [
+    {
+      title: "Arm",
+      key: "arm_in",
+    },
+    {
+      title: "Tank",
+      key: "tank",
+    },
+    {
+      title: "Weight",
+      key: "weight_lb",
+    },
+  ];
+
   return (
     <>
       <WeightBalanceGraph
@@ -209,7 +259,7 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         profiles={profiles}
         title="Weight & Balance Graph"
         maxTakeoff={aircraftWeightBalanceData?.max_takeoff_weight_lb}
-        margin={"35px 0 0"}
+        margin={"0"}
       />
       <Table
         title="Passengers / Crew"
@@ -230,6 +280,15 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         tableData={luggageTableData}
         emptyTableMessage=""
         sortColumnOptions={luggageSortData}
+        pageSize={10}
+      />
+      <Table
+        title="Fuel on Board"
+        hanldeAdd={() => {}}
+        disableAdd={true}
+        tableData={fuelOnBoardTableData}
+        emptyTableMessage=""
+        sortColumnOptions={fuelOnBoardSortData}
         pageSize={10}
       />
     </>
