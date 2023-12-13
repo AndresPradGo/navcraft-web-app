@@ -34,6 +34,7 @@ import MapSection from "./components/map/MapSection";
 import { useSideBar } from "../../components/sidebar";
 import useNavLogData from "./hooks/useNavLogData";
 import useWeightBalanceReport from "./hooks/useWeightBalanceReport";
+import useFuelCalculations from "./hooks/useFuelCalculations";
 import useVfrWaypointsData from "../../hooks/useVfrWaypointsData";
 import useUserWaypointsData from "../../hooks/useUserWaypointsData";
 import {
@@ -231,6 +232,13 @@ const FlightPage = () => {
   const aircraft = aircraftList?.find((a) => a.id === flightData?.aircraft_id);
   const aircraftProfile = aircraft?.profiles.find((p) => p.is_preferred);
 
+  const {
+    isLoading: fuelCalculationsIsLoading,
+    error: fuelCalculationsError,
+    isFetching: fuelCalculationsIsFetching,
+    isStale: fuelCalculationsIsStale,
+  } = useFuelCalculations(flightId);
+
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if (
     (error && error.message === "Network Error") ||
@@ -239,7 +247,8 @@ const FlightPage = () => {
     legsError ||
     vfrWaypointsError ||
     userWaypointsError ||
-    weightBalanceError
+    weightBalanceError ||
+    fuelCalculationsError
   )
     throw new Error("");
   if (
@@ -249,7 +258,8 @@ const FlightPage = () => {
     legsIsLoading ||
     vfrWaypointsIsLoading ||
     userWaypointsIsLoading ||
-    weightBalanceIsLoading
+    weightBalanceIsLoading ||
+    fuelCalculationsIsLoading
   )
     return <Loader />;
 
@@ -553,7 +563,10 @@ const FlightPage = () => {
             <WeightBalanceSection
               profileId={aircraftProfile ? aircraftProfile.id : 0}
               flightId={flightId}
-              isLoading={weightBalanceIsFetching && weightBalanceIsStale}
+              isLoading={
+                (weightBalanceIsFetching && weightBalanceIsStale) ||
+                (fuelCalculationsIsFetching && fuelCalculationsIsStale)
+              }
             />
           ) : null}
         </HtmlContainer>

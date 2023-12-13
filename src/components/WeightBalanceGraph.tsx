@@ -15,7 +15,7 @@ import {
   LabelList,
 } from "recharts";
 import { styled } from "styled-components";
-import useSideBar from "../sidebar/useSideBar";
+import useSideBar from "./sidebar/useSideBar";
 
 interface HtmlTagProps {
   $SideBarIsOpen: boolean;

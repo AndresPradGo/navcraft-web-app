@@ -43,6 +43,7 @@ const useChangeAircraft = (flightId: number) => {
             queryClient.setQueryData<FlightDataFromApi>(['flight', flightId], () => (savedData))
             queryClient.invalidateQueries({queryKey: ["navLog",flightId,]})
             queryClient.invalidateQueries({queryKey: ["weightBalanceReport",flightId,]})
+            queryClient.invalidateQueries({queryKey: ["fuelCalculations",flightId,]})
         },
         onError: (error, _, context) => {
             errorToast(error)

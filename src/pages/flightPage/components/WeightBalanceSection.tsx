@@ -4,8 +4,9 @@ import _ from "lodash";
 import { styled } from "styled-components";
 
 import { WeightBalanceReportType } from "../hooks/useWeightBalanceReport";
+import { FuelCalculationsData } from "../hooks/useFuelCalculations";
 import useWeightBalanceData from "../../../hooks/useWeightBalanceData";
-import WeightBalanceGraph from "../../../components/weightBalanceGraph";
+import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
 import Loader from "../../../components/Loader";
 import Table from "../../../components/common/ExpandibleTable";
 import usePersonsOnBoard from "../hooks/usePersonsOnBoard";
@@ -38,8 +39,14 @@ interface Props {
 
 const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
   const queryClient = useQueryClient();
+
   const weightBalanceData = queryClient.getQueryData<WeightBalanceReportType>([
     "weightBalanceReport",
+    flightId,
+  ]);
+
+  const fuelCalculationsData = queryClient.getQueryData<FuelCalculationsData>([
+    "fuelCalculations",
     flightId,
   ]);
 
@@ -475,6 +482,16 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     },
   ];
 
+  const notEnoughFuel = fuelCalculationsData
+    ? fuelCalculationsData.pre_takeoff_gallons +
+        fuelCalculationsData.climb_gallons +
+        fuelCalculationsData.enroute_fuel.gallons +
+        fuelCalculationsData.additional_fuel.gallons +
+        fuelCalculationsData.reserve_fuel.gallons +
+        fuelCalculationsData.contingency_fuel.gallons >
+      fuelCalculationsData.gallons_on_board
+    : false;
+
   return (
     <>
       <WeightBalanceGraph
@@ -520,7 +537,14 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         notExpandible={true}
         icon={<ReportIcon />}
         otherComponent={
-          <FlightWarningList warnings={[weightBalanceData?.warnings || []]} />
+          <FlightWarningList
+            warnings={[
+              weightBalanceData?.warnings || [],
+              notEnoughFuel
+                ? ["There is not enough fuel on board to complete this flight."]
+                : [],
+            ]}
+          />
         }
       />
       <Table
