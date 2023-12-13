@@ -2,8 +2,11 @@ import { useState, MouseEvent } from "react";
 import {
   ComposedChart,
   Area,
+  Line,
+  Scatter,
   XAxis,
   YAxis,
+  ZAxis,
   CartesianGrid,
   Legend,
   ResponsiveContainer,
@@ -12,7 +15,7 @@ import {
   LabelList,
 } from "recharts";
 import { styled } from "styled-components";
-import useSideBar from "./sidebar/useSideBar";
+import useSideBar from "../sidebar/useSideBar";
 
 interface HtmlTagProps {
   $SideBarIsOpen: boolean;
@@ -60,12 +63,19 @@ const HtmlContainer = styled.div<HtmlTagProps>`
 interface WeightBalanceLimits {
   weight_lb: number;
   cg_location_in: number;
+  size: number;
   label?: string;
 }
 
 interface WeightBalanceProfile {
   name: string;
   limits: WeightBalanceLimits[];
+}
+
+interface WeightBalanceType {
+  zfw: WeightBalanceLimits;
+  landing: WeightBalanceLimits;
+  takeoff: WeightBalanceLimits;
 }
 
 interface Props {
@@ -76,6 +86,7 @@ interface Props {
   hideLegend?: boolean;
   width?: number;
   margin?: string;
+  weightBalance?: WeightBalanceType;
 }
 
 const WeightBalanceGraph = ({
@@ -86,6 +97,7 @@ const WeightBalanceGraph = ({
   hideLegend,
   width,
   margin,
+  weightBalance,
 }: Props) => {
   const { sideBarIsExpanded } = useSideBar();
   const [selected, setSelected] = useState(profiles.map(() => false));
@@ -141,6 +153,24 @@ const WeightBalanceGraph = ({
     );
   };
 
+  const renderResultCustomizedLabel = (props: any) => {
+    const { viewBox, value } = props;
+
+    return (
+      <g>
+        <text
+          x={viewBox.x + 35}
+          y={viewBox.y + 10}
+          fill="#fff"
+          textAnchor="middle"
+          dominantBaseline="middle"
+        >
+          {value}
+        </text>
+      </g>
+    );
+  };
+
   return (
     <HtmlContainer
       $SideBarIsOpen={sideBarIsExpanded}
@@ -150,7 +180,7 @@ const WeightBalanceGraph = ({
       {title ? <h1>{title}</h1> : null}
       <ResponsiveContainer width={"100%"} aspect={1.4} debounce={100}>
         <ComposedChart margin={{ top: 0, right: 25, left: 0, bottom: 15 }}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--color-grey" />
           <XAxis
             interval="preserveStart"
             tickCount={11}
@@ -184,6 +214,7 @@ const WeightBalanceGraph = ({
               position="center"
             />
           </YAxis>
+          <ZAxis type="number" dataKey="size" range={[1, 120]} />
           {!hideLegend ? (
             <Legend
               verticalAlign="top"
@@ -193,14 +224,14 @@ const WeightBalanceGraph = ({
                 flexWrap: "wrap",
                 justifyContent: "center",
               }}
-              onMouseOver={handleMouseEnterLegend}
-              onMouseOut={handleMouseLeaveLegend}
+              onMouseOver={!weightBalance ? handleMouseEnterLegend : () => {}}
+              onMouseOut={!weightBalance ? handleMouseLeaveLegend : () => {}}
             />
           ) : null}
           {profiles.map((p, i) => (
             <Area
-              onMouseEnter={handleMouseEnterGraph}
-              onMouseLeave={handleMouseLeaveGraph}
+              onMouseEnter={!weightBalance ? handleMouseEnterGraph : () => {}}
+              onMouseLeave={!weightBalance ? handleMouseLeaveGraph : () => {}}
               dataKey="weight_lb"
               data={p.limits}
               name={p.name}
@@ -232,6 +263,76 @@ const WeightBalanceGraph = ({
               ) : null}
             </Area>
           ))}
+          {weightBalance ? (
+            <>
+              <Line
+                dataKey="weight_lb"
+                stroke="var(--color-contrast)"
+                data={[
+                  {
+                    cg_location_in: weightBalance.zfw.cg_location_in,
+                    weight_lb: weightBalance.zfw.weight_lb,
+                  },
+                  {
+                    cg_location_in: weightBalance.landing.cg_location_in,
+                    weight_lb: weightBalance.landing.weight_lb,
+                  },
+                  {
+                    cg_location_in: weightBalance.takeoff.cg_location_in,
+                    weight_lb: weightBalance.takeoff.weight_lb,
+                  },
+                ]}
+                dot={false}
+                strokeWidth={2}
+                legendType="none"
+              />
+              <Scatter
+                name="Zero Fuel"
+                data={[weightBalance.zfw]}
+                fill="var(--color-contrast)"
+                stroke="var(--color-white)"
+                strokeWidth={2}
+                legendType="square"
+                shape="square"
+              >
+                <LabelList
+                  dataKey="label"
+                  position="right"
+                  content={renderResultCustomizedLabel}
+                />
+              </Scatter>
+              <Scatter
+                name="Landing"
+                data={[weightBalance.landing]}
+                fill="var(--color-contrast)"
+                stroke="var(--color-white)"
+                strokeWidth={2}
+                legendType="cross"
+                shape="cross"
+              >
+                <LabelList
+                  dataKey="label"
+                  position="right"
+                  content={renderResultCustomizedLabel}
+                />
+              </Scatter>
+              <Scatter
+                name="Takeoff"
+                data={[weightBalance.takeoff]}
+                fill="var(--color-contrast)"
+                stroke="var(--color-white)"
+                strokeWidth={2}
+                legendType="circle"
+                shape="circle"
+              >
+                <LabelList
+                  dataKey="label"
+                  position="right"
+                  content={renderResultCustomizedLabel}
+                />
+              </Scatter>
+            </>
+          ) : null}
           {showMTOW ? (
             <ReferenceLine
               y={maxTakeoff ? maxTakeoff / 1000 : undefined}

@@ -10,7 +10,7 @@ import { z } from "zod";
 
 import Button from "../../../components/common/button";
 import WeightBalanceLimitsList from "./weightBalanceLimitsList/WeightBalanceLimitsList";
-import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
+import WeightBalanceGraph from "../../../components/weightBalanceGraph";
 import ExpandibleMessage from "../../../components/common/ExpandibleMessage";
 import useEditWeightBalanceProfile from "../hooks/useEditWeightBalanceProfile";
 
@@ -679,6 +679,7 @@ const EditWeightBalanceProfileForm = ({
                       limits: values.limits.map((l) => ({
                         ...l,
                         weight_lb: Math.round(l.weight_lb * 100) / 100000,
+                        size: 1,
                         label: `(${l.cg_location_in}, ${
                           Math.round(l.weight_lb * 100) / 100000
                         })`,

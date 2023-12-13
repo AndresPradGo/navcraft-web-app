@@ -5,7 +5,7 @@ import { styled } from "styled-components";
 
 import { WeightBalanceReportType } from "../hooks/useWeightBalanceReport";
 import useWeightBalanceData from "../../../hooks/useWeightBalanceData";
-import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
+import WeightBalanceGraph from "../../../components/weightBalanceGraph";
 import Loader from "../../../components/Loader";
 import Table from "../../../components/common/ExpandibleTable";
 import usePersonsOnBoard from "../hooks/usePersonsOnBoard";
@@ -103,6 +103,7 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
           limits: orderLimits.map((limit) => ({
             cg_location_in: limit.cg_location_in,
             weight_lb: Math.round(limit.weight_lb * 100) / 100000,
+            size: 30,
             label: `(${limit.cg_location_in}, ${
               Math.round(limit.weight_lb * 100) / 100000
             })`,
@@ -173,7 +174,7 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
               fuelOnBoardWeightSummary.weight_lb) *
               100
           ) / 100;
-  console.log(weightBalanceData?.warnings);
+
   const fuelBurnWeightSummary = weightBalanceData?.fuel_burned.reduce(
     (total, tank) => ({
       gallons: Math.round((total.gallons + tank.gallons) * 100) / 100,
@@ -482,6 +483,31 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         title="Weight & Balance Graph"
         maxTakeoff={aircraftWeightBalanceData?.max_takeoff_weight_lb}
         margin={"0"}
+        weightBalance={
+          weightBalanceData
+            ? {
+                zfw: {
+                  weight_lb:
+                    weightBalanceData?.zero_fuel_weight.weight_lb / 1000,
+                  cg_location_in: weightBalanceData?.zero_fuel_weight.arm_in,
+                  size: 100,
+                  label: "ZFW",
+                },
+                landing: {
+                  weight_lb: weightBalanceData?.landing_weight.weight_lb / 1000,
+                  cg_location_in: weightBalanceData?.landing_weight.arm_in,
+                  size: 100,
+                  label: "LDW",
+                },
+                takeoff: {
+                  weight_lb: weightBalanceData?.takeoff_weight.weight_lb / 1000,
+                  cg_location_in: weightBalanceData?.takeoff_weight.arm_in,
+                  size: 100,
+                  label: "TOW",
+                },
+              }
+            : undefined
+        }
       />
       <Table
         title={

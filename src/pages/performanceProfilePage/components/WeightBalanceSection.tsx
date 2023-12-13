@@ -11,7 +11,7 @@ import ExpandibleTable from "../../../components/common/ExpandibleTable";
 import { useModal, Modal } from "../../../components/common/modal";
 import { WeightAndBalanceDataFromAPI } from "../../../services/weightBalanceClient";
 import formatUTCDate from "../../../utils/formatUTCDate";
-import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
+import WeightBalanceGraph from "../../../components/weightBalanceGraph";
 import DeleteWeightBalanceProfileForm from "./DeleteWeightBalanceProfileForm";
 import EditWeightBalanceProfileForm from "../components/EditWeightBalanceProfileForm";
 import { useQueryClient } from "@tanstack/react-query";
@@ -186,6 +186,7 @@ const WeightBalanceSection = ({
           limits: orderLimits.map((limit) => ({
             cg_location_in: limit.cg_location_in,
             weight_lb: Math.round(limit.weight_lb * 100) / 100000,
+            size: 1,
             label: `(${limit.cg_location_in}, ${
               Math.round(limit.weight_lb * 100) / 100000
             })`,
