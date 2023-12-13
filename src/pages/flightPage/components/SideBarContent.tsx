@@ -1,10 +1,11 @@
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { FaTools } from "react-icons/fa";
+import { FaClipboardList, FaTools } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa6";
 import { LuRefreshCw } from "react-icons/lu";
 import { MdConnectingAirports } from "react-icons/md";
 import { PiGearDuotone } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { VscGraphLine } from "react-icons/vsc";
 import { styled } from "styled-components";
 
 import SideBarIndex, {
@@ -35,6 +36,18 @@ const ToolsIcon = styled(FaTools)`
   padding-bottom: 3px;
 `;
 
+const DownloadIcon = styled(FaDownload)`
+  font-size: 20px;
+  margin-right: 8px;
+  padding-bottom: 3px;
+`;
+
+const ReportIcon = styled(FaClipboardList)`
+  font-size: 20px;
+  margin-right: 8px;
+  padding-bottom: 3px;
+`;
+
 const EditIcon = styled(PiGearDuotone)`
   font-size: 25px;
   margin-left: 5px;
@@ -60,7 +73,7 @@ const RefreshIcon = styled(LuRefreshCw)`
   margin-left: 5px;
 `;
 
-const DownloadIcon = styled(FaDownload)`
+const GraphIcon = styled(VscGraphLine)`
   font-size: 20px;
   margin-left: 5px;
 `;
@@ -152,14 +165,6 @@ const SideBarContent = ({
       onClick: handleRefreshWeather,
     },
     {
-      text: "Download Nav Log",
-      icon: <DownloadIcon />,
-      styles: { ...baseStyles },
-      onClick: () => {
-        fileFetcher(`flight-plans/nav-log/csv/${flightId}`);
-      },
-    },
-    {
       text: "Delete Flight",
       icon: <DeleteIcon />,
       styles: {
@@ -168,6 +173,25 @@ const SideBarContent = ({
         backgroundHoverColor: "var(--color-warning-hover)",
       },
       onClick: handleDeleteFlight,
+    },
+  ];
+
+  const downloadButtons = [
+    {
+      text: "Download Nav Log",
+      icon: <ReportIcon />,
+      styles: { ...baseStyles },
+      onClick: () => {
+        fileFetcher(`flight-plans/nav-log/csv/${flightId}`);
+      },
+    },
+    {
+      text: "Download W&B Graph",
+      icon: <GraphIcon />,
+      styles: { ...baseStyles },
+      onClick: () => {
+        fileFetcher(`flight-plans/weight-balance-graph/${flightId}`);
+      },
     },
   ];
 
@@ -188,6 +212,11 @@ const SideBarContent = ({
         titleIcon={<ToolsIcon />}
         title="Flight Tools"
         buttons={buttons}
+      />
+      <SideBarBtnList
+        titleIcon={<DownloadIcon />}
+        title="Downloads"
+        buttons={downloadButtons}
       />
     </HtmlContainer>
   );

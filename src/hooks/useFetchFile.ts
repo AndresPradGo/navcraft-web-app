@@ -17,21 +17,53 @@ const useFetchFile = () => {
         window.URL.revokeObjectURL(url);
     }
 
-    const saveZIPToFile = (data: Blob | ArrayBuffer, fileName: string) => {
-        const blob = new Blob([data], { type: 'application/zip' });
+    const saveZIPOrImageToFile = (data: Blob | ArrayBuffer, fileName: string, isImage?: boolean) => {
+        const blob = new Blob([data], { type: isImage ? 'image/png' : 'application/zip' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = fileName
         a.click();
         window.URL.revokeObjectURL(url);
-      }
+    }
 
+    
     return (path: string) => {
+        const isGraph = path.split("/")[1] === "weight-balance-graph"
         if (path === "runways/csv") {
-            apiClient.getZip(path)
+            apiClient.getZipOrImage(path)
             .then(res => {
-                saveZIPToFile(res.data, res.headers.filename)
+                saveZIPOrImageToFile(res.data, res.headers.filename)
+            })
+            .catch(err => {
+                const error = err as APIClientError
+                if(error.response) {
+                    if (typeof error.response.data.detail === "string")
+                        toast.error(error.response.data.detail, {
+                            position: "top-center",
+                            autoClose: 10000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "dark",
+                        });
+                } else toast.error("Something went wrong, please try again later.", {
+                    position: "top-center",
+                    autoClose: 10000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                }); 
+            })
+        } else if (isGraph) {
+            apiClient.getZipOrImage(path)
+            .then(res => {
+                saveZIPOrImageToFile(res.data, res.headers.filename, isGraph)
             })
             .catch(err => {
                 const error = err as APIClientError

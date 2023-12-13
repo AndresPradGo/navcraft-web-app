@@ -75,7 +75,7 @@ class APIClient<TPost, TGet> {
          })
     }
 
-    getZip = (endpointPostfix?: string): Promise<AxiosResponse<Blob>> => {
+    getZipOrImage = (endpointPostfix?: string): Promise<AxiosResponse<Blob>> => {
         this._setAuthHeader()
         return axiosInstance.get<Blob>(this._getEndpoint(endpointPostfix), {
             responseType: 'arraybuffer',
