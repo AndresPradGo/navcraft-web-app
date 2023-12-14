@@ -535,7 +535,7 @@ const EditDepartureArrivalForm = ({
                 )}
                 <label htmlFor="editDepartureArrival-wind_magnitude_knot">
                   <WindMagnitudeIcon />
-                  {"Wind Magnitude [Knots]"}
+                  {"Wind Magnitude [Kts]"}
                 </label>
               </HtmlInput>
               <HtmlInput

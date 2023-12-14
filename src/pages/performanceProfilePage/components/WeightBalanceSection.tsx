@@ -11,7 +11,7 @@ import ExpandibleTable from "../../../components/common/ExpandibleTable";
 import { useModal, Modal } from "../../../components/common/modal";
 import { WeightAndBalanceDataFromAPI } from "../../../services/weightBalanceClient";
 import formatUTCDate from "../../../utils/formatUTCDate";
-import WeightBalanceGraph from "../../../components/weightBalanceGraph";
+import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
 import DeleteWeightBalanceProfileForm from "./DeleteWeightBalanceProfileForm";
 import EditWeightBalanceProfileForm from "../components/EditWeightBalanceProfileForm";
 import { useQueryClient } from "@tanstack/react-query";

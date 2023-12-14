@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { AiOutlineSave } from "react-icons/ai";
 import { BiSolidEditAlt } from "react-icons/bi";
-import { BsFillFuelPumpFill } from "react-icons/bs";
-import { FaTemperatureHalf } from "react-icons/fa6";
+import { BsFillFuelPumpFill, BsThermometerSun } from "react-icons/bs";
 import { LiaTimesSolid } from "react-icons/lia";
 import { TbTrendingUp2 } from "react-icons/tb";
 import { styled } from "styled-components";
@@ -86,7 +85,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
     transform: ${(props) =>
       props.$hasValue
         ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        : "translate(17px, 50px)"};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
@@ -178,8 +177,8 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
-const TemperatureIcon = styled(FaTemperatureHalf)`
-  font-size: 20px;
+const TemperatureIcon = styled(BsThermometerSun)`
+  font-size: 25px;
   margin: 0 0 0 10px;
 `;
 

@@ -169,7 +169,7 @@ const NavLogSection = ({ flightId, isLoading, handleAdd }: Props) => {
       true_track: "Track [\u00B0T]",
       true_heading: "Heading [\u00B0T]",
       magnetic_heading: "Heading [\u00B0M]",
-      ground_speed: "G.S. [Knots]",
+      ground_speed: "G.S. [Kts]",
       total_distance: "Distance [NM]",
       total_time: "ETE [min]",
     },

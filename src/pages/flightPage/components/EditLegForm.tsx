@@ -507,7 +507,7 @@ const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
                 )}
                 <label htmlFor="editFlightLeg-wind_magnitude_knot">
                   <WindMagnitudeIcon />
-                  {"Wind Magnitude [Knots]"}
+                  {"Wind Magnitude [Kts]"}
                 </label>
               </HtmlInput>
               <HtmlInput

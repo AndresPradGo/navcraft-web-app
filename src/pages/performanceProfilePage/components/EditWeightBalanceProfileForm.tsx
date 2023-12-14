@@ -10,7 +10,7 @@ import { z } from "zod";
 
 import Button from "../../../components/common/button";
 import WeightBalanceLimitsList from "./weightBalanceLimitsList/WeightBalanceLimitsList";
-import WeightBalanceGraph from "../../../components/weightBalanceGraph";
+import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
 import ExpandibleMessage from "../../../components/common/ExpandibleMessage";
 import useEditWeightBalanceProfile from "../hooks/useEditWeightBalanceProfile";
 

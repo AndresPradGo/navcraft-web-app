@@ -13,6 +13,7 @@ interface HtmlListProps {
 
 const HtmlList = styled.ul<HtmlListProps>`
   transition: all 0.2s ease-out;
+  width: 280px;
   max-height: ${(props) => (props.$expanded ? "300px" : "0")};
   overflow-x: hidden;
   overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
@@ -33,7 +34,7 @@ const HtmlListItem = styled.li`
   align-items: center;
   cursor: pointer;
   transition: all 0.2s linear;
-  min-width: calc(280px - 2px);
+  min-width: 278px;
   color: var(--color-grey-bright);
   background-color: var(--color-primary-light);
   padding: 10px 20px;

@@ -39,6 +39,8 @@ const HtmlDataList = styled.ul<HtmlTagProps>`
     & span {
       text-align: right;
       padding-left: 8px;
+      text-wrap: wrap;
+      overflow: hidden;
     }
   }
 
@@ -53,7 +55,7 @@ export interface DataType {
   key: string;
   title: string;
   icon?: ReactNode;
-  data: string;
+  data: string | number;
 }
 
 interface Props {
@@ -65,7 +67,7 @@ interface Props {
 const DataTableList = ({ dataList, maxWidth, margin }: Props) => {
   return (
     <HtmlDataList
-      $maxWidth={maxWidth !== undefined ? maxWidth : 800}
+      $maxWidth={maxWidth !== undefined ? maxWidth : 700}
       $margin={margin !== undefined ? margin : "35px 0"}
     >
       {dataList.map((item) => {

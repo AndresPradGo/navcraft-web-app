@@ -85,7 +85,7 @@ const CruiseSection = ({ profileId }: Props) => {
     <HtmlDataContainer>
       <ExpandibleTable
         tableData={performanceTableData}
-        title="Climb Performance Data"
+        title="Cruise Performance Data"
         hanldeAdd={() => {}}
         pageSize={10}
         emptyTableMessage="Climb performance table is empty..."

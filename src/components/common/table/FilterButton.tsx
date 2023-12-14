@@ -15,7 +15,7 @@ interface HtmlFormProps {
 const HtmlForm = styled.ul<HtmlFormProps>`
   transition: all 0.2s ease-out;
   max-height: ${(props) => (props.$expanded ? "300px" : "0")};
-  max-width: 280px;
+  width: 280px;
   overflow-x: hidden;
   overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
   z-index: 10;
@@ -33,7 +33,7 @@ const HtmlForm = styled.ul<HtmlFormProps>`
     outline: 0;
     border: none;
     transition: all 0.2s linear;
-    min-width: calc(280px - 2px);
+    min-width: 280px;
     color: var(--color-grey-bright);
     background-color: var(--color-primary-light);
     padding: 10px 10px 10px 20px;
@@ -58,7 +58,7 @@ const HtmlCheckbox = styled.label`
   justify-content: space-between;
   align-items: center;
   transition: all 0.2s linear;
-  min-width: calc(280px - 2px);
+  min-width: 278px;
   color: var(--color-grey-bright);
   background-color: var(--color-primary-light);
   padding: 10px 10px 10px 20px;

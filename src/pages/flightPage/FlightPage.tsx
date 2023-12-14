@@ -43,6 +43,7 @@ import {
   MapInputStyleType,
 } from "../../components/SideBarMapOptions";
 import NavLogSection from "./components/NavLogSection";
+import TakeoffLandinDistancesSection from "./components/TakeoffLandinDistancesSection";
 import AddLegForm from "./components/AddLegForm";
 import WeightBalanceSection from "./components/WeightBalanceSection";
 
@@ -576,6 +577,28 @@ const FlightPage = () => {
               isLoading={
                 (weightBalanceIsFetching && weightBalanceIsStale) ||
                 (fuelCalculationsIsFetching && fuelCalculationsIsStale)
+              }
+            />
+          ) : sectionIdx === 3 ? (
+            <TakeoffLandinDistancesSection
+              isTakeoff={true}
+              aerodrome={departure ? departure.name : "-"}
+              elevation={departure ? departure.elevation_ft : 0}
+              flightId={flightId}
+              isLoading={
+                takeoffLandingDistancesIsFetching &&
+                takeoffLandingDistancesIsStale
+              }
+            />
+          ) : sectionIdx === 4 ? (
+            <TakeoffLandinDistancesSection
+              isTakeoff={false}
+              aerodrome={arrival ? arrival.name : "-"}
+              elevation={arrival ? arrival.elevation_ft : 0}
+              flightId={flightId}
+              isLoading={
+                takeoffLandingDistancesIsFetching &&
+                takeoffLandingDistancesIsStale
               }
             />
           ) : null}
