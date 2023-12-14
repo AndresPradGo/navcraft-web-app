@@ -91,6 +91,7 @@ const usePostNewLeg = (flightId: number, isLeg?: boolean) => {
             queryClient.invalidateQueries({queryKey: ["navLog",flightId,]})
             queryClient.invalidateQueries({queryKey: ["weightBalanceReport",flightId,]})
             queryClient.invalidateQueries({queryKey: ["fuelCalculations",flightId,]})
+            queryClient.invalidateQueries({queryKey: ["takeoffLandingDistances",flightId,]})
         },
         onError: (error, _, context) => {
             errorToast(error)

@@ -44,6 +44,7 @@ const useEditFlight = (flightId: number) => {
             queryClient.invalidateQueries({queryKey: ["navLog",flightId,]})
             queryClient.invalidateQueries({queryKey: ["weightBalanceReport",flightId,]})
             queryClient.invalidateQueries({queryKey: ["fuelCalculations",flightId,]})
+            queryClient.invalidateQueries({queryKey: ["takeoffLandingDistances",flightId,]})
         },
         onError: (error, _, context) => {
             errorToast(error)

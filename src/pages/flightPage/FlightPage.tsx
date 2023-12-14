@@ -34,6 +34,7 @@ import MapSection from "./components/map/MapSection";
 import { useSideBar } from "../../components/sidebar";
 import useNavLogData from "./hooks/useNavLogData";
 import useWeightBalanceReport from "./hooks/useWeightBalanceReport";
+import useTakeoffLandingDistances from "./hooks/useTakeoffLandingDistances";
 import useFuelCalculations from "./hooks/useFuelCalculations";
 import useVfrWaypointsData from "../../hooks/useVfrWaypointsData";
 import useUserWaypointsData from "../../hooks/useUserWaypointsData";
@@ -239,6 +240,13 @@ const FlightPage = () => {
     isStale: fuelCalculationsIsStale,
   } = useFuelCalculations(flightId);
 
+  const {
+    isLoading: takeoffLandingDistancesIsLoading,
+    error: takeoffLandingDistancesError,
+    isFetching: takeoffLandingDistancesIsFetching,
+    isStale: takeoffLandingDistancesIsStale,
+  } = useTakeoffLandingDistances(flightId);
+
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if (
     (error && error.message === "Network Error") ||
@@ -248,7 +256,8 @@ const FlightPage = () => {
     vfrWaypointsError ||
     userWaypointsError ||
     weightBalanceError ||
-    fuelCalculationsError
+    fuelCalculationsError ||
+    takeoffLandingDistancesError
   )
     throw new Error("");
   if (
@@ -259,7 +268,8 @@ const FlightPage = () => {
     vfrWaypointsIsLoading ||
     userWaypointsIsLoading ||
     weightBalanceIsLoading ||
-    fuelCalculationsIsLoading
+    fuelCalculationsIsLoading ||
+    takeoffLandingDistancesIsLoading
   )
     return <Loader />;
 
