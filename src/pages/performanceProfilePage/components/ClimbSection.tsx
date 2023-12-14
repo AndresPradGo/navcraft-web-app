@@ -1,5 +1,4 @@
-import { BsFillFuelPumpFill } from "react-icons/bs";
-import { FaTemperatureHalf } from "react-icons/fa6";
+import { BsFillFuelPumpFill, BsThermometerSun } from "react-icons/bs";
 import { useQueryClient } from "@tanstack/react-query";
 import { styled } from "styled-components";
 
@@ -34,7 +33,7 @@ const FuelIcon = styled(BsFillFuelPumpFill)`
   }
 `;
 
-const TemperatureIcon = styled(FaTemperatureHalf)`
+const TemperatureIcon = styled(BsThermometerSun)`
   font-size: 25px;
   margin: 0 5px 0 0;
 

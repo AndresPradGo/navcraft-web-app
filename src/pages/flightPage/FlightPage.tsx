@@ -46,6 +46,7 @@ import NavLogSection from "./components/NavLogSection";
 import TakeoffLandinDistancesSection from "./components/TakeoffLandinDistancesSection";
 import AddLegForm from "./components/AddLegForm";
 import WeightBalanceSection from "./components/WeightBalanceSection";
+import FuelCalculationsSection from "./components/FuelCalculationsSection";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -578,6 +579,11 @@ const FlightPage = () => {
                 (weightBalanceIsFetching && weightBalanceIsStale) ||
                 (fuelCalculationsIsFetching && fuelCalculationsIsStale)
               }
+            />
+          ) : sectionIdx === 2 ? (
+            <FuelCalculationsSection
+              flightId={flightId}
+              isLoading={fuelCalculationsIsFetching && fuelCalculationsIsStale}
             />
           ) : sectionIdx === 3 ? (
             <TakeoffLandinDistancesSection

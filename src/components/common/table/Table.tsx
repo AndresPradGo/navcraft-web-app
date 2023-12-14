@@ -103,6 +103,10 @@ const HtmlTableBody = styled.tbody<HtmlTagProps>`
 
 const HtmlTableRow = styled.tr<HtmlTagProps>`
   display: flex;
+  box-shadow: ${(props) =>
+    props.$isResult
+      ? "0 0 5px 2px var(--color-shadow)"
+      : "0 0 0 0 transparent"};
   flex-direction: column;
   align-items: center;
   padding: 0;
@@ -110,9 +114,7 @@ const HtmlTableRow = styled.tr<HtmlTagProps>`
   text-align: left;
   white-space: normal;
   border-radius: 3px;
-  border: 2px solid
-    ${(props) =>
-      props.$isResult ? "var(--color-highlight)" : "var(--color-primary)"};
+
   font-weight: ${(props) => (props.$isResult ? "bold" : "normal")};
   font-style: ${(props) => (props.$isResult ? "italic" : "normal")};
   overflow: hidden;

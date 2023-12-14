@@ -314,11 +314,11 @@ const TakeoffLandinDistancesSection = ({
         title={
           isTakeoff
             ? isLoading
-              ? "Takeoff Distances"
-              : "Takeoff Distances"
+              ? "Takeoff Performance Report"
+              : "Takeoff Performance Report"
             : isLoading
-            ? "Landing Distances"
-            : "Landing Distances"
+            ? "Landing Performance Report"
+            : "Landing Performance Report"
         }
         hanldeAdd={() => {}}
         disableAdd={true}
