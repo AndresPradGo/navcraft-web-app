@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { APIClientError } from '../../services/apiClient';
 import apiClient, {FlightDataFromApi, AddFlightData} from '../../services/flightsClient'
 import errorToast from '../../utils/errorToast';
+import getUTCNowString from '../../utils/getUTCNowString';
 
 interface FlightContext {
     previousData?: FlightDataFromApi[]
@@ -30,10 +31,31 @@ const useAddFlight = () => {
             legs: []
         }
         queryClient.setQueryData<FlightDataFromApi[]>(['flights', 'all'], currentData => {
+            const flightToAdd = {
+                ...newFlight,
+                departure_weather: {
+                    temperature_c: 15,
+                    altimeter_inhg: 29.92,
+                    wind_magnitude_knot: 0,
+                    wind_direction: null,
+                    temperature_last_updated: getUTCNowString(),
+                    wind_last_updated: getUTCNowString(),
+                    altimeter_last_updated: getUTCNowString(),
+                },
+                arrival_weather: {
+                    temperature_c: 15,
+                    altimeter_inhg: 29.92,
+                    wind_magnitude_knot: 0,
+                    wind_direction: null,
+                    temperature_last_updated: getUTCNowString(),
+                    wind_last_updated: getUTCNowString(),
+                    altimeter_last_updated: getUTCNowString(),
+                }
+            }
             return (currentData ? [
                 ...currentData,
-                newFlight
-            ]: [newFlight])
+                flightToAdd
+            ]: [flightToAdd])
         })
         return {previousData}
     },

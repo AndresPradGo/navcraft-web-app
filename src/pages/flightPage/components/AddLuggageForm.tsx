@@ -165,16 +165,22 @@ const TitleIcon = styled(MdLuggage)`
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+interface CloseIconProps {
+  $disabled: boolean;
+}
+
+const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: pointer;
+  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
   color: var(--color-grey);
+  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
 
   &:hover,
   &:focus {
-    color: var(--color-white);
+    color: ${(props) =>
+      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
   }
 
   @media screen and (min-width: 510px) {
@@ -267,7 +273,11 @@ const AddLuggageForm = ({
           <TitleIcon />
           {`Load ${compartment.name}`}
         </div>
-        <CloseIcon onClick={closeModal} />
+        {mutation.isLoading ? (
+          <CloseIcon onClick={() => {}} $disabled={true} />
+        ) : (
+          <CloseIcon onClick={closeModal} $disabled={false} />
+        )}
       </h1>
       <HtmlInputContainer>
         {mutation.isLoading ? (

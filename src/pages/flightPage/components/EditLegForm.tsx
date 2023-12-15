@@ -278,19 +278,25 @@ const AltimeterIcon = styled(FaArrowUpFromGroundWater)`
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+interface CloseIconProps {
+  $disabled: boolean;
+}
+
+const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: pointer;
+  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
   color: var(--color-grey);
+  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
 
   &:hover,
   &:focus {
-    color: var(--color-white);
+    color: ${(props) =>
+      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
   }
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 510px) {
     margin: 0 10px;
     font-size: 30px;
   }
@@ -447,7 +453,11 @@ const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
           <TitleIcon />
           {`Edit Leg ${route}`}
         </div>
-        <CloseIcon onClick={closeModal} />
+        {mutation.isLoading ? (
+          <CloseIcon onClick={() => {}} $disabled={true} />
+        ) : (
+          <CloseIcon onClick={closeModal} $disabled={false} />
+        )}
       </h1>
       <HtmlInputContainer $isLoading={mutation.isLoading}>
         {mutation.isLoading ? (
