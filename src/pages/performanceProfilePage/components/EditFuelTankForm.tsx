@@ -372,7 +372,7 @@ const EditFuelTankForm = ({
             }-tank_fuel_capacity_gallons`}
           >
             <CapacityIcon />
-            {"Fuel Capacity [gal]"}
+            {"Usable Capacity [gal]"}
           </label>
         </HtmlInput>
         <HtmlInput

@@ -331,7 +331,7 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
 
   const submitHandler = (data: FieldValues) => {
     const wrongDatatime = checkDepartureTime({
-      departure_time: watch("departure_time"),
+      departure_time: data.departure_time,
     });
     if (!wrongDatatime) {
       clearErrors("departure_time");

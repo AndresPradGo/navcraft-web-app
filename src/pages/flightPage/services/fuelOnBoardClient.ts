@@ -1,15 +1,11 @@
 import APIClient from '../../../services/apiClient';
+import {FuelDataFromForm} from '../components/AddFuelForm'
 
-interface EditFuelOnBoardData {
-    gallons: number,
-}
-
-export interface FuelOnBoardDataFromAPI extends EditFuelOnBoardData {
-    id: number,
+export interface FuelOnBoardDataFromAPI extends FuelDataFromForm {
     fuel_tank_id: number,
     weight_lb: number
 }
 
-const apiClient = new APIClient<EditFuelOnBoardData, FuelOnBoardDataFromAPI>("/flight-weight-balance-data/fuel")
+const apiClient = new APIClient<FuelDataFromForm, FuelOnBoardDataFromAPI>("/flight-weight-balance-data/fuel")
 
 export default apiClient;

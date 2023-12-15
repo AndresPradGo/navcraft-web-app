@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { PiClipboardTextDuotone } from "react-icons/pi";
 import _ from "lodash";
@@ -14,6 +15,8 @@ import useLuggage from "../hooks/useLuggage";
 import useFuelOnBoard from "../hooks/useFuelOnBoard";
 import useAircraftArrangementData from "../../../hooks/useAircraftArrangementData";
 import FlightWarningList from "../../../components/FlightWarningList";
+import { Modal, useModal } from "../../../components/common/modal";
+import AddFuelForm from "./AddFuelForm";
 
 const HtmlLoaderContainer = styled.div`
   margin: 35px 0 0;
@@ -38,6 +41,20 @@ interface Props {
 }
 
 const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
+  const [itemToEdit, setItemToEdit] = useState<{
+    id: number;
+    name: string;
+    capacity: number;
+    value: number;
+    type: "fuel" | "luggage" | null;
+  }>({
+    id: 0,
+    capacity: 0,
+    value: 0,
+    name: "",
+    type: null,
+  });
+
   const queryClient = useQueryClient();
 
   const weightBalanceData = queryClient.getQueryData<WeightBalanceReportType>([
@@ -49,6 +66,8 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     "fuelCalculations",
     flightId,
   ]);
+
+  const modal = useModal();
 
   const {
     data: personsOnBoard,
@@ -254,9 +273,9 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         isResult: true,
       },
       {
-        item: `Fuel on Board (gal: ${
+        item: `Fuel on Board (${
           fuelOnBoardWeightSummary ? fuelOnBoardWeightSummary.gallons : 0
-        })`,
+        } gal)`,
         id: 5,
         weight_lb: fuelOnBoardWeightSummary?.weight_lb || "-",
         arm_in: fuelOnBoardWeightSummary?.arm_in || "-",
@@ -277,11 +296,11 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         isResult: true,
       },
       {
-        item: `Taxi Fuel (gal: ${
+        item: `Taxi Fuel (${
           weightBalanceData
             ? weightBalanceData.fuel_burned_pre_takeoff.gallons
             : 0
-        })`,
+        } gal)`,
         id: 7,
         weight_lb: weightBalanceData?.fuel_burned_pre_takeoff.weight_lb || "-",
         arm_in: weightBalanceData?.fuel_burned_pre_takeoff.arm_in || "-",
@@ -303,9 +322,9 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         isResult: true,
       },
       {
-        item: `Fuel Burn (gal: ${
+        item: `Fuel Burn (${
           fuelBurnWeightSummary ? fuelBurnWeightSummary.gallons : 0
-        })`,
+        } gal)`,
         id: 9,
         weight_lb: fuelBurnWeightSummary?.weight_lb || "-",
         arm_in: fuelBurnWeightSummary?.arm_in || "-",
@@ -460,7 +479,16 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         arm_in: tank.arm_in,
         moment_lb_in:
           Math.round(tank.arm_in * (fuel ? fuel.weight_lb : 0) * 100) / 100,
-        handleEdit: () => {},
+        handleEdit: () => {
+          setItemToEdit({
+            id: fuel ? fuel.id : 0,
+            capacity: tank.fuel_capacity_gallons,
+            value: fuel ? fuel.gallons : 0,
+            name: tank.name,
+            type: "fuel",
+          });
+          modal.handleOpen();
+        },
         handleDelete: () => {},
         permissions: "edit" as "edit",
       };
@@ -494,6 +522,19 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
 
   return (
     <>
+      <Modal isOpen={modal.isOpen}>
+        <AddFuelForm
+          flightId={flightId}
+          fuelData={{
+            id: itemToEdit.id,
+            gallons: itemToEdit.value,
+          }}
+          tank={itemToEdit.name}
+          usableCapacity={itemToEdit.capacity}
+          closeModal={modal.handleClose}
+          isOpen={modal.isOpen}
+        />
+      </Modal>
       <WeightBalanceGraph
         showMTOW={true}
         profiles={profiles}

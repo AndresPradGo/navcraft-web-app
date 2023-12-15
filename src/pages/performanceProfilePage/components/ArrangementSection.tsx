@@ -180,7 +180,7 @@ const ArrangementSection = ({
     headers: {
       name: "Name",
       arm_in: "Arm [in]",
-      fuel_capacity_gallons: "Fuel Capacity [gal]",
+      fuel_capacity_gallons: "Usable Capacity [gal]",
       burn_sequence: "Burn Sequence",
       unusable_fuel_gallons: "Unusable Fuel [gal]",
     },
