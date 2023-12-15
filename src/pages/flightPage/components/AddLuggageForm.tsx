@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { AiOutlineSave } from "react-icons/ai";
-import { BsFillFuelPumpFill } from "react-icons/bs";
+import { GiWeight } from "react-icons/gi";
 import { LiaTimesSolid } from "react-icons/lia";
-import { PiGasCanDuotone } from "react-icons/pi";
+import { MdLuggage } from "react-icons/md";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Button from "../../../components/common/button";
-import useAddFuel from "../hooks/useAddFuel";
+import useAddLuggage from "../hooks/useAddLuggage";
 import Loader from "../../../components/Loader";
 
 const HtmlForm = styled.form`
@@ -155,7 +155,7 @@ const SaveIcon = styled(AiOutlineSave)`
   flex-shrink: 0;
 `;
 
-const TitleIcon = styled(BsFillFuelPumpFill)`
+const TitleIcon = styled(MdLuggage)`
   flex-shrink: 0;
   font-size: 30px;
   margin: 0 10px;
@@ -183,36 +183,36 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
-const GallonsIcon = styled(PiGasCanDuotone)`
+const WeightIcon = styled(GiWeight)`
   font-size: 25px;
   margin: 0 5px 0 10px;
 `;
 
 const schema = z.object({
-  gallons: z
+  weight_lb: z
     .number({ invalid_type_error: "Enter a number" })
     .min(0, { message: "Must be a positive number" }),
 });
 type FormDataType = z.infer<typeof schema>;
 
-export interface FuelDataFromForm extends FormDataType {
+export interface LuggageDataFromForm extends FormDataType {
   id: number;
 }
 
 interface Props {
   flightId: number;
-  fuelData: FuelDataFromForm;
-  tank: string;
-  usableCapacity: number;
+  luggageData: LuggageDataFromForm;
+  compartment: { name: string; id: number };
+  maxWeight: { compartment?: number; total?: number };
   closeModal: () => void;
   isOpen: boolean;
 }
 
-const AddFuelForm = ({
+const AddLuggageForm = ({
   flightId,
-  fuelData,
-  tank,
-  usableCapacity,
+  luggageData,
+  compartment,
+  maxWeight,
   closeModal,
   isOpen,
 }: Props) => {
@@ -223,17 +223,15 @@ const AddFuelForm = ({
     handleSubmit,
     formState: { errors },
     reset,
-    setError,
-    clearErrors,
     watch,
   } = useForm<FormDataType>({ resolver: zodResolver(schema) });
 
-  const mutation = useAddFuel(flightId);
+  const mutation = useAddLuggage(flightId);
 
   useEffect(() => {
     if (isOpen) {
       reset({
-        gallons: fuelData.gallons,
+        weight_lb: luggageData.weight_lb,
       });
     }
   }, [isOpen]);
@@ -244,40 +242,30 @@ const AddFuelForm = ({
     }
   }, [submited, mutation.isLoading]);
 
-  useEffect(() => {
-    checkWithinCapacity(watch("gallons"));
-  }, [watch("gallons")]);
-
-  const checkWithinCapacity = (gallons: number): boolean => {
-    if (gallons > usableCapacity) {
-      setError("gallons", {
-        type: "manual",
-        message: `Maximum usable capacity is ${usableCapacity} gallons`,
-      });
-      return false;
-    } else {
-      clearErrors("gallons");
-      return true;
-    }
-  };
-
   const submitHandler = (data: FieldValues) => {
-    const isWithinCapacity = checkWithinCapacity(data.gallons);
-    if (isWithinCapacity) {
-      mutation.mutate({
-        id: fuelData.id,
-        gallons: data.gallons,
-      });
-      setSubmited(true);
-    }
+    mutation.mutate({
+      id: luggageData.id,
+      weight_lb: data.weight_lb,
+      baggage_compartment_id: compartment.id,
+      name: compartment.name,
+    });
+    setSubmited(true);
   };
+
+  const warnings = [];
+  if (maxWeight.total)
+    warnings.push(`Baggage Allowance: ${maxWeight.total} lb.`);
+  if (maxWeight.compartment)
+    warnings.push(
+      `Maximum weight in ${compartment.name}: ${maxWeight.compartment} lb.`
+    );
 
   return (
     <HtmlForm onSubmit={handleSubmit(submitHandler)}>
       <h1>
         <div>
           <TitleIcon />
-          {`${tank} Fuel`}
+          {`Load ${compartment.name}`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
@@ -285,23 +273,37 @@ const AddFuelForm = ({
         {mutation.isLoading ? (
           <Loader />
         ) : (
-          <HtmlInput
-            $required={true}
-            $hasValue={!!watch("gallons") || watch("gallons") === 0}
-            $accepted={!errors.gallons}
-          >
-            <input
-              {...register("gallons", { valueAsNumber: true })}
-              id={`${fuelData.id}-fuel`}
-              type="number"
-              autoComplete="off"
-            />
-            {errors.gallons ? <p>{errors.gallons.message}</p> : <p>&nbsp;</p>}
-            <label htmlFor={`${fuelData.id}-fuel`}>
-              <GallonsIcon />
-              {"Gallons"}
-            </label>
-          </HtmlInput>
+          <>
+            {maxWeight.compartment || maxWeight.total ? (
+              <ul>
+                {warnings.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
+            <HtmlInput
+              $required={true}
+              $hasValue={!!watch("weight_lb") || watch("weight_lb") === 0}
+              $accepted={!errors.weight_lb}
+            >
+              <input
+                {...register("weight_lb", { valueAsNumber: true })}
+                id={`${compartment.id}-luggage`}
+                type="number"
+                autoComplete="off"
+                step="any"
+              />
+              {errors.weight_lb ? (
+                <p>{errors.weight_lb.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor={`${compartment.id}-luggage`}>
+                <WeightIcon />
+                {"Weight [lb]"}
+              </label>
+            </HtmlInput>
+          </>
         )}
       </HtmlInputContainer>
       <HtmlButtons>
@@ -344,4 +346,4 @@ const AddFuelForm = ({
   );
 };
 
-export default AddFuelForm;
+export default AddLuggageForm;

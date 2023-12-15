@@ -17,6 +17,7 @@ import useAircraftArrangementData from "../../../hooks/useAircraftArrangementDat
 import FlightWarningList from "../../../components/FlightWarningList";
 import { Modal, useModal } from "../../../components/common/modal";
 import AddFuelForm from "./AddFuelForm";
+import AddLuggageForm from "./AddLuggageForm";
 
 const HtmlLoaderContainer = styled.div`
   margin: 35px 0 0;
@@ -41,18 +42,34 @@ interface Props {
 }
 
 const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
-  const [itemToEdit, setItemToEdit] = useState<{
+  const [typeItemToEdit, setTypeItemToEdit] = useState<
+    "fuel" | "luggage" | null
+  >(null);
+
+  const [fuelToEditData, setFuelToEditData] = useState<{
     id: number;
     name: string;
     capacity: number;
     value: number;
-    type: "fuel" | "luggage" | null;
   }>({
     id: 0,
     capacity: 0,
     value: 0,
     name: "",
-    type: null,
+  });
+
+  const [luggageToEditData, setLuggageToEditData] = useState<{
+    id: number;
+    compartmentName: string;
+    compartmentId: number;
+    totalMaxWeight?: number;
+    compartmentMaxWeight?: number;
+    value: number;
+  }>({
+    id: 0,
+    compartmentName: "",
+    compartmentId: 0,
+    value: 0,
   });
 
   const queryClient = useQueryClient();
@@ -427,18 +444,28 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
       moment_lb_in: "Moment [lb-in]",
     },
     rows: arrangementData.baggage_compartments.map((item) => {
-      const weight = luggage.reduce(
-        (total, bag) =>
-          (total += bag.baggage_compartment_id === item.id ? bag.weight_lb : 0),
-        0
-      );
+      const bag = luggage.find((b) => b.baggage_compartment_id === item.id);
+      const weight = bag ? bag.weight_lb : 0;
       return {
         id: item.id,
         compartment: item.name,
         weight_lb: weight,
         arm_in: item.arm_in,
         moment_lb_in: Math.round(item.arm_in * weight * 100) / 100,
-        handleEdit: () => {},
+        handleEdit: () => {
+          setLuggageToEditData({
+            id: bag ? bag.id : 0,
+            compartmentName: item.name,
+            compartmentId: item.id,
+            totalMaxWeight: aircraftWeightBalanceData?.baggage_allowance_lb,
+            compartmentMaxWeight: item.weight_limit_lb
+              ? item.weight_limit_lb
+              : undefined,
+            value: weight,
+          });
+          setTypeItemToEdit("luggage");
+          modal.handleOpen();
+        },
         handleDelete: () => {},
         permissions: "edit" as "edit",
       };
@@ -480,13 +507,13 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         moment_lb_in:
           Math.round(tank.arm_in * (fuel ? fuel.weight_lb : 0) * 100) / 100,
         handleEdit: () => {
-          setItemToEdit({
+          setFuelToEditData({
             id: fuel ? fuel.id : 0,
             capacity: tank.fuel_capacity_gallons,
             value: fuel ? fuel.gallons : 0,
             name: tank.name,
-            type: "fuel",
           });
+          setTypeItemToEdit("fuel");
           modal.handleOpen();
         },
         handleDelete: () => {},
@@ -523,17 +550,37 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
   return (
     <>
       <Modal isOpen={modal.isOpen}>
-        <AddFuelForm
-          flightId={flightId}
-          fuelData={{
-            id: itemToEdit.id,
-            gallons: itemToEdit.value,
-          }}
-          tank={itemToEdit.name}
-          usableCapacity={itemToEdit.capacity}
-          closeModal={modal.handleClose}
-          isOpen={modal.isOpen}
-        />
+        {typeItemToEdit === "fuel" ? (
+          <AddFuelForm
+            flightId={flightId}
+            fuelData={{
+              id: fuelToEditData.id,
+              gallons: fuelToEditData.value,
+            }}
+            tank={fuelToEditData.name}
+            usableCapacity={fuelToEditData.capacity}
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+          />
+        ) : typeItemToEdit === "luggage" ? (
+          <AddLuggageForm
+            flightId={flightId}
+            luggageData={{
+              id: luggageToEditData.id,
+              weight_lb: luggageToEditData.value,
+            }}
+            compartment={{
+              id: luggageToEditData.compartmentId,
+              name: luggageToEditData.compartmentName,
+            }}
+            maxWeight={{
+              total: luggageToEditData.totalMaxWeight,
+              compartment: luggageToEditData.compartmentMaxWeight,
+            }}
+            closeModal={modal.handleClose}
+            isOpen={modal.isOpen}
+          />
+        ) : null}
       </Modal>
       <WeightBalanceGraph
         showMTOW={true}

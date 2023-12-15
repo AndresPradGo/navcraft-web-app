@@ -3,15 +3,17 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { APIClientError } from '../../../services/apiClient';
 import errorToast from '../../../utils/errorToast';
-import apiClient, {FuelOnBoardDataFromAPI} from '../services/fuelOnBoardClient';
-import {FuelDataFromForm} from '../components/AddFuelForm'
+import apiClient, {BaggageDataFromAPI} from '../services/luggageClient';
 
-const useAddFuel = (flightId: number) => {
+const useAddLuggage = (flightId: number) => {
     const queryClient = useQueryClient();
-    return useMutation<FuelOnBoardDataFromAPI, APIClientError, FuelDataFromForm>({
-        mutationFn: data => (apiClient.edit(data, `/${data.id}`)),
-        onSuccess: savedData => {
-            toast.success("Aircraft has been refuelled successfully", {
+    return useMutation<BaggageDataFromAPI, APIClientError, BaggageDataFromAPI>({
+        mutationFn: data => {
+            if(data.id === 0) return apiClient.post(data, `/${flightId}`)
+            return apiClient.edit(data, `/${data.id}`)
+        },
+        onSuccess: (savedData, newData) => {
+            toast.success("Luggage has been loaded successfully", {
                 position: "top-center",
                 autoClose: 10000,
                 hideProgressBar: false,
@@ -21,9 +23,12 @@ const useAddFuel = (flightId: number) => {
                 progress: undefined,
                 theme: "dark",
             });
-            queryClient.setQueryData<FuelOnBoardDataFromAPI[]>(['fuelOnBoard', flightId], currentData => (
-                currentData ? currentData.map(fuel => fuel.id === savedData.id ? savedData: fuel) : [savedData]
-                ))
+            queryClient.setQueryData<BaggageDataFromAPI[]>(['luggage', flightId], currentData => {
+                if(newData.id === 0) {
+                    return (currentData ? [...currentData, savedData] : [savedData])
+                }
+                return (currentData ? currentData.map(item => item.id === savedData.id ? savedData: item) : [savedData])
+            })
             queryClient.invalidateQueries({queryKey: ["navLog",flightId,]})
             queryClient.invalidateQueries({queryKey: ["weightBalanceReport",flightId,]})
             queryClient.invalidateQueries({queryKey: ["fuelCalculations",flightId,]})
@@ -33,5 +38,4 @@ const useAddFuel = (flightId: number) => {
     })
 }
 
-
-export default useAddFuel
+export default useAddLuggage
