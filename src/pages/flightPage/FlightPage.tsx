@@ -199,18 +199,26 @@ const FlightPage = () => {
   const { data: flightData, error, isLoading } = useFlightData(flightId);
 
   const {
+    data: aircraftList,
+    isLoading: aircraftListIsLoading,
+    error: aircraftListError,
+  } = useAircraftDataList(true);
+  const aircraft = aircraftList?.find((a) => a.id === flightData?.aircraft_id);
+  const aircraftProfile = aircraft?.profiles.find((p) => p.is_preferred);
+
+  const {
     isLoading: legsIsLoading,
     error: legsError,
     isFetching: legsIsFetching,
     isStale: legsIsStale,
-  } = useNavLogData(flightId);
+  } = useNavLogData(flightId, !aircraft && !aircraftProfile);
 
   const {
     isLoading: weightBalanceIsLoading,
     error: weightBalanceError,
     isFetching: weightBalanceIsFetching,
     isStale: weightBalanceIsStale,
-  } = useWeightBalanceReport(flightId);
+  } = useWeightBalanceReport(flightId, !aircraft && !aircraftProfile);
 
   const {
     data: aerodromes,
@@ -228,47 +236,55 @@ const FlightPage = () => {
   } = useUserWaypointsData();
 
   const {
-    data: aircraftList,
-    isLoading: aircraftListIsLoading,
-    error: aircraftListError,
-  } = useAircraftDataList(true);
-  const aircraft = aircraftList?.find((a) => a.id === flightData?.aircraft_id);
-  const aircraftProfile = aircraft?.profiles.find((p) => p.is_preferred);
-
-  const {
     isLoading: fuelCalculationsIsLoading,
     error: fuelCalculationsError,
     isFetching: fuelCalculationsIsFetching,
     isStale: fuelCalculationsIsStale,
-  } = useFuelCalculations(flightId);
+  } = useFuelCalculations(flightId, !aircraft && !aircraftProfile);
 
   const {
     isLoading: takeoffLandingDistancesIsLoading,
     error: takeoffLandingDistancesError,
     isFetching: takeoffLandingDistancesIsFetching,
     isStale: takeoffLandingDistancesIsStale,
-  } = useTakeoffLandingDistances(flightId);
+  } = useTakeoffLandingDistances(flightId, !aircraft && !aircraftProfile);
 
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if (
     (error && error.message === "Network Error") ||
     aerodromesError ||
     aircraftListError ||
-    legsError ||
+    (legsError &&
+      legsError?.response?.data.detail !== "Flight doesn't have an aircraft." &&
+      legsError?.response?.data.detail !==
+        "The flight's aircraft doesn't have preferred performance profile.") ||
     vfrWaypointsError ||
     userWaypointsError ||
-    weightBalanceError ||
-    fuelCalculationsError ||
-    takeoffLandingDistancesError
+    (weightBalanceError &&
+      weightBalanceError?.response?.data.detail !==
+        "Flight doesn't have an aircraft." &&
+      weightBalanceError?.response?.data.detail !==
+        "The flight's aircraft doesn't have preferred performance profile.") ||
+    (fuelCalculationsError &&
+      fuelCalculationsError?.response?.data.detail !==
+        "Flight doesn't have an aircraft." &&
+      fuelCalculationsError?.response?.data.detail !==
+        "The flight's aircraft doesn't have preferred performance profile.") ||
+    (takeoffLandingDistancesError &&
+      takeoffLandingDistancesError?.response?.data.detail !==
+        "Flight doesn't have an aircraft." &&
+      takeoffLandingDistancesError?.response?.data.detail !==
+        "The flight's aircraft doesn't have preferred performance profile.")
   )
     throw new Error("");
+
   if (
+    aircraftListIsLoading ||
     isLoading ||
     aerodromesIsLoading ||
-    aircraftListIsLoading ||
-    legsIsLoading ||
     vfrWaypointsIsLoading ||
     userWaypointsIsLoading ||
+    legsIsLoading ||
     weightBalanceIsLoading ||
     fuelCalculationsIsLoading ||
     takeoffLandingDistancesIsLoading
@@ -450,11 +466,15 @@ const FlightPage = () => {
           isDeparture={false}
         />
       </Modal>
-      <Modal isOpen={aircraftModal.isOpen} fullHeight={true}>
+      <Modal
+        isOpen={aircraftModal.isOpen || !aircraft || !aircraftProfile}
+        fullHeight={true}
+      >
         <ChangeAircraftForm
           flightId={flightId}
           closeModal={aircraftModal.handleClose}
           isOpen={aircraftModal.isOpen}
+          noAircraft={!aircraft || !aircraftProfile}
           aircraft={aircraftRegistration}
         />
       </Modal>

@@ -148,10 +148,13 @@ const FuelCalculationsSection = ({ flightId, isLoading }: Props) => {
             item: "Fuel Used",
             hours: "",
             gallons:
-              fuelCalculationsData.pre_takeoff_gallons +
-              fuelCalculationsData.climb_gallons +
-              fuelCalculationsData.enroute_fuel.gallons +
-              fuelCalculationsData.additional_fuel.gallons,
+              Math.round(
+                (fuelCalculationsData.pre_takeoff_gallons +
+                  fuelCalculationsData.climb_gallons +
+                  fuelCalculationsData.enroute_fuel.gallons +
+                  fuelCalculationsData.additional_fuel.gallons) *
+                  100
+              ) / 100,
             handleEdit: () => {},
             handleDelete: () => {},
             permissions: undefined,
@@ -162,11 +165,14 @@ const FuelCalculationsSection = ({ flightId, isLoading }: Props) => {
             item: "Remaining Fuel",
             hours: "",
             gallons:
-              fuelCalculationsData.gallons_on_board -
-              (fuelCalculationsData.pre_takeoff_gallons +
-                fuelCalculationsData.climb_gallons +
-                fuelCalculationsData.enroute_fuel.gallons +
-                fuelCalculationsData.additional_fuel.gallons),
+              Math.round(
+                (fuelCalculationsData.gallons_on_board -
+                  (fuelCalculationsData.pre_takeoff_gallons +
+                    fuelCalculationsData.climb_gallons +
+                    fuelCalculationsData.enroute_fuel.gallons +
+                    fuelCalculationsData.additional_fuel.gallons)) *
+                  100
+              ) / 100,
             handleEdit: () => {},
             handleDelete: () => {},
             permissions: undefined,

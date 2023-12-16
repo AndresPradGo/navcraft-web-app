@@ -38,12 +38,14 @@ export interface NavLogLegData {
 
 const apiClient = new APIClient<string, NavLogLegData>("/flight-plans/nav-log")
 
-const useNavLogData = (flightId: number) => {
+const useNavLogData = (flightId: number, noAircraft: boolean) => {
     return useQuery<NavLogLegData[], APIClientError>({
         queryKey: ['navLog', flightId],
         queryFn: () => {
             return apiClient.getAll(`/${flightId}`)
-        }
+        },
+        retry: noAircraft ? 0 : 3,
+        refetchOnWindowFocus: !noAircraft,
     })
 }
 

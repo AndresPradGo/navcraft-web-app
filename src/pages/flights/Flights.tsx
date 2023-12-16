@@ -107,24 +107,24 @@ const flights = () => {
         ? flights.map((flight) => {
             const departure =
               aerodromes.find((a) => a.id === flight.departure_aerodrome_id)
-                ?.code || "";
+                ?.code || "-";
             const arrival =
               aerodromes.find((a) => a.id === flight.arrival_aerodrome_id)
-                ?.code || "";
-            const aircraft =
-              aircraftList.find((a) => a.id === flight.aircraft_id)
-                ?.registration || "";
+                ?.code || "-";
+            const aircraft = aircraftList.find(
+              (a) => a.id === flight.aircraft_id
+            );
 
             const waypoints = flight.legs
               .filter((l) => !!l.waypoint)
-              .map((l) => l.waypoint?.code || "");
+              .map((l) => l.waypoint?.code || "-");
 
             return {
               id: flight.id,
               route: `${departure} - ${arrival}`,
               departure: departure,
               destination: arrival,
-              aircraft: aircraft,
+              aircraft: aircraft ? aircraft.registration : "-",
               date: formatUTCDate(flight.departure_time),
               dateSort: flight.departure_time,
               etd: formatUTCTime(flight.departure_time),

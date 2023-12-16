@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm, FieldValues } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
@@ -55,6 +56,10 @@ const HtmlInputContainer = styled.div`
 
   border-top: 1px solid var(--color-grey);
   border-bottom: 1px solid var(--color-grey);
+
+  & p {
+    margin: 10px 20px;
+  }
 
   & h2 {
     margin: 20px;
@@ -127,6 +132,7 @@ export type ChangeAircraftType = z.infer<typeof schema>;
 interface Props {
   flightId: number;
   aircraft: string;
+  noAircraft: boolean;
   closeModal: () => void;
   isOpen: boolean;
 }
@@ -134,9 +140,11 @@ const ChangeAircraftForm = ({
   aircraft,
   closeModal,
   isOpen,
+  noAircraft,
   flightId,
 }: Props) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const aircraftList = queryClient.getQueryData<AircraftDataFromAPI[]>([
     "aircraft",
     "list",
@@ -199,9 +207,11 @@ const ChangeAircraftForm = ({
       <h1>
         <div>
           <TitleIcon />
-          Change Aircraft
+          {aircraft === "" && noAircraft
+            ? "Select Aircraft"
+            : "Change Aircraft"}
         </div>
-        {mutation.isLoading ? (
+        {mutation.isLoading || aircraft === "" ? (
           <CloseIcon onClick={() => {}} $disabled={true} />
         ) : (
           <CloseIcon onClick={closeModal} $disabled={false} />
@@ -212,6 +222,12 @@ const ChangeAircraftForm = ({
           <Loader />
         ) : (
           <>
+            {aircraft === "" && noAircraft ? (
+              <p>
+                This flight doesn't have an aircraft, or the aircraft does not
+                have a performance profile. Select a valid aircraft to continue.
+              </p>
+            ) : null}
             <DataList
               setError={(message) =>
                 setError("aircraft", {
@@ -240,22 +256,43 @@ const ChangeAircraftForm = ({
         )}
       </HtmlInputContainer>
       <HtmlButtons>
-        <Button
-          color="var(--color-primary-dark)"
-          hoverColor="var(--color-primary-dark)"
-          backgroundColor="var(--color-grey)"
-          backgroundHoverColor="var(--color-grey-bright)"
-          fontSize={15}
-          margin="5px 0"
-          borderRadious={4}
-          handleClick={closeModal}
-          btnType="button"
-          width="120px"
-          height="35px"
-          disabled={mutation.isLoading}
-        >
-          Cancel
-        </Button>
+        {aircraft === "" && noAircraft ? (
+          <Button
+            color="var(--color-primary-dark)"
+            hoverColor="var(--color-primary-dark)"
+            backgroundColor="var(--color-grey)"
+            backgroundHoverColor="var(--color-grey-bright)"
+            fontSize={15}
+            margin="5px 0"
+            borderRadious={4}
+            handleClick={() => {
+              navigate("/flights");
+            }}
+            btnType="button"
+            width="120px"
+            height="35px"
+            disabled={mutation.isLoading}
+          >
+            Go back
+          </Button>
+        ) : (
+          <Button
+            color="var(--color-primary-dark)"
+            hoverColor="var(--color-primary-dark)"
+            backgroundColor="var(--color-grey)"
+            backgroundHoverColor="var(--color-grey-bright)"
+            fontSize={15}
+            margin="5px 0"
+            borderRadious={4}
+            handleClick={closeModal}
+            btnType="button"
+            width="120px"
+            height="35px"
+            disabled={mutation.isLoading}
+          >
+            Cancel
+          </Button>
+        )}
         <Button
           color="var(--color-primary-dark)"
           hoverColor="var(--color-primary-dark)"

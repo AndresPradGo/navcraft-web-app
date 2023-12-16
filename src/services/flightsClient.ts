@@ -3,7 +3,7 @@ import {FlightWaypointDataFromAPI} from './userWaypointClient'
 
 export interface AddFlightData {
     departure_time: string,
-    aircraft_id: number,
+    aircraft_id: number | null,
     departure_aerodrome_id: number,
     arrival_aerodrome_id: number
 }
