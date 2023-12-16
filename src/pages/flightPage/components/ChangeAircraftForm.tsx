@@ -211,7 +211,7 @@ const ChangeAircraftForm = ({
             ? "Select Aircraft"
             : "Change Aircraft"}
         </div>
-        {mutation.isLoading || aircraft === "" ? (
+        {mutation.isLoading || (aircraft === "" && noAircraft) ? (
           <CloseIcon onClick={() => {}} $disabled={true} />
         ) : (
           <CloseIcon onClick={closeModal} $disabled={false} />

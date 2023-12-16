@@ -42,14 +42,14 @@ export interface WeightBalanceReportType {
 
 const apiClient = new APIClient<string, WeightBalanceReportType>("/flight-plans/weight-balance")
 
-const useWeightBalanceReport = (flightId: number, noAircraft: boolean) => {
+const useWeightBalanceReport = (flightId: number, noAircraft: boolean, noAerodrome: boolean) => {
     return useQuery<WeightBalanceReportType, APIClientError>({
         queryKey: ['weightBalanceReport', flightId],
         queryFn: () => {
             return apiClient.get(`/${flightId}`)
         },
-        retry: noAircraft ? 0 : 3,
-        refetchOnWindowFocus: !noAircraft,
+        retry: noAircraft || noAerodrome ? 0 : 3,
+        refetchOnWindowFocus: !noAircraft && !noAerodrome,
     })
 }
 

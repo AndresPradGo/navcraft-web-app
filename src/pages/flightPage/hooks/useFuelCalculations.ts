@@ -18,14 +18,14 @@ export interface FuelCalculationsData {
 }
 
 const apiClient = new APIClient<string, FuelCalculationsData>("/flight-plans/fuel-calculations")
-const useFuelCalculations = (flightId: number, noAircraft: boolean) => {
+const useFuelCalculations = (flightId: number, noAircraft: boolean, noAerodrome: boolean) => {
     return useQuery<FuelCalculationsData, APIClientError>({
         queryKey: ['fuelCalculations', flightId],
         queryFn: () => {
             return apiClient.get(`/${flightId}`)
         },
-        retry: noAircraft ? 0 : 3,
-        refetchOnWindowFocus: !noAircraft,
+        retry: noAircraft || noAerodrome ? 0 : 3,
+        refetchOnWindowFocus: !noAircraft && !noAerodrome,
     })
 }
 

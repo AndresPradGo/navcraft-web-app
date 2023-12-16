@@ -207,24 +207,36 @@ const FlightPage = () => {
   const aircraftProfile = aircraft?.profiles.find((p) => p.is_preferred);
 
   const {
+    data: aerodromes,
+    isLoading: aerodromesIsLoading,
+    error: aerodromesError,
+  } = useAerodromesData(true);
+  const departure = aerodromes?.find(
+    (a) => a.id === flightData?.departure_aerodrome_id
+  );
+  const arrival = aerodromes?.find(
+    (a) => a.id === flightData?.arrival_aerodrome_id
+  );
+
+  const missingAerodrome = !departure || !arrival;
+
+  const {
     isLoading: legsIsLoading,
     error: legsError,
     isFetching: legsIsFetching,
     isStale: legsIsStale,
-  } = useNavLogData(flightId, !aircraft && !aircraftProfile);
+  } = useNavLogData(flightId, !aircraft || !aircraftProfile, missingAerodrome);
 
   const {
     isLoading: weightBalanceIsLoading,
     error: weightBalanceError,
     isFetching: weightBalanceIsFetching,
     isStale: weightBalanceIsStale,
-  } = useWeightBalanceReport(flightId, !aircraft && !aircraftProfile);
-
-  const {
-    data: aerodromes,
-    isLoading: aerodromesIsLoading,
-    error: aerodromesError,
-  } = useAerodromesData(true);
+  } = useWeightBalanceReport(
+    flightId,
+    !aircraft || !aircraftProfile,
+    missingAerodrome
+  );
 
   const { isLoading: vfrWaypointsIsLoading, error: vfrWaypointsError } =
     useVfrWaypointsData(false);
@@ -240,14 +252,22 @@ const FlightPage = () => {
     error: fuelCalculationsError,
     isFetching: fuelCalculationsIsFetching,
     isStale: fuelCalculationsIsStale,
-  } = useFuelCalculations(flightId, !aircraft && !aircraftProfile);
+  } = useFuelCalculations(
+    flightId,
+    !aircraft || !aircraftProfile,
+    missingAerodrome
+  );
 
   const {
     isLoading: takeoffLandingDistancesIsLoading,
     error: takeoffLandingDistancesError,
     isFetching: takeoffLandingDistancesIsFetching,
     isStale: takeoffLandingDistancesIsStale,
-  } = useTakeoffLandingDistances(flightId, !aircraft && !aircraftProfile);
+  } = useTakeoffLandingDistances(
+    flightId,
+    !aircraft || !aircraftProfile,
+    missingAerodrome
+  );
 
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if (
@@ -257,24 +277,32 @@ const FlightPage = () => {
     (legsError &&
       legsError?.response?.data.detail !== "Flight doesn't have an aircraft." &&
       legsError?.response?.data.detail !==
-        "The flight's aircraft doesn't have preferred performance profile.") ||
+        "The flight's aircraft doesn't have preferred performance profile." &&
+      legsError?.response?.data.detail !==
+        "Please make sure the flight has a departure and arrival aerodrome.") ||
     vfrWaypointsError ||
     userWaypointsError ||
     (weightBalanceError &&
       weightBalanceError?.response?.data.detail !==
         "Flight doesn't have an aircraft." &&
       weightBalanceError?.response?.data.detail !==
-        "The flight's aircraft doesn't have preferred performance profile.") ||
+        "The flight's aircraft doesn't have preferred performance profile." &&
+      weightBalanceError?.response?.data.detail !==
+        "Please make sure the flight has a departure and arrival aerodrome.") ||
     (fuelCalculationsError &&
       fuelCalculationsError?.response?.data.detail !==
         "Flight doesn't have an aircraft." &&
       fuelCalculationsError?.response?.data.detail !==
-        "The flight's aircraft doesn't have preferred performance profile.") ||
+        "The flight's aircraft doesn't have preferred performance profile." &&
+      fuelCalculationsError?.response?.data.detail !==
+        "Please make sure the flight has a departure and arrival aerodrome.") ||
     (takeoffLandingDistancesError &&
       takeoffLandingDistancesError?.response?.data.detail !==
         "Flight doesn't have an aircraft." &&
       takeoffLandingDistancesError?.response?.data.detail !==
-        "The flight's aircraft doesn't have preferred performance profile.")
+        "The flight's aircraft doesn't have preferred performance profile." &&
+      takeoffLandingDistancesError?.response?.data.detail !==
+        "Please make sure the flight has a departure and arrival aerodrome.")
   )
     throw new Error("");
 
@@ -333,13 +361,6 @@ const FlightPage = () => {
     });
   };
 
-  const departure = aerodromes.find(
-    (a) => a.id === flightData?.departure_aerodrome_id
-  );
-  const arrival = aerodromes.find(
-    (a) => a.id === flightData?.arrival_aerodrome_id
-  );
-
   const aircraftRegistration = aircraft?.registration || "";
 
   const handleChangeToNextTable = () => {
@@ -380,11 +401,11 @@ const FlightPage = () => {
     },
   ] as MapInputStyleType[];
 
-  if (!aerodromes.filter((a) => !a.registered).length) {
-    mapInputs.splice(2, 1);
-  }
   if (!userWaypointsData.length) {
     mapInputs.splice(3, 1);
+  }
+  if (!aerodromes.filter((a) => !a.registered).length) {
+    mapInputs.splice(2, 1);
   }
 
   return (
@@ -398,42 +419,9 @@ const FlightPage = () => {
           arrivalAerodrome={arrival || aerodromes[0]}
         />
       </Modal>
-      <Modal isOpen={departureModal.isOpen}>
+      <Modal isOpen={arrivalModal.isOpen || !arrival} fullHeight={true}>
         <EditDepartureArrivalForm
-          flightId={flightId}
-          temperature_last_updated={
-            flightData?.departure_weather.temperature_last_updated ||
-            getUTCNowString()
-          }
-          wind_last_updated={
-            flightData?.departure_weather.wind_last_updated || getUTCNowString()
-          }
-          altimeter_last_updated={
-            flightData?.departure_weather.altimeter_last_updated ||
-            getUTCNowString()
-          }
-          currentData={{
-            aerodrome: `${departure?.code}: ${departure?.name}` || "",
-            wind_magnitude_knot: flightData
-              ? flightData.departure_weather.wind_magnitude_knot
-              : 0,
-            wind_direction: flightData
-              ? flightData.departure_weather.wind_direction
-              : null,
-            temperature_c: flightData
-              ? flightData.departure_weather.temperature_c
-              : 15,
-            altimeter_inhg: flightData
-              ? flightData.departure_weather.altimeter_inhg
-              : 29.92,
-          }}
-          closeModal={departureModal.handleClose}
-          isOpen={departureModal.isOpen}
-          isDeparture={true}
-        />
-      </Modal>
-      <Modal isOpen={arrivalModal.isOpen}>
-        <EditDepartureArrivalForm
+          noAerodrome={!arrival}
           flightId={flightId}
           temperature_last_updated={
             flightData?.arrival_weather.temperature_last_updated ||
@@ -462,8 +450,43 @@ const FlightPage = () => {
               : 29.92,
           }}
           closeModal={arrivalModal.handleClose}
-          isOpen={arrivalModal.isOpen}
+          isOpen={arrivalModal.isOpen || !arrival}
           isDeparture={false}
+        />
+      </Modal>
+      <Modal isOpen={departureModal.isOpen || !departure} fullHeight={true}>
+        <EditDepartureArrivalForm
+          noAerodrome={!departure}
+          flightId={flightId}
+          temperature_last_updated={
+            flightData?.departure_weather.temperature_last_updated ||
+            getUTCNowString()
+          }
+          wind_last_updated={
+            flightData?.departure_weather.wind_last_updated || getUTCNowString()
+          }
+          altimeter_last_updated={
+            flightData?.departure_weather.altimeter_last_updated ||
+            getUTCNowString()
+          }
+          currentData={{
+            aerodrome: `${departure?.code}: ${departure?.name}` || "",
+            wind_magnitude_knot: flightData
+              ? flightData.departure_weather.wind_magnitude_knot
+              : 0,
+            wind_direction: flightData
+              ? flightData.departure_weather.wind_direction
+              : null,
+            temperature_c: flightData
+              ? flightData.departure_weather.temperature_c
+              : 15,
+            altimeter_inhg: flightData
+              ? flightData.departure_weather.altimeter_inhg
+              : 29.92,
+          }}
+          closeModal={departureModal.handleClose}
+          isOpen={departureModal.isOpen || !departure}
+          isDeparture={true}
         />
       </Modal>
       <Modal
@@ -473,7 +496,7 @@ const FlightPage = () => {
         <ChangeAircraftForm
           flightId={flightId}
           closeModal={aircraftModal.handleClose}
-          isOpen={aircraftModal.isOpen}
+          isOpen={aircraftModal.isOpen || !aircraft || !aircraftProfile}
           noAircraft={!aircraft || !aircraftProfile}
           aircraft={aircraftRegistration}
         />

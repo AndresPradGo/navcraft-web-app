@@ -26,14 +26,14 @@ export interface TakeoffLandingDistancesDataFromApi {
 
 const apiClient = new APIClient<string, TakeoffLandingDistancesDataFromApi>("/flight-plans/takeoff-landing-distances")
 
-const useTakeoffLandingDistances = (flightId: number, noAircraft: boolean) => {
+const useTakeoffLandingDistances = (flightId: number, noAircraft: boolean, noAerodrome: boolean) => {
     return useQuery<TakeoffLandingDistancesDataFromApi, APIClientError>({
         queryKey: ['takeoffLandingDistances', flightId],
         queryFn: () => {
             return apiClient.get(`/${flightId}`)
         },
-        retry: noAircraft ? 0 : 3,
-        refetchOnWindowFocus: !noAircraft,
+        retry: noAircraft || noAerodrome ? 0 : 3,
+        refetchOnWindowFocus: !noAircraft && !noAerodrome,
     })
 }
 

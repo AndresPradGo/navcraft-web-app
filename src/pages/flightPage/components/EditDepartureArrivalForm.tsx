@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { AiOutlineSave } from "react-icons/ai";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
@@ -68,15 +69,25 @@ const HtmlInputContainer = styled.div`
     align-items: center;
     text-wrap: wrap;
   }
+
+  & p {
+    margin: 10px 20px;
+  }
 `;
 
-const HtmlInputGroup = styled.div`
+interface InputGroupProps {
+  $hide: boolean;
+}
+
+const HtmlInputGroup = styled.div<InputGroupProps>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
   padding: 40px 20px 0;
+  overflow: ${(props) => (props.$hide ? "hidden" : "auto")};
+  max-height: ${(props) => (props.$hide ? "0" : "1000vh")};
 
   & h2 {
     border-bottom: 1px solid var(--color-grey-bright);
@@ -339,6 +350,7 @@ interface Props {
   temperature_last_updated: string;
   wind_last_updated: string;
   altimeter_last_updated: string;
+  noAerodrome: boolean;
 }
 
 const EditDepartureArrivalForm = ({
@@ -350,8 +362,11 @@ const EditDepartureArrivalForm = ({
   closeModal,
   isOpen,
   isDeparture,
+  noAerodrome,
 }: Props) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const aerodromes = queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>([
     "aerodromes",
     "all",
@@ -472,9 +487,11 @@ const EditDepartureArrivalForm = ({
       <h1>
         <div>
           {isDeparture ? <DepartureIcon /> : <ArrivalIcon />}
-          {`Edit ${isDeparture ? "Departure" : "Arrival"} Settings`}
+          {noAerodrome
+            ? `Select ${isDeparture ? "Departure" : "Arrival"} Aerodrome`
+            : `Edit ${isDeparture ? "Departure" : "Arrival"} Settings`}
         </div>
-        {mutation.isLoading ? (
+        {mutation.isLoading || noAerodrome ? (
           <CloseIcon onClick={() => {}} $disabled={true} />
         ) : (
           <CloseIcon onClick={closeModal} $disabled={false} />
@@ -485,6 +502,13 @@ const EditDepartureArrivalForm = ({
           <Loader />
         ) : (
           <>
+            {noAerodrome ? (
+              <p>
+                {`This flight doesn't have ${
+                  isDeparture ? "a departure" : "an arrival"
+                } aerodrome. This happens when you delete your saved aerodrome, or when an official aerodrome is no longer registered in our database. Select a valid aerodrome to continue.`}
+              </p>
+            ) : null}
             <DataList
               setError={(message) =>
                 setError("aerodrome", {
@@ -515,7 +539,7 @@ const EditDepartureArrivalForm = ({
               <AerodromeIcon />
               {`${isDeparture ? "Departure" : "Arrival"} Aerodrome`}
             </DataList>
-            <HtmlInputGroup>
+            <HtmlInputGroup $hide={noAerodrome}>
               <h2>
                 <WeatherIcon />
                 Weather at Aerodrome
@@ -629,22 +653,43 @@ const EditDepartureArrivalForm = ({
         )}
       </HtmlInputContainer>
       <HtmlButtons>
-        <Button
-          color="var(--color-primary-dark)"
-          hoverColor="var(--color-primary-dark)"
-          backgroundColor="var(--color-grey)"
-          backgroundHoverColor="var(--color-grey-bright)"
-          fontSize={15}
-          margin="5px 0"
-          borderRadious={4}
-          handleClick={closeModal}
-          btnType="button"
-          width="120px"
-          height="35px"
-          disabled={mutation.isLoading}
-        >
-          Cancel
-        </Button>
+        {noAerodrome ? (
+          <Button
+            color="var(--color-primary-dark)"
+            hoverColor="var(--color-primary-dark)"
+            backgroundColor="var(--color-grey)"
+            backgroundHoverColor="var(--color-grey-bright)"
+            fontSize={15}
+            margin="5px 0"
+            borderRadious={4}
+            handleClick={() => {
+              navigate("/flights");
+            }}
+            btnType="button"
+            width="120px"
+            height="35px"
+            disabled={mutation.isLoading}
+          >
+            Go back
+          </Button>
+        ) : (
+          <Button
+            color="var(--color-primary-dark)"
+            hoverColor="var(--color-primary-dark)"
+            backgroundColor="var(--color-grey)"
+            backgroundHoverColor="var(--color-grey-bright)"
+            fontSize={15}
+            margin="5px 0"
+            borderRadious={4}
+            handleClick={closeModal}
+            btnType="button"
+            width="120px"
+            height="35px"
+            disabled={mutation.isLoading}
+          >
+            Cancel
+          </Button>
+        )}
         <Button
           color="var(--color-primary-dark)"
           hoverColor="var(--color-primary-dark)"
