@@ -10,7 +10,8 @@ export interface PersonOnBoardDataFromAPI {
     passenger_profile_id?: number
 }
 
-interface EditPersonOnBoardData {
+export interface EditPersonOnBoardData {
+    id: number;
     seat_row_id: number;
     seat_number: number;
     name?: string;

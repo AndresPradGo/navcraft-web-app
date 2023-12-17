@@ -117,7 +117,7 @@ const HtmlList = styled.ul<HtmlListProps>`
   max-height: ${(props) => (props.$expanded ? "200px" : "0")};
   overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
   margin: 0;
-  padding: ${(props) => (props.$expanded ? "5px 0" : "0")};
+  padding: ${(props) => (props.$expanded ? "5px 0" : "0")} !important;
   list-style-type: none;
   border: ${(props) =>
     props.$expanded ? "1px solid var(--color-grey)" : "none"};

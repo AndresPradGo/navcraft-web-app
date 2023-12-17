@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
-import {APIClientError} from '../../../services/apiClient';
-import {ProfileDataFromAPI, ProfileData} from '../entities'
-import apiClient from '../profileService'
+import {APIClientError} from '../services/apiClient';
+import {ProfileDataFromAPI, ProfileData} from '../pages/profile/entities'
+import apiClient from '../pages/profile/profileService'
 
 
 const useProfileData = () => {

@@ -18,6 +18,9 @@ import FlightWarningList from "../../../components/FlightWarningList";
 import { Modal, useModal } from "../../../components/common/modal";
 import AddFuelForm from "./AddFuelForm";
 import AddLuggageForm from "./AddLuggageForm";
+import usePassengersData from "../../../hooks/usePassengersData";
+import useProfileData from "../../../hooks/useProfileData";
+import AddPersonForm from "./AddPersonForm";
 
 const HtmlLoaderContainer = styled.div`
   margin: 35px 0 0;
@@ -72,6 +75,25 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     value: 0,
   });
 
+  const [seatToEdit, setSeatToEdit] = useState<{
+    id: number;
+    seatName: string;
+    seatId: number;
+    seatNumber: number;
+    maxWeight?: number;
+    name: string;
+    weight_lb: number;
+    is_me?: boolean;
+    passenger_profile_id?: number;
+  }>({
+    id: 0,
+    seatName: "",
+    name: "",
+    weight_lb: 0,
+    seatId: 0,
+    seatNumber: 0,
+  });
+
   const queryClient = useQueryClient();
 
   const weightBalanceData = queryClient.getQueryData<WeightBalanceReportType>([
@@ -85,6 +107,7 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
   ]);
 
   const modal = useModal();
+  const passengerModal = useModal();
 
   const {
     data: personsOnBoard,
@@ -116,12 +139,19 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     isLoading: arrangementLoading,
   } = useAircraftArrangementData(profileId);
 
+  const { isLoading: savedPassengersIsLoading, error: savedPassengersError } =
+    usePassengersData();
+
+  const { isLoading: profileIsLoading, error: profileError } = useProfileData();
+
   if (
     aircraftWeightBalanceError ||
     personsOnBoardError ||
     arrangementError ||
     luggageError ||
-    fuelOnBoardError
+    fuelOnBoardError ||
+    savedPassengersError ||
+    profileError
   )
     throw new Error("");
   if (
@@ -129,7 +159,9 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     personsOnBoardLoading ||
     arrangementLoading ||
     luggageLoading ||
-    fuelOnBoardLoading
+    fuelOnBoardLoading ||
+    savedPassengersIsLoading ||
+    profileIsLoading
   )
     return (
       <HtmlLoaderContainer>
@@ -374,6 +406,7 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         seatRow: row.name,
         name: row.number_of_seats === 1 ? row.name : `${row.name} Seat ${i}`,
         arm_in: row.arm_in,
+        weight_limit_lb: row.weight_limit_lb,
       });
     }
   }
@@ -388,7 +421,7 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     },
     rows: seats.map((seat) => {
       const person = personsOnBoard.find(
-        (p) => p.seat_row_id === seat.id && p.seat_number === p.seat_number
+        (p) => p.seat_row_id === seat.id && p.seat_number === seat.seatNumber
       );
       return {
         id: seat.id + seat.seatNumber / 10,
@@ -399,7 +432,20 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
         arm_in: seat.arm_in,
         moment_lb_in:
           Math.round(seat.arm_in * (person ? person.weight_lb : 0) * 100) / 100,
-        handleEdit: () => {},
+        handleEdit: () => {
+          setSeatToEdit({
+            id: person ? person.id : 0,
+            seatName: seat.name,
+            seatId: seat.id,
+            seatNumber: seat.seatNumber,
+            maxWeight: seat.weight_limit_lb ? seat.weight_limit_lb : undefined,
+            name: person?.name || "",
+            weight_lb: person ? person.weight_lb : 0,
+            is_me: !!person?.user_id,
+            passenger_profile_id: person?.passenger_profile_id,
+          });
+          passengerModal.handleOpen();
+        },
         handleDelete: () => {},
         permissions: "edit" as "edit",
       };
@@ -549,6 +595,26 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
 
   return (
     <>
+      <Modal isOpen={passengerModal.isOpen} fullHeight={true}>
+        <AddPersonForm
+          flightId={flightId}
+          passengerData={{
+            id: seatToEdit.id,
+            name: seatToEdit.name,
+            weight_lb: seatToEdit.weight_lb,
+            is_me: seatToEdit.is_me,
+            passenger_profile_id: seatToEdit.passenger_profile_id,
+          }}
+          seat={{
+            name: seatToEdit.seatName,
+            id: seatToEdit.seatId,
+            number: seatToEdit.seatNumber,
+          }}
+          maxWeight={seatToEdit.maxWeight}
+          closeModal={passengerModal.handleClose}
+          isOpen={passengerModal.isOpen}
+        />
+      </Modal>
       <Modal isOpen={modal.isOpen}>
         {typeItemToEdit === "fuel" ? (
           <AddFuelForm

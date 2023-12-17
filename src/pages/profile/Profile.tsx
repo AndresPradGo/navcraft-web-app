@@ -5,7 +5,7 @@ import { styled } from "styled-components";
 
 import { ContentLayout } from "../layout";
 import SideBarContent from "./components/SideBarContent";
-import useProfileData from "./hooks/useProfileData";
+import useProfileData from "../../hooks/useProfileData";
 import Loader from "../../components/Loader";
 import PassengersTable from "./components/PassengersTable";
 import WaypointsTable from "./components/WaypointsTable";
@@ -159,9 +159,6 @@ const Profile = () => {
 
   return (
     <>
-      <Modal isOpen={deleteAccountModal.isOpen}>
-        <DeleteAccountForm closeModal={deleteAccountModal.handleClose} />
-      </Modal>
       <Modal isOpen={deleteAccountModal.isOpen}>
         <DeleteAccountForm closeModal={deleteAccountModal.handleClose} />
       </Modal>

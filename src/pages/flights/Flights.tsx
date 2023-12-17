@@ -81,7 +81,7 @@ const flights = () => {
     data: aerodromes,
     isLoading: aerodromesIsLoading,
     error: aerodromesError,
-  } = useAerodromesData();
+  } = useAerodromesData(true);
 
   const {
     data: flights,

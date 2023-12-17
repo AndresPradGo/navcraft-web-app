@@ -87,12 +87,14 @@ const HtmlSectionTitle = styled.div<HtmlSectionProps>`
     ${(props) => (props.$isOpen ? "var(--color-white)" : "var(--color-grey)")};
 
   & div {
+    cursor: pointer;
     display: flex;
     align-items: center;
 
     & h3:first-of-type {
       margin: 0;
-      color: var(--color-grey-bright);
+      color: ${(props) =>
+        props.$isOpen ? "var(--color-white)" : "var(--color-grey)"};
     }
   }
 
@@ -108,11 +110,8 @@ const ToggleIcon = styled(BsChevronDown)<HtmlSectionProps>`
   font-size: 25px;
   transform: rotate(${(props) => (props.$isOpen ? "-180deg" : "0deg")});
   transition: 0.3s transform linear;
-
-  &:hover,
-  &:focus {
-    color: var(--color-white);
-  }
+  color: ${(props) =>
+    props.$isOpen ? "var(--color-white)" : "var(--color-grey)"};
 
   @media screen and (min-width: 425px) {
     margin-right: 20px;
@@ -468,8 +467,8 @@ const AddAircraftProfileForm = ({
       <HtmlInputContainer>
         <HtmlSectionContainer>
           <HtmlSectionTitle $isOpen={fromModel}>
-            <div>
-              <ToggleIcon onClick={handleOpenSection} $isOpen={fromModel} />
+            <div onClick={handleOpenSection}>
+              <ToggleIcon $isOpen={fromModel} />
               <h3>Build from Existing Model</h3>
             </div>
           </HtmlSectionTitle>
@@ -516,8 +515,8 @@ const AddAircraftProfileForm = ({
         </HtmlSectionSeparator>
         <HtmlSectionContainer>
           <HtmlSectionTitle $isOpen={!fromModel}>
-            <div>
-              <ToggleIcon onClick={handleOpenSection} $isOpen={!fromModel} />
+            <div onClick={handleOpenSection}>
+              <ToggleIcon $isOpen={!fromModel} />
               <h3>Build New Profile</h3>
             </div>
           </HtmlSectionTitle>
