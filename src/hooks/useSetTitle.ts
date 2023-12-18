@@ -5,7 +5,6 @@ const useSetTitle = (title: string) => {
 
     useEffect(() => {
         document.title = title;
-        console.log(title)
     
         return () => {
           document.title = 'Flight Planner';

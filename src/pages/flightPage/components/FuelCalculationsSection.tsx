@@ -122,12 +122,15 @@ const FuelCalculationsSection = ({ flightId, isLoading }: Props) => {
             item: "Total Required",
             hours: "",
             gallons:
-              fuelCalculationsData.pre_takeoff_gallons +
-              fuelCalculationsData.climb_gallons +
-              fuelCalculationsData.enroute_fuel.gallons +
-              fuelCalculationsData.additional_fuel.gallons +
-              fuelCalculationsData.reserve_fuel.gallons +
-              fuelCalculationsData.contingency_fuel.gallons,
+              Math.round(
+                (fuelCalculationsData.pre_takeoff_gallons +
+                  fuelCalculationsData.climb_gallons +
+                  fuelCalculationsData.enroute_fuel.gallons +
+                  fuelCalculationsData.additional_fuel.gallons +
+                  fuelCalculationsData.reserve_fuel.gallons +
+                  fuelCalculationsData.contingency_fuel.gallons) *
+                  100
+              ) / 100,
             handleEdit: () => {},
             handleDelete: () => {},
             permissions: undefined,
