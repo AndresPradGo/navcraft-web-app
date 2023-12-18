@@ -9,7 +9,9 @@ import "leaflet/dist/leaflet.css";
 
 import "./assets/global.css";
 import router from "./router";
+import logService from "./services/logService";
 
+logService();
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
