@@ -176,12 +176,12 @@ const TakeoffLandinDistancesSection = ({
           },
         ]
       : [];
-
   const tableData = {
     keys: [
       "runway",
       "x_wind_knot",
       "headwind_knot",
+      "length",
       "ground_roll_ft",
       "obstacle_clearance_ft",
       "adjusted_ground_roll_ft",
@@ -191,6 +191,7 @@ const TakeoffLandinDistancesSection = ({
       runway: "Runway",
       x_wind_knot: "X-Wind [Kts]",
       headwind_knot: "Headwind [Kts]",
+      length: "Rwy Length [ft]",
       ground_roll_ft: "Gnd Roll [ft]",
       obstacle_clearance_ft: "50' Clearance [ft]",
       adjusted_ground_roll_ft: "Adjusted Gnd Roll [ft]",
@@ -204,6 +205,8 @@ const TakeoffLandinDistancesSection = ({
               runway: rwy.runway,
               x_wind_knot: rwy.x_wind_knot,
               headwind_knot: rwy.headwind_knot,
+              length:
+                rwy.intersection_departure_length || rwy.length_available_ft,
               ground_roll_ft: rwy.ground_roll_ft,
               obstacle_clearance_ft: rwy.obstacle_clearance_ft,
               adjusted_ground_roll_ft: rwy.adjusted_ground_roll_ft,
@@ -220,6 +223,7 @@ const TakeoffLandinDistancesSection = ({
               runway: rwy.runway,
               x_wind_knot: rwy.x_wind_knot,
               headwind_knot: rwy.headwind_knot,
+              length: rwy.length_available_ft,
               ground_roll_ft: rwy.ground_roll_ft,
               obstacle_clearance_ft: rwy.obstacle_clearance_ft,
               adjusted_ground_roll_ft: rwy.adjusted_ground_roll_ft,
@@ -246,6 +250,10 @@ const TakeoffLandinDistancesSection = ({
     {
       title: "Headwind",
       key: "headwind_knot",
+    },
+    {
+      title: "Rwy Length [ft]",
+      key: "length",
     },
     {
       title: "Gnd Roll",
