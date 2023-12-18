@@ -4,15 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TfiEmail } from "react-icons/tfi";
 import { TbLock, TbLockCheck } from "react-icons/tb";
-
 import { AiOutlineForm } from "react-icons/ai";
 import { FaUser } from "react-icons/fa6";
-
 import { z } from "zod";
-
 import { styled } from "styled-components";
+
 import Button from "../../components/common/button/index";
 import useRegister from "./useRegister";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlPageContainer = styled.div`
   position: relative;
@@ -326,6 +325,8 @@ const RegisterPage = () => {
   const registerMutation = useRegister(() => {
     navigate("/profile");
   });
+
+  useSetTitle("Register");
 
   const submitHandler = (data: FieldValues) => {
     if (data.confirmPassword !== data.password)

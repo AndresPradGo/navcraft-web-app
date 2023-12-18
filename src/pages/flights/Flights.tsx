@@ -15,6 +15,7 @@ import formatUTCDate from "../../utils/formatUTCDate";
 import formatUTCTime from "../../utils/formatUTCTime";
 import DeleteFlightForm from "../../components/deleteFlightForm";
 import { useState } from "react";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -69,6 +70,7 @@ const flights = () => {
     route: "",
     id: 0,
   });
+  useSetTitle("Flights");
   const addModal = useModal();
   const deleteModal = useModal();
   const {

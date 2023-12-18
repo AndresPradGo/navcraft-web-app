@@ -18,6 +18,7 @@ import AddAircraftProfileForm from "../../components/addAircraftProfileForm";
 import useAircraftData from "../../hooks/useAircraftData";
 import DataTableList, { DataType } from "../../components/common/DataTableList";
 import ProfilesTable from "./ProfilesTable";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -105,6 +106,10 @@ const AircraftPage = () => {
     isLoading: fuelTypesIsLoading,
     error: fuelTypesError,
   } = useFuelTypes();
+
+  useSetTitle(
+    aircraftData ? `Aircraft ${aircraftData.registration}` : "Aircraft"
+  );
 
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if ((error && error.message === "Network Error") || fuelTypesError)

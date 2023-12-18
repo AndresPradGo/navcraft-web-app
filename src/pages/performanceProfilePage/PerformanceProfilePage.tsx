@@ -48,6 +48,7 @@ import useClimbData from "./hooks/useClimbData";
 import useCruiseData from "./hooks/useCruiseData";
 import ClimbSection from "./components/ClimbSection";
 import CruiseSection from "./components/CruiseSection";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -324,6 +325,16 @@ const PerformanceProfilePage = () => {
   const profileBaseData = isModel
     ? ({ ...modelData, is_preferred: false } as PerformanceProfileBaseData)
     : aircraftData?.profiles.find((profile) => profile.id === profileId);
+
+  useSetTitle(
+    modelData && profileBaseData
+      ? `Aircraft ${isModel ? "Model" : "Profile"}: ${
+          isModel
+            ? modelData.performance_profile_name
+            : profileBaseData.performance_profile_name
+        }`
+      : "Aircraft Model"
+  );
 
   const fuelType =
     fuelTypes.find((fuel) => fuel.id === profileBaseData?.fuel_type_id) ||

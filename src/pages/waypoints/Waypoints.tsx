@@ -31,6 +31,7 @@ import FileForm from "../../components/common/fileForm/index";
 import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions";
 import formatUTCDate from "../../utils/formatUTCDate";
 import { useSearchParams } from "react-router-dom";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -154,6 +155,8 @@ const Waypoints = () => {
   const editRunwayModal = useModal();
   const editAerodromeModal = useModal();
   const uploadCsvModal = useModal();
+
+  useSetTitle("Waypoints and Aerodromes");
 
   const {
     data: statusList,

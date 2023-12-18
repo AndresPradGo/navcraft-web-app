@@ -47,6 +47,7 @@ import TakeoffLandinDistancesSection from "./components/TakeoffLandinDistancesSe
 import AddLegForm from "./components/AddLegForm";
 import WeightBalanceSection from "./components/WeightBalanceSection";
 import FuelCalculationsSection from "./components/FuelCalculationsSection";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -216,6 +217,12 @@ const FlightPage = () => {
   );
   const arrival = aerodromes?.find(
     (a) => a.id === flightData?.arrival_aerodrome_id
+  );
+
+  useSetTitle(
+    departure && arrival
+      ? `Flight from ${departure.code} to ${arrival.code}`
+      : "Flight"
   );
 
   const missingAerodrome = !departure || !arrival;

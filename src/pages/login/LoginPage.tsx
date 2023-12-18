@@ -5,13 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MdOutlineLogin } from "react-icons/md";
 import { TfiEmail } from "react-icons/tfi";
 import { TbLockOpen } from "react-icons/tb";
-
 import { z } from "zod";
 
 import { styled } from "styled-components";
 import Button from "../../components/common/button/index";
 import useLogin from "./useLogin";
 import useAuth from "../../hooks/useAuth";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlPageContainer = styled.div`
   position: relative;
@@ -311,6 +311,8 @@ const LoginPage = () => {
   const login = useLogin(() => {
     navigate("/flights");
   });
+
+  useSetTitle("Login");
 
   const submitHandler = (data: FieldValues) => {
     const formData = new FormData();

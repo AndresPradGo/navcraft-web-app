@@ -15,6 +15,7 @@ import DeleteAccountForm from "./components/DeleteAccountForm";
 import ChangeEmailForm from "./components/ChangeEmailForm";
 import EditProfileForm from "./components/EditProfileForm";
 import ChangePasswordForm from "./components/ChangePasswordForm";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -142,6 +143,8 @@ const Profile = () => {
   const editPassengerModal = useModal();
   const editAerodromeModal = useModal();
   const editWaypointModal = useModal();
+
+  useSetTitle("Profile");
 
   const { data: profileData, error, isLoading } = useProfileData();
   if (error) throw new Error("");

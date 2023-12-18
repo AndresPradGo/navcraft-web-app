@@ -9,6 +9,7 @@ import { Modal, useModal } from "../../components/common/modal";
 import useUsersData from "./useUsersData";
 import EditUserForm from "./EditUserForm";
 import DeleteUserForm from "./DeleteUserForm";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -58,6 +59,8 @@ const Users = () => {
   if (error) throw new Error("");
   const deleteModal = useModal();
   const editModal = useModal();
+
+  useSetTitle("Users");
 
   const tableData = {
     keys: ["name", "id", "email", "level", "is_active", "weight_lb"],

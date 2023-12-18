@@ -19,6 +19,7 @@ import DeleteAircraftForm from "../../components/deleteAircraftForm";
 import DeleteAircraftModelForm from "../../components/deleteAircraftModelForm";
 import formatUTCDate from "../../utils/formatUTCDate";
 import { useSearchParams } from "react-router-dom";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -113,6 +114,8 @@ const AircraftListPage = () => {
     "addAircraft" | "deleteAircraft" | "addModel" | "deleteModel"
   >("addAircraft");
   const [idRowToDelete, setIdRowToDelete] = useState<number>(0);
+
+  useSetTitle("List of Aircraft");
 
   const modal = useModal();
   const addModelModal = useModal();

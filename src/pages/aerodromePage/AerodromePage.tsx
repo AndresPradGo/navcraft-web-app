@@ -28,6 +28,7 @@ import DataTableList, { DataType } from "../../components/common/DataTableList";
 import formatUTCDate from "../../utils/formatUTCDate";
 import getUTCNowString from "../../utils/getUTCNowString";
 import AnnouncementBox from "../../components/common/AnnouncementBox";
+import useSetTitle from "../../hooks/useSetTitle";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -184,6 +185,13 @@ const AerodromePage = () => {
     error,
     isLoading,
   } = useAerodromeData(parseInt(id || "0") || 0);
+
+  useSetTitle(
+    aerodromeData
+      ? `Aerodrome ${aerodromeData.code} ${aerodromeData.name}`
+      : "Aerodrome Data"
+  );
+
   const isPrivateData = !aerodromeData?.registered;
   if (
     (error && error.message !== "Network Error") ||
