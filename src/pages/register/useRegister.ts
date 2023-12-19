@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { toast } from 'react-toastify';
 
 import APIClient, {APIClientError} from '../../services/apiClient';
 import { AccessToken } from '../login/useLogin';
+import errorToast from '../../utils/errorToast';
 
 interface UserRegisterData {
     name: string;
@@ -23,16 +23,7 @@ const useRegister = (onRegister: () => void) => {
         },
         onError: (error: APIClientError) => {
             if(error.response && error.response.status === 400)
-                toast.error(error.response.data.detail, {
-                    position: "top-center",
-                    autoClose: 10000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                    });
+                errorToast(error)
         }
       });
 

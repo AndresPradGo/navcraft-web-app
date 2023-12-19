@@ -19,6 +19,7 @@ import useAircraftData from "../../hooks/useAircraftData";
 import DataTableList, { DataType } from "../../components/common/DataTableList";
 import ProfilesTable from "./ProfilesTable";
 import useSetTitle from "../../hooks/useSetTitle";
+import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -110,6 +111,8 @@ const AircraftPage = () => {
   useSetTitle(
     aircraftData ? `Aircraft ${aircraftData.registration}` : "Aircraft"
   );
+
+  useUnauthorizedErrorHandler([error]);
 
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if ((error && error.message === "Network Error") || fuelTypesError)

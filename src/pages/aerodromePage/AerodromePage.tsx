@@ -29,6 +29,7 @@ import formatUTCDate from "../../utils/formatUTCDate";
 import getUTCNowString from "../../utils/getUTCNowString";
 import AnnouncementBox from "../../components/common/AnnouncementBox";
 import useSetTitle from "../../hooks/useSetTitle";
+import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -193,6 +194,8 @@ const AerodromePage = () => {
   );
 
   const isPrivateData = !aerodromeData?.registered;
+
+  useUnauthorizedErrorHandler([error]);
   if (
     (error && error.message !== "Network Error") ||
     (isPrivateData !== privateEndpoint && aerodromeData !== undefined)

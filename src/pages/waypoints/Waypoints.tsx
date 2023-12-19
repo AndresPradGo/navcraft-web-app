@@ -32,6 +32,7 @@ import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions
 import formatUTCDate from "../../utils/formatUTCDate";
 import { useSearchParams } from "react-router-dom";
 import useSetTitle from "../../hooks/useSetTitle";
+import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -188,6 +189,18 @@ const Waypoints = () => {
     error: runwaysError,
   } = useRunwaysData(!!userIsAdmin);
 
+  const tableStructure = useGetTableStructure(
+    !!userIsAdmin,
+    statusList ? statusList.map((item) => item.status) : []
+  );
+
+  useUnauthorizedErrorHandler([
+    statusListError,
+    vfrWaypointsError,
+    userWaypointsError,
+    aerodromesError,
+  ]);
+
   if (
     statusListIsLoading ||
     userWaypointsLoading ||
@@ -205,11 +218,6 @@ const Waypoints = () => {
     (runwaysError && !!userIsAdmin)
   )
     throw new Error("");
-
-  const tableStructure = useGetTableStructure(
-    !!userIsAdmin,
-    statusList.map((item) => item.status)
-  );
 
   const tableOptions = [
     {

@@ -16,6 +16,7 @@ import formatUTCTime from "../../utils/formatUTCTime";
 import DeleteFlightForm from "../../components/deleteFlightForm";
 import { useState } from "react";
 import useSetTitle from "../../hooks/useSetTitle";
+import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -90,6 +91,12 @@ const flights = () => {
     isLoading: flightsIsLoading,
     error: flightsError,
   } = useFlightsList();
+
+  useUnauthorizedErrorHandler([
+    flightsError,
+    aircraftListError,
+    aerodromesError,
+  ]);
 
   if (flightsIsLoading || aircraftListIsLoading || aerodromesIsLoading)
     return <Loader />;

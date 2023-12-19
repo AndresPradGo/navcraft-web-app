@@ -16,6 +16,7 @@ import ChangeEmailForm from "./components/ChangeEmailForm";
 import EditProfileForm from "./components/EditProfileForm";
 import ChangePasswordForm from "./components/ChangePasswordForm";
 import useSetTitle from "../../hooks/useSetTitle";
+import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -147,6 +148,7 @@ const Profile = () => {
   useSetTitle("Profile");
 
   const { data: profileData, error, isLoading } = useProfileData();
+  useUnauthorizedErrorHandler([error]);
   if (error) throw new Error("");
   if (isLoading) return <Loader />;
 

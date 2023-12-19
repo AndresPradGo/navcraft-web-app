@@ -10,6 +10,7 @@ import useUsersData from "./useUsersData";
 import EditUserForm from "./EditUserForm";
 import DeleteUserForm from "./DeleteUserForm";
 import useSetTitle from "../../hooks/useSetTitle";
+import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -56,6 +57,7 @@ const HtmlTableContainer = styled.div`
 const Users = () => {
   const [userId, setUserId] = useState<number>(0);
   const { data: users, isLoading, error } = useUsersData();
+  useUnauthorizedErrorHandler([error]);
   if (error) throw new Error("");
   const deleteModal = useModal();
   const editModal = useModal();

@@ -20,6 +20,7 @@ import DeleteAircraftModelForm from "../../components/deleteAircraftModelForm";
 import formatUTCDate from "../../utils/formatUTCDate";
 import { useSearchParams } from "react-router-dom";
 import useSetTitle from "../../hooks/useSetTitle";
+import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -122,6 +123,8 @@ const AircraftListPage = () => {
 
   const user = useAuth();
   const userIsAdmin = user && user.is_active && user.is_admin;
+
+  useUnauthorizedErrorHandler([fuelTypesError, aircraftListError]);
 
   if (
     fuelTypesIsLoading ||

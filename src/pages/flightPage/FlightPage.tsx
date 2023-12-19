@@ -48,6 +48,7 @@ import AddLegForm from "./components/AddLegForm";
 import WeightBalanceSection from "./components/WeightBalanceSection";
 import FuelCalculationsSection from "./components/FuelCalculationsSection";
 import useSetTitle from "../../hooks/useSetTitle";
+import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -275,6 +276,8 @@ const FlightPage = () => {
     !aircraft || !aircraftProfile,
     missingAerodrome
   );
+
+  useUnauthorizedErrorHandler([error]);
 
   if (error && error.message !== "Network Error") throw new Error("notFound");
   else if (

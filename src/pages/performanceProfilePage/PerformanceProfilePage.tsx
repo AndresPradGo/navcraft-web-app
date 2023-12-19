@@ -49,6 +49,7 @@ import useCruiseData from "./hooks/useCruiseData";
 import ClimbSection from "./components/ClimbSection";
 import CruiseSection from "./components/CruiseSection";
 import useSetTitle from "../../hooks/useSetTitle";
+import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -303,6 +304,7 @@ const PerformanceProfilePage = () => {
     ? !aircraftData.profiles.find((p) => p.id === profileId)
     : false;
 
+  useUnauthorizedErrorHandler([error]);
   if (
     (error && error.message !== "Network Error") ||
     (profileNotFound && !isModel) ||
