@@ -447,6 +447,8 @@ const EditDepartureArrivalForm = ({
         data.aerodrome
     )?.id;
 
+    const changedAerodrome = currentData.aerodrome !== data.aerodrome;
+
     const wrongWindDirection = checkWindMagnitude({
       wind_direction: data.wind_direction,
       wind_magnitude_knot: data.wind_magnitude_knot,
@@ -465,16 +467,17 @@ const EditDepartureArrivalForm = ({
         wind_direction: data.wind_direction,
         wind_magnitude_knot: data.wind_magnitude_knot,
         temperature_last_updated:
-          data.temperature_c !== currentData.temperature_c
+          data.temperature_c !== currentData.temperature_c || changedAerodrome
             ? getUTCNowString()
             : temperature_last_updated,
         wind_last_updated:
           data.wind_direction !== currentData.wind_direction ||
-          data.wind_magnitude_knot !== currentData.wind_magnitude_knot
+          data.wind_magnitude_knot !== currentData.wind_magnitude_knot ||
+          changedAerodrome
             ? getUTCNowString()
             : wind_last_updated,
         altimeter_last_updated:
-          data.altimeter_inhg !== currentData.altimeter_inhg
+          data.altimeter_inhg !== currentData.altimeter_inhg || changedAerodrome
             ? getUTCNowString()
             : altimeter_last_updated,
       });

@@ -27,7 +27,7 @@ const useUnauthorizedErrorHandler = (errors: (APIClientError | null)[]) => {
                 theme: "dark",
             });
             return
-    }
+        }
     }
 }
 

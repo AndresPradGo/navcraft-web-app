@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { AiOutlineSave } from "react-icons/ai";
 import { BsCalendarWeek } from "react-icons/bs";
-import { LiaTimesSolid } from "react-icons/lia";
+import { LiaTimesSolid, LiaRouteSolid } from "react-icons/lia";
 import { MdMoreTime } from "react-icons/md";
 import { PiGearDuotone, PiEngineDuotone } from "react-icons/pi";
+import { RiPinDistanceFill } from "react-icons/ri";
 import { TbDropletPlus, TbDropletHeart } from "react-icons/tb";
 import { styled } from "styled-components";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -229,6 +230,18 @@ const ReserveIcon = styled(TbDropletHeart)`
   flex-shrink: 0;
 `;
 
+const RouteRadiusIcon = styled(LiaRouteSolid)`
+  font-size: 35px;
+  margin: 0 5px 0 10px;
+  flex-shrink: 0;
+`;
+
+const DiversionRadiusIcon = styled(RiPinDistanceFill)`
+  font-size: 25px;
+  margin: 0 5px 0 10px;
+  flex-shrink: 0;
+`;
+
 const SaveIcon = styled(AiOutlineSave)`
   font-size: 25px;
   flex-shrink: 0;
@@ -253,6 +266,12 @@ export const schema = z.object({
     .number({ invalid_type_error: "Enter a number" })
     .max(99.94, { message: "Must be less than 99.95" })
     .min(0, { message: "Must be greater than zero" }),
+  briefing_radius_nm: z
+    .number({ invalid_type_error: "Enter a number" })
+    .min(0, { message: "Must be a positive number" }),
+  diversion_radius_nm: z
+    .number({ invalid_type_error: "Enter a number" })
+    .min(0, { message: "Must be a positive number" }),
 });
 
 export type EditFlightData = z.infer<typeof schema>;
@@ -298,6 +317,8 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
         added_enroute_time_hours: flightData?.added_enroute_time_hours,
         contingency_fuel_hours: flightData?.contingency_fuel_hours,
         reserve_fuel_hours: flightData?.reserve_fuel_hours,
+        briefing_radius_nm: flightData?.briefing_radius_nm,
+        diversion_radius_nm: flightData?.diversion_radius_nm,
       });
     }
   }, [isOpen]);
@@ -348,6 +369,8 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
         added_enroute_time_hours: data.added_enroute_time_hours,
         contingency_fuel_hours: data.contingency_fuel_hours,
         reserve_fuel_hours: data.reserve_fuel_hours,
+        briefing_radius_nm: data.briefing_radius_nm,
+        diversion_radius_nm: data.diversion_radius_nm,
       });
       setSubmited(true);
     }
@@ -489,6 +512,54 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
               <label htmlFor="editFlight-reserve_fuel_hours">
                 <ReserveIcon />
                 {"Reserve Fuel [hours]"}
+              </label>
+            </HtmlInput>
+            <HtmlInput
+              $required={true}
+              $hasValue={
+                !!watch("briefing_radius_nm") ||
+                watch("briefing_radius_nm") === 0
+              }
+              $accepted={!errors.briefing_radius_nm}
+            >
+              <input
+                {...register("briefing_radius_nm", { valueAsNumber: true })}
+                id={"editFlight-briefing_radius_nm"}
+                type="number"
+                autoComplete="off"
+              />
+              {errors.briefing_radius_nm ? (
+                <p>{errors.briefing_radius_nm.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="editFlight-briefing_radius_nm">
+                <RouteRadiusIcon />
+                {"Route Briefing Radius [NM]"}
+              </label>
+            </HtmlInput>
+            <HtmlInput
+              $required={true}
+              $hasValue={
+                !!watch("diversion_radius_nm") ||
+                watch("diversion_radius_nm") === 0
+              }
+              $accepted={!errors.diversion_radius_nm}
+            >
+              <input
+                {...register("diversion_radius_nm", { valueAsNumber: true })}
+                id={"editFlight-diversion_radius_nm"}
+                type="number"
+                autoComplete="off"
+              />
+              {errors.diversion_radius_nm ? (
+                <p>{errors.diversion_radius_nm.message}</p>
+              ) : (
+                <p>&nbsp;</p>
+              )}
+              <label htmlFor="editFlight-diversion_radius_nm">
+                <DiversionRadiusIcon />
+                {"Diversion Radius [NM]"}
               </label>
             </HtmlInput>
           </>
