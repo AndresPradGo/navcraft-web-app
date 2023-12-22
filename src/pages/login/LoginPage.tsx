@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useForm, FieldValues } from "react-hook-form";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, useSearchParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdOutlineLogin } from "react-icons/md";
 import { TfiEmail } from "react-icons/tfi";
 import { TbLockOpen } from "react-icons/tb";
+import { toast } from "react-toastify";
 import { z } from "zod";
 
 import { styled } from "styled-components";
@@ -13,6 +14,7 @@ import useLogin from "./useLogin";
 import useAuth from "../../hooks/useAuth";
 import useSetTitle from "../../hooks/useSetTitle";
 import Loader from "../../components/Loader";
+import { useEffect } from "react";
 
 const HtmlPageContainer = styled.div`
   position: relative;
@@ -302,6 +304,9 @@ const LoginPage = () => {
   const userIsLogedin = useAuth();
   if (userIsLogedin) return <Navigate to="/flights" />;
 
+  const [searchParams, _] = useSearchParams();
+  const credentials = searchParams.get("credentials");
+
   const {
     register,
     handleSubmit,
@@ -314,6 +319,25 @@ const LoginPage = () => {
   });
 
   useSetTitle("Login");
+
+  useEffect(() => {
+    if (credentials && credentials === "invalid") {
+      toast.error(
+        "Invalid credentials, please login with a valid email and password.",
+        {
+          position: "top-center",
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        }
+      );
+      navigate("/login");
+    }
+  }, []);
 
   const submitHandler = (data: FieldValues) => {
     const formData = new FormData();
