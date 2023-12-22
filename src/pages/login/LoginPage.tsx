@@ -12,6 +12,7 @@ import Button from "../../components/common/button/index";
 import useLogin from "./useLogin";
 import useAuth from "../../hooks/useAuth";
 import useSetTitle from "../../hooks/useSetTitle";
+import Loader from "../../components/Loader";
 
 const HtmlPageContainer = styled.div`
   position: relative;
@@ -325,55 +326,61 @@ const LoginPage = () => {
       <HtmlFormContainer>
         <HtmlAnimationSpan />
         <HtmlLoginForm onSubmit={handleSubmit(submitHandler)}>
-          <h1>Login</h1>
-          <HtmlInputContainer>
-            <HtmlInputField
-              {...register("email")}
-              id="email"
-              type="text"
-              required="required"
-            />
-            <span>
-              <EmailIcon />
-              Email
-            </span>
-            <i></i>
-            {errors.email && <p>{errors.email.message}</p>}
-          </HtmlInputContainer>
-          <HtmlInputContainer>
-            <HtmlInputField
-              {...register("password")}
-              id="password"
-              type="password"
-              required="required"
-            />
-            <span>
-              <LockIcon />
-              Password
-            </span>
-            <i></i>
-            {errors.password && <p>{errors.password.message}</p>}
-          </HtmlInputContainer>
-          <Button
-            color="var(--color-primary-dark)"
-            hoverColor="var(--color-grey-dark)"
-            backgroundColor="var(--color-white)"
-            backgroundHoverColor="var(--color-grey-bright)"
-            width="100%"
-            height="40px"
-            padding="9px 25px"
-            margin="40px 0 0"
-            spaceChildren="center"
-            fontSize={16}
-            borderRadious={4}
-            btnType="submit"
-          >
-            Login <LoginIcon />
-          </Button>
-          <HtmlRegisterContainer>
-            Don't have an account?
-            <HtmlRegisterLink to="/register">Register</HtmlRegisterLink>
-          </HtmlRegisterContainer>
+          {login.isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              <h1>Login</h1>
+              <HtmlInputContainer>
+                <HtmlInputField
+                  {...register("email")}
+                  id="email"
+                  type="text"
+                  required="required"
+                />
+                <span>
+                  <EmailIcon />
+                  Email
+                </span>
+                <i></i>
+                {errors.email && <p>{errors.email.message}</p>}
+              </HtmlInputContainer>
+              <HtmlInputContainer>
+                <HtmlInputField
+                  {...register("password")}
+                  id="password"
+                  type="password"
+                  required="required"
+                />
+                <span>
+                  <LockIcon />
+                  Password
+                </span>
+                <i></i>
+                {errors.password && <p>{errors.password.message}</p>}
+              </HtmlInputContainer>
+              <Button
+                color="var(--color-primary-dark)"
+                hoverColor="var(--color-grey-dark)"
+                backgroundColor="var(--color-white)"
+                backgroundHoverColor="var(--color-grey-bright)"
+                width="100%"
+                height="40px"
+                padding="9px 25px"
+                margin="40px 0 0"
+                spaceChildren="center"
+                fontSize={16}
+                borderRadious={4}
+                btnType="submit"
+              >
+                Login <LoginIcon />
+              </Button>
+              <HtmlRegisterContainer>
+                Don't have an account?
+                <HtmlRegisterLink to="/register">Register</HtmlRegisterLink>
+              </HtmlRegisterContainer>
+            </>
+          )}
         </HtmlLoginForm>
       </HtmlFormContainer>
     </HtmlPageContainer>

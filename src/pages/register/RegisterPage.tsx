@@ -12,6 +12,7 @@ import { styled } from "styled-components";
 import Button from "../../components/common/button/index";
 import useRegister from "./useRegister";
 import useSetTitle from "../../hooks/useSetTitle";
+import Loader from "../../components/Loader";
 
 const HtmlPageContainer = styled.div`
   position: relative;
@@ -346,83 +347,91 @@ const RegisterPage = () => {
       <HtmlFormContainer>
         <HtmlAnimationSpan />
         <HtmlRegisterForm onSubmit={handleSubmit(submitHandler)}>
-          <h1>Register</h1>
-          <HtmlInputContainer>
-            <HtmlInputField
-              {...register("name")}
-              id="name"
-              type="text"
-              required="required"
-            />
-            <span>
-              <UserIcon />
-              Name
-            </span>
-            <i></i>
-            {errors.name && <p>{errors.name.message}</p>}
-          </HtmlInputContainer>
-          <HtmlInputContainer>
-            <HtmlInputField
-              {...register("email")}
-              id="email"
-              type="text"
-              required="required"
-            />
-            <span>
-              <EmailIcon />
-              Email
-            </span>
-            <i></i>
-            {errors.email && <p>{errors.email.message}</p>}
-          </HtmlInputContainer>
-          <HtmlInputContainer>
-            <HtmlInputField
-              {...register("password")}
-              id="password"
-              type="password"
-              required="required"
-            />
-            <span>
-              <LockIcon />
-              Password
-            </span>
-            <i></i>
-            {errors.password && <p>{errors.password.message}</p>}
-          </HtmlInputContainer>
-          <HtmlInputContainer>
-            <HtmlInputField
-              {...register("confirmPassword")}
-              id="confirmPassword"
-              type="password"
-              required="required"
-            />
-            <span>
-              <LockCheckIcon />
-              Confirm Password
-            </span>
-            <i></i>
-            {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
-          </HtmlInputContainer>
-          <Button
-            color="var(--color-primary-dark)"
-            hoverColor="var(--color-grey-dark)"
-            backgroundColor="var(--color-white)"
-            backgroundHoverColor="var(--color-grey-bright)"
-            width="100%"
-            height="40px"
-            padding="9px 25px"
-            margin="40px 0 0"
-            spaceChildren="center"
-            fontSize={16}
-            borderRadious={4}
-            btnType="submit"
-          >
-            Register <RegisterIcon />
-          </Button>
-          <HtmlRegisterContainer>
-            Already have an account?
-            <HtmlRegisterLink to="/login">Login</HtmlRegisterLink>
-          </HtmlRegisterContainer>
+          {registerMutation.isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              <h1>Register</h1>
+              <HtmlInputContainer>
+                <HtmlInputField
+                  {...register("name")}
+                  id="name"
+                  type="text"
+                  required="required"
+                />
+                <span>
+                  <UserIcon />
+                  Name
+                </span>
+                <i></i>
+                {errors.name && <p>{errors.name.message}</p>}
+              </HtmlInputContainer>
+              <HtmlInputContainer>
+                <HtmlInputField
+                  {...register("email")}
+                  id="email"
+                  type="text"
+                  required="required"
+                />
+                <span>
+                  <EmailIcon />
+                  Email
+                </span>
+                <i></i>
+                {errors.email && <p>{errors.email.message}</p>}
+              </HtmlInputContainer>
+              <HtmlInputContainer>
+                <HtmlInputField
+                  {...register("password")}
+                  id="password"
+                  type="password"
+                  required="required"
+                />
+                <span>
+                  <LockIcon />
+                  Password
+                </span>
+                <i></i>
+                {errors.password && <p>{errors.password.message}</p>}
+              </HtmlInputContainer>
+              <HtmlInputContainer>
+                <HtmlInputField
+                  {...register("confirmPassword")}
+                  id="confirmPassword"
+                  type="password"
+                  required="required"
+                />
+                <span>
+                  <LockCheckIcon />
+                  Confirm Password
+                </span>
+                <i></i>
+                {errors.confirmPassword && (
+                  <p>{errors.confirmPassword.message}</p>
+                )}
+              </HtmlInputContainer>
+              <Button
+                color="var(--color-primary-dark)"
+                hoverColor="var(--color-grey-dark)"
+                backgroundColor="var(--color-white)"
+                backgroundHoverColor="var(--color-grey-bright)"
+                width="100%"
+                height="40px"
+                padding="9px 25px"
+                margin="40px 0 0"
+                spaceChildren="center"
+                fontSize={16}
+                borderRadious={4}
+                btnType="submit"
+              >
+                Register <RegisterIcon />
+              </Button>
+              <HtmlRegisterContainer>
+                Already have an account?
+                <HtmlRegisterLink to="/login">Login</HtmlRegisterLink>
+              </HtmlRegisterContainer>
+            </>
+          )}
         </HtmlRegisterForm>
       </HtmlFormContainer>
     </HtmlPageContainer>
