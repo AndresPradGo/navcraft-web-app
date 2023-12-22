@@ -76,16 +76,12 @@ const SideBarIndex = ({
   const sideBar = useSideBar();
 
   const handleClick = (index: number) => {
-    if (selectedIdx === index) {
-      scroll.scrollToTop({
-        duration: 400,
-        delay: 200,
-        smooth: true,
-      });
-      handleChangeSection(index);
-    } else {
-      handleChangeSection(index);
-    }
+    scroll.scrollToTop({
+      duration: 400,
+      delay: 200,
+      smooth: true,
+    });
+    handleChangeSection(index);
     sideBar.handleExpandSideBar(false);
   };
 
