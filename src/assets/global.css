@@ -25,6 +25,7 @@ html {
     --color-contrast-hover: #FBC94B;
     --color-warning: #B80000;
     --color-warning-hover: #FF1F1F;
+    --color-danger: #FF4747;
     --color-shadow: rgb(112 112 112 / 60%);
     --color-modal-background: rgba(6, 10, 15, 0.7);
     --color-nav-1: #5CD3FF;

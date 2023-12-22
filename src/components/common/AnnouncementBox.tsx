@@ -1,25 +1,34 @@
 import { GrAnnounce } from "react-icons/gr";
+import { IoWarningOutline } from "react-icons/io5";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { styled } from "styled-components";
 
 interface HtmlTagProps {
-  $isWarning: boolean;
+  $type: "normal" | "warning" | "danger";
+  $margin: string;
+  $maxWidth: string;
 }
 
 const HtmlContainer = styled.div<HtmlTagProps>`
   padding: 15px;
+  margin: ${(props) => props.$margin};
+  max-width: ${(props) => props.$maxWidth};
 
-  max-width: 100%;
   display: flex;
   align-items: center;
   border-radius: 5px;
   text-wrap: wrap;
   background-color: ${(props) =>
-    props.$isWarning
+    props.$type === "warning"
       ? "var(--color-contrast-hover)"
-      : "var(--color-highlight-hover)"};
+      : props.$type === "normal"
+      ? "var(--color-highlight-hover)"
+      : "var(--color-danger)"};
 
-  color: var(--color-primary-dark);
+  color: ${(props) =>
+    props.$type === "danger"
+      ? "var(--color-primary-dark)"
+      : "var(--color-primary-dark)"};
 
   & svg {
     margin-right: 20px;
@@ -36,7 +45,10 @@ const HtmlContainer = styled.div<HtmlTagProps>`
       text-transform: uppercase;
       font-weight: bold;
       font-size: 16px;
-      color: var(--color-primary-dark);
+      color: ${(props) =>
+        props.$type === "danger"
+          ? "var(--color-primary-dark)"
+          : "var(--color-primary-dark)"};
     }
 
     & p {
@@ -46,14 +58,34 @@ const HtmlContainer = styled.div<HtmlTagProps>`
 `;
 
 interface Props {
+  isDanger?: boolean;
   isWarning?: boolean;
   title: string;
   message: string;
+  margin?: string;
+  maxWidth?: number;
 }
-const AnnouncementBox = ({ isWarning, message, title }: Props) => {
+const AnnouncementBox = ({
+  isDanger,
+  isWarning,
+  message,
+  title,
+  margin,
+  maxWidth,
+}: Props) => {
   return (
-    <HtmlContainer $isWarning={!!isWarning}>
-      {isWarning ? <PiWarningCircleBold /> : <GrAnnounce />}
+    <HtmlContainer
+      $type={!!isDanger ? "danger" : !!isWarning ? "warning" : "normal"}
+      $margin={margin ? margin : "0"}
+      $maxWidth={maxWidth ? `${maxWidth}px` : "100%"}
+    >
+      {isDanger ? (
+        <IoWarningOutline />
+      ) : isWarning ? (
+        <PiWarningCircleBold />
+      ) : (
+        <GrAnnounce />
+      )}
       <div>
         <h1>{title}</h1>
         <p>{message}</p>

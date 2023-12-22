@@ -49,6 +49,7 @@ import WeightBalanceSection from "./components/WeightBalanceSection";
 import FuelCalculationsSection from "./components/FuelCalculationsSection";
 import useSetTitle from "../../hooks/useSetTitle";
 import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
+import AnnouncementBox from "../../components/common/AnnouncementBox";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -618,6 +619,51 @@ const FlightPage = () => {
               </span>
             </div>
           </HtmlTitleContainer>
+          {flightData ? (
+            flightData.weather_hours_from_etd < 0 ? (
+              <AnnouncementBox
+                margin="0 0 20px"
+                maxWidth={800}
+                isDanger={true}
+                title="Update ETD!"
+                message="The Estimated Time of Departure is in the past. Update the ETD to keep the weather data accurate."
+              />
+            ) : flightData.weather_hours_from_etd > 10000 ? (
+              <AnnouncementBox
+                margin="0 0 20px"
+                maxWidth={800}
+                isDanger={true}
+                title="Update Weather!"
+                message={`The weather data used for flight planning hasn't been updated. For a more accurate flight plan, use the "Refresh Weather Data" option, or manually enter reliable weather data.`}
+              />
+            ) : flightData.weather_hours_from_etd > 12 ? (
+              <AnnouncementBox
+                margin="0 0 20px"
+                maxWidth={800}
+                isWarning={true}
+                title="Update Weather closer to ETD"
+                message="All the weather data used for planning was last updated more than 12 hours away from ETD. For a more accurate flight plan, update your weather data again, closer to ETD."
+              />
+            ) : (
+              <AnnouncementBox
+                margin="0 0 20px"
+                maxWidth={800}
+                isDanger={false}
+                isWarning={false}
+                title="Weather Last Updated"
+                message={`All the weather data used for planning was last updated ${flightData.weather_hours_from_etd} hours away from ETD.`}
+              />
+            )
+          ) : null}
+          {flightData?.all_weather_is_official ? null : (
+            <AnnouncementBox
+              margin="0 0 50px"
+              maxWidth={800}
+              isWarning={false}
+              title="Weather Sources Reminder"
+              message='Some of the weather data used for planning has been manually updated. Make sure your data sources are reliable, or use the "Refresh Weather Data" option.'
+            />
+          )}
           {sectionIdx === 0 ? (
             <NavLogSection
               handleAdd={addLegModal.handleOpen}

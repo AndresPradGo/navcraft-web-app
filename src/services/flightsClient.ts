@@ -45,7 +45,9 @@ export interface FlightDataFromApi extends AddFlightData {
     departure_weather: DepartureArrivalWeather,
     arrival_weather: DepartureArrivalWeather,
     briefing_radius_nm: number,
-    diversion_radius_nm: number
+    diversion_radius_nm: number,
+    all_weather_is_official: boolean,
+    weather_hours_from_etd: number
 }
 
 const apiClient = new APIClient<AddFlightData, FlightDataFromApi>("/flights")
