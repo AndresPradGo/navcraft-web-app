@@ -232,8 +232,8 @@ const schema = z.object({
   burn_sequence: z.union([
     z
       .number({ invalid_type_error: "Enter a number or leave blank" })
-      .int("Enter a round number.")
-      .min(1, { message: "Must be greater than or equal to 1." })
+      .int("Enter a round number")
+      .min(1, { message: "Must be greater than or equal to 1" })
       .nullable(),
     z.literal(null),
   ]),

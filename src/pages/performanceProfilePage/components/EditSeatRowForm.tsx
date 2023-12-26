@@ -222,8 +222,8 @@ const schema = z.object({
   ]),
   number_of_seats: z
     .number({ invalid_type_error: "Enter a number" })
-    .int("Enter a round number.")
-    .min(0, "Must be greather than zero."),
+    .int("Enter a round number")
+    .min(0, "Must be greather than zero"),
 });
 type FormDataType = z.infer<typeof schema>;
 

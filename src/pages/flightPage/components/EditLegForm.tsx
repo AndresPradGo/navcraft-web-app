@@ -305,12 +305,12 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
 const schema = z.object({
   wind_magnitude_knot: z
     .number({ invalid_type_error: "Enter a number" })
-    .int("Must be a round number.")
+    .int("Must be a round number")
     .min(0, "Must be a positive number"),
   wind_direction: z.union([
     z
       .number({ invalid_type_error: "Enter a number" })
-      .int("Must be a round number.")
+      .int("Must be a round number")
       .min(1, "Must be bewteen 1 and 360")
       .max(360, "Must be bewteen 1 and 360")
       .nullable(),
@@ -318,7 +318,7 @@ const schema = z.object({
   ]),
   temperature_c: z
     .number({ invalid_type_error: "Enter a number" })
-    .int("Must be a round number."),
+    .int("Must be a round number"),
   altimeter_inhg: z
     .number({ invalid_type_error: "Enter a number" })
     .max(99.94, { message: "Must be less than 99.95" })
@@ -389,7 +389,7 @@ const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
 
   const checkWindMagnitude = (data: FieldValues): boolean => {
     const message =
-      "If wind magnitude is not 0, you need to enter a wind direction.";
+      "If wind magnitude is not 0, you need to enter a wind direction";
 
     if (errors.wind_direction) {
       if (errors.wind_direction.message !== message) return true;

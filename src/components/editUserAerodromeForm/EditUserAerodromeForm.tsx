@@ -277,33 +277,33 @@ const schema = z.object({
     .max(50, { message: "Must be at most 50 characters long" }),
   lat_degrees: z
     .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
+    .int("Coordinates must be round numbers")
     .min(0, `Latitude must be between S 89° 59' 59" and N 89° 59' 59"`)
     .max(89, `Latitude must be between S89° 59' 59" and N 89° 59' 59"`),
   lat_minutes: z
     .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
+    .int("Coordinates must be round numbers")
     .min(0, "Minutes must be bewteen 0 and 59")
     .max(59, "Minutes must be bewteen 0 and 59"),
   lat_seconds: z
     .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
+    .int("Coordinates must be round numbers")
     .min(0, "Seconds must be bewteen 0 and 59")
     .max(59, "Seconds must be bewteen 0 and 59"),
   lat_direction: z.enum(["North", "South"]),
   lon_degrees: z
     .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
+    .int("Coordinates must be round numbers")
     .min(0, `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`)
     .max(180, `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`),
   lon_minutes: z
     .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
+    .int("Coordinates must be round numbers")
     .min(0, "Minutes must be bewteen 0 and 59")
     .max(59, "Minutes must be bewteen 0 and 59"),
   lon_seconds: z
     .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
+    .int("Coordinates must be round numbers")
     .min(0, "Seconds must be bewteen 0 and 59")
     .max(59, "Seconds must be bewteen 0 and 59"),
   lon_direction: z.enum(["East", "West"]),
@@ -312,7 +312,7 @@ const schema = z.object({
     z
       .number({ invalid_type_error: "Enter a number" })
       .max(99.94, { message: "Must be less than 99.95" })
-      .min(-99.94, { message: "Must be greater than 99.95" })
+      .min(-99.94, { message: "Must be greater than -99.95" })
       .nullable(),
     z.literal(null),
   ]),
