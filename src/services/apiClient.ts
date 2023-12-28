@@ -12,25 +12,26 @@ interface APIResponse {
     data: APIResponseData,
     status: number
 }
+
 export interface APIClientError extends Error {
     response?: APIResponse
 }
 
 class APIClient<TPost, TGet> {
     endpoint: string;
-    _controller: AbortController
+    private _controller: AbortController
 
     constructor(endpoint: string) {
         this.endpoint = endpoint;
         this._controller = new AbortController()
     }
 
-    _setAuthHeader = () => {
+    private _setAuthHeader = () => {
         const user = useAuth()
         axiosInstance.defaults.headers.common['Authorization'] = user? user.authorization : ""
     }
 
-    _getEndpoint = (endpointPostfix?: string): string => {
+    private _getEndpoint = (endpointPostfix?: string): string => {
         return `${this.endpoint}${endpointPostfix ? endpointPostfix : ""}`
     }
 
