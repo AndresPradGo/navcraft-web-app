@@ -452,9 +452,8 @@ const Waypoints = () => {
             has_taf: false,
             has_metar: false,
             has_fds: false,
-            status:
-              statusList.find((status) => status.id === 3)?.status || "Unknown",
-            status_id: 3,
+            status: "",
+            status_id: 0,
           }}
         />
       </Modal>
