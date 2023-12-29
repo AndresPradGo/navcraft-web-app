@@ -120,6 +120,7 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
         handleClick={typeof handleEdit !== "string" ? handleEdit : undefined}
         height="24px"
         borderRadious={40}
+        margin="10px"
       >
         {permissions === "edit" ? (
           <>
