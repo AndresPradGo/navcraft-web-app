@@ -5,11 +5,6 @@ import { APIClientError } from '../../../services/apiClient';
 import errorToast from '../../../utils/errorToast';
 import apiClient, {PostLegFromExistingWaypoint, PostLegFromNewLocation} from '../services/legsClient'
 import { FlightDataFromApi } from '../../../services/flightsClient';
-import getUTCNowString from '../../../utils/getUTCNowString';
-
-interface FlightContext {
-    previousData?: FlightDataFromApi
-}
 
 interface NewLegData extends PostLegFromExistingWaypoint, PostLegFromNewLocation {
     type?: "aerodrome" | "waypoint" | "user aerodrome" | "user waypoint";
@@ -20,8 +15,7 @@ const usePostNewLeg = (flightId: number, isLeg?: boolean) => {
     return useMutation<
         FlightDataFromApi, 
         APIClientError, 
-        NewLegData,
-        FlightContext
+        NewLegData
     >({
         mutationFn: (data) => {
             if (data.existing_waypoint_id === 0) {
@@ -37,40 +31,6 @@ const usePostNewLeg = (flightId: number, isLeg?: boolean) => {
                     sequence: data.sequence
                 }, `/${flightId}`)
             }
-        },
-        onMutate: newData => {
-            const previousData = queryClient.getQueryData<FlightDataFromApi>(["flight",flightId]) 
-            queryClient.setQueryData<FlightDataFromApi>(["flight",flightId], currentData => {
-                const newLegs = currentData?.legs || []
-                newLegs.splice(newData.sequence - 1, 0, {
-                    id: 0,
-                    temperature_c: 13,
-                    altimeter_inhg: 29.92,
-                    wind_direction: 0,
-                    wind_magnitude_knot: 0,
-                    temperature_last_updated: getUTCNowString(),
-                    wind_last_updated: getUTCNowString(),
-                    altimeter_last_updated: getUTCNowString(),
-                    sequence: newData.sequence,
-                    altitude_ft: 2000,
-                    waypoint: {
-                        id: newData.existing_waypoint_id,
-                        ...newData.new_waypoint,
-                        magnetic_variation: 0,
-                        from_vfr_waypoint: (newData.existing_waypoint_id !== 0) 
-                            && (newData.type === "aerodrome" || newData.type === "waypoint"),
-                        from_user_waypoint: (newData.existing_waypoint_id !== 0)
-                            && (newData.type === "user aerodrome" || newData.type === "user waypoint")
-                    }
-                })
-                return (
-                    currentData ? {
-                        ...currentData,
-                        legs: newLegs
-                    } : undefined
-                )
-            })
-            return {previousData}
         },
         onSuccess: (savedData, newData) => {
             toast.success(
@@ -93,14 +53,8 @@ const usePostNewLeg = (flightId: number, isLeg?: boolean) => {
             queryClient.invalidateQueries({queryKey: ["fuelCalculations",flightId,]})
             queryClient.invalidateQueries({queryKey: ["takeoffLandingDistances",flightId,]})
         },
-        onError: (error, _, context) => {
+        onError: (error) => {
             errorToast(error)
-            if (context?.previousData) {
-                queryClient.setQueryData<FlightDataFromApi>(
-                    ["flight",flightId], 
-                    context.previousData
-                )
-            }
         } 
     })
 }

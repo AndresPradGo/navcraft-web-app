@@ -28,6 +28,15 @@ const useAddFlight = () => {
             contingency_fuel_hours: 0.5,
             departure_aerodrome_is_private: false,
             arrival_aerodrome_is_private: false,
+            briefing_radius_nm: 5, 
+            diversion_radius_nm: 10, 
+            all_weather_is_official: false, 
+            weather_hours_from_etd: Date.now() / (1000 * 60 * 60),
+            departure_taf_aerodromes: [], 
+            departure_metar_aerodromes: [], 
+            arrival_taf_aerodromes: [], 
+            arrival_metar_aerodromes: [], 
+            diversion_options: [],
             legs: []
         }
         queryClient.setQueryData<FlightDataFromApi[]>(['flights', 'all'], currentData => {
