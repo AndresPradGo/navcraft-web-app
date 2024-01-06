@@ -16,7 +16,7 @@ import usePostNewLeg from "../hooks/usePostNewLeg";
 import { OfficialAerodromeDataFromAPI } from "../../../services/officialAerodromeClient";
 import { VfrWaypointDataFromAPI } from "../../../services/vfrWaypointClient";
 import { WaypointDataFromAPI } from "../../../services/userWaypointClient";
-import { FlightDataFromApi } from "../../../services/flightsClient";
+import { FlightDataFromApi } from "../../../services/flightClient";
 import Loader from "../../../components/Loader";
 
 const HtmlForm = styled.form`

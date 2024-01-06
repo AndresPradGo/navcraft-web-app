@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { APIClientError } from '../../services/apiClient';
-import apiClient, {FlightDataFromApi} from '../../services/flightsClient'
+import apiClient, {FlightDataFromApi} from '../../services/flightClient'
 import errorToast from '../../utils/errorToast';
 
 interface FlightContext {

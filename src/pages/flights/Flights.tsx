@@ -103,7 +103,7 @@ const flights = () => {
   if (flightsError || aircraftListError || aerodromesError) throw new Error("");
 
   const tableData = {
-    keys: ["route", "aircraft", "date", "etd", "duration", "waypoints"],
+    keys: ["route", "aircraft", "date", "etd", "waypoints"],
     headers: {
       route: "Route",
       aircraft: "Aircraft",
@@ -124,10 +124,6 @@ const flights = () => {
               (a) => a.id === flight.aircraft_id
             );
 
-            const waypoints = flight.legs
-              .filter((l) => !!l.waypoint)
-              .map((l) => l.waypoint?.code || "#");
-
             return {
               id: flight.id,
               route: `${departure} - ${arrival}`,
@@ -137,7 +133,8 @@ const flights = () => {
               date: formatUTCDate(flight.departure_time),
               dateSort: flight.departure_time,
               etd: formatUTCTime(flight.departure_time),
-              waypoints: waypoints.length > 0 ? waypoints.join(", ") : "-",
+              waypoints:
+                flight.waypoints.length > 0 ? flight.waypoints.join(", ") : "-",
               handleEdit: `flight/${flight.id}`,
               handleDelete: () => {
                 setDeleteFlightData({

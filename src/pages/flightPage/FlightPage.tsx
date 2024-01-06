@@ -636,13 +636,13 @@ const FlightPage = () => {
                 title="Update Weather!"
                 message={`The weather data used for flight planning hasn't been updated. For a more accurate flight plan, use the "Refresh Weather Data" option, or manually enter reliable weather data.`}
               />
-            ) : flightData.weather_hours_from_etd > 12 ? (
+            ) : flightData.weather_hours_from_etd > 6 ? (
               <AnnouncementBox
                 margin="0 0 20px"
                 maxWidth={800}
                 isWarning={true}
                 title="Update Weather closer to ETD"
-                message="All the weather data used for planning was last updated more than 12 hours away from ETD. For a more accurate flight plan, update your weather data again, closer to ETD."
+                message="All the weather data used for planning was last updated more than 6 hours away from the ETD. For a more accurate flight plan, update your weather data closer to the ETD."
               />
             ) : (
               <AnnouncementBox
@@ -655,15 +655,6 @@ const FlightPage = () => {
               />
             )
           ) : null}
-          {flightData?.all_weather_is_official ? null : (
-            <AnnouncementBox
-              margin="0 0 50px"
-              maxWidth={800}
-              isWarning={false}
-              title="Weather Sources Reminder"
-              message='Some of the weather data used for planning has been manually updated. Make sure your data sources are reliable, or use the "Refresh Weather Data" option.'
-            />
-          )}
           {sectionIdx === 0 ? (
             <NavLogSection
               handleAdd={addLegModal.handleOpen}

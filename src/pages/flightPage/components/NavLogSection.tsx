@@ -10,7 +10,7 @@ import {
 import { PiEngineDuotone } from "react-icons/pi";
 import { styled } from "styled-components";
 
-import { FlightDataFromApi } from "../../../services/flightsClient";
+import { FlightDataFromApi } from "../../../services/flightClient";
 import { NavLogLegData } from "../hooks/useNavLogData";
 import DataTableList from "../../../components/common/DataTableList";
 import formatUTCDate from "../../../utils/formatUTCDate";

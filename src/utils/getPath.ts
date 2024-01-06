@@ -1,5 +1,5 @@
 import { OfficialAerodromeDataFromAPI } from "../services/officialAerodromeClient";
-import { FlightDataFromApi } from "../services/flightsClient";
+import { FlightDataFromApi } from "../services/flightClient";
 import getDegreeCoordinates from "./getDegreeCoordinates"
 
 

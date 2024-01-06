@@ -18,7 +18,7 @@ import getDegreeCoordinates, {
   LatLngLiteral,
 } from "../../../../utils/getDegreeCoordinates";
 import { OfficialAerodromeDataFromAPI } from "../../../../services/officialAerodromeClient";
-import { FlightDataFromApi } from "../../../../services/flightsClient";
+import { FlightDataFromApi } from "../../../../services/flightClient";
 import { NavLogLegData } from "../../hooks/useNavLogData";
 import { VfrWaypointDataFromAPI } from "../../../../services/vfrWaypointClient";
 import { WaypointDataFromAPI } from "../../../../services/userWaypointClient";

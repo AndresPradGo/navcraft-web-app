@@ -12,7 +12,7 @@ import { TbWindsock } from "react-icons/tb";
 import { WiBarometer } from "react-icons/wi";
 import { styled } from "styled-components";
 
-import { FlightDataFromApi } from "../../../services/flightsClient";
+import { FlightDataFromApi } from "../../../services/flightClient";
 import { TakeoffLandingDistancesDataFromApi } from "../hooks/useTakeoffLandingDistances";
 import DataTableList from "../../../components/common/DataTableList";
 import Table from "../../../components/common/ExpandibleTable";

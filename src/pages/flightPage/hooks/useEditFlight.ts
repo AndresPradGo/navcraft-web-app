@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { APIClientError } from '../../../services/apiClient';
-import apiClient, {FlightDataFromApi} from '../../../services/flightsClient'
+import apiClient, {FlightDataFromApi} from '../../../services/flightClient'
 import errorToast from '../../../utils/errorToast';
 import { EditFlightData } from '../components/EditFlightForm';
 
@@ -14,7 +14,7 @@ interface FlightContext {
 const useEditFlight = (flightId: number) => {
     const queryClient = useQueryClient();
     return useMutation<FlightDataFromApi, APIClientError, EditFlightData, FlightContext>({
-        mutationFn: data => (apiClient.editOther<EditFlightData>(data, `/${flightId}`)),
+        mutationFn: data => (apiClient.edit(data, `/${flightId}`)),
         onMutate: newData => {
             const previousData = queryClient.getQueryData<FlightDataFromApi>(['flight', flightId]) 
             queryClient.setQueryData<FlightDataFromApi>(['flight', flightId], currentData => {

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { APIClientError } from '../../../services/apiClient';
 import errorToast from '../../../utils/errorToast';
 import apiClient from '../services/legsClient'
-import { FlightDataFromApi } from '../../../services/flightsClient';
+import { FlightDataFromApi } from '../../../services/flightClient';
 
 
 interface DeleteLegData {

@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { APIClientError } from '../../../services/apiClient';
-import apiClient, {FlightDataFromApi, DepartureArrivalWeather} from '../../../services/flightsClient'
+import apiClient, {FlightDataFromApi, DepartureArrivalWeather} from '../../../services/flightClient'
 import errorToast from '../../../utils/errorToast';
 
 interface EditDepartureArrivalData extends  DepartureArrivalWeather{

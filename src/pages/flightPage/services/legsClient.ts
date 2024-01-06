@@ -1,5 +1,5 @@
 import APIClient from '../../../services/apiClient';
-import { FlightDataFromApi } from '../../../services/flightsClient';
+import { FlightDataFromApi } from '../../../services/flightClient';
 import {CoordinateDataType, IdentifierDataType} from '../components/map/DropMarkerForm'
 
 export interface PostLegFromExistingWaypoint {

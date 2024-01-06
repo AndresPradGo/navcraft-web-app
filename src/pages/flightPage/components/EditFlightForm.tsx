@@ -13,7 +13,7 @@ import { z } from "zod";
 
 import Button from "../../../components/common/button";
 import { useQueryClient } from "@tanstack/react-query";
-import { FlightDataFromApi } from "../../../services/flightsClient";
+import { FlightDataFromApi } from "../../../services/flightClient";
 import getUTCNowString from "../../../utils/getUTCNowString";
 import useEditFlight from "../hooks/useEditFlight";
 import Loader from "../../../components/Loader";

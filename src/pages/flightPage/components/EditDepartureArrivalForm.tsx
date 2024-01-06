@@ -549,7 +549,9 @@ const EditDepartureArrivalForm = ({
               </h2>
               <p>
                 Manually updated weather, will overwrite the weather captured
-                from official sources.
+                from official sources. Make sure your data sources are reliable,
+                or use the "Refresh Weather" sidebar-button to reset the
+                official weather.
               </p>
               <HtmlInput
                 $required={true}

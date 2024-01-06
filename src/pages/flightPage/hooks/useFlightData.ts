@@ -1,17 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
 import {APIClientError} from '../../../services/apiClient';
-import apiClient, {FlightDataFromApi} from "../../../services/flightsClient"
+import apiClient, {FlightDataFromApi} from "../../../services/flightClient"
 
 
 const useFlightData = (flightId: number) => {
     return useQuery<FlightDataFromApi, APIClientError>({
         queryKey: ['flight', flightId],
         queryFn: () => {
-            return apiClient.getAndPreProcess<FlightDataFromApi[]>(
-                data => data[0],
-                `?flight_id=${flightId}`
-            )
+            return apiClient.get(`/${flightId}`)
         }
     })
 }

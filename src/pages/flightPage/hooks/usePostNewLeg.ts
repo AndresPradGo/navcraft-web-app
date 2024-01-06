@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { APIClientError } from '../../../services/apiClient';
 import errorToast from '../../../utils/errorToast';
 import apiClient, {PostLegFromExistingWaypoint, PostLegFromNewLocation} from '../services/legsClient'
-import { FlightDataFromApi } from '../../../services/flightsClient';
+import { FlightDataFromApi } from '../../../services/flightClient';
 
 interface NewLegData extends PostLegFromExistingWaypoint, PostLegFromNewLocation {
     type?: "aerodrome" | "waypoint" | "user aerodrome" | "user waypoint";

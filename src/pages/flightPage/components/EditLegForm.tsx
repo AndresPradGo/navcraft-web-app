@@ -16,7 +16,7 @@ import { z } from "zod";
 import Button from "../../../components/common/button";
 import useUpdateFlightLeg from "../hooks/useUpdateFlightLeg";
 import getUTCNowString from "../../../utils/getUTCNowString";
-import { FlightDataFromApi } from "../../../services/flightsClient";
+import { FlightDataFromApi } from "../../../services/flightClient";
 import Loader from "../../../components/Loader";
 
 const HtmlForm = styled.form`
@@ -493,7 +493,9 @@ const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
               </h2>
               <p>
                 Manually updated weather, will overwrite the weather captured
-                from official sources.
+                from official sources. Make sure your data sources are reliable,
+                or use the "Refresh Weather" sidebar-button to reset the
+                official weather.
               </p>
               <HtmlInput
                 $required={true}
