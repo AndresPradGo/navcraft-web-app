@@ -79,13 +79,20 @@ const TableContainer = ({
     dispatchFilters({ type: "CLEAR" });
     dispatchSort({ type: "RESET" });
     dispatchPage({ type: "RESET" });
-  }, [emptyTableMessage, tableData.keys.length, tableData.keys[0]]);
+  }, [
+    emptyTableMessage,
+    tableData.keys.length,
+    tableData.keys[0],
+    sortColumnOptions?.length,
+  ]);
 
   const { processedData, numPages } = useProcessTableData({
     data: tableData.rows,
     sortParams: sortColumnOptions
       ? {
-          key: sortColumnOptions[sort.index].key,
+          key: sortColumnOptions[sort.index]
+            ? sortColumnOptions[sort.index].key
+            : sortColumnOptions[0].key,
           order: sort.order,
         }
       : undefined,

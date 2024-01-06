@@ -53,14 +53,17 @@ const FilterTags = ({ filters, selectedFilters, dispatch }: Props) => {
     <HtmlContainer>
       {selectedFilters.map((idx) => {
         const filter = filters[idx];
-        return (
-          <HtmlFilterTag key={`${filter.key}-${filter.value}`}>
-            <span>{filter.title}</span>
-            <LiaTimesSolid
-              onClick={() => dispatch({ type: "REMOVE", index: idx })}
-            />
-          </HtmlFilterTag>
-        );
+        if (filter) {
+          return (
+            <HtmlFilterTag key={`${filter.key}-${filter.value}`}>
+              <span>{filter.title}</span>
+              <LiaTimesSolid
+                onClick={() => dispatch({ type: "REMOVE", index: idx })}
+              />
+            </HtmlFilterTag>
+          );
+        }
+        return null;
       })}
     </HtmlContainer>
   );

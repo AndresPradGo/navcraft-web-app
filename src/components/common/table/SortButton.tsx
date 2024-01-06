@@ -97,7 +97,9 @@ const SortButton = ({ sortOptions, selectedSortData, dispatch }: Props) => {
         onlyHover={true}
       >
         Sort by:&nbsp;
-        {sortOptions[selectedSortData.index].title}
+        {sortOptions[selectedSortData.index]
+          ? sortOptions[selectedSortData.index].title
+          : ""}
         {arrowIcons[selectedSortData.order]}
       </Button>
       <HtmlList
