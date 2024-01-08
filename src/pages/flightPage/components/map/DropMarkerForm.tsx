@@ -408,7 +408,7 @@ const DropMarkerForm = ({
       setIsLoading(true);
 
       apiClient
-        .getAll(`/${latitude}/${longitude}?distance=3`)
+        .getAll(`/${latitude}/${longitude}?distance=10`)
         .then((res) => {
           setNearbyWaypoints(
             res.filter((item) => {
