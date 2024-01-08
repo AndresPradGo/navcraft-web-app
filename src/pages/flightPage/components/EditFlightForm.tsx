@@ -268,10 +268,12 @@ export const schema = z.object({
     .min(0, { message: "Must be greater than zero" }),
   briefing_radius_nm: z
     .number({ invalid_type_error: "Enter a number" })
-    .min(0, { message: "Must be a positive number" }),
+    .min(5, { message: "Must be greater than 5" })
+    .max(50, { message: "Must be less than 50" }),
   diversion_radius_nm: z
     .number({ invalid_type_error: "Enter a number" })
-    .min(0, { message: "Must be a positive number" }),
+    .min(5, { message: "Must be greater than 5" })
+    .max(100, { message: "Must be less than 100" }),
 });
 
 export type EditFlightData = z.infer<typeof schema>;
