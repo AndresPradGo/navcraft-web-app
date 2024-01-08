@@ -280,7 +280,11 @@ const FlightPage = () => {
 
   useUnauthorizedErrorHandler([error]);
 
-  if (error && error.message !== "Network Error") throw new Error("notFound");
+  if (
+    (error && error.message !== "Network Error") ||
+    (legsError && legsError.response?.data.detail === "Flight not found.")
+  )
+    throw new Error("notFound");
   else if (
     (error && error.message === "Network Error") ||
     aerodromesError ||

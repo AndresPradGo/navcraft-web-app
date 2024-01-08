@@ -1,10 +1,12 @@
 import styled from "styled-components";
+
 import useSideBar from "../../sidebar/useSideBar";
 import { ReactNode } from "react";
 import EditTableButtons, {
   Props as EditButtonsProps,
   EditButtonsPropsTypeUnion,
 } from "./EditTableButtons";
+import Loader from "../../Loader";
 
 interface HtmlTagProps {
   $sideBarIsExpanded: boolean;
@@ -334,18 +336,29 @@ const Table = ({
               {keysWithButtons.map((key, idx) =>
                 idx ? (
                   key === "buttons" ? (
-                    <HtmlTableDataCell
-                      key={`${key}${row.id}`}
-                      $sideBarIsExpanded={sideBarIsExpanded}
-                      $breakingPoint={truncatedBreakingPoint}
-                      $isResult={!!row.isResult}
-                    >
-                      <EditTableButtons
-                        handleEdit={row.handleEdit}
-                        handleDelete={row.handleDelete as () => {}}
-                        permissions={row.permissions}
-                      />
-                    </HtmlTableDataCell>
+                    row.id === 0 ? (
+                      <HtmlTableDataCell
+                        key={`${key}${row.id}`}
+                        $sideBarIsExpanded={sideBarIsExpanded}
+                        $breakingPoint={truncatedBreakingPoint}
+                        $isResult={!!row.isResult}
+                      >
+                        <Loader size={60} />
+                      </HtmlTableDataCell>
+                    ) : (
+                      <HtmlTableDataCell
+                        key={`${key}${row.id}`}
+                        $sideBarIsExpanded={sideBarIsExpanded}
+                        $breakingPoint={truncatedBreakingPoint}
+                        $isResult={!!row.isResult}
+                      >
+                        <EditTableButtons
+                          handleEdit={row.handleEdit}
+                          handleDelete={row.handleDelete as () => {}}
+                          permissions={row.permissions}
+                        />
+                      </HtmlTableDataCell>
+                    )
                   ) : (
                     <HtmlTableDataCell
                       data-title={headersWithButtons[key]}
