@@ -52,14 +52,14 @@ export interface FlightDataFromApi {
     departure_weather: DepartureArrivalWeather;
     arrival_weather: DepartureArrivalWeather;
     briefing_radius_nm: number;
-    diversion_radius_nm: number;
+    alternate_radius_nm: number;
     all_weather_is_official: boolean;
     weather_hours_from_etd: number;
     departure_taf_aerodromes: BaseWeatherReportRequestData[];
     departure_metar_aerodromes: BaseWeatherReportRequestData[];
     arrival_taf_aerodromes: BaseWeatherReportRequestData[];
     arrival_metar_aerodromes: BaseWeatherReportRequestData[];
-    diversion_options: BaseWeatherReportRequestData[];
+    alternates: BaseWeatherReportRequestData[];
 }
 
 const apiClient = new APIClient<EditFlightData, FlightDataFromApi>("/flights")
