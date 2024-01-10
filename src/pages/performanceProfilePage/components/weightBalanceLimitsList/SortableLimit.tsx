@@ -12,6 +12,7 @@ interface HtmlTagProps {
 }
 const HtmlTag = styled.div<HtmlTagProps>`
   overflow: hidden;
+  touch-action: none;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

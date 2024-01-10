@@ -4,8 +4,15 @@ import { FaRoute, FaCloudSunRain } from "react-icons/fa";
 import { LuRefreshCw } from "react-icons/lu";
 import { LiaTimesSolid } from "react-icons/lia";
 import { styled } from "styled-components";
+import { useQueryClient } from "@tanstack/react-query";
 
 import Button from "../../../components/common/button";
+import { FlightDataFromApi } from "../../../services/flightClient";
+import { NavLogLegData } from "../hooks/useNavLogData";
+import useRefreshWeather from "../hooks/useRefreshWeather";
+import Loader from "../../../components/Loader";
+import FlightWarningList from "../../../components/FlightWarningList";
+import getUTCNowString from "../../../utils/getUTCNowString";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -39,13 +46,16 @@ const HtmlForm = styled.form`
   }
 `;
 
-const HtmlInputContainer = styled.div`
+interface InputContainerProps {
+  $center: boolean;
+}
+const HtmlInputContainer = styled.div<InputContainerProps>`
   width: 100%;
   overflow-y: auto;
-  padding: 20px 0;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: ${(props) => (props.$center ? "center" : "flex-start")};
 
   border-top: 1px solid var(--color-grey);
   border-bottom: 1px solid var(--color-grey);
@@ -61,7 +71,7 @@ const HtmlCheckbox = styled.label`
   margin-left: 10px;
 
   color: var(--color-grey-bright);
-  padding: 10px 10px 10px 20px;
+  padding: 10px 0;
   cursor: pointer;
   flex-grow: 0;
 
@@ -132,16 +142,22 @@ const TitleIcon = styled(FaCloudSunRain)`
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+interface CloseIconProps {
+  $disabled: boolean;
+}
+
+const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: pointer;
+  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
   color: var(--color-grey);
+  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
 
   &:hover,
   &:focus {
-    color: var(--color-white);
+    color: ${(props) =>
+      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
   }
 
   @media screen and (min-width: 510px) {
@@ -167,6 +183,22 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
     enrouteWeather: true,
     arrivalWeather: true,
   });
+  const [submited, setSubmited] = useState(false);
+
+  const queryClient = useQueryClient();
+  const flightData = queryClient.getQueryData<FlightDataFromApi>([
+    "flight",
+    flightId,
+  ]);
+
+  const legsData = queryClient.getQueryData<NavLogLegData[]>([
+    "navLog",
+    flightId,
+  ]);
+
+  const fetching = queryClient.isFetching({ queryKey: ["navLog", flightId] });
+
+  const mutation = useRefreshWeather(flightId);
 
   useEffect(() => {
     const storedDepartureWeather = localStorage.getItem("departureWeather");
@@ -185,6 +217,12 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (submited && !mutation.isLoading) {
+      closeModal();
+    }
+  }, [submited, mutation.isLoading]);
+
   const handleSelectItem = (box: "departure" | "enroute" | "arrival") => {
     const newState = { ...formState };
     if (box === "departure")
@@ -202,7 +240,75 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
     localStorage.setItem("departureWeather", `${formState.departureWeather}`);
     localStorage.setItem("enrouteWeather", `${formState.enrouteWeather}`);
     localStorage.setItem("arrivalWeather", `${formState.arrivalWeather}`);
-    closeModal();
+
+    let takeoffWeather = undefined;
+    let enrouteWeather = undefined;
+    let landingWeather = undefined;
+    const date = new Date(flightData?.departure_time || getUTCNowString());
+
+    if (formState.departureWeather) {
+      takeoffWeather = {
+        dateTime: date.toISOString(),
+        taf:
+          flightData?.departure_taf_aerodromes.map((item) => ({
+            aerodromeCode: item.code,
+            nauticalMilesFromTarget: item.distance_from_target_nm,
+          })) || [],
+        metar:
+          flightData?.departure_metar_aerodromes.map((item) => ({
+            aerodromeCode: item.code,
+            nauticalMilesFromTarget: item.distance_from_target_nm,
+          })) || [],
+      };
+    }
+    if (formState.enrouteWeather) {
+      enrouteWeather = legsData?.map((leg, idx) => {
+        date.setMinutes(date.getMinutes() + leg.time_enroute_min);
+        return {
+          dateTime: date.toISOString(),
+          upperwind:
+            flightData?.legs[idx].upper_wind_aerodromes.map((item) => ({
+              aerodromeCode: item.code,
+              nauticalMilesFromTarget: item.distance_from_target_nm,
+            })) || [],
+          metar:
+            flightData?.legs[idx].metar_aerodromes.map((item) => ({
+              aerodromeCode: item.code,
+              nauticalMilesFromTarget: item.distance_from_target_nm,
+            })) || [],
+        };
+      });
+    } else {
+      legsData?.forEach((leg) => {
+        date.setMinutes(date.getMinutes() + leg.time_enroute_min);
+      });
+    }
+    if (formState.arrivalWeather) {
+      date.setHours(
+        date.getHours() + (flightData ? flightData.added_enroute_time_hours : 0)
+      );
+      landingWeather = {
+        dateTime: date.toISOString(),
+        taf:
+          flightData?.arrival_taf_aerodromes.map((item) => ({
+            aerodromeCode: item.code,
+            nauticalMilesFromTarget: item.distance_from_target_nm,
+          })) || [],
+        metar:
+          flightData?.arrival_metar_aerodromes.map((item) => ({
+            aerodromeCode: item.code,
+            nauticalMilesFromTarget: item.distance_from_target_nm,
+          })) || [],
+      };
+    }
+
+    mutation.mutate({
+      takeoffWeather,
+      enrouteWeather,
+      landingWeather,
+    });
+
+    setSubmited(true);
   };
 
   return (
@@ -212,45 +318,64 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
           <TitleIcon />
           Refresh Weather Data
         </div>
-        <CloseIcon onClick={closeModal} />
+        {mutation.isLoading ? (
+          <CloseIcon onClick={() => {}} $disabled={true} />
+        ) : (
+          <CloseIcon onClick={closeModal} $disabled={false} />
+        )}
       </h1>
-      <HtmlInputContainer>
-        <HtmlCheckbox htmlFor="refreshWeather-departureWeather">
-          <input
-            type="checkbox"
-            id="refreshWeather-departureWeather"
-            onChange={() => handleSelectItem("departure")}
-            checked={formState.departureWeather}
-          />
-          <span>
-            <DepartureIcon />
-            Refresh Departure Aerodrome Weather
-          </span>
-        </HtmlCheckbox>
-        <HtmlCheckbox htmlFor="refreshWeather-enrouteWeather">
-          <input
-            type="checkbox"
-            id="refreshWeather-enrouteWeather"
-            onChange={() => handleSelectItem("enroute")}
-            checked={formState.enrouteWeather}
-          />
-          <span>
-            <EnrouteIcon />
-            Refresh Enroute Weather
-          </span>
-        </HtmlCheckbox>
-        <HtmlCheckbox htmlFor="refreshWeather-enrouteWeather">
-          <input
-            type="checkbox"
-            id="refreshWeather-arrivalWeather"
-            onChange={() => handleSelectItem("arrival")}
-            checked={formState.arrivalWeather}
-          />
-          <span>
-            <ArrivalIcon />
-            Refresh Arrival Aerodrome Weather
-          </span>
-        </HtmlCheckbox>
+      <HtmlInputContainer $center={!!fetching || mutation.isLoading}>
+        {fetching || mutation.isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            {(flightData ? flightData.weather_hours_from_etd < 0 : true) ? (
+              <FlightWarningList
+                warnings={[
+                  [
+                    "Weather data cannot be updated if ETD is in the past. Update the ETD first to be able to refresh the weather data.",
+                  ],
+                ]}
+              />
+            ) : null}
+            <HtmlCheckbox htmlFor="refreshWeather-departureWeather">
+              <input
+                type="checkbox"
+                id="refreshWeather-departureWeather"
+                onChange={() => handleSelectItem("departure")}
+                checked={formState.departureWeather}
+              />
+              <span>
+                <DepartureIcon />
+                Refresh Departure Aerodrome Weather
+              </span>
+            </HtmlCheckbox>
+            <HtmlCheckbox htmlFor="refreshWeather-enrouteWeather">
+              <input
+                type="checkbox"
+                id="refreshWeather-enrouteWeather"
+                onChange={() => handleSelectItem("enroute")}
+                checked={formState.enrouteWeather}
+              />
+              <span>
+                <EnrouteIcon />
+                Refresh Enroute Weather
+              </span>
+            </HtmlCheckbox>
+            <HtmlCheckbox htmlFor="refreshWeather-enrouteWeather">
+              <input
+                type="checkbox"
+                id="refreshWeather-arrivalWeather"
+                onChange={() => handleSelectItem("arrival")}
+                checked={formState.arrivalWeather}
+              />
+              <span>
+                <ArrivalIcon />
+                Refresh Arrival Aerodrome Weather
+              </span>
+            </HtmlCheckbox>
+          </>
+        )}
       </HtmlInputContainer>
       <HtmlButtons>
         <Button
@@ -265,6 +390,7 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
           btnType="button"
           width="120px"
           height="35px"
+          disabled={mutation.isLoading}
         >
           Cancel
         </Button>
@@ -280,6 +406,12 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
           width="120px"
           height="35px"
           spaceChildren="space-evenly"
+          disabled={
+            (flightData ? flightData.weather_hours_from_etd < 0 : true) ||
+            !!fetching ||
+            mutation.isLoading
+          }
+          disabledText={mutation.isLoading ? "Refreshing..." : "Refresh"}
         >
           Refresh
           <SaveIcon />
