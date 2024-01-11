@@ -17,6 +17,7 @@ import getUTCNowString from "../../utils/getUTCNowString";
 import { AircraftDataFromAPI } from "../../services/aircraftClient";
 import { OfficialAerodromeDataFromAPI } from "../../services/officialAerodromeClient";
 import useAddFlight from "./useAddFlight";
+import FlightWarningList from "../../components/FlightWarningList";
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -53,7 +54,7 @@ const HtmlForm = styled.form`
 const HtmlInputContainer = styled.div`
   width: 100%;
   overflow-y: auto;
-  padding: 20px 0;
+  padding: 20px 10px;
   flex-grow: 1;
 
   border-top: 1px solid var(--color-grey);
@@ -80,14 +81,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  padding: 10px 20px 0;
+  padding: 10px 10px 0;
 
   & label {
     cursor: ${(props) => (props.$hasValue ? "default" : "text")};
     position: absolute;
     top: 0;
     left: 0;
-    font-size: 20px;
+    font-size: 17px;
     display: flex;
     align-items: center;
     transform: ${(props) =>
@@ -380,6 +381,19 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
+        {aircraftList.length <= 0 ? (
+          <FlightWarningList
+            warnings={[
+              [
+                "In order to add a new flight, first you need to create an aircraft profile.",
+                "Go to the Aircraft section, ",
+                "add a new aircraft,",
+                "complete a Performance Profile for the aircraft.",
+                "Make sure the Performance Profile is marked as Selected, and the aircraft appears as Complete.",
+              ],
+            ]}
+          />
+        ) : null}
         <DataList
           setError={(message) =>
             setError("departure_aerodrome", {
@@ -406,6 +420,8 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
           name="departure_aerodrome"
           formIsOpen={isOpen}
           resetValue=""
+          lessPadding={true}
+          fontSize={17}
         >
           <DepartureIcon /> Departure Aerodrome
         </DataList>
@@ -435,6 +451,8 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
           name="arrival_aerodrome"
           formIsOpen={isOpen}
           resetValue=""
+          lessPadding={true}
+          fontSize={17}
         >
           <ArrivalIcon /> Destination Aerodrome
         </DataList>
@@ -455,6 +473,8 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
           name="aircraft"
           formIsOpen={isOpen}
           resetValue=""
+          lessPadding={true}
+          fontSize={17}
         >
           <AircraftIcon /> Aircraft
         </DataList>
@@ -509,6 +529,7 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
           width="120px"
           height="35px"
           spaceChildren="space-evenly"
+          disabled={aircraftList.length <= 0}
         >
           Save
           <SaveIcon />

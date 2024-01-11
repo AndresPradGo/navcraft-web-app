@@ -17,6 +17,7 @@ interface RequiredInputProps {
   $hasValue: boolean;
   $required: boolean;
   $lessPadding: boolean;
+  $fontSize: number;
 }
 const HtmlInput = styled.div<RequiredInputProps>`
   position: relative;
@@ -32,7 +33,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
     position: absolute;
     top: 0;
     left: 0;
-    font-size: 20px;
+    font-size: ${(props) => props.$fontSize}px;
     display: flex;
     align-items: center;
     transform: ${(props) =>
@@ -100,7 +101,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   }
 
   @media screen and (min-width: 425px) {
-    padding: 10px 20px 0;
+    padding: ${(props) => (props.$lessPadding ? "10px 10px 0" : "10px 20px 0")};
   }
 `;
 
@@ -159,6 +160,7 @@ interface Props {
   required: boolean;
   formIsOpen: boolean;
   lessPadding?: boolean;
+  fontSize?: number;
 }
 
 const DataList = ({
@@ -175,10 +177,10 @@ const DataList = ({
   formIsOpen,
   resetValue,
   lessPadding,
+  fontSize,
 }: Props) => {
   const positionPopperTools = usePopperInput();
   const [filteredOptions, dispatch] = useReducer(dataListReducer, options);
-
   useEffect(() => {
     if (formIsOpen && positionPopperTools.inputRef) {
       positionPopperTools.inputRef.value = resetValue;
@@ -239,6 +241,7 @@ const DataList = ({
       $hasValue={!!value}
       $accepted={!hasError}
       $lessPadding={!!lessPadding}
+      $fontSize={fontSize || 20}
     >
       <input
         id={name}
