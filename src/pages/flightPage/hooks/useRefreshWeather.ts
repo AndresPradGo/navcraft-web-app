@@ -59,6 +59,7 @@ const useRefreshWeather = (flightId: number) => {
         mutationFn: data => (apiClient.post(data, `/${flightId}`)),
         onSuccess: (savedData) => {
             console.log(savedData)
+            console.log(savedData)
             toast.success("Weather Data has been refresh successfully.", {
                 position: "top-center",
                 autoClose: 10000,

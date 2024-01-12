@@ -171,8 +171,12 @@ const TakeoffLandinDistancesSection = ({
             title: "Wind Direction [\u00B0True]",
             icon: <WindDirectionIcon />,
             data: isTakeoff
-              ? flightData.departure_weather.wind_direction || "-"
-              : flightData.arrival_weather.wind_direction || "-",
+              ? (flightData.departure_weather.wind_direction === 0
+                  ? "VRB"
+                  : flightData.departure_weather.wind_direction) || "-"
+              : (flightData.arrival_weather.wind_direction === 0
+                  ? "VRB"
+                  : flightData.arrival_weather.wind_direction) || "-",
           },
         ]
       : [];
@@ -276,6 +280,11 @@ const TakeoffLandinDistancesSection = ({
   const warnings = [];
 
   if (isTakeoff) {
+    if (flightData?.departure_weather.wind_direction === 0) {
+      warnings.push(
+        "Wind direction is varible, so 30\u00B0 tailwind is being considered."
+      );
+    }
     if (distancesData && distancesData.departure.length) {
       if (
         distancesData.departure[0].truncated_pressure_altitude_ft <
@@ -295,6 +304,11 @@ const TakeoffLandinDistancesSection = ({
       }
     }
   } else {
+    if (flightData?.arrival_weather.wind_direction === 0) {
+      warnings.push(
+        "Wind direction is varible, so 30\u00B0 tailwind is being considered."
+      );
+    }
     if (distancesData && distancesData.arrival.length) {
       if (
         distancesData.arrival[0].truncated_pressure_altitude_ft <
