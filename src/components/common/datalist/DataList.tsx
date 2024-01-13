@@ -108,11 +108,12 @@ const HtmlInput = styled.div<RequiredInputProps>`
 interface HtmlListProps {
   ref: Dispatch<SetStateAction<HTMLElement | null>>;
   $expanded: boolean;
+  $lessPadding: boolean;
 }
 
 const HtmlList = styled.ul<HtmlListProps>`
   z-index: 2000;
-  width: calc(100% - 40px);
+  width: calc(100% - ${(props) => (props.$lessPadding ? 20 : 40)}px);
   position: absolute;
   transition: all 0.2s ease-out;
   max-height: ${(props) => (props.$expanded ? "200px" : "0")};
@@ -258,6 +259,7 @@ const DataList = ({
           ref={positionPopperTools.setReferences.popper}
           $expanded={positionPopperTools.isExpanded}
           style={positionPopperTools.styles}
+          $lessPadding={!!lessPadding}
         >
           {filteredOptions.map((option) => (
             <HtmlListItem

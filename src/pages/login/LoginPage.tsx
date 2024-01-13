@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useForm, FieldValues } from "react-hook-form";
 import { useNavigate, Navigate, useSearchParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IoShieldCheckmarkOutline } from "react-icons/io5";
 import { MdOutlineLogin } from "react-icons/md";
 import { TfiEmail } from "react-icons/tfi";
 import { TbLockOpen } from "react-icons/tb";
@@ -15,6 +16,7 @@ import useAuth from "../../hooks/useAuth";
 import useSetTitle from "../../hooks/useSetTitle";
 import Loader from "../../components/Loader";
 import { useEffect } from "react";
+import useTrial from "./useTrial";
 
 const HtmlPageContainer = styled.div`
   position: relative;
@@ -35,7 +37,7 @@ const HtmlFormContainer = styled.div`
   position: relative;
   inset: 4px;
   width: 300px;
-  height: 428px;
+  height: 510px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,7 +52,7 @@ const HtmlFormContainer = styled.div`
     top: 50%;
     left: 50%;
     width: 388px;
-    height: 428px;
+    height: 510px;
     background: linear-gradient(
       0deg,
       #50a5e2,
@@ -71,7 +73,7 @@ const HtmlFormContainer = styled.div`
     top: 50%;
     left: 50%;
     width: 388px;
-    height: 428px;
+    height: 510px;
     background: linear-gradient(
       0deg,
       #50a5e2,
@@ -103,7 +105,7 @@ const HtmlAnimationSpan = styled.span`
     top: 50%;
     left: 50%;
     width: 388px;
-    height: 428px;
+    height: 510px;
     background: linear-gradient(
       0deg,
       #f0ad05,
@@ -125,7 +127,7 @@ const HtmlAnimationSpan = styled.span`
     top: 50%;
     left: 50%;
     width: 388px;
-    height: 428px;
+    height: 510px;
     background: linear-gradient(
       0deg,
       #f0ad05,
@@ -150,7 +152,7 @@ const HtmlLoginForm = styled.form`
   align-items: center;
   flex-basis: 292px;
   flex-shrink: 0;
-  height: 420px;
+  height: 502px;
 
   background-color: var(--color-primary);
   border-radius: 8px;
@@ -262,6 +264,11 @@ const LoginIcon = styled(MdOutlineLogin)`
   margin-left: 10px;
 `;
 
+const TrialIcon = styled(IoShieldCheckmarkOutline)`
+  font-size: 25px;
+  margin-left: 10px;
+`;
+
 const HtmlRegisterContainer = styled.div`
   margin-top: 10px;
 `;
@@ -317,13 +324,16 @@ const LoginPage = () => {
   const login = useLogin(() => {
     navigate("/flights");
   });
+  const trialMutation = useTrial(() => {
+    navigate("/flights");
+  });
 
   useSetTitle("Login");
 
   useEffect(() => {
     if (credentials && credentials === "invalid") {
       toast.error(
-        "Invalid credentials, please login with a valid email and password.",
+        "Invalid credentials, please login with a valid email and password, or start a new trial.",
         {
           position: "top-center",
           autoClose: 10000,
@@ -403,6 +413,23 @@ const LoginPage = () => {
                 Don't have an account?
                 <HtmlRegisterLink to="/register">Register</HtmlRegisterLink>
               </HtmlRegisterContainer>
+              <Button
+                color="var(--color-primary-dark)"
+                hoverColor="var(--color-grey-dark)"
+                backgroundColor="var(--color-contrast)"
+                backgroundHoverColor="var(--color-contrast-hover)"
+                width="100%"
+                height="40px"
+                padding="9px 25px"
+                margin="40px 0 0"
+                spaceChildren="center"
+                fontSize={16}
+                borderRadious={4}
+                btnType="button"
+                handleClick={trialMutation.mutate}
+              >
+                No Account Trial <TrialIcon />
+              </Button>
             </>
           )}
         </HtmlLoginForm>

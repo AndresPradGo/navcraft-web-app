@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PiAirplaneInFlightDuotone } from "react-icons/pi";
 import { IoAdd } from "react-icons/io5";
 import { styled } from "styled-components";
@@ -14,7 +15,6 @@ import useFlightsList from "./useFlightsList";
 import formatUTCDate from "../../utils/formatUTCDate";
 import formatUTCTime from "../../utils/formatUTCTime";
 import DeleteFlightForm from "../../components/deleteFlightForm";
-import { useState } from "react";
 import useSetTitle from "../../hooks/useSetTitle";
 import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
