@@ -26,7 +26,7 @@ class APIClient<TPost, TGet> {
 
     private _setAuthHeader = () => {
         const user = useAuth()
-        axiosInstance.defaults.headers.common['Authorization'] = user? user.authorization : ""
+        axiosInstance.defaults.headers.common['x-auth-token'] = user? user.jwt : ""
     }
 
     private _getEndpoint = (endpointPostfix?: string): string => {
