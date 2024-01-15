@@ -22,6 +22,7 @@ interface PostRfreshWeather {
     };
     enrouteWeather?: {
         dateTime: string;
+        altitude: number;
         upperwind: AerodromeWetherProductRequest[];
         metar: AerodromeWetherProductRequest[];
     }[];

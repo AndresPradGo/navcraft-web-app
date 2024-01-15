@@ -266,6 +266,7 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
         date.setMinutes(date.getMinutes() + leg.time_enroute_min);
         return {
           dateTime: date.toISOString(),
+          altitude: leg.desired_altitude_ft,
           upperwind:
             flightData?.legs[idx].upper_wind_aerodromes.map((item) => ({
               aerodromeCode: item.code,
