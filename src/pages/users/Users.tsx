@@ -10,6 +10,7 @@ import useUsersData from "./useUsersData";
 import EditUserForm from "./EditUserForm";
 import DeleteUserForm from "./DeleteUserForm";
 import useSetTitle from "../../hooks/useSetTitle";
+import formatUTCDate from "../../utils/formatUTCDate";
 import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 
 const HtmlContainer = styled.div`
@@ -65,13 +66,26 @@ const Users = () => {
   useSetTitle("Users");
 
   const tableData = {
-    keys: ["name", "id", "email", "level", "is_active", "weight_lb"],
+    keys: [
+      "name",
+      "id",
+      "email",
+      "level",
+      "is_active",
+      "is_trial",
+      "updated",
+      "created",
+      "weight_lb",
+    ],
     headers: {
       name: "Name",
       id: "ID",
       email: "Email",
       level: "Level",
       is_active: "Active",
+      is_trial: "Trial",
+      updated: "Date Updated",
+      created: "Date Created",
       weight_lb: "Weight [lb]",
     },
     rows:
@@ -83,6 +97,9 @@ const Users = () => {
             level: user.is_master ? "Master" : user.is_admin ? "Admin" : "User",
             is_active: user.is_active ? "Yes" : "No",
             weight_lb: user.weight_lb,
+            is_trial: user.is_trial ? "Yes" : "No",
+            updated: formatUTCDate(user.last_updated),
+            created: formatUTCDate(user.created_at),
             handleEdit: () => {
               setUserId(user.id);
               editModal.handleOpen();
@@ -109,12 +126,24 @@ const Users = () => {
       title: "Email",
     },
     {
+      key: "created",
+      title: "Date Created",
+    },
+    {
+      key: "updated",
+      title: "Date Updated",
+    },
+    {
       key: "level",
       title: "Level",
     },
     {
       key: "is_active",
       title: "Active",
+    },
+    {
+      key: "is_trial",
+      title: "Trial",
     },
     {
       key: "weight_lb",
@@ -148,6 +177,11 @@ const Users = () => {
       {
         key: "is_active",
         title: "Active Users",
+        value: "Yes",
+      },
+      {
+        key: "is_trial",
+        title: "Trial Users",
         value: "Yes",
       },
       {

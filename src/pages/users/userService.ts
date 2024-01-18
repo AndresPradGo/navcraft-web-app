@@ -9,6 +9,9 @@ export interface UserDataFromAPI {
     is_master: boolean;
     is_active: boolean;
     weight_lb: number;
+    created_at: string;
+    last_updated: string;
+    is_trial: boolean;
 }
 
 export interface EditUserData {

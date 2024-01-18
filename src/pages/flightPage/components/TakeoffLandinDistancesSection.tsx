@@ -282,7 +282,7 @@ const TakeoffLandinDistancesSection = ({
   if (isTakeoff) {
     if (flightData?.departure_weather.wind_direction === 0) {
       warnings.push(
-        "Wind direction is varible, so 30\u00B0 tailwind is being considered."
+        "Wind direction is variable, so 30\u00B0 tailwind is being considered."
       );
     }
     if (distancesData && distancesData.departure.length) {
