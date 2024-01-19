@@ -325,7 +325,8 @@ const schema = z.object({
     .min(-99.94, { message: "Must be greater than -99.95" }),
   altitude_ft: z
     .number({ invalid_type_error: "Enter a number" })
-    .min(500, { message: "Must be at least 500 ft" }),
+    .min(500, { message: "Must be at least 500 ft" })
+    .max(17999, { message: "VFR Flights must be below 18,000 ft" }),
 });
 type FormDataType = z.infer<typeof schema>;
 export interface EditFlightLegDataFromForm extends FormDataType {
