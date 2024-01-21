@@ -12,7 +12,7 @@ interface LegDataFromAPI {
     id: number;
     temperature_c: number;
     altimeter_inhg: number;
-    wind_direction: number;
+    wind_direction: number | null;
     wind_magnitude_knot: number;
     temperature_last_updated: string;
     wind_last_updated: string;

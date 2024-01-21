@@ -42,7 +42,7 @@ interface WeatherReportReturnData {
 
 interface RefreshWeatherDataFromAPI {
     takeoffWeather?: WeatherReportReturnData
-    enrouteWeather?: WeatherReportReturnData
+    enrouteWeather?: WeatherReportReturnData[]
     landingWeather?: WeatherReportReturnData
     allWeatherIsOfficial: boolean
     weatherHoursFromETD: number
@@ -52,15 +52,13 @@ interface FlightContext {
     previousData?: FlightDataFromApi
 }
 
-const apiClient = new APIClient<PostRfreshWeather, unknown>("/reports")
+const apiClient = new APIClient<PostRfreshWeather, RefreshWeatherDataFromAPI>("/reports")
 
 const useRefreshWeather = (flightId: number) => {
     const queryClient = useQueryClient();
-    return useMutation<unknown, APIClientError, PostRfreshWeather, FlightContext>({
+    return useMutation<RefreshWeatherDataFromAPI, APIClientError, PostRfreshWeather, FlightContext>({
         mutationFn: data => (apiClient.post(data, `/${flightId}`)),
         onSuccess: (savedData) => {
-            console.log(savedData)
-            console.log(savedData)
             toast.success("Weather Data has been refresh successfully.", {
                 position: "top-center",
                 autoClose: 10000,
@@ -74,7 +72,38 @@ const useRefreshWeather = (flightId: number) => {
             queryClient.setQueryData<FlightDataFromApi>(['flight', flightId], (currentData) => {
                 if (currentData) {
                     return {
-                        ...currentData
+                        ...currentData,
+                        departure_weather: savedData.takeoffWeather ? {
+                            ...currentData.departure_weather,
+                            temperature_c: savedData.takeoffWeather.temperature_c,
+                            altimeter_inhg: savedData.takeoffWeather.altimeter_inhg,
+                            wind_direction: savedData.takeoffWeather.wind_direction 
+                                ? savedData.takeoffWeather.wind_direction 
+                                : null,
+                            wind_magnitude_knot: savedData.takeoffWeather.wind_magnitude_knot
+                        } : {...currentData.departure_weather},
+                        legs: currentData.legs.map((leg, idx) => {
+                            return savedData.enrouteWeather ? {
+                                ...leg,
+                                temperature_c: savedData.enrouteWeather[idx].temperature_c,
+                                altimeter_inhg: savedData.enrouteWeather[idx].altimeter_inhg,
+                                wind_direction: savedData.enrouteWeather[idx].wind_direction === undefined
+                                    ? savedData.enrouteWeather[idx].wind_direction as number
+                                    : null,
+                            wind_magnitude_knot: savedData.enrouteWeather[idx].wind_magnitude_knot
+                            } : {...leg}
+                        }),
+                        arrival_weather: savedData.landingWeather ? {
+                            ...currentData.arrival_weather,
+                            temperature_c: savedData.landingWeather.temperature_c,
+                            altimeter_inhg: savedData.landingWeather.altimeter_inhg,
+                            wind_direction: savedData.landingWeather.wind_direction 
+                                ? savedData.landingWeather.wind_direction 
+                                : null,
+                            wind_magnitude_knot: savedData.landingWeather.wind_magnitude_knot
+                        } : {...currentData.arrival_weather},
+                        all_weather_is_official: savedData.allWeatherIsOfficial,
+                        weather_hours_from_etd: savedData.weatherHoursFromETD
                     }
                 }
                 return undefined
