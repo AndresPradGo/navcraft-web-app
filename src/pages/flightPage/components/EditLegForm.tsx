@@ -426,22 +426,9 @@ const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
         wind_direction: data.wind_direction,
         wind_magnitude_knot: data.wind_magnitude_knot,
         altitude_ft: data.altitude_ft,
-        temperature_last_updated: currentLegData
-          ? data.temperature_c !== currentLegData.temperature_c
-            ? getUTCNowString()
-            : currentLegData.temperature_last_updated
-          : getUTCNowString(),
-        wind_last_updated: currentLegData
-          ? data.wind_direction !== currentLegData?.wind_direction ||
-            data.wind_magnitude_knot !== currentLegData?.wind_magnitude_knot
-            ? getUTCNowString()
-            : currentLegData.wind_last_updated
-          : getUTCNowString(),
-        altimeter_last_updated: currentLegData
-          ? data.altimeter_inhg !== currentLegData.altimeter_inhg
-            ? getUTCNowString()
-            : currentLegData.altimeter_last_updated
-          : getUTCNowString(),
+        temperature_last_updated: getUTCNowString(),
+        wind_last_updated: getUTCNowString(),
+        altimeter_last_updated: getUTCNowString(),
       });
       setSubmited(true);
     }

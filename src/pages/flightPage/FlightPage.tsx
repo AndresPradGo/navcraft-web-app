@@ -28,7 +28,6 @@ import DeleteFlightForm from "../../components/deleteFlightForm";
 import EditFlightForm from "./components/EditFlightForm";
 import ChangeAircraftForm from "./components/ChangeAircraftForm";
 import EditDepartureArrivalForm from "./components/EditDepartureArrivalForm";
-import getUTCNowString from "../../utils/getUTCNowString";
 import RefreshWeatherForm from "./components/RefreshWeatherForm";
 import MapSection from "./components/map/MapSection";
 import { useSideBar } from "../../components/sidebar";
@@ -427,17 +426,6 @@ const FlightPage = () => {
         <EditDepartureArrivalForm
           noAerodrome={!arrival}
           flightId={flightId}
-          temperature_last_updated={
-            flightData?.arrival_weather.temperature_last_updated ||
-            getUTCNowString()
-          }
-          wind_last_updated={
-            flightData?.arrival_weather.wind_last_updated || getUTCNowString()
-          }
-          altimeter_last_updated={
-            flightData?.arrival_weather.altimeter_last_updated ||
-            getUTCNowString()
-          }
           currentData={{
             aerodrome: `${arrival?.code}: ${arrival?.name}` || "",
             wind_magnitude_knot: flightData
@@ -462,17 +450,6 @@ const FlightPage = () => {
         <EditDepartureArrivalForm
           noAerodrome={!departure}
           flightId={flightId}
-          temperature_last_updated={
-            flightData?.departure_weather.temperature_last_updated ||
-            getUTCNowString()
-          }
-          wind_last_updated={
-            flightData?.departure_weather.wind_last_updated || getUTCNowString()
-          }
-          altimeter_last_updated={
-            flightData?.departure_weather.altimeter_last_updated ||
-            getUTCNowString()
-          }
           currentData={{
             aerodrome: `${departure?.code}: ${departure?.name}` || "",
             wind_magnitude_knot: flightData
@@ -625,17 +602,9 @@ const FlightPage = () => {
               <AnnouncementBox
                 margin="0 0 20px"
                 maxWidth={800}
-                isDanger={true}
+                isWarning={true}
                 title="Update Weather!"
                 message={`The weather data used for flight planning hasn't been updated. For a more accurate flight plan, use the "Refresh Weather Data" option, or manually enter reliable weather data.`}
-              />
-            ) : flightData.weather_hours_from_etd > 6 ? (
-              <AnnouncementBox
-                margin="0 0 20px"
-                maxWidth={800}
-                isWarning={true}
-                title="Update Weather closer to ETD"
-                message="All the weather data used for planning was last updated more than 6 hours away from the ETD. For a more accurate flight plan, update your weather data closer to the ETD."
               />
             ) : (
               <AnnouncementBox
@@ -644,7 +613,13 @@ const FlightPage = () => {
                 isDanger={false}
                 isWarning={false}
                 title="Weather Last Updated"
-                message={`All the weather data used for planning was last updated ${flightData.weather_hours_from_etd} hours away from ETD.`}
+                message={`All the weather data used for planning was last updated ${
+                  flightData.weather_hours_from_etd
+                } hours away from ETD.${
+                  flightData.weather_hours_from_etd > 4
+                    ? " For a more accurate flight plan, update the weather data closer to the ETD."
+                    : ""
+                }`}
               />
             )
           ) : null}
