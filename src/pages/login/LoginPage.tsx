@@ -21,7 +21,7 @@ import useTrial from "./useTrial";
 const HtmlPageContainer = styled.div`
   position: relative;
   width: 100vw;
-  min-height: 500px;
+  min-height: 600px;
   height: 100vh;
   display: flex;
   flex-wrap: wrap;
@@ -31,11 +31,15 @@ const HtmlPageContainer = styled.div`
   padding: 10px 10px;
   overflow: hidden;
   z-index: 5;
+
+  @media screen and (min-width: 1024px) {
+    width: calc(100vw - 10px);
+    padding-right: 0;
+  }
 `;
 
 const HtmlFormContainer = styled.div`
   position: relative;
-  inset: 4px;
   width: 300px;
   height: 510px;
   display: flex;
@@ -271,6 +275,14 @@ const TrialIcon = styled(IoShieldCheckmarkOutline)`
 
 const HtmlRegisterContainer = styled.div`
   margin-top: 10px;
+
+  &::after {
+    content: "Or";
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const HtmlRegisterLink = styled(Link)`
@@ -421,14 +433,14 @@ const LoginPage = () => {
                 width="100%"
                 height="40px"
                 padding="9px 25px"
-                margin="40px 0 0"
+                margin="20px 0 0"
                 spaceChildren="center"
                 fontSize={16}
                 borderRadious={4}
                 btnType="button"
                 handleClick={trialMutation.mutate}
               >
-                No Account Trial <TrialIcon />
+                Try as Guest <TrialIcon />
               </Button>
             </>
           )}

@@ -27,11 +27,15 @@ const HtmlPageContainer = styled.div`
   padding: 10px 10px;
   overflow: hidden;
   z-index: 5;
+
+  @media screen and (min-width: 1024px) {
+    width: calc(100vw - 10px);
+    padding-right: 0;
+  }
 `;
 
 const HtmlFormContainer = styled.div`
   position: relative;
-  inset: 4px;
   width: 300px;
   height: 658px;
   display: flex;
