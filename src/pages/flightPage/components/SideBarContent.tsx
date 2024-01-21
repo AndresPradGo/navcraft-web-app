@@ -1,9 +1,10 @@
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { FaClipboardList, FaTools } from "react-icons/fa";
+import { BsNewspaper } from "react-icons/bs";
+import { FaCloudSunRain, FaTools } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa6";
 import { LuRefreshCw } from "react-icons/lu";
 import { MdConnectingAirports } from "react-icons/md";
-import { PiGearDuotone } from "react-icons/pi";
+import { PiGearDuotone, PiClipboardTextDuotone } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { VscGraphLine } from "react-icons/vsc";
 import { styled } from "styled-components";
@@ -42,10 +43,19 @@ const DownloadIcon = styled(FaDownload)`
   padding-bottom: 3px;
 `;
 
-const ReportIcon = styled(FaClipboardList)`
-  font-size: 20px;
+const ReportIcon = styled(PiClipboardTextDuotone)`
+  font-size: 27px;
   margin-right: 8px;
-  padding-bottom: 3px;
+`;
+
+const WeatherIcon = styled(FaCloudSunRain)`
+  font-size: 25px;
+  margin-right: 8px;
+`;
+
+const NotamIcon = styled(BsNewspaper)`
+  font-size: 25px;
+  margin-right: 8px;
 `;
 
 const EditIcon = styled(PiGearDuotone)`
@@ -178,7 +188,7 @@ const SideBarContent = ({
 
   const downloadButtons = [
     {
-      text: "Download Nav Log",
+      text: "Navigation Log",
       icon: <ReportIcon />,
       styles: { ...baseStyles },
       onClick: () => {
@@ -186,12 +196,24 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Download W&B Graph",
+      text: "Weight & Balance Graph",
       icon: <GraphIcon />,
       styles: { ...baseStyles },
       onClick: () => {
         fileFetcher(`flight-plans/weight-balance-graph/${flightId}`);
       },
+    },
+    {
+      text: "Weather Briefing",
+      icon: <WeatherIcon />,
+      styles: { ...baseStyles },
+      onClick: () => {},
+    },
+    {
+      text: "NOTAMs Briefing",
+      icon: <NotamIcon />,
+      styles: { ...baseStyles },
+      onClick: () => {},
     },
   ];
 
@@ -217,6 +239,7 @@ const SideBarContent = ({
         titleIcon={<DownloadIcon />}
         title="Downloads"
         buttons={downloadButtons}
+        paddingBottom={true}
       />
     </HtmlContainer>
   );

@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import { AiOutlineSwap } from "react-icons/ai";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
 import { BsCalendarDate } from "react-icons/bs";
-import { FaClipboardList, FaRoute, FaCloudSunRain } from "react-icons/fa";
+import { FaClipboardList, FaRoute } from "react-icons/fa";
 import { FaScaleUnbalanced, FaHandHoldingDroplet } from "react-icons/fa6";
-import { IoAirplane, IoMapSharp } from "react-icons/io5";
+import { IoAirplane } from "react-icons/io5";
 import { MdOutlineStart } from "react-icons/md";
 import {
   PiMapPinDuotone,
@@ -360,11 +360,6 @@ const FlightPage = () => {
       title: "Landing Distances",
       icon: <BiSolidPlaneLand />,
     },
-    {
-      key: "weather",
-      title: "Weather Briefings",
-      icon: <FaCloudSunRain />,
-    },
   ];
 
   const handleMapStateChange = (key: keyof MapStateType, value: boolean) => {
@@ -407,12 +402,6 @@ const FlightPage = () => {
       icon: <RiMapPinUserFill />,
       text: "Saved Waypoints",
       color: "var(--color-nav-4)",
-    },
-    {
-      key: "showCharts",
-      icon: <IoMapSharp />,
-      text: "Charts",
-      color: "var(--color-white)",
     },
   ] as MapInputStyleType[];
 

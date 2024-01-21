@@ -518,6 +518,7 @@ const SideBarContent = ({
             titleIcon={<LandingIcon />}
             title="Landing Performance Tools"
             buttons={landButtons}
+            paddingBottom={true}
           />
         </>
       ) : null}

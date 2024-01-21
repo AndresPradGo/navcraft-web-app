@@ -3,14 +3,17 @@ import { styled } from "styled-components";
 import Button, { BaseButtonType } from "./button";
 import { ReactNode } from "react";
 
-const HtmlButtonList = styled.div`
+interface HtmlProps {
+  $paddingBottom: boolean;
+}
+const HtmlButtonList = styled.div<HtmlProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   padding: 15px 8px;
-
+  padding-bottom: ${(props) => (props.$paddingBottom ? 30 : 15)}px;
   & h3 {
     padding: 0 10px;
     color: var(--color-grey-bright);
@@ -28,6 +31,7 @@ const HtmlButtonList = styled.div`
 
   @media screen and (min-width: 635px) {
     padding: 10px;
+    padding-bottom: ${(props) => (props.$paddingBottom ? 20 : 10)}px;
 
     & div {
       padding: 10px 13px;
@@ -36,6 +40,7 @@ const HtmlButtonList = styled.div`
 
   @media screen and (min-width: 1280px) {
     padding: 18px;
+    padding-bottom: ${(props) => (props.$paddingBottom ? 36 : 18)}px;
 
     & div {
       padding: 10px 18px;
@@ -54,11 +59,17 @@ interface Props {
   titleIcon: ReactNode;
   title: string;
   buttons: ButtonData[];
+  paddingBottom?: boolean;
 }
 
-const SideBarBtnList = ({ buttons, titleIcon, title }: Props) => {
+const SideBarBtnList = ({
+  buttons,
+  titleIcon,
+  title,
+  paddingBottom,
+}: Props) => {
   return (
-    <HtmlButtonList>
+    <HtmlButtonList $paddingBottom={!!paddingBottom}>
       <h3>
         {titleIcon}
         {title}
