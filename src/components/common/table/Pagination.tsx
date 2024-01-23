@@ -94,7 +94,7 @@ const Pagination = ({ currentPage, finalPage, dispatch }: Props) => {
       ) : (
         <IconContainer />
       )}
-      <span>{`Page ${currentPage} of ${finalPage}`}</span>
+      <span>{`Page ${currentPage} / ${finalPage}`}</span>
       {currentPage < finalPage ? (
         <IconContainer>
           <RightIcon onClick={() => dispatch({ type: "INCREASE" })} />

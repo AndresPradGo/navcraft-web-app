@@ -78,8 +78,42 @@ const HtmlButton = styled.button<HtmlButtonProps>`
 const HtmlLink = styled(Link)<HtmlButtonProps>`
   display: flex;
   flex-direction: row;
-  justify-content: ${(props) =>
-    props.$spaceChildren ? "space-between" : "center"};
+  justify-content: ${(props) => props.$spaceChildren};
+  align-items: center;
+  min-width: ${(props) => props.$minWidth};
+  max-width: ${(props) => props.$maxWidth};
+  height: ${(props) => props.$height};
+  font-size: ${(props) => props.$fontSize}px;
+  font-weight: lighter;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  border: 2px solid ${(props) => props.$backgroundColor};
+  border-radius: ${(props) => props.$borderRadious}px;
+  cursor: pointer;
+  outline: 0;
+  transition: all 0.2s linear;
+  padding: ${(props) => props.$padding};
+  margin: ${(props) => props.$margin};
+  color: ${(props) => props.$color};
+  background-color: ${(props) =>
+    props.$fill ? props.$backgroundColor : "transparent"};
+  box-shadow: ${(props) =>
+    props.$shadow
+      ? "0 0 8px 1px var(--color-shadow)"
+      : "0 0 0 0 var(--color-primary-dark)"};
+
+  &:hover${(props) => (props.$onlyHover ? "" : ", &:focus")} {
+    color: ${(props) => props.$hoverColor};
+    background-color: ${(props) =>
+      props.$fill ? props.$backgroundHoverColor : "transparent"};
+    border: 2px solid ${(props) => props.$backgroundHoverColor};
+  }
+`;
+
+const HtmlAnchor = styled.a<HtmlButtonProps>`
+  display: flex;
+  flex-direction: row;
+  justify-content: ${(props) => props.$spaceChildren};
   align-items: center;
   min-width: ${(props) => props.$minWidth};
   max-width: ${(props) => props.$maxWidth};
@@ -130,6 +164,8 @@ export interface Props {
   children?: ReactNode;
   handleClick?: () => void;
   href?: string;
+  isAnchor?: boolean;
+  download?: string;
   reference?: Dispatch<SetStateAction<HTMLElement | null>>;
   btnType?: "button" | "reset" | "submit";
   disabled?: boolean;
@@ -155,6 +191,8 @@ const Button = ({
   children,
   handleClick,
   href,
+  download,
+  isAnchor,
   reference,
   btnType,
   disabled,
@@ -174,7 +212,43 @@ const Button = ({
     ? "var(--color-grey-dark)"
     : "var(--color-highlight-hover)";
 
-  if (href)
+  if (href) {
+    if (isAnchor) {
+      return (
+        <HtmlAnchor
+          ref={reference}
+          $color={defaultColor}
+          $hoverColor={defaultHoverColor}
+          $backgroundColor={
+            backgroundColor ? backgroundColor : "var(--color-highlight)"
+          }
+          $backgroundHoverColor={
+            backgroundHoverColor
+              ? backgroundHoverColor
+              : "var(--color-highlight-hover)"
+          }
+          $fill={fill}
+          $shadow={shadow ? shadow : false}
+          $minWidth={width ? width : "0px"}
+          $maxWidth={width ? width : "100%"}
+          $height={height ? height : "30px"}
+          $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
+          $alignSelf={alignSelf}
+          $fontSize={fontSize ? fontSize : 12}
+          $borderRadious={borderRadious ? borderRadious : 10}
+          $borderWidth={borderWidth ? borderWidth : 0}
+          $margin={margin ? margin : "0px"}
+          $padding={padding ? padding : "5px 10px"}
+          onClick={handleClick ? handleClick : () => {}}
+          href={href}
+          download={download ? download : false}
+          target="_blank"
+          $onlyHover={!!onlyHover}
+        >
+          {children}
+        </HtmlAnchor>
+      );
+    }
     return (
       <HtmlLink
         ref={reference}
@@ -207,6 +281,7 @@ const Button = ({
         {children}
       </HtmlLink>
     );
+  }
 
   return (
     <HtmlButton

@@ -12,7 +12,6 @@ interface WaypointHeaders {
 
 interface AerodromeHeaders extends WaypointHeaders {
     status: string;
-    elevation_ft: string;
     runways: string;
 }
 
@@ -106,7 +105,6 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         "status",
         "latitude",
         "longitude",
-        "elevation_ft",
         "runways",
         "variation",
         "weather",
@@ -119,7 +117,6 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         status: "Status",
         latitude: "Latitude",
         longitude: "Longitude",
-        elevation_ft: "Elevation [ft]",
         runways: "Runways",
         variation: "Magnetic Var.",
         weather: "Available Weather",

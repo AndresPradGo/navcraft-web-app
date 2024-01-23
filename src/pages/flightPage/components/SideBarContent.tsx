@@ -1,6 +1,5 @@
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { BsNewspaper } from "react-icons/bs";
-import { FaCloudSunRain, FaTools } from "react-icons/fa";
+import { FaTools } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa6";
 import { LuRefreshCw } from "react-icons/lu";
 import { MdConnectingAirports } from "react-icons/md";
@@ -45,16 +44,6 @@ const DownloadIcon = styled(FaDownload)`
 
 const ReportIcon = styled(PiClipboardTextDuotone)`
   font-size: 27px;
-  margin-right: 8px;
-`;
-
-const WeatherIcon = styled(FaCloudSunRain)`
-  font-size: 25px;
-  margin-right: 8px;
-`;
-
-const NotamIcon = styled(BsNewspaper)`
-  font-size: 25px;
   margin-right: 8px;
 `;
 
@@ -202,18 +191,6 @@ const SideBarContent = ({
       onClick: () => {
         fileFetcher(`flight-plans/weight-balance-graph/${flightId}`);
       },
-    },
-    {
-      text: "Weather Briefing",
-      icon: <WeatherIcon />,
-      styles: { ...baseStyles },
-      onClick: () => {},
-    },
-    {
-      text: "NOTAMs Briefing",
-      icon: <NotamIcon />,
-      styles: { ...baseStyles },
-      onClick: () => {},
     },
   ];
 

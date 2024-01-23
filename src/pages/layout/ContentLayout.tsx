@@ -15,22 +15,13 @@ const HtmlMapContainer = styled.div<MapProps>`
   width: 100%;
   height: calc(100vh - 61px);
   overflow: hidden;
-  padding: 0px 0 0;
+  padding: 0;
 
   max-width: ${(props) => (props.$mapIsOpen ? "200vw" : "0")};
   transform: ${(props) => (props.$mapIsOpen ? "none" : "translate(-100vw)")};
 
-  @media screen and (min-width: 425px) {
-    padding: 0px 0 0;
-  }
-
   @media screen and (min-width: 768px) {
-    padding: 0px 0 0;
     height: calc(100vh - 71px);
-  }
-
-  @media screen and (min-width: 1000px) {
-    padding: 0px 0 0;
   }
 `;
 

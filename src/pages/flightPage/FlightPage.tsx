@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { AiOutlineSwap } from "react-icons/ai";
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { BsCalendarDate } from "react-icons/bs";
-import { FaClipboardList, FaRoute } from "react-icons/fa";
+import { BsCalendarDate, BsNewspaper } from "react-icons/bs";
+import { FaClipboardList, FaRoute, FaCloudSunRain } from "react-icons/fa";
 import { FaScaleUnbalanced, FaHandHoldingDroplet } from "react-icons/fa6";
 import { IoAirplane } from "react-icons/io5";
 import { MdOutlineStart } from "react-icons/md";
@@ -46,6 +46,7 @@ import TakeoffLandinDistancesSection from "./components/TakeoffLandinDistancesSe
 import AddLegForm from "./components/AddLegForm";
 import WeightBalanceSection from "./components/WeightBalanceSection";
 import FuelCalculationsSection from "./components/FuelCalculationsSection";
+import WeatherBriefingSection from "./components/WeatherBriefingSection";
 import useSetTitle from "../../hooks/useSetTitle";
 import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 import AnnouncementBox from "../../components/common/AnnouncementBox";
@@ -359,6 +360,16 @@ const FlightPage = () => {
       title: "Landing Distances",
       icon: <BiSolidPlaneLand />,
     },
+    {
+      key: "weather",
+      title: "Weather Briefing",
+      icon: <FaCloudSunRain />,
+    },
+    {
+      key: "notam",
+      title: "NOTAMs Briefing",
+      icon: <BsNewspaper />,
+    },
   ];
 
   const handleMapStateChange = (key: keyof MapStateType, value: boolean) => {
@@ -665,6 +676,8 @@ const FlightPage = () => {
                 takeoffLandingDistancesIsStale
               }
             />
+          ) : sectionIdx === 5 ? (
+            <WeatherBriefingSection flightId={flightId} />
           ) : null}
         </HtmlContainer>
       </ContentLayout>

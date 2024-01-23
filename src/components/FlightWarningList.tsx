@@ -25,9 +25,12 @@ const FlightWarningList = ({ warnings }: Props) => {
   )
     return null;
 
+  const moreThanOne =
+    warnings.length > 1 || warnings.find((innerList) => innerList.length > 1);
+
   return (
     <HtmlContainer>
-      <h3>WARNINGS!</h3>
+      <h3>{`WARNING${moreThanOne ? "S" : ""}!`}</h3>
       <ul>
         {warnings.map((list, i) =>
           list.map((w, j) => <li key={`${i}.${j}`}>{w}</li>)

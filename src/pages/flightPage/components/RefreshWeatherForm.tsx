@@ -334,7 +334,7 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
               <FlightWarningList
                 warnings={[
                   [
-                    "Weather data cannot be updated if ETD is in the past. Update the ETD first to be able to refresh the weather data.",
+                    "Weather data is not available for past ETD date-times. To refresh the weather data, update the ETD to a future date.",
                   ],
                 ]}
               />

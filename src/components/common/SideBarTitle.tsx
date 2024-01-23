@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 
 const HtmlHeading = styled.h1`
+  text-align: center;
   text-wrap: wrap;
   margin: 18px 8px;
   font-size: 25px;

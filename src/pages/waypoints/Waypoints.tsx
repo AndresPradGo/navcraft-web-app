@@ -337,7 +337,6 @@ const Waypoints = () => {
                 : ""
             }`,
             status: a.status,
-            elevation_ft: a.elevation_ft,
             updated: formatUTCDate(a.last_updated_utc),
             date: a.last_updated_utc,
             runways: a.runways.length
@@ -412,7 +411,7 @@ const Waypoints = () => {
               : ("edit-delete" as "edit-delete"),
           }))
         : [],
-    breakingPoint: userIsAdmin ? 1810 : 1400,
+    breakingPoint: 1500,
   };
 
   const handleChangeToNextTable = () => {
