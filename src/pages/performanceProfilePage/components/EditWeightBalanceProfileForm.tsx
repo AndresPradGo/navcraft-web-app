@@ -582,10 +582,7 @@ const EditWeightBalanceProfileForm = ({
             </div>
           </HtmlSectionTitle>
           <HtmlSectionContent>
-            <ExpandibleMessage
-              reset={!isOpen}
-              messageList={helpInstructions.filter((_, i) => i)}
-            >
+            <ExpandibleMessage reset={!isOpen} messageList={helpInstructions}>
               Help <HelpIcon />
             </ExpandibleMessage>
             <HtmlPairedInputsContainer>

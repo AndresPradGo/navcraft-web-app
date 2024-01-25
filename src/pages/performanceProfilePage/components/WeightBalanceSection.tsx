@@ -223,7 +223,7 @@ const WeightBalanceSection = ({
           ) : currentForm === "edit" ? (
             <EditWeightBalanceProfileForm
               performanceProfileId={profileId}
-              helpInstructions={instructions}
+              helpInstructions={instructions.slice(1)}
               closeModal={modal.handleClose}
               isOpen={modal.isOpen}
               labelKey="edit"
@@ -261,7 +261,7 @@ const WeightBalanceSection = ({
           hanldeAdd={handlAddWeightBalanceprofile}
           otherComponent={
             <HtmlInstructionsList>
-              {instructions.map((item, index) => (
+              {instructions.slice(0, 1).map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
             </HtmlInstructionsList>
