@@ -57,13 +57,17 @@ const useProcessTableData = ({
   
     // Apply filters
     if (filterParams.length) {
-        processedData = processedData.filter(row => (
-            filterParams.some(filter => (
-                row[filter.key]?.toString().toLowerCase().includes(
-                    filter.value.trim().toLowerCase()
-                ) 
+        const filterColumns = new Set(filterParams.map(filter => filter.key))
+        filterColumns.forEach(key => {
+            const filters = filterParams.filter(filter => filter.key === key)
+            processedData = processedData.filter(row => (
+                filters.some(filter => (
+                    row[filter.key]?.toString().toLowerCase().includes(
+                        filter.value.trim().toLowerCase()
+                    ) 
+                ))
             ))
-        ))
+        });
     }
 
     

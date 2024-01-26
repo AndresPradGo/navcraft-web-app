@@ -161,33 +161,33 @@ const Users = () => {
     filters: [
       {
         key: "level",
-        title: "Admin Users",
+        title: "Level: Admin",
         value: "Admin",
       },
       {
         key: "level",
-        title: "Master Users",
+        title: "Level: Master",
         value: "Master",
       },
       {
         key: "level",
-        title: "Users",
+        title: "Level: User",
         value: "User",
       },
       {
         key: "is_active",
-        title: "Active Users",
-        value: "Yes",
-      },
-      {
-        key: "is_trial",
-        title: "Trial Users",
+        title: "Active",
         value: "Yes",
       },
       {
         key: "is_active",
-        title: "Inactive Users",
+        title: "Inactive",
         value: "No",
+      },
+      {
+        key: "is_trial",
+        title: "Trial",
+        value: "Yes",
       },
     ],
   };

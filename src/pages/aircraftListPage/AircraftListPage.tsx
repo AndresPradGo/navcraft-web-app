@@ -223,12 +223,12 @@ const AircraftListPage = () => {
       filters: [
         ...[...makes].map((make) => ({
           key: "make",
-          title: make,
+          title: `Make: ${make}`,
           value: make,
         })),
         ...[...models].map((model) => ({
           key: "abbreviation",
-          title: model,
+          title: `Model: ${model}`,
           value: model,
         })),
         ...[...usedFuelTypeIds].map((fuelId) => {
@@ -243,12 +243,12 @@ const AircraftListPage = () => {
 
         {
           key: "state",
-          title: "Complete",
+          title: "State: Complete",
           value: "Complete",
         },
         {
           key: "state",
-          title: "Incomplete",
+          title: "State: Incomplete",
           value: "Incomplete",
         },
       ],
@@ -288,21 +288,21 @@ const AircraftListPage = () => {
     filterParameters.push({
       text: "Filter Models",
       filters: [
+        ...fuelTypes.map((fuelType) => ({
+          key: "fuel",
+          title: `Fuel: ${fuelType.name}`,
+          value: fuelType.name,
+        })),
         {
           key: "state",
-          title: "Complete",
+          title: "State: Complete",
           value: "Complete",
         },
         {
           key: "state",
-          title: "Incomplete",
+          title: "State: Incomplete",
           value: "Incomplete",
         },
-        ...fuelTypes.map((fuelType) => ({
-          key: "fuel",
-          title: fuelType.name,
-          value: fuelType.name,
-        })),
       ],
     });
   } else {

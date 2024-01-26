@@ -87,12 +87,12 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         filters: [
             {
                 key: "type",
-                title: "Official",
+                title: "Type: Official",
                 value: "Official"
             },
             {
                 key: "type",
-                title: "User Added",
+                title: "Type: User Added",
                 value: "User Added"
             }
         ]
@@ -149,27 +149,27 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         filters: [
             {
                 key: "type",
-                title: "Official",
+                title: "Type: Official",
                 value: "Official"
             },
             {
                 key: "type",
-                title: "User Added",
+                title: "Type: User Added",
                 value: "User Added"
             },
             {
                 key: "has_taf",
-                title: "With TAF",
+                title: "Has TAF",
                 value: "Yes"
             },
             {
                 key: "has_metar",
-                title: "With METAR",
+                title: "Has METAR",
                 value: "Yes"
             },
             {
                 key: "has_fds",
-                title: "With FDs",
+                title: "Has FDs",
                 value: "Yes"
             },
             ...aerodromeStatus.map(item => ({
@@ -229,7 +229,7 @@ const useGetTableStructure = (isAdmin: boolean, aerodromeStatus: string[]): Tabl
         text: "Filter Runways",
         filters: aerodromeStatus.map(item => ({
             key: "status",
-            title: `${item} Aerodrome`,
+            title: `${item} Aerodromes`,
             value: item
         }))
     }
