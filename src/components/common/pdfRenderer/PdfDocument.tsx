@@ -1,48 +1,114 @@
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  Image,
-} from "@react-pdf/renderer";
+import { useCallback } from "react";
+import { Page, Text, View, Document, Image } from "@react-pdf/renderer";
 
-const PdfDocument = () => {
+import styles from "./PdfStyles";
+
+interface Component {
+  type:
+    | "title1"
+    | "title2"
+    | "title3"
+    | "text"
+    | "report"
+    | "image"
+    | "selectedImage";
+  content: string;
+}
+
+export interface Props {
+  content: {
+    headers?: string[];
+    body: {
+      components: Component[];
+    }[];
+  };
+}
+
+const PdfDocument = ({ content }: Props) => {
+  const renderFooter = useCallback(
+    ({ pageNumber, totalPages }: { pageNumber: number; totalPages: number }) =>
+      `Page ${pageNumber} of ${totalPages}`,
+    []
+  );
   return (
     <Document>
-      <Page size="A4">
-        <Text>Weather Briefing</Text>
-        <Image src="https://plan.navcanada.ca/weather/images/42366552.image" />
-        <Text>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quibusdam,
-          error architecto. Voluptatibus maiores placeat reprehenderit quisquam
-          ullam veniam optio. Numquam earum qui iste quidem eum! Rem suscipit
-          non nam aspernatur repudiandae optio iure deserunt placeat iusto
-          nostrum, perferendis error consequuntur? Ratione debitis laboriosam
-          fugiat facilis iusto amet, modi saepe excepturi quasi architecto,
-          voluptate voluptas eum ipsam sunt, dolore illo! Accusamus mollitia
-          soluta voluptatum eius in eos iusto minus, consectetur corporis, ex
-          consequuntur accusantium, porro earum impedit ipsum ducimus nisi totam
-          eligendi dignissimos. Earum dolorum, reiciendis ipsam ratione tempore
-          fugiat tenetur veniam laudantium odio quasi architecto, incidunt rem
-          placeat, optio temporibus.
-        </Text>
-        <Text>Weather Briefing</Text>
-        <Image src="https://plan.navcanada.ca/weather/images/42366552.image" />
-        <Text>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quibusdam,
-          error architecto. Voluptatibus maiores placeat reprehenderit quisquam
-          ullam veniam optio. Numquam earum qui iste quidem eum! Rem suscipit
-          non nam aspernatur repudiandae optio iure deserunt placeat iusto
-          nostrum, perferendis error consequuntur? Ratione debitis laboriosam
-          fugiat facilis iusto amet, modi saepe excepturi quasi architecto,
-          voluptate voluptas eum ipsam sunt, dolore illo! Accusamus mollitia
-          soluta voluptatum eius in eos iusto minus, consectetur corporis, ex
-          consequuntur accusantium, porro earum impedit ipsum ducimus nisi totam
-          eligendi dignissimos. Earum dolorum, reiciendis ipsam ratione tempore
-          fugiat tenetur veniam laudantium odio quasi architecto, incidunt rem
-          placeat, optio temporibus.
-        </Text>
+      <Page size="A4" style={styles.body}>
+        <View fixed={true} style={styles.header}>
+          {content.headers?.map((row, idx) => (
+            <Text key={`header-${idx}`}>{row}</Text>
+          ))}
+        </View>
+        {content.body.map((section, idx) => (
+          <View key={`section-${idx}`} wrap={false}>
+            {section.components.map((item, subIdx) => {
+              if (item.type === "title1") {
+                return (
+                  <Text
+                    key={`component-${idx}-${subIdx}`}
+                    style={styles.title1}
+                  >
+                    {item.content}
+                  </Text>
+                );
+              }
+              if (item.type === "title2") {
+                return (
+                  <Text
+                    key={`component-${idx}-${subIdx}`}
+                    style={styles.title2}
+                  >
+                    {item.content}
+                  </Text>
+                );
+              }
+              if (item.type === "title3") {
+                return (
+                  <Text
+                    key={`component-${idx}-${subIdx}`}
+                    style={styles.title3}
+                  >
+                    {item.content}
+                  </Text>
+                );
+              }
+              if (item.type === "text") {
+                return (
+                  <Text key={`component-${idx}-${subIdx}`} style={styles.text}>
+                    {item.content}
+                  </Text>
+                );
+              }
+              if (item.type === "report") {
+                return (
+                  <Text
+                    key={`component-${idx}-${subIdx}`}
+                    style={styles.report}
+                  >
+                    {item.content}
+                  </Text>
+                );
+              }
+              if (item.type === "image") {
+                return (
+                  <Image
+                    key={`component-${idx}-${subIdx}`}
+                    style={styles.image}
+                    src={item.content}
+                  />
+                );
+              }
+              if (item.type === "selectedImage") {
+                return (
+                  <View key={`component-${idx}-${subIdx}`} style={styles.image}>
+                    <Image src={item.content} />
+                  </View>
+                );
+              }
+              return null;
+            })}
+          </View>
+        ))}
+        <Text style={styles.pageNumber} render={renderFooter} fixed={true} />
       </Page>
     </Document>
   );

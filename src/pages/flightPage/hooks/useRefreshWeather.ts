@@ -87,7 +87,7 @@ const useRefreshWeather = (flightId: number) => {
                                 ...leg,
                                 temperature_c: savedData.enrouteWeather[idx].temperature_c,
                                 altimeter_inhg: savedData.enrouteWeather[idx].altimeter_inhg,
-                                wind_direction: savedData.enrouteWeather[idx].wind_direction === undefined
+                                wind_direction: savedData.enrouteWeather[idx].wind_direction !== undefined
                                     ? savedData.enrouteWeather[idx].wind_direction as number
                                     : null,
                             wind_magnitude_knot: savedData.enrouteWeather[idx].wind_magnitude_knot

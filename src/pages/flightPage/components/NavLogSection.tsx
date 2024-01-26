@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { MdMoreTime } from "react-icons/md";
-import {
-  BsCalendarWeek,
-  BsCalendarCheck,
-  BsWatch,
-  BsStopwatch,
-} from "react-icons/bs";
+import { BsCalendarCheck, BsWatch, BsStopwatch } from "react-icons/bs";
 import { PiEngineDuotone } from "react-icons/pi";
 import { styled } from "styled-components";
 
@@ -22,12 +17,6 @@ import DeleteLegForm from "./DeleteLegForm";
 import EditLegForm from "./EditLegForm";
 
 const BHPIcon = styled(PiEngineDuotone)`
-  font-size: 25px;
-  margin: 0 10px 0 0;
-  flex-shrink: 0;
-`;
-
-const DateIcon = styled(BsCalendarWeek)`
   font-size: 25px;
   margin: 0 10px 0 0;
   flex-shrink: 0;
@@ -103,16 +92,13 @@ const NavLogSection = ({ flightId, isLoading, handleAdd }: Props) => {
             data: `${flightData.bhp_percent}`,
           },
           {
-            key: "departure_date",
-            title: "Date",
-            icon: <DateIcon />,
-            data: formatUTCDate(flightData.departure_time, true),
-          },
-          {
             key: "departure_time",
             title: "ETD [UTC]",
             icon: <TimeIcon />,
-            data: formatUTCTime(flightData.departure_time),
+            data: `${formatUTCDate(
+              flightData.departure_time,
+              true
+            )} ${formatUTCTime(flightData.departure_time)}`,
           },
           {
             key: "total_time",
@@ -136,9 +122,9 @@ const NavLogSection = ({ flightId, isLoading, handleAdd }: Props) => {
             icon: <DateCheckIcon />,
             data: `${formatUTCDate(
               flightData.departure_time,
-              false,
+              true,
               elapsedTime + addedTime * 60
-            )}@${formatUTCTime(
+            )} ${formatUTCTime(
               flightData.departure_time,
               elapsedTime + addedTime * 60
             )}`,

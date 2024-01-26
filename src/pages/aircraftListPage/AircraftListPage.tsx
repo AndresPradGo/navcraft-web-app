@@ -236,7 +236,7 @@ const AircraftListPage = () => {
             fuelTypes.find((fuel) => fuel.id === fuelId) || fuelTypes[0];
           return {
             key: "fuel",
-            title: fuelType.name,
+            title: `Fuel: ${fuelType.name}`,
             value: fuelType.name,
           };
         }),

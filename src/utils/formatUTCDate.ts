@@ -1,20 +1,7 @@
 
 const formatUTCDate = (dateString: string, monthNameFormat?: boolean, elapsedMinutes?: number): string => {
 
-    const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
+    const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
     const originalDate = new Date(dateString);
     const totalMinutes = originalDate.getTime() + (elapsedMinutes ? elapsedMinutes : 0) * 60000;

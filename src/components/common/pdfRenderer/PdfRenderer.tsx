@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { PDFViewer, usePDF } from "@react-pdf/renderer";
 
 import PdfDocument from "./PdfDocument";
+import type { Props as PdfContent } from "./PdfDocument";
 import Button from "../button/index";
 import FlightWarningList from "../../FlightWarningList";
 
@@ -10,7 +11,11 @@ const HtmlPDFViwerContainer = styled.div`
   width: 100%;
   max-width: 1200px;
   height: 2400px;
-  max-height: 100vh;
+  max-height: calc(100vh - 70px);
+
+  @media screen and (min-width: 768px) {
+    max-height: calc(100vh - 80px);
+  }
 `;
 
 const DownloadIcon = styled(FaDownload)`
@@ -24,8 +29,8 @@ const PDFIcon = styled(FaRegFilePdf)`
   margin-right: 8px;
 `;
 
-const PdfRenderer = () => {
-  const document = <PdfDocument />;
+const PdfRenderer = ({ content }: PdfContent) => {
+  const document = <PdfDocument content={content} />;
   const [instance, update] = usePDF({ document });
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

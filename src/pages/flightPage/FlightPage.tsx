@@ -626,7 +626,7 @@ const FlightPage = () => {
                 title="Weather Last Updated"
                 message={`All the weather data used for planning was last updated ${
                   flightData.weather_hours_from_etd
-                } hours away from ETD.${
+                } hours away from the ETD.${
                   flightData.weather_hours_from_etd > 4
                     ? " For a more accurate flight plan, update the weather data closer to the ETD."
                     : ""
@@ -677,7 +677,12 @@ const FlightPage = () => {
               }
             />
           ) : sectionIdx === 5 ? (
-            <WeatherBriefingSection flightId={flightId} />
+            <WeatherBriefingSection
+              flightId={flightId}
+              departureCode={departure ? `${departure.code}` : ""}
+              arrivalCode={arrival ? `${arrival.code}` : ""}
+              isLoading={legsIsFetching && legsIsStale}
+            />
           ) : null}
         </HtmlContainer>
       </ContentLayout>
