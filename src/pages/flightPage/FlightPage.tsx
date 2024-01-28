@@ -50,6 +50,7 @@ import WeatherBriefingSection from "./components/WeatherBriefingSection";
 import useSetTitle from "../../hooks/useSetTitle";
 import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 import AnnouncementBox from "../../components/common/AnnouncementBox";
+import useWeatherBriefing from "./hooks/useWeatherBriefing";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -236,6 +237,9 @@ const FlightPage = () => {
     isStale: legsIsStale,
   } = useNavLogData(flightId, !aircraft || !aircraftProfile, missingAerodrome);
 
+  const { isLoading: weatherBriefingIsLoading, error: weatherBriefingError } =
+    useWeatherBriefing(flightId);
+
   const {
     isLoading: weightBalanceIsLoading,
     error: weightBalanceError,
@@ -288,6 +292,7 @@ const FlightPage = () => {
   else if (
     (error && error.message === "Network Error") ||
     aerodromesError ||
+    weatherBriefingError ||
     aircraftListError ||
     (legsError &&
       legsError?.response?.data.detail !== "Flight doesn't have an aircraft." &&
@@ -681,7 +686,8 @@ const FlightPage = () => {
               flightId={flightId}
               departureCode={departure ? `${departure.code}` : ""}
               arrivalCode={arrival ? `${arrival.code}` : ""}
-              isLoading={legsIsFetching && legsIsStale}
+              isLoading={weatherBriefingIsLoading}
+              flightDataIsChanging={legsIsFetching && legsIsStale}
             />
           ) : null}
         </HtmlContainer>

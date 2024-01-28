@@ -1,5 +1,5 @@
 
-const formatUTCDate = (dateString: string, monthNameFormat?: boolean, elapsedMinutes?: number): string => {
+const formatUTCDate = (dateString: string | Date, monthNameFormat?: boolean, elapsedMinutes?: number): string => {
 
     const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 

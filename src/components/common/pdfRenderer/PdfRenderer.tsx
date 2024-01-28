@@ -10,11 +10,11 @@ import FlightWarningList from "../../FlightWarningList";
 const HtmlPDFViwerContainer = styled.div`
   width: 100%;
   max-width: 1200px;
-  height: 2400px;
-  max-height: calc(100vh - 70px);
+  min-height: 800px;
+  height: calc(100vh - 70px);
 
   @media screen and (min-width: 768px) {
-    max-height: calc(100vh - 80px);
+    height: calc(100vh - 80px);
   }
 `;
 
@@ -39,13 +39,6 @@ const PdfRenderer = ({ content }: PdfContent) => {
     <>
       {isMobile ? (
         <>
-          <FlightWarningList
-            warnings={[
-              [
-                "PDF Viwer is only supported in desktop web-browsers. To view the briefing in a mobile browser, open the PDF in a new tab:",
-              ],
-            ]}
-          />
           {instance.url ? (
             <Button
               color="var(--color-primary-dark)"
@@ -58,14 +51,22 @@ const PdfRenderer = ({ content }: PdfContent) => {
               shadow={false}
               spaceChildren="space-evenly"
               borderRadious={5}
-              margin="20px 10px 50px"
+              margin="15px 10px 20px"
               href={instance.url}
               isAnchor={true}
+              onlyHover={true}
             >
               Open PDF
               <PDFIcon />
             </Button>
           ) : null}
+          <FlightWarningList
+            warnings={[
+              [
+                "PDF Viwer is only supported in desktop web-browsers. To view the briefing in a mobile browser, open the PDF in a new tab.",
+              ],
+            ]}
+          />
         </>
       ) : (
         <>
@@ -81,10 +82,11 @@ const PdfRenderer = ({ content }: PdfContent) => {
               shadow={false}
               spaceChildren="space-evenly"
               borderRadious={5}
-              margin="50px 10px 20px"
+              margin="15px 10px 20px"
               href={instance.url}
               download="weatherBriex.pdf"
               isAnchor={true}
+              onlyHover={true}
             >
               Download PDF
               <DownloadIcon />

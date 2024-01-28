@@ -49,6 +49,7 @@ const useDeleteLeg = (flightId: number, isLeg?: boolean) => {
             queryClient.invalidateQueries({queryKey: ["weightBalanceReport",flightId,]})
             queryClient.invalidateQueries({queryKey: ["fuelCalculations",flightId,]})
             queryClient.invalidateQueries({queryKey: ["takeoffLandingDistances",flightId,]})
+            queryClient.invalidateQueries({queryKey: ["weatherBriefing",flightId,]})
         },
         onError: (error, _, context) => {
             errorToast(error)

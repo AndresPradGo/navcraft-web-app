@@ -20,14 +20,14 @@ const HtmlContainer = styled.div<HtmlTagProps>`
   text-wrap: wrap;
   background-color: ${(props) =>
     props.$type === "warning"
-      ? "var(--color-contrast-hover)"
+      ? "var(--color-caution-message)"
       : props.$type === "normal"
       ? "var(--color-highlight-hover)"
-      : "var(--color-danger)"};
+      : "var(--color-danger-message)"};
 
   color: ${(props) =>
     props.$type === "danger"
-      ? "var(--color-primary-dark)"
+      ? "var(--color-white)"
       : "var(--color-primary-dark)"};
 
   & svg {
@@ -47,7 +47,7 @@ const HtmlContainer = styled.div<HtmlTagProps>`
       font-size: 16px;
       color: ${(props) =>
         props.$type === "danger"
-          ? "var(--color-primary-dark)"
+          ? "var(--color-white)"
           : "var(--color-primary-dark)"};
     }
 
