@@ -1,4 +1,25 @@
 import { styled } from "styled-components";
+
+interface HtmlContainerProps {
+  $margin: number;
+}
+const HtmlLoaderContainer = styled.div<HtmlContainerProps>`
+  grid-row: 2;
+  grid-column: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: ${(props) => props.$margin}px 0;
+
+  & p {
+    color: var(--color-contrast) !important;
+    font-size: 20px;
+  }
+`;
+
 interface HtmlProps {
   $size: number;
 }
@@ -26,9 +47,21 @@ const HtmlLoader = styled.div<HtmlProps>`
 
 interface Props {
   size?: number;
+  message?: string;
+  margin?: number;
 }
 
-const Loader = ({ size }: Props) => {
+const Loader = ({ size, message, margin }: Props) => {
+  if (message) {
+    return (
+      <HtmlLoaderContainer $margin={margin === undefined ? 0 : margin}>
+        <HtmlLoader $size={size || 120}>
+          <div></div>
+        </HtmlLoader>
+        <p>{message}</p>
+      </HtmlLoaderContainer>
+    );
+  }
   return (
     <HtmlLoader $size={size || 120}>
       <div></div>

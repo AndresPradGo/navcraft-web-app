@@ -449,7 +449,7 @@ const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
       </h1>
       <HtmlInputContainer $isLoading={mutation.isLoading}>
         {mutation.isLoading ? (
-          <Loader />
+          <Loader message="Calculating flight data . . ." />
         ) : (
           <>
             <HtmlInput

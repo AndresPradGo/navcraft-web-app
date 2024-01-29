@@ -327,7 +327,7 @@ const AddLegForm = ({
       </h1>
       <HtmlInputContainer $isLoading={mutation.isLoading}>
         {mutation.isLoading ? (
-          <Loader />
+          <Loader message="Calculating flight data . . ." />
         ) : (
           <>
             <DataList

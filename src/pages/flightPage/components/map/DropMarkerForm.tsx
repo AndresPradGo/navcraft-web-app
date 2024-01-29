@@ -569,7 +569,7 @@ const DropMarkerForm = ({
       </h1>
       <HtmlInputContainer $loading={mutation.isLoading}>
         {mutation.isLoading ? (
-          <Loader />
+          <Loader message="Calculating flight data . . ." />
         ) : (
           <>
             <ExpandibleMessage reset={!isOpen} messageList={instructions}>

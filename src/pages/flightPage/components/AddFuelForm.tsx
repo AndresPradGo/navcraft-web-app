@@ -293,7 +293,7 @@ const AddFuelForm = ({
       </h1>
       <HtmlInputContainer>
         {mutation.isLoading ? (
-          <Loader />
+          <Loader message="Calculating flight data . . ." />
         ) : (
           <HtmlInput
             $required={true}

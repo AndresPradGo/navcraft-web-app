@@ -326,7 +326,9 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
         )}
       </h1>
       <HtmlInputContainer $center={!!fetching || mutation.isLoading}>
-        {fetching || mutation.isLoading ? (
+        {mutation.isLoading ? (
+          <Loader message="Fetching weather data . . ." />
+        ) : fetching ? (
           <Loader />
         ) : (
           <>

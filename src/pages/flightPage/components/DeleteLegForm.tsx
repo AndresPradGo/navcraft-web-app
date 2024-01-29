@@ -163,7 +163,7 @@ const DeleteLegForm = ({
       </h1>
       <HtmlBodyContainer>
         {mutation.isLoading ? (
-          <Loader />
+          <Loader message="Calculating flight data . . ." />
         ) : (
           <p>{`Are you sure you want to delete the leg from ${fromWaypoint} to ${toWaypoint}?`}</p>
         )}

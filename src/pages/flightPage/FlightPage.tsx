@@ -337,7 +337,7 @@ const FlightPage = () => {
     fuelCalculationsIsLoading ||
     takeoffLandingDistancesIsLoading
   )
-    return <Loader />;
+    return <Loader message="Calculating flight data . . ." />;
 
   const sections = [
     {

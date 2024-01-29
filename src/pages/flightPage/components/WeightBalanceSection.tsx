@@ -22,12 +22,6 @@ import usePassengersData from "../../../hooks/usePassengersData";
 import useProfileData from "../../../hooks/useProfileData";
 import AddPersonForm from "./AddPersonForm";
 
-const HtmlLoaderContainer = styled.div`
-  margin: 35px 0 0;
-  align-self: center;
-  width: 100%;
-`;
-
 const ReportIcon = styled(PiClipboardTextDuotone)`
   font-size: 30px;
   margin: 0 5px 0 0;
@@ -164,9 +158,7 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
     profileIsLoading
   )
     return (
-      <HtmlLoaderContainer>
-        <Loader />
-      </HtmlLoaderContainer>
+      <Loader message="Calculating weight and balance . . ." margin={50} />
     );
 
   const profiles = aircraftWeightBalanceData

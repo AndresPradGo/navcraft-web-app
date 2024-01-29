@@ -281,7 +281,7 @@ const AddLuggageForm = ({
       </h1>
       <HtmlInputContainer>
         {mutation.isLoading ? (
-          <Loader />
+          <Loader message="Calculating flight data . . ." />
         ) : (
           <>
             {maxWeight.compartment || maxWeight.total ? (

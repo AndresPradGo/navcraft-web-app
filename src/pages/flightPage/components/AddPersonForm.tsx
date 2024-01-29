@@ -573,7 +573,7 @@ const AddPersonForm = ({
       </h1>
       <HtmlInputContainer $loading={mutation.isLoading}>
         {mutation.isLoading || removeMutation.isLoading ? (
-          <Loader />
+          <Loader message="Calculating flight data . . ." />
         ) : (
           <>
             {maxWeight ? (

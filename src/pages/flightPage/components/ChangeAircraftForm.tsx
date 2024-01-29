@@ -219,7 +219,7 @@ const ChangeAircraftForm = ({
       </h1>
       <HtmlInputContainer>
         {mutation.isLoading ? (
-          <Loader />
+          <Loader message="Calculating flight data . . ." margin={50} />
         ) : (
           <>
             {aircraft === "" && noAircraft ? (
