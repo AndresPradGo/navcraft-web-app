@@ -126,9 +126,15 @@ interface Props {
   mapState: MapStateType;
   mapStateSetter: (key: keyof MapStateType, value: boolean) => void;
   inputs: MapInputStyleType[];
+  disableBtn: boolean;
 }
 
-const SideBarMapOptions = ({ mapState, mapStateSetter, inputs }: Props) => {
+const SideBarMapOptions = ({
+  mapState,
+  mapStateSetter,
+  inputs,
+  disableBtn,
+}: Props) => {
   const btnStyles = {
     width: "100%",
     height: "40px",
@@ -164,6 +170,7 @@ const SideBarMapOptions = ({ mapState, mapStateSetter, inputs }: Props) => {
         ) : (
           <Button
             {...btnStyles}
+            disabled={disableBtn}
             handleClick={() => {
               mapStateSetter("open", true);
             }}

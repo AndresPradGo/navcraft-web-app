@@ -41,7 +41,7 @@ interface BaseEnrouteBriefingResult {
     data: string;
 }
 
-interface PIREPType extends BaseEnrouteBriefingResult {
+export interface PIREPType extends BaseEnrouteBriefingResult {
     geometryWarning?: boolean;
     isUrgent?: boolean;
     location?: string;
@@ -74,8 +74,6 @@ export interface WeatherBriefingFromAPI {
     dateTime: Date;
     regions:{
         region: GFARegion;
-        dateFrom: Date;
-        dateTo: Date;
         weatherGraphs: GFAGraph[];
         iceGraphs: GFAGraph[];
         airmets: BaseEnrouteBriefingResult[];
@@ -99,6 +97,7 @@ export interface WeatherBriefingFromAPI {
     }
 }
 
+export type WeatherBriefingData = WeatherBriefingFromAPI | "null" | "error" | "mutating"
 export interface NOTAMBriefingFromAPI {
 
 }

@@ -201,6 +201,7 @@ const SideBarContent = ({
         mapState={mapState}
         mapStateSetter={mapStateSetter}
         inputs={mapInputs}
+        disableBtn={sectionIndex === 5 || sectionIndex === 6}
       />
       <SideBarIndex
         handleChangeSection={handleChangeSection}

@@ -25,14 +25,16 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontFamily: 'Helvetica-Oblique'
     },
-    section: {
-        marginVertical: 15
+    sectionMargin: {
+        marginTop: 20,
+        marginBottom: 10
     },
     title1: {
         fontSize: 30,
         textAlign: 'center',
         fontFamily: "Times-Bold",
-        color: color.contrastDark
+        color: color.contrastDark,
+        marginBottom: 10
     },
     title2: {
         fontSize: 24,
@@ -48,16 +50,16 @@ const styles = StyleSheet.create({
     },
     
     text: {
-        margin: 12,
+        margin: 5,
         fontSize: 14,
         textAlign: 'justify',
         fontFamily: 'Helvetica',
         color: color.greyDark
     },
     report: {
-        padding: 12,
-        marginHorizontal: 30,
-        marginVertical: 12,
+        paddingHorizontal: 12,
+        marginTop: 5,
+        marginBottom: 10,
         fontSize: 14,
         textAlign: 'left',
         fontFamily: 'Helvetica-Bold',
@@ -65,12 +67,20 @@ const styles = StyleSheet.create({
     },
     image: {
         textAlign: "center",
-        marginVertical: 12,
+        marginTop: 5,
+        marginBottom: 10
     },
-    selectedImage: {
+    contrastImage: {
         textAlign: "center",
         border: `4px solid ${color.contrastDark}`,
-        marginVertical: 12,
+        marginTop: 5,
+        marginBottom: 10
+    },
+    highlightImage: {
+        textAlign: "center",
+        border: `4px solid ${color.highlightDark}`,
+        marginTop: 5,
+        marginBottom: 10
     },
     pageNumber: {
         position: 'absolute',

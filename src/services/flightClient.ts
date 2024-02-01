@@ -11,6 +11,7 @@ interface BaseWeatherReportRequestData {
 interface LegDataFromAPI {
     id: number;
     temperature_c: number;
+    path_boundaries: number[][];
     altimeter_inhg: number;
     wind_direction: number | null;
     wind_magnitude_knot: number;

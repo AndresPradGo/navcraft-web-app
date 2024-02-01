@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { FaDownload, FaRegFilePdf } from "react-icons/fa6";
 import { styled } from "styled-components";
 import { PDFViewer, usePDF } from "@react-pdf/renderer";
@@ -29,7 +30,12 @@ const PDFIcon = styled(FaRegFilePdf)`
   margin-right: 8px;
 `;
 
-const PdfRenderer = ({ content }: PdfContent) => {
+interface Props extends PdfContent {
+  btnText?: ReactNode;
+  handleBtnClick?: () => void;
+}
+
+const PdfRenderer = ({ content, btnText, handleBtnClick }: Props) => {
   const document = <PdfDocument content={content} />;
   const [instance, update] = usePDF({ document });
 
@@ -37,6 +43,23 @@ const PdfRenderer = ({ content }: PdfContent) => {
 
   return (
     <>
+      <Button
+        color="var(--color-primary-dark)"
+        hoverColor="var(--color-grey-dark)"
+        backgroundColor="var(--color-contrast)"
+        backgroundHoverColor="var(--color-contrast-hover)"
+        width="250px"
+        height="45px"
+        fontSize={18}
+        shadow={false}
+        spaceChildren="space-evenly"
+        borderRadious={5}
+        margin="20px 10px 0"
+        onlyHover={true}
+        handleClick={handleBtnClick}
+      >
+        {btnText}
+      </Button>
       {isMobile ? (
         <>
           {instance.url ? (

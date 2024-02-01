@@ -3,24 +3,28 @@ import { Page, Text, View, Document, Image } from "@react-pdf/renderer";
 
 import styles from "./PdfStyles";
 
-interface Component {
-  type:
-    | "title1"
-    | "title2"
-    | "title3"
-    | "text"
-    | "report"
-    | "image"
-    | "selectedImage";
-  content: string;
+export interface WrapedComponets {
+  components: {
+    type:
+      | "title1"
+      | "title2"
+      | "title3"
+      | "text"
+      | "bulletpoint"
+      | "report"
+      | "image"
+      | "contrastImage"
+      | "highlightImage";
+    content: string;
+  }[];
+  margin?: string;
+  wrap?: boolean;
 }
 
 export interface Props {
   content: {
     headers?: string[];
-    body: {
-      components: Component[];
-    }[];
+    body: WrapedComponets[];
   };
 }
 
@@ -39,7 +43,13 @@ const PdfDocument = ({ content }: Props) => {
           ))}
         </View>
         {content.body.map((section, idx) => (
-          <View key={`section-${idx}`} wrap={false}>
+          <View
+            key={`section-${idx}`}
+            style={
+              section.margin ? { margin: section.margin } : styles.sectionMargin
+            }
+            wrap={!!section.wrap}
+          >
             {section.components.map((item, subIdx) => {
               if (item.type === "title1") {
                 return (
@@ -78,6 +88,16 @@ const PdfDocument = ({ content }: Props) => {
                   </Text>
                 );
               }
+              if (item.type === "bulletpoint") {
+                return (
+                  <Text
+                    key={`component-${idx}-${subIdx}`}
+                    style={{ ...styles.text, paddingLeft: 10 }}
+                  >
+                    {item.content}
+                  </Text>
+                );
+              }
               if (item.type === "report") {
                 return (
                   <Text
@@ -97,9 +117,15 @@ const PdfDocument = ({ content }: Props) => {
                   />
                 );
               }
-              if (item.type === "selectedImage") {
+              if (
+                item.type === "contrastImage" ||
+                item.type === "highlightImage"
+              ) {
                 return (
-                  <View key={`component-${idx}-${subIdx}`} style={styles.image}>
+                  <View
+                    key={`component-${idx}-${subIdx}`}
+                    style={styles[item.type]}
+                  >
                     <Image src={item.content} />
                   </View>
                 );

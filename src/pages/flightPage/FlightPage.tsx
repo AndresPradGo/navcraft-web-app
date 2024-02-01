@@ -231,14 +231,19 @@ const FlightPage = () => {
   const missingAerodrome = !departure || !arrival;
 
   const {
+    data: legsData,
     isLoading: legsIsLoading,
     error: legsError,
     isFetching: legsIsFetching,
     isStale: legsIsStale,
   } = useNavLogData(flightId, !aircraft || !aircraftProfile, missingAerodrome);
 
-  const { isLoading: weatherBriefingIsLoading, error: weatherBriefingError } =
-    useWeatherBriefing(flightId);
+  const {
+    isLoading: weatherBriefingIsLoading,
+    isFetching: weatherBriefingIsFetching,
+    isStale: weatherBriefingIsStale,
+    error: weatherBriefingError,
+  } = useWeatherBriefing(flightId);
 
   const {
     isLoading: weightBalanceIsLoading,
@@ -639,6 +644,15 @@ const FlightPage = () => {
               />
             )
           ) : null}
+          {legsData && legsData.find((l) => l.total_distance > 150) ? (
+            <AnnouncementBox
+              margin="0 0 20px"
+              maxWidth={800}
+              isDanger={true}
+              title="Some legs are too long!"
+              message={`Long distances introduce error to the true track angles, consider shortening your legs under 150 NM.`}
+            />
+          ) : null}
           {sectionIdx === 0 ? (
             <NavLogSection
               handleAdd={addLegModal.handleOpen}
@@ -686,8 +700,13 @@ const FlightPage = () => {
               flightId={flightId}
               departureCode={departure ? `${departure.code}` : ""}
               arrivalCode={arrival ? `${arrival.code}` : ""}
-              isLoading={weatherBriefingIsLoading}
-              flightDataIsChanging={legsIsFetching && legsIsStale}
+              isLoading={
+                weatherBriefingIsLoading ||
+                (weatherBriefingIsFetching && weatherBriefingIsStale)
+              }
+              flightDataIsChanging={
+                isLoading || (legsIsFetching && legsIsStale)
+              }
             />
           ) : null}
         </HtmlContainer>
