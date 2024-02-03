@@ -37,7 +37,7 @@ interface Props extends PdfContent {
 
 const PdfRenderer = ({ content, btnText, handleBtnClick }: Props) => {
   const document = <PdfDocument content={content} />;
-  const [instance, update] = usePDF({ document });
+  const [instance, _] = usePDF({ document });
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -60,67 +60,48 @@ const PdfRenderer = ({ content, btnText, handleBtnClick }: Props) => {
       >
         {btnText}
       </Button>
+      {instance.url ? (
+        <Button
+          color="var(--color-primary-dark)"
+          hoverColor="var(--color-grey-dark)"
+          backgroundColor="var(--color-grey)"
+          backgroundHoverColor="var(--color-grey-bright)"
+          width="250px"
+          height="45px"
+          fontSize={18}
+          shadow={false}
+          spaceChildren="space-evenly"
+          borderRadious={5}
+          margin="15px 10px 20px"
+          href={instance.url}
+          isAnchor={true}
+          onlyHover={true}
+        >
+          {isMobile ? (
+            <>
+              Open PDF <PDFIcon />
+            </>
+          ) : (
+            <>
+              Download PDF <DownloadIcon />
+            </>
+          )}
+        </Button>
+      ) : null}
       {isMobile ? (
-        <>
-          {instance.url ? (
-            <Button
-              color="var(--color-primary-dark)"
-              hoverColor="var(--color-grey-dark)"
-              backgroundColor="var(--color-grey)"
-              backgroundHoverColor="var(--color-grey-bright)"
-              width="250px"
-              height="45px"
-              fontSize={18}
-              shadow={false}
-              spaceChildren="space-evenly"
-              borderRadious={5}
-              margin="15px 10px 20px"
-              href={instance.url}
-              isAnchor={true}
-              onlyHover={true}
-            >
-              Open PDF
-              <PDFIcon />
-            </Button>
-          ) : null}
-          <FlightWarningList
-            warnings={[
-              [
-                "PDF Viwer is only supported in desktop web-browsers. To view the briefing in a mobile browser, open the PDF in a new tab.",
-              ],
-            ]}
-          />
-        </>
+        <FlightWarningList
+          warnings={[
+            [
+              "PDF Viwer is only supported in desktop web-browsers. To view the briefing in a mobile browser, open the PDF in a new tab.",
+            ],
+          ]}
+        />
       ) : (
-        <>
-          {instance.url ? (
-            <Button
-              color="var(--color-primary-dark)"
-              hoverColor="var(--color-grey-dark)"
-              backgroundColor="var(--color-grey)"
-              backgroundHoverColor="var(--color-grey-bright)"
-              width="250px"
-              height="45px"
-              fontSize={18}
-              shadow={false}
-              spaceChildren="space-evenly"
-              borderRadious={5}
-              margin="15px 10px 20px"
-              href={instance.url}
-              download="weatherBriex.pdf"
-              isAnchor={true}
-              onlyHover={true}
-            >
-              Download PDF
-              <DownloadIcon />
-            </Button>
-          ) : null}
-          <HtmlPDFViwerContainer>
-            <PDFViewer width="100%" height="100%">
-              {document}
-            </PDFViewer>
-          </HtmlPDFViwerContainer>
-        </>
+        <HtmlPDFViwerContainer>
+          <PDFViewer width="100%" height="100%">
+            {document}
+          </PDFViewer>
+        </HtmlPDFViwerContainer>
       )}
     </>
   );

@@ -698,8 +698,8 @@ const FlightPage = () => {
           ) : sectionIdx === 5 ? (
             <WeatherBriefingSection
               flightId={flightId}
-              departureCode={departure ? `${departure.code}` : ""}
-              arrivalCode={arrival ? `${arrival.code}` : ""}
+              departureAerodrome={departure || aerodromes[0]}
+              arrivalAerodrome={arrival || aerodromes[0]}
               isLoading={
                 weatherBriefingIsLoading ||
                 (weatherBriefingIsFetching && weatherBriefingIsStale)

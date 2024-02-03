@@ -102,6 +102,6 @@ export interface NOTAMBriefingFromAPI {
 
 }
 
-const apiClient = new APIClient<BriefingRequest, WeatherBriefingFromAPI | NOTAMBriefingFromAPI>("/briefings")
+const apiClient = new APIClient<BriefingRequest, WeatherBriefingFromAPI | unknown>("/briefings")
 
 export default apiClient

@@ -37,12 +37,14 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     title2: {
+        marginBottom: 10,
         fontSize: 24,
         textAlign: 'left',
         fontFamily: "Helvetica-Bold",
         color: color.highlightDark
     },
     title3: {
+        marginVertical: 5,
         fontSize: 18,
         textAlign: 'left',
         fontFamily: "Helvetica-Bold",
@@ -50,17 +52,16 @@ const styles = StyleSheet.create({
     },
     
     text: {
-        margin: 5,
-        fontSize: 14,
+        marginVertical: 5,
+        fontSize: 12,
         textAlign: 'justify',
         fontFamily: 'Helvetica',
         color: color.greyDark
     },
     report: {
-        paddingHorizontal: 12,
-        marginTop: 5,
-        marginBottom: 10,
-        fontSize: 14,
+        paddingHorizontal: 10,
+        marginVertical: 5,
+        fontSize: 12,
         textAlign: 'left',
         fontFamily: 'Helvetica-Bold',
         color: color.primaryDark

@@ -17,6 +17,7 @@ import type {
 } from "../services/briefingClient";
 import useWeatherBriefingRequest from "../hooks/useWeatherBriefingRequest";
 import Loader from "../../../components/Loader";
+import type { OfficialAerodromeDataFromAPI } from "../../../services/officialAerodromeClient";
 
 const RefreshIcon = styled(LuRefreshCw)`
   font-size: 20px;
@@ -25,15 +26,15 @@ const RefreshIcon = styled(LuRefreshCw)`
 
 interface Props {
   flightId: number;
-  departureCode: string;
-  arrivalCode: string;
+  departureAerodrome: OfficialAerodromeDataFromAPI;
+  arrivalAerodrome: OfficialAerodromeDataFromAPI;
   isLoading: boolean;
   flightDataIsChanging: boolean;
 }
 const WeatherBriefingSection = ({
   flightId,
-  departureCode,
-  arrivalCode,
+  departureAerodrome,
+  arrivalAerodrome,
   isLoading,
   flightDataIsChanging,
 }: Props) => {
@@ -46,6 +47,10 @@ const WeatherBriefingSection = ({
   const legsData = queryClient.getQueryData<NavLogLegData[]>([
     "navLog",
     flightId,
+  ]);
+  const aerodromes = queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>([
+    "aerodromes",
+    "all",
   ]);
 
   const mutation = useWeatherBriefingRequest(flightId);
@@ -72,8 +77,8 @@ const WeatherBriefingSection = ({
       const etd = new Date(flightData.departure_time);
       const departure = {
         dateTime: flightData.departure_time,
-        aerodrome: flightData.departure_aerodrome_is_private
-          ? departureCode
+        aerodrome: !flightData.departure_aerodrome_is_private
+          ? departureAerodrome.code
           : undefined,
       };
 
@@ -108,8 +113,8 @@ const WeatherBriefingSection = ({
       const eta = new Date(totalMinutes);
       const arrival = {
         dateTime: eta.toISOString(),
-        aerodrome: flightData.arrival_aerodrome_is_private
-          ? arrivalCode
+        aerodrome: !flightData.arrival_aerodrome_is_private
+          ? arrivalAerodrome.code
           : undefined,
       };
 
@@ -177,18 +182,18 @@ const WeatherBriefingSection = ({
       );
     }
     headers.push(
-      `Departure: ${departureCode} on ${etd}`,
-      `Arrival: ${arrivalCode} on ${eta}`
+      `Departure: ${departureAerodrome.code} on ${etd}`,
+      `Arrival: ${arrivalAerodrome.code} on ${eta}`
     );
 
     return headers;
   };
 
-  const renderPIREPs = (pirep: PIREPType) => {
+  const renderPIREPs = (pirep: PIREPType, body: PdfBodySection[]) => {
     const pdfPirep = {
       components: [
         {
-          type: "text",
+          type: "text" as "text" | "bulletpoint" | "report",
           content: `Issued on ${formatUTCDate(
             pirep.dateFrom,
             true
@@ -201,49 +206,57 @@ const WeatherBriefingSection = ({
             .concat(pirep.ftASL ? ` at ${pirep.ftASL} ft ASL.` : "."),
         },
       ],
-      margin: "20px 0 10px",
-      wrap: true,
+      margin: "5px 0 15px",
     };
     if (pirep.aircraft)
       pdfPirep.components.push({
-        type: "bulletpoint",
+        type: "bulletpoint" as "bulletpoint",
         content: `\u2022 \t Aircraft type: ${pirep.aircraft}`,
       });
     if (pirep.clouds)
       pdfPirep.components.push({
-        type: "bulletpoint",
+        type: "bulletpoint" as "bulletpoint",
         content: `\u2022 \t Clouds: ${pirep.clouds}`,
       });
     if (pirep.temperature)
       pdfPirep.components.push({
-        type: "bulletpoint",
+        type: "bulletpoint" as "bulletpoint",
         content: `\u2022 \t Temperature: ${pirep.temperature}\u00B0C`,
       });
     if (pirep.wind)
       pdfPirep.components.push({
-        type: "bulletpoint",
+        type: "bulletpoint" as "bulletpoint",
         content: `\u2022 \t Wind: ${pirep.wind}`,
       });
     if (pirep.turbulence)
       pdfPirep.components.push({
-        type: "bulletpoint",
+        type: "bulletpoint" as "bulletpoint",
         content: `\u2022 \t Turbulence: ${pirep.turbulence}`,
       });
     if (pirep.icing)
       pdfPirep.components.push({
-        type: "bulletpoint",
+        type: "bulletpoint" as "bulletpoint",
         content: `\u2022 \t Icing: ${pirep.icing}`,
       });
     if (pirep.remarks)
       pdfPirep.components.push({
-        type: "bulletpoint",
+        type: "bulletpoint" as "bulletpoint",
         content: `\u2022 \t Remarks: ${pirep.remarks}`,
       });
-    pdfPirep.components.push({ type: "report", content: pirep.data });
+    pdfPirep.components.push({
+      type: "report" as "report",
+      content: pirep.data,
+    });
+    body.push(pdfPirep);
   };
 
   const renderRegions = (body: PdfBodySection[], etd: Date, eta: Date) => {
-    if (briefingData && briefingData !== "error") {
+    if (
+      briefingData &&
+      briefingData !== "error" &&
+      !!briefingData.regions.length
+    ) {
+      body.push({ components: [{ type: "title1", content: "GFA Regions" }] });
       briefingData.regions.forEach((region) => {
         // Add Title
         body.push({
@@ -255,7 +268,7 @@ const WeatherBriefingSection = ({
         region.weatherGraphs
           .map((g) => ({ ...g, isWeather: true }))
           .concat(region.iceGraphs.map((g) => ({ ...g, isWeather: false })))
-          .forEach((gfa) => {
+          .forEach((gfa, idx) => {
             const dateFrom = new Date(gfa.validAt);
             const dateTo = new Date(
               dateFrom.getTime() + (gfa.hoursSpan * 60 - 1) * 60000
@@ -280,8 +293,8 @@ const WeatherBriefingSection = ({
                 "A portion of the flight is performed within this GFA's time frame";
             }
 
-            body.push({
-              components: [
+            if (idx === 0) {
+              body[body.length - 1].components.push(
                 {
                   type: "title3",
                   content: gfa.isWeather
@@ -298,16 +311,39 @@ const WeatherBriefingSection = ({
                     true
                   )} at ${formatUTCTime(dateTo)}. ${message}`,
                 },
-                { type, content: gfa.src },
-              ],
-            });
+                { type, content: gfa.src }
+              );
+            } else {
+              body.push({
+                components: [
+                  {
+                    type: "title3",
+                    content: gfa.isWeather
+                      ? `Clouds & Weather ${timeFrom}`
+                      : `Icing, Turbulence & Freezing level ${timeFrom}`,
+                  },
+                  {
+                    type: "text",
+                    content: `Valid from ${formatUTCDate(
+                      gfa.validAt,
+                      true
+                    )} at ${timeFrom} to ${formatUTCDate(
+                      dateTo,
+                      true
+                    )} at ${formatUTCTime(dateTo)}. ${message}`,
+                  },
+                  { type, content: gfa.src },
+                ],
+              });
+            }
           });
 
         // Add AIRMETs
         if (region.airmets.length > 0) {
           body.push({
             components: [{ type: "title3", content: "AIRMETs" }],
-            margin: "30px 0 0",
+            margin: "0",
+            break: true,
           });
         }
         region.airmets.forEach((airmet) => {
@@ -329,7 +365,7 @@ const WeatherBriefingSection = ({
               },
               { type: "report", content: airmet.data },
             ],
-            margin: "20px 0 10px",
+            margin: "5px 0 15px",
             wrap: true,
           });
         });
@@ -338,7 +374,8 @@ const WeatherBriefingSection = ({
         if (region.sigmets.length > 0) {
           body.push({
             components: [{ type: "title3", content: "SIGMETs" }],
-            margin: "30px 0 0",
+            margin: "0",
+            break: true,
           });
         }
         region.sigmets.forEach((sigmet) => {
@@ -360,7 +397,7 @@ const WeatherBriefingSection = ({
               },
               { type: "report", content: sigmet.data },
             ],
-            margin: "20px 0 10px",
+            margin: "5px 0 15px",
             wrap: true,
           });
         });
@@ -369,22 +406,271 @@ const WeatherBriefingSection = ({
         if (region.pireps.filter((p) => p.isUrgent).length > 0) {
           body.push({
             components: [{ type: "title3", content: "Urgent Priority PIREPs" }],
-            margin: "30px 0 0",
+            margin: "0 0 0",
+            break: true,
           });
         }
-        region.pireps.filter((p) => p.isUrgent).forEach(renderPIREPs);
+        region.pireps
+          .filter((p) => p.isUrgent)
+          .forEach((pirep) => renderPIREPs(pirep, body));
 
         // Add PIREPs
         if (region.pireps.filter((p) => !p.isUrgent).length > 0) {
           body.push({
-            components: [
-              { type: "title3", content: "Regular Priority PIREPs" },
-            ],
-            margin: "30px 0 0",
+            components: [{ type: "title3", content: "PIREPs" }],
+            margin: "0 0 0",
+            break: true,
           });
         }
-        region.pireps.filter((p) => !p.isUrgent).forEach(renderPIREPs);
+        region.pireps
+          .filter((p) => !p.isUrgent)
+          .forEach((pirep) => renderPIREPs(pirep, body));
       });
+    }
+  };
+
+  const renderAerodromes = (body: PdfBodySection[]) => {
+    if (
+      briefingData &&
+      briefingData !== "error" &&
+      flightData &&
+      aerodromes &&
+      (!!briefingData.aerodromes.departure.aerodrome ||
+        !!briefingData.aerodromes.legs.reduce(
+          (sum, l) => sum + l.aerodromes.length,
+          0
+        ) ||
+        !!briefingData.aerodromes.arrival.aerodrome ||
+        !!briefingData.aerodromes.alternates.length)
+    ) {
+      body.push({
+        components: [{ type: "title1", content: "Aerodromes" }],
+        break: true,
+      });
+      // Add departure aerodrome
+      body.push({
+        components: [{ type: "title2", content: "Departure" }],
+        margin: "10px 0 0",
+        wrap: true,
+      });
+      let departureReports = briefingData.aerodromes.departure.aerodrome;
+      let departureHasWeather = briefingData.aerodromes.departure.aerodrome;
+      if (
+        !departureHasWeather &&
+        !!briefingData.aerodromes.legs[0].aerodromes.length
+      ) {
+        const closestAerodromes = briefingData.aerodromes.legs[0].aerodromes
+          .slice()
+          .sort((a, b) => {
+            if (a.nauticalMilesFromTarget < b.nauticalMilesFromTarget)
+              return -1;
+            if (a.nauticalMilesFromTarget > b.nauticalMilesFromTarget) return 1;
+            return 0;
+          });
+        departureReports = closestAerodromes[0];
+      }
+      if (
+        departureReports &&
+        (departureReports.taf || !!departureReports.metar.length)
+      ) {
+        const departureAerodromeData = departureHasWeather
+          ? departureAerodrome
+          : aerodromes.find((a) => a.code === departureReports?.aerodromeCode);
+        body[body.length - 1].components.push({
+          type: "title3",
+          content: `${departureAerodromeData?.name} (${departureAerodromeData?.code})`,
+        });
+        if (!departureHasWeather) {
+          body[body.length - 1].components.push({
+            type: "text",
+            content: `${departureAerodromeData?.name} is the closest aerodrome to ${departureAerodrome?.name} with weather services available at the moment.`,
+          });
+        }
+
+        departureReports.metar.forEach((metar) => {
+          body[body.length - 1].components.push({
+            type: "report",
+            content: metar.data,
+          });
+        });
+
+        if (departureReports.taf) {
+          body[body.length - 1].components.push({
+            type: "report",
+            content: departureReports.taf.data,
+            margin: "10px 0",
+          });
+        }
+      } else {
+        body.push({
+          components: [
+            {
+              type: "text",
+              content:
+                "Curently there are no weather reports available for the departure aerodrome.",
+            },
+          ],
+        });
+      }
+
+      // Add enroute aerodromes
+      if (
+        !!briefingData.aerodromes.legs.reduce(
+          (sum, l) => sum + l.aerodromes.length,
+          0
+        )
+      ) {
+        body.push({
+          components: [{ type: "title2", content: "Enroute" }],
+          margin: "10px 0 0",
+          break: true,
+          wrap: true,
+        });
+        briefingData.aerodromes.legs.forEach((leg, legIdx) => {
+          leg.aerodromes
+            .filter((a) => departureReports?.aerodromeCode !== a.aerodromeCode)
+            .forEach((station, stationIdx) => {
+              const aerodrome = aerodromes.find(
+                (a) => a.code === station.aerodromeCode
+              );
+              const metars = [
+                {
+                  type: "title3" as "title3",
+                  content: `${aerodrome?.name} (${aerodrome?.code})`,
+                },
+                ...station.metar.map((metar) => ({
+                  type: "report" as "report",
+                  content: metar.data,
+                })),
+              ];
+              if (legIdx === 0 && stationIdx === 0) {
+                body[body.length - 1].components.push(...metars);
+              } else {
+                body.push({
+                  components: metars,
+                  margin: "15px 0 0",
+                  wrap: true,
+                });
+              }
+              if (station.taf) {
+                body[body.length - 1].components.push({
+                  type: "report",
+                  content: station.taf.data,
+                  margin: "10px 0",
+                });
+              }
+            });
+        });
+      }
+
+      // Add arrival Aerodrome
+      body.push({
+        components: [{ type: "title2", content: "Arrival" }],
+        margin: "10px 0 0",
+        break: true,
+        wrap: true,
+      });
+      let arrivalReports = briefingData.aerodromes.arrival.aerodrome;
+      let arrivalHasWeather = briefingData.aerodromes.arrival.aerodrome;
+      if (!arrivalHasWeather && !!briefingData.aerodromes.alternates.length) {
+        const closestAerodromes = briefingData.aerodromes.alternates
+          .slice()
+          .sort((a, b) => {
+            if (a.nauticalMilesFromTarget < b.nauticalMilesFromTarget)
+              return -1;
+            if (a.nauticalMilesFromTarget > b.nauticalMilesFromTarget) return 1;
+            return 0;
+          });
+        arrivalReports = closestAerodromes[0];
+      }
+      if (
+        arrivalReports &&
+        (arrivalReports.taf || !!arrivalReports.metar.length)
+      ) {
+        const arrivalAerodromeData = arrivalHasWeather
+          ? arrivalAerodrome
+          : aerodromes.find((a) => a.code === arrivalReports?.aerodromeCode);
+        body[body.length - 1].components.push({
+          type: "title3",
+          content: `${arrivalAerodromeData?.name} (${arrivalAerodromeData?.code})`,
+        });
+        if (!arrivalHasWeather) {
+          body[body.length - 1].components.push({
+            type: "text",
+            content: `${arrivalAerodromeData?.name} is the closest aerodrome to ${arrivalAerodrome?.name} with weather services available at the moment.`,
+          });
+        }
+
+        arrivalReports.metar.forEach((metar) => {
+          body[body.length - 1].components.push({
+            type: "report",
+            content: metar.data,
+          });
+        });
+
+        if (arrivalReports.taf) {
+          body[body.length - 1].components.push({
+            type: "report",
+            content: arrivalReports.taf.data,
+            margin: "10px 0",
+          });
+        }
+
+        body[body.length - 1].components.push({ type: "report", content: "" });
+      } else {
+        body.push({
+          components: [
+            {
+              type: "text",
+              content:
+                "Curently there are no weather reports available for the arrival aerodrome.",
+            },
+          ],
+        });
+      }
+
+      // Add Alternates
+      if (!!briefingData.aerodromes.alternates.length) {
+        body.push({
+          components: [{ type: "title2", content: "Alternates" }],
+          margin: "10px 0 0",
+          break: true,
+          wrap: true,
+        });
+        briefingData.aerodromes.alternates
+          .filter((a) => arrivalReports?.aerodromeCode !== a.aerodromeCode)
+          .forEach((station, stationIdx) => {
+            const aerodrome = aerodromes.find(
+              (a) => a.code === station.aerodromeCode
+            );
+            const metars = [
+              {
+                type: "title3" as "title3",
+                content: `${aerodrome?.name} (${aerodrome?.code})`,
+              },
+              ...station.metar.map((metar) => ({
+                type: "report" as "report",
+                content: metar.data,
+              })),
+            ];
+            if (stationIdx === 0) {
+              body[body.length - 1].components.push(...metars);
+            } else {
+              body.push({
+                components: metars,
+                margin: "10px 0 0",
+                wrap: true,
+              });
+            }
+            if (station.taf) {
+              body[body.length - 1].components.push({
+                type: "report",
+                content: station.taf.data,
+                margin: "15px 0",
+              });
+            }
+          });
+      }
     }
   };
 
@@ -406,8 +692,8 @@ const WeatherBriefingSection = ({
       const eta = new Date(etd.getTime() + elapsedMinutes * 60000);
 
       body.splice(0);
-      body.push({ components: [{ type: "title1", content: "Regions" }] });
       renderRegions(body, etd, eta);
+      renderAerodromes(body);
     }
 
     return body;

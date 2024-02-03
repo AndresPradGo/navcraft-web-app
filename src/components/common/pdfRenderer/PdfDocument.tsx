@@ -16,7 +16,9 @@ export interface WrapedComponets {
       | "contrastImage"
       | "highlightImage";
     content: string;
+    margin?: string;
   }[];
+  break?: boolean;
   margin?: string;
   wrap?: boolean;
 }
@@ -49,13 +51,18 @@ const PdfDocument = ({ content }: Props) => {
               section.margin ? { margin: section.margin } : styles.sectionMargin
             }
             wrap={!!section.wrap}
+            break={!!section.break}
           >
             {section.components.map((item, subIdx) => {
               if (item.type === "title1") {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
-                    style={styles.title1}
+                    style={
+                      item.margin
+                        ? { ...styles.title1, margin: item.margin }
+                        : styles.title1
+                    }
                   >
                     {item.content}
                   </Text>
@@ -65,7 +72,11 @@ const PdfDocument = ({ content }: Props) => {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
-                    style={styles.title2}
+                    style={
+                      item.margin
+                        ? { ...styles.title2, margin: item.margin }
+                        : styles.title2
+                    }
                   >
                     {item.content}
                   </Text>
@@ -75,7 +86,11 @@ const PdfDocument = ({ content }: Props) => {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
-                    style={styles.title3}
+                    style={
+                      item.margin
+                        ? { ...styles.title3, margin: item.margin }
+                        : styles.title3
+                    }
                   >
                     {item.content}
                   </Text>
@@ -83,7 +98,14 @@ const PdfDocument = ({ content }: Props) => {
               }
               if (item.type === "text") {
                 return (
-                  <Text key={`component-${idx}-${subIdx}`} style={styles.text}>
+                  <Text
+                    key={`component-${idx}-${subIdx}`}
+                    style={
+                      item.margin
+                        ? { ...styles.text, margin: item.margin }
+                        : styles.text
+                    }
+                  >
                     {item.content}
                   </Text>
                 );
@@ -92,7 +114,15 @@ const PdfDocument = ({ content }: Props) => {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
-                    style={{ ...styles.text, paddingLeft: 10 }}
+                    style={
+                      item.margin
+                        ? {
+                            ...styles.text,
+                            paddingLeft: 15,
+                            margin: item.margin,
+                          }
+                        : { ...styles.text, paddingLeft: 15 }
+                    }
                   >
                     {item.content}
                   </Text>
@@ -102,7 +132,11 @@ const PdfDocument = ({ content }: Props) => {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
-                    style={styles.report}
+                    style={
+                      item.margin
+                        ? { ...styles.report, margin: item.margin }
+                        : styles.report
+                    }
                   >
                     {item.content}
                   </Text>
@@ -112,7 +146,11 @@ const PdfDocument = ({ content }: Props) => {
                 return (
                   <Image
                     key={`component-${idx}-${subIdx}`}
-                    style={styles.image}
+                    style={
+                      item.margin
+                        ? { ...styles.image, margin: item.margin }
+                        : styles.image
+                    }
                     src={item.content}
                   />
                 );
@@ -124,7 +162,11 @@ const PdfDocument = ({ content }: Props) => {
                 return (
                   <View
                     key={`component-${idx}-${subIdx}`}
-                    style={styles[item.type]}
+                    style={
+                      item.margin
+                        ? { ...styles[item.type], margin: item.margin }
+                        : styles[item.type]
+                    }
                   >
                     <Image src={item.content} />
                   </View>
