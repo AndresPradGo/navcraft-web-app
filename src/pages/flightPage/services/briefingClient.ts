@@ -99,8 +99,20 @@ export interface WeatherBriefingFromAPI {
 
 export type WeatherBriefingData = WeatherBriefingFromAPI | "null" | "error" | "mutating"
 export interface NOTAMBriefingFromAPI {
-
+  dateTime: Date;
+  notams: {
+    aerodromes: {
+      code: string
+      dateTimeAt: Date
+      flightWithinNotam: boolean
+    }[];
+    data: string;
+    dateFrom: Date;
+    dateTo? : Date;
+    isAipSuplement: boolean;
+  }[];
 }
+export type NOTAMBriefingData = NOTAMBriefingFromAPI | "null" | "error" | "mutating"
 
 const apiClient = new APIClient<BriefingRequest, WeatherBriefingFromAPI | unknown>("/briefings")
 

@@ -47,10 +47,12 @@ import AddLegForm from "./components/AddLegForm";
 import WeightBalanceSection from "./components/WeightBalanceSection";
 import FuelCalculationsSection from "./components/FuelCalculationsSection";
 import WeatherBriefingSection from "./components/WeatherBriefingSection";
+import NotamsBriefingSection from "./components/NotamsBriefingSection";
 import useSetTitle from "../../hooks/useSetTitle";
 import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
 import AnnouncementBox from "../../components/common/AnnouncementBox";
 import useWeatherBriefing from "./hooks/useWeatherBriefing";
+import useNotamBriefing from "./hooks/useNotamBriefing";
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -246,6 +248,13 @@ const FlightPage = () => {
   } = useWeatherBriefing(flightId);
 
   const {
+    isLoading: notamBriefingIsLoading,
+    isFetching: notamBriefingIsFetching,
+    isStale: notamBriefingIsStale,
+    error: notamBriefingError,
+  } = useNotamBriefing(flightId);
+
+  const {
     isLoading: weightBalanceIsLoading,
     error: weightBalanceError,
     isFetching: weightBalanceIsFetching,
@@ -298,6 +307,7 @@ const FlightPage = () => {
     (error && error.message === "Network Error") ||
     aerodromesError ||
     weatherBriefingError ||
+    notamBriefingError ||
     aircraftListError ||
     (legsError &&
       legsError?.response?.data.detail !== "Flight doesn't have an aircraft." &&
@@ -703,6 +713,19 @@ const FlightPage = () => {
               isLoading={
                 weatherBriefingIsLoading ||
                 (weatherBriefingIsFetching && weatherBriefingIsStale)
+              }
+              flightDataIsChanging={
+                isLoading || (legsIsFetching && legsIsStale)
+              }
+            />
+          ) : sectionIdx === 6 ? (
+            <NotamsBriefingSection
+              flightId={flightId}
+              departureAerodrome={departure || aerodromes[0]}
+              arrivalAerodrome={arrival || aerodromes[0]}
+              isLoading={
+                notamBriefingIsLoading ||
+                (notamBriefingIsFetching && notamBriefingIsStale)
               }
               flightDataIsChanging={
                 isLoading || (legsIsFetching && legsIsStale)

@@ -406,7 +406,7 @@ const WeatherBriefingSection = ({
         if (region.pireps.filter((p) => p.isUrgent).length > 0) {
           body.push({
             components: [{ type: "title3", content: "Urgent Priority PIREPs" }],
-            margin: "0 0 0",
+            margin: "0",
             break: true,
           });
         }
@@ -418,7 +418,7 @@ const WeatherBriefingSection = ({
         if (region.pireps.filter((p) => !p.isUrgent).length > 0) {
           body.push({
             components: [{ type: "title3", content: "PIREPs" }],
-            margin: "0 0 0",
+            margin: "0",
             break: true,
           });
         }
@@ -483,7 +483,7 @@ const WeatherBriefingSection = ({
         if (!departureHasWeather) {
           body[body.length - 1].components.push({
             type: "text",
-            content: `${departureAerodromeData?.name} is the closest aerodrome to ${departureAerodrome?.name} with weather services available at the moment.`,
+            content: `${departureAerodromeData?.name} is the closest aerodrome to ${departureAerodrome?.name}, with weather services available at the moment.`,
           });
         }
 
@@ -522,7 +522,7 @@ const WeatherBriefingSection = ({
       ) {
         body.push({
           components: [{ type: "title2", content: "Enroute" }],
-          margin: "10px 0 0",
+          margin: "0",
           break: true,
           wrap: true,
         });
@@ -556,7 +556,7 @@ const WeatherBriefingSection = ({
                 body[body.length - 1].components.push({
                   type: "report",
                   content: station.taf.data,
-                  margin: "10px 0",
+                  margin: "15px 0",
                 });
               }
             });
@@ -566,7 +566,7 @@ const WeatherBriefingSection = ({
       // Add arrival Aerodrome
       body.push({
         components: [{ type: "title2", content: "Arrival" }],
-        margin: "10px 0 0",
+        margin: "0",
         break: true,
         wrap: true,
       });
@@ -633,7 +633,7 @@ const WeatherBriefingSection = ({
       if (!!briefingData.aerodromes.alternates.length) {
         body.push({
           components: [{ type: "title2", content: "Alternates" }],
-          margin: "10px 0 0",
+          margin: "0",
           break: true,
           wrap: true,
         });
@@ -670,6 +670,20 @@ const WeatherBriefingSection = ({
               });
             }
           });
+      } else if ((flightData?.alternates?.length || -1) > 0) {
+        body.push({
+          components: [
+            { type: "title2", content: "Alternates" },
+            {
+              type: "text",
+              content:
+                "There are no alternate options available for this flight.",
+            },
+          ],
+          margin: "0",
+          break: true,
+          wrap: true,
+        });
       }
     }
   };
