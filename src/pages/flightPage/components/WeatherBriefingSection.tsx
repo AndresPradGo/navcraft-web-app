@@ -668,9 +668,19 @@ const WeatherBriefingSection = ({
                 content: station.taf.data,
                 margin: "15px 0",
               });
+            } else if (!station.metar.length) {
+              body.push({
+                components: [
+                  {
+                    type: "text",
+                    content:
+                      "Curently there are no weather reports available for this aerodrome.",
+                  },
+                ],
+              });
             }
           });
-      } else if ((flightData?.alternates?.length || -1) > 0) {
+      } else if (!flightData?.alternates?.length) {
         body.push({
           components: [
             { type: "title2", content: "Alternates" },
