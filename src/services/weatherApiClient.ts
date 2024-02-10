@@ -2,7 +2,7 @@ import axios from 'axios'
 import useAuth from '../hooks/useAuth';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://127.0.0.1:3000/api'
+    baseURL: import.meta.env.VITE_REACT_APP_NAVBRIX_API_URL
 })
 
 interface APIResponseData {

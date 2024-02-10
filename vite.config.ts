@@ -6,10 +6,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react(), sentryVitePlugin({
     org: "andres-pradilla",
-    project: "flight-planner-web-app"
+    project: "navcraft-web-app"
   })],
 
   build: {
     sourcemap: true
-  }
+  },
+
+  server: {
+    port: 5173,
+  },
 })
