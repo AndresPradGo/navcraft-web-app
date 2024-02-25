@@ -165,6 +165,7 @@ const RunwaysTable = ({
         pageSize={20}
         emptyTableMessage="No Runways saved for this aerodrome..."
         title="Runways"
+        disableAdd={!canEdit}
         hanldeAdd={() => {
           setRunwayId(0);
           editModal.handleOpen();

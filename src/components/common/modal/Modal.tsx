@@ -40,7 +40,7 @@ const HtmlModal = styled.div<ModalProps>`
   border: 1px solid var(--color-grey);
   border-radius: 8px;
   min-height: ${(props) => (props.$fullHeight ? "97vh" : "200px")};
-  max-height: 97vh;
+  max-height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

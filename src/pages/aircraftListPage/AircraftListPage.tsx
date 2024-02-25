@@ -483,7 +483,7 @@ const AircraftListPage = () => {
               pageSize={10}
               searchBarParameters={searchBarParameters[tableIndex]}
               filterParameters={filterParameters[tableIndex]}
-              emptyTableMessage={`No ${tableOptions[tableIndex].title}...`}
+              emptyTableMessage={`No ${tableOptions[tableIndex].title} saved...`}
             />
           </HtmlTableContainer>
         </HtmlContainer>

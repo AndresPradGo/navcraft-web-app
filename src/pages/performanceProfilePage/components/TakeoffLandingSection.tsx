@@ -57,23 +57,23 @@ const TakeoffLandingSection = ({
   const dataList = [
     {
       key: "percent_decrease_knot_headwind",
-      title: `For every knot of headwind, decrease ${
+      title: `Decrease ${
         isTakeoff ? "takeoff" : "landing"
-      } distance by:`,
+      } distance by [% per knot of headwind]:`,
       data: `${
         data?.percent_decrease_knot_headwind
-          ? `${data?.percent_decrease_knot_headwind}%`
+          ? `${data?.percent_decrease_knot_headwind}`
           : "-"
       }`,
     },
     {
       key: "percent_increase_knot_tailwind",
-      title: `For every knot of tailwind, increase ${
+      title: `Increase ${
         isTakeoff ? "takeoff" : "landing"
-      } distance by:`,
+      } distance by [% per knot of tailwind]:`,
       data: `${
         data?.percent_increase_knot_tailwind
-          ? `${data?.percent_increase_knot_tailwind}%`
+          ? `${data?.percent_increase_knot_tailwind}`
           : "-"
       }`,
     },
@@ -106,7 +106,7 @@ const TakeoffLandingSection = ({
     for (const item of surfaceTableData.rows) {
       dataList.push({
         key: `${item.surface}-percent-loss`,
-        title: `For operations on ${item.surface} runways, distance will be increased by [% of ground roll]:`,
+        title: `For ${item.surface} runways, increase distance by [% of roll]:`,
         data: `${item.percent}%`,
       });
     }

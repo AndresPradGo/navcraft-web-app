@@ -68,7 +68,7 @@ const ContentLayout = ({ children, sideBarContent, map }: Props) => {
   const [renderMap, setRenderMap] = useState(false);
 
   useEffect(() => {
-    let timeOut = 0;
+    let timeOut = setTimeout(() => {}, 0);
     if (map) {
       if (!map.isOpen) {
         timeOut = setTimeout(() => {

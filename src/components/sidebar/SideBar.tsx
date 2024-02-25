@@ -67,7 +67,7 @@ const HtmlHeaderDiv = styled.div`
 
 const HtmlContent = styled.div`
   width: 100%;
-  padding: 0 calc((100% - 315px) * 0.5);
+  padding: 0 calc((100% - 315px) * 0.5) 70px;
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
@@ -76,7 +76,7 @@ const HtmlContent = styled.div`
   align-items: flex-start;
 
   @media screen and (min-width: 635px) {
-    padding: 0;
+    padding: 0 0 70px;
   }
 `;
 

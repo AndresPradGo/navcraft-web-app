@@ -21,6 +21,7 @@ const HtmlContainer = styled.div`
   align-items: center;
   padding: 0;
   min-height: 300px;
+  flex-shrink: 0;
 `;
 
 const SettingsIcon = styled(FaUserGear)`

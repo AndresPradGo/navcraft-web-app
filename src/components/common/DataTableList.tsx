@@ -21,6 +21,7 @@ const HtmlDataList = styled.ul<HtmlTagProps>`
     border-bottom: 1px solid var(--color-grey);
     display: flex;
     justify-content: space-between;
+    flex-wrap: nowrap;
     align-items: center;
 
     & h3 {
@@ -38,7 +39,8 @@ const HtmlDataList = styled.ul<HtmlTagProps>`
 
     & span {
       text-align: right;
-      padding-left: 8px;
+      padding-left: 5px;
+      padding-right: 10px;
       text-wrap: wrap;
       overflow: hidden;
     }

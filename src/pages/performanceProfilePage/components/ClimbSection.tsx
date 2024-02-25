@@ -58,14 +58,13 @@ const ClimbSection = ({ profileId }: Props) => {
   const dataList = [
     {
       key: "take_off_taxi_fuel_gallons",
-      title: "Fuel for engine start, taxi and takeoff [gal]",
+      title: "Fuel for start to takeoff [gal]",
       icon: <FuelIcon />,
       data: `${data?.take_off_taxi_fuel_gallons || "-"}`,
     },
     {
       key: "percent_increase_climb_temperature_c",
-      title:
-        "% of performance loss for every \u00B0C of air temperature above standard",
+      title: "Decrease performance by [% per \u00B0C above standard]:",
       icon: <TemperatureIcon />,
       data: `${data?.percent_increase_climb_temperature_c || "-"}`,
     },
