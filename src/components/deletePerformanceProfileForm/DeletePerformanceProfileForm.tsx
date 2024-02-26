@@ -126,9 +126,13 @@ const DeletePerformanceProfileForm = ({
   redirect,
 }: Props) => {
   const navigate = useNavigate();
-  const mutation = useDeleteProfile(aircraftId, () => {
-    if (!!redirect) navigate(`/aircraft/${aircraftId}`);
-  });
+  const mutation = useDeleteProfile(
+    aircraftId,
+    () => {
+      if (!!redirect) navigate(`/aircraft/${aircraftId}`);
+    },
+    !!redirect
+  );
 
   const handleDelete = () => {
     closeModal();

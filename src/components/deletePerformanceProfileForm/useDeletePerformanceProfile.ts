@@ -9,21 +9,23 @@ interface DeleteProfileContext {
     previousData?: AircraftDataFromAPI
 }
 
-const useDeletePerformanceProfile = (aircraftId: number, onDelete: () => void) => {
+const useDeletePerformanceProfile = (aircraftId: number, onDelete: () => void, redirecting: boolean) => {
     const queryClient = useQueryClient()
     return useMutation<string, APIClientError, number, DeleteProfileContext>({
         mutationFn: profileId => apiClient.delete(`/performance-profile/${profileId}`),
         onMutate: profileId => {
             const previousData = queryClient.getQueryData<AircraftDataFromAPI>(['aircraft', aircraftId])
-            queryClient.setQueryData<AircraftDataFromAPI>(
-                ['aircraft', aircraftId], 
-                currentData => (
-                    currentData ? {
-                        ...currentData, 
-                        profiles: currentData.profiles.filter(item => item.id !== profileId)
-                    } : undefined
+            if (!redirecting) {
+                queryClient.setQueryData<AircraftDataFromAPI>(
+                    ['aircraft', aircraftId], 
+                    currentData => (
+                        currentData ? {
+                            ...currentData, 
+                            profiles: currentData.profiles.filter(item => item.id !== profileId)
+                        } : undefined
+                    )
                 )
-            )
+            }
             return { previousData }
         },
         onSuccess: () => {
