@@ -1,0 +1,22 @@
+FROM node:20.10-bookworm-slim
+
+# Set working directory
+WORKDIR /app
+
+# Instal depnedencies
+COPY package*.json .
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Add environment variables
+ENV SENTRY_AUTH_TOKEN="" \
+    VITE_REACT_APP_NAVCRAFT_API_URL="https://navcraftapi.com/api" \
+    VITE_REACT_APP_NAVBRIX_API_URL="https://navbrixapi.com/api"
+
+# Expose port
+EXPOSE 5173
+
+# run the application
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
