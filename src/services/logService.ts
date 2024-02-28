@@ -2,12 +2,13 @@ import * as Sentry from "@sentry/react";
 
 
 const logService = () => {
+  const sentry_dsn: string | undefined = import.meta.env.VITE_REACT_APP_SENTRY_DSN as string | undefined
     Sentry.init({
-        dsn: "https://e96538024b00b1946c0ccc8ea6fcd60c@o1258167.ingest.sentry.io/4506419214090240",
+        dsn: sentry_dsn,
         integrations: [
           new Sentry.BrowserTracing({
             // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
-            tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
+            tracePropagationTargets: ["localhost", "https://navcraftapp.com", /^https:\/\/navcraftapi\.com\/api/, /^https:\/\/navbrixapi\.com\/api/],
           }),
           new Sentry.Replay(),
         ],

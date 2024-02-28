@@ -7,6 +7,9 @@ export default defineConfig({
   plugins: [react(), sentryVitePlugin({
     org: "andres-pradilla",
     project: "navcraft-web-app"
+  }), sentryVitePlugin({
+    org: "andres-pradilla",
+    project: "navcraft-web-app"
   })],
 
   build: {

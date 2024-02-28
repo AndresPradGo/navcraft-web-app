@@ -12,6 +12,7 @@ COPY . .
 
 # Add environment variables
 ENV SENTRY_AUTH_TOKEN="" \
+    VITE_REACT_APP_SENTRY_DSN="" \
     VITE_REACT_APP_NAVCRAFT_API_URL="https://navcraftapi.com/api" \
     VITE_REACT_APP_NAVBRIX_API_URL="https://navbrixapi.com/api"
 

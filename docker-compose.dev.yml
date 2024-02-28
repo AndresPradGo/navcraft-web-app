@@ -14,3 +14,4 @@ services:
       # ---------- NOTE: Adjust environment variables as desired ----------
       environment:
         SENTRY_AUTH_TOKEN: "" # The app will run without the token, but if you want to track your app performance with sentry, you need to create a sentry project and add your private token here.
+        VITE_REACT_APP_SENTRY_DSN: "" # The app will run without the DSN, but if you want to track your app's performance with sentry, you need to create a sentry project and add your DSN here.
