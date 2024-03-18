@@ -1,4 +1,4 @@
-[![NavCraft API](/public/title.png)](https://navcraftapp.com)
+[![NavCraft APP](/public/title.png)](https://navcraftapp.com)
 
 _<center>_
 
