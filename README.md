@@ -8,7 +8,7 @@ _<center>_
 
 </center>
 
-NavCraft APP is a web application for pilots to craft and showcase complete navigation VFR flight plans. It combines the functionality of [NavCraft API](https://navcraftapi.com/docs) and [NavBrix API](https://navbrixapi.com/docs) with a fast, simple and responsive user interface.
+NavCraft APP is a web application for pilots to craft and showcase complete navigation VFR flight plans. It combines the functionality of [NavCraft API](https://github.com/AndresPradGo/navcraft-api) and [NavBrix API](https://github.com/AndresPradGo/navbrix-api) with a fast, simple and responsive user interface.
 
 # <a id="motivation"></a> 🌟 Motivation
 
