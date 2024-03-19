@@ -12,7 +12,7 @@ NavCraft APP is a web application for pilots to craft and showcase complete navi
 
 # <a id="motivation"></a> 🌟 Motivation
 
-NavCraft APP was developed with one goal:
+NavCraft APP was developed to achieve one goal:
 
 > Help someone with minimum navigation knowledge plan a flight.
 
