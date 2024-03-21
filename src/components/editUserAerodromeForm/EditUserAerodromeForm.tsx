@@ -452,13 +452,13 @@ const EditUserAerodromeForm = ({
         >
           <input
             {...register("code")}
-            id="aerodrome_code"
+            id="user_aerodrome_code"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.code ? <p>{errors.code.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="aerodrome_code">
+          <label htmlFor="user_aerodrome_code">
             <CodeIcon />
             Code
           </label>
@@ -470,13 +470,13 @@ const EditUserAerodromeForm = ({
         >
           <input
             {...register("name")}
-            id="aerodrome_name"
+            id="user_aerodrome_name"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="aerodrome_name">
+          <label htmlFor="user_aerodrome_name">
             <NameIcon />
             Name
           </label>
@@ -488,7 +488,7 @@ const EditUserAerodromeForm = ({
         >
           <input
             {...register("elevation_ft", { valueAsNumber: true })}
-            id="aerodrome_elevation_ft"
+            id="user_aerodrome_elevation_ft"
             type="number"
             autoComplete="off"
           />
@@ -497,7 +497,7 @@ const EditUserAerodromeForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="aerodrome_magnetic_variation">
+          <label htmlFor="user_aerodrome_elevation_ft">
             <TerrainIcon />
             {"Elevation [ft]"}
           </label>
@@ -514,7 +514,7 @@ const EditUserAerodromeForm = ({
               setValueAs: handleMagneticVariationValue,
             })}
             step="any"
-            id="aerodrome_magnetic_variation"
+            id="user_aerodrome_magnetic_variation"
             type="number"
             autoComplete="off"
           />
@@ -523,7 +523,7 @@ const EditUserAerodromeForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="aerodrome_magnetic_variation">
+          <label htmlFor="user_aerodrome_magnetic_variation">
             <CompassIcon />
             Magnetic Variation
           </label>
@@ -540,7 +540,7 @@ const EditUserAerodromeForm = ({
           >
             <HtmlSelectElement
               {...register("lat_direction")}
-              id="aerodrome_lat_direction"
+              id="user_aerodrome_lat_direction"
               autoComplete="off"
               required={true}
             >
@@ -560,7 +560,7 @@ const EditUserAerodromeForm = ({
           >
             <input
               {...register("lat_degrees", { valueAsNumber: true })}
-              id="aerodrome_lat_degrees"
+              id="user_aerodrome_lat_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -570,7 +570,7 @@ const EditUserAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lat_degrees">
+            <label htmlFor="user_aerodrome_lat_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -581,7 +581,7 @@ const EditUserAerodromeForm = ({
           >
             <input
               {...register("lat_minutes", { valueAsNumber: true })}
-              id="aerodrome_lat_minutes"
+              id="user_aerodrome_lat_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -591,7 +591,7 @@ const EditUserAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lat_minutes">
+            <label htmlFor="user_aerodrome_lat_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -602,7 +602,7 @@ const EditUserAerodromeForm = ({
           >
             <input
               {...register("lat_seconds", { valueAsNumber: true })}
-              id="aerodrome_lat_seconds"
+              id="user_aerodrome_lat_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -612,7 +612,7 @@ const EditUserAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lat_seconds">
+            <label htmlFor="user_aerodrome_lat_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>
@@ -629,7 +629,7 @@ const EditUserAerodromeForm = ({
           >
             <HtmlSelectElement
               {...register("lon_direction")}
-              id="aerodrome_lon_direction"
+              id="user_aerodrome_lon_direction"
               autoComplete="off"
               required={true}
             >
@@ -649,7 +649,7 @@ const EditUserAerodromeForm = ({
           >
             <input
               {...register("lon_degrees", { valueAsNumber: true })}
-              id="aerodrome_lon_degrees"
+              id="user_aerodrome_lon_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -659,7 +659,7 @@ const EditUserAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lon_degrees">
+            <label htmlFor="user_aerodrome_lon_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -670,7 +670,7 @@ const EditUserAerodromeForm = ({
           >
             <input
               {...register("lon_minutes", { valueAsNumber: true })}
-              id="aerodrome_lon_minutes"
+              id="user_aerodrome_lon_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -680,7 +680,7 @@ const EditUserAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lon_minutes">
+            <label htmlFor="user_aerodrome_lon_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -691,7 +691,7 @@ const EditUserAerodromeForm = ({
           >
             <input
               {...register("lon_seconds", { valueAsNumber: true })}
-              id="aerodrome_lon_seconds"
+              id="user_aerodrome_lon_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -701,7 +701,7 @@ const EditUserAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lon_seconds">
+            <label htmlFor="user_aerodrome_lon_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>

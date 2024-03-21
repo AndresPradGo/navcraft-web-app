@@ -547,8 +547,12 @@ const EditOfficialAerodromeForm = ({
         <CloseIcon onClick={handleCancel} />
       </h1>
       <HtmlInputContainer>
-        <HtmlCheckbox htmlFor="hide-waypoint">
-          <input {...register("hide")} type="checkbox" id="hide-waypoint" />
+        <HtmlCheckbox htmlFor="official_aerodrome_hide-waypoint">
+          <input
+            {...register("hide")}
+            type="checkbox"
+            id="official_aerodrome_hide-waypoint"
+          />
           <span>
             <HideIcon />
             Hide Aerodrome from Users
@@ -561,13 +565,13 @@ const EditOfficialAerodromeForm = ({
         >
           <input
             {...register("code")}
-            id="aerodrome_code"
+            id="official_aerodrome_code"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.code ? <p>{errors.code.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="aerodrome_code">
+          <label htmlFor="official_aerodrome_code">
             <CodeIcon />
             Code
           </label>
@@ -579,13 +583,13 @@ const EditOfficialAerodromeForm = ({
         >
           <input
             {...register("name")}
-            id="aerodrome_name"
+            id="official_aerodrome_name"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="aerodrome_name">
+          <label htmlFor="official_aerodrome_name">
             <NameIcon />
             Name
           </label>
@@ -597,7 +601,7 @@ const EditOfficialAerodromeForm = ({
         >
           <input
             {...register("elevation_ft", { valueAsNumber: true })}
-            id="aerodrome_elevation_ft"
+            id="official_aerodrome_elevation_ft"
             type="number"
             autoComplete="off"
           />
@@ -606,7 +610,7 @@ const EditOfficialAerodromeForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="aerodrome_magnetic_variation">
+          <label htmlFor="official_aerodrome_elevation_ft">
             <TerrainIcon />
             {"Elevation [ft]"}
           </label>
@@ -623,7 +627,7 @@ const EditOfficialAerodromeForm = ({
               setValueAs: handleMagneticVariationValue,
             })}
             step="any"
-            id="aerodrome_magnetic_variation"
+            id="official_aerodrome_magnetic_variation"
             type="number"
             autoComplete="off"
           />
@@ -632,7 +636,7 @@ const EditOfficialAerodromeForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="aerodrome_magnetic_variation">
+          <label htmlFor="official_aerodrome_magnetic_variation">
             <CompassIcon />
             Magnetic Variation
           </label>
@@ -662,16 +666,28 @@ const EditOfficialAerodromeForm = ({
             <WeatherIcon />
             Weather
           </h2>
-          <HtmlGroupCheckbox htmlFor="taf">
-            <input {...register("has_taf")} type="checkbox" id="taf" />
+          <HtmlGroupCheckbox htmlFor="official_aorodrome_taf">
+            <input
+              {...register("has_taf")}
+              type="checkbox"
+              id="official_aerodrome_taf"
+            />
             <span>Has TAF</span>
           </HtmlGroupCheckbox>
-          <HtmlGroupCheckbox htmlFor="metar">
-            <input {...register("has_metar")} type="checkbox" id="metar" />
+          <HtmlGroupCheckbox htmlFor="official_aorodrome_metar">
+            <input
+              {...register("has_metar")}
+              type="checkbox"
+              id="official_aerodrome_metar"
+            />
             <span>Has METAR</span>
           </HtmlGroupCheckbox>
-          <HtmlGroupCheckbox htmlFor="fds">
-            <input {...register("has_fds")} type="checkbox" id="fds" />
+          <HtmlGroupCheckbox htmlFor="official_aorodrome_fds">
+            <input
+              {...register("has_fds")}
+              type="checkbox"
+              id="official_aerodrome_fds"
+            />
             <span>Has FDs</span>
           </HtmlGroupCheckbox>
         </HtmlInputGroup>
@@ -687,7 +703,7 @@ const EditOfficialAerodromeForm = ({
           >
             <HtmlSelectElement
               {...register("lat_direction")}
-              id="aerodrome_lat_direction"
+              id="official_aerodrome_lat_direction"
               autoComplete="off"
               required={true}
             >
@@ -707,7 +723,7 @@ const EditOfficialAerodromeForm = ({
           >
             <input
               {...register("lat_degrees", { valueAsNumber: true })}
-              id="aerodrome_lat_degrees"
+              id="official_aerodrome_lat_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -717,7 +733,7 @@ const EditOfficialAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lat_degrees">
+            <label htmlFor="official_aerodrome_lat_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -728,7 +744,7 @@ const EditOfficialAerodromeForm = ({
           >
             <input
               {...register("lat_minutes", { valueAsNumber: true })}
-              id="aerodrome_lat_minutes"
+              id="official_aerodrome_lat_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -738,7 +754,7 @@ const EditOfficialAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lat_minutes">
+            <label htmlFor="official_aerodrome_lat_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -749,7 +765,7 @@ const EditOfficialAerodromeForm = ({
           >
             <input
               {...register("lat_seconds", { valueAsNumber: true })}
-              id="aerodrome_lat_seconds"
+              id="official_aerodrome_lat_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -759,7 +775,7 @@ const EditOfficialAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lat_seconds">
+            <label htmlFor="official_aerodrome_lat_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>
@@ -776,7 +792,7 @@ const EditOfficialAerodromeForm = ({
           >
             <HtmlSelectElement
               {...register("lon_direction")}
-              id="aerodrome_lon_direction"
+              id="official_aerodrome_lon_direction"
               autoComplete="off"
               required={true}
             >
@@ -796,7 +812,7 @@ const EditOfficialAerodromeForm = ({
           >
             <input
               {...register("lon_degrees", { valueAsNumber: true })}
-              id="aerodrome_lon_degrees"
+              id="official_aerodrome_lon_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -806,7 +822,7 @@ const EditOfficialAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lon_degrees">
+            <label htmlFor="official_aerodrome_lon_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -817,7 +833,7 @@ const EditOfficialAerodromeForm = ({
           >
             <input
               {...register("lon_minutes", { valueAsNumber: true })}
-              id="aerodrome_lon_minutes"
+              id="official_aerodrome_lon_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -827,7 +843,7 @@ const EditOfficialAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lon_minutes">
+            <label htmlFor="official_aerodrome_lon_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -838,7 +854,7 @@ const EditOfficialAerodromeForm = ({
           >
             <input
               {...register("lon_seconds", { valueAsNumber: true })}
-              id="aerodrome_lon_seconds"
+              id="official_aerodrome_lon_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -848,7 +864,7 @@ const EditOfficialAerodromeForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="aerodrome_lon_seconds">
+            <label htmlFor="official_aerodrome_lon_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>

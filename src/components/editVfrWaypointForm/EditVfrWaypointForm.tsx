@@ -503,13 +503,13 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
         >
           <input
             {...register("code")}
-            id="waypoint_code"
+            id="vfr_waypoint_code"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.code ? <p>{errors.code.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="waypoint_code">
+          <label htmlFor="vfr_waypoint_code">
             <CodeIcon />
             Code
           </label>
@@ -521,13 +521,13 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
         >
           <input
             {...register("name")}
-            id="waypoint_name"
+            id="vfr_waypoint_name"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="waypoint_name">
+          <label htmlFor="vfr_waypoint_name">
             <NameIcon />
             Name
           </label>
@@ -543,7 +543,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             {...register("magnetic_variation", {
               setValueAs: handleMagneticVariationValue,
             })}
-            id="waypoint_magnetic_variation"
+            id="vfr_waypoint_magnetic_variation"
             step="any"
             type="number"
             autoComplete="off"
@@ -553,7 +553,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="waypoint_magnetic_variation">
+          <label htmlFor="vfr_waypoint_magnetic_variation">
             <CompassIcon />
             Magnetic Variation
           </label>
@@ -570,7 +570,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <HtmlSelectElement
               {...register("lat_direction")}
-              id="waypoint_lat_direction"
+              id="vfr_waypoint_lat_direction"
               autoComplete="off"
               required={true}
             >
@@ -590,7 +590,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lat_degrees", { valueAsNumber: true })}
-              id="waypoint_lat_degrees"
+              id="vfr_waypoint_lat_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -600,7 +600,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_degrees">
+            <label htmlFor="vfr_waypoint_lat_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -611,7 +611,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lat_minutes", { valueAsNumber: true })}
-              id="waypoint_lat_minutes"
+              id="vfr_waypoint_lat_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -621,7 +621,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_minutes">
+            <label htmlFor="vfr_waypoint_lat_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -632,7 +632,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lat_seconds", { valueAsNumber: true })}
-              id="waypoint_lat_seconds"
+              id="vfr_waypoint_lat_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -642,7 +642,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_seconds">
+            <label htmlFor="vfr_waypoint_lat_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>
@@ -659,7 +659,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <HtmlSelectElement
               {...register("lon_direction")}
-              id="waypoint_lon_direction"
+              id="vfr_waypoint_lon_direction"
               autoComplete="off"
               required={true}
             >
@@ -679,7 +679,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lon_degrees", { valueAsNumber: true })}
-              id="waypoint_lon_degrees"
+              id="vfr_waypoint_lon_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -689,7 +689,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_degrees">
+            <label htmlFor="vfr_waypoint_lon_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -700,7 +700,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lon_minutes", { valueAsNumber: true })}
-              id="waypoint_lon_minutes"
+              id="vfr_waypoint_lon_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -710,7 +710,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_minutes">
+            <label htmlFor="vfr_waypoint_lon_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -721,7 +721,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
           >
             <input
               {...register("lon_seconds", { valueAsNumber: true })}
-              id="waypoint_lon_seconds"
+              id="vfr_waypoint_lon_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -731,7 +731,7 @@ const EditVfrWaypointForm = ({ waypointData, closeModal, isOpen }: Props) => {
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_seconds">
+            <label htmlFor="vfr_waypoint_lon_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>

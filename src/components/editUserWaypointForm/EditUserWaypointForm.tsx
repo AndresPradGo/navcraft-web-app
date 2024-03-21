@@ -451,13 +451,13 @@ const EditUserWaypointForm = ({
         >
           <input
             {...register("code")}
-            id="waypoint_code"
+            id="user_waypoint_code"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.code ? <p>{errors.code.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="waypoint_code">
+          <label htmlFor="user_waypoint_code">
             <CodeIcon />
             Code
           </label>
@@ -469,13 +469,13 @@ const EditUserWaypointForm = ({
         >
           <input
             {...register("name")}
-            id="waypoint_name"
+            id="user_waypoint_name"
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor="waypoint_name">
+          <label htmlFor="user_waypoint_name">
             <NameIcon />
             Name
           </label>
@@ -492,7 +492,7 @@ const EditUserWaypointForm = ({
               setValueAs: handleMagneticVariationValue,
             })}
             step="any"
-            id="waypoint_magnetic_variation"
+            id="user_waypoint_magnetic_variation"
             type="number"
             autoComplete="off"
           />
@@ -501,7 +501,7 @@ const EditUserWaypointForm = ({
           ) : (
             <p>&nbsp;</p>
           )}
-          <label htmlFor="waypoint_magnetic_variation">
+          <label htmlFor="user_waypoint_magnetic_variation">
             <CompassIcon />
             Magnetic Variation
           </label>
@@ -518,7 +518,7 @@ const EditUserWaypointForm = ({
           >
             <HtmlSelectElement
               {...register("lat_direction")}
-              id="waypoint_lat_direction"
+              id="user_waypoint_lat_direction"
               autoComplete="off"
               required={true}
             >
@@ -538,7 +538,7 @@ const EditUserWaypointForm = ({
           >
             <input
               {...register("lat_degrees", { valueAsNumber: true })}
-              id="waypoint_lat_degrees"
+              id="user_waypoint_lat_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -548,7 +548,7 @@ const EditUserWaypointForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_degrees">
+            <label htmlFor="user_waypoint_lat_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -559,7 +559,7 @@ const EditUserWaypointForm = ({
           >
             <input
               {...register("lat_minutes", { valueAsNumber: true })}
-              id="waypoint_lat_minutes"
+              id="user_waypoint_lat_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -569,7 +569,7 @@ const EditUserWaypointForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_minutes">
+            <label htmlFor="user_waypoint_lat_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -580,7 +580,7 @@ const EditUserWaypointForm = ({
           >
             <input
               {...register("lat_seconds", { valueAsNumber: true })}
-              id="waypoint_lat_seconds"
+              id="user_waypoint_lat_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -590,7 +590,7 @@ const EditUserWaypointForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lat_seconds">
+            <label htmlFor="user_waypoint_lat_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>
@@ -607,7 +607,7 @@ const EditUserWaypointForm = ({
           >
             <HtmlSelectElement
               {...register("lon_direction")}
-              id="waypoint_lon_direction"
+              id="user_waypoint_lon_direction"
               autoComplete="off"
               required={true}
             >
@@ -627,7 +627,7 @@ const EditUserWaypointForm = ({
           >
             <input
               {...register("lon_degrees", { valueAsNumber: true })}
-              id="waypoint_lon_degrees"
+              id="user_waypoint_lon_degrees"
               type="number"
               autoComplete="off"
               required={true}
@@ -637,7 +637,7 @@ const EditUserWaypointForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_degrees">
+            <label htmlFor="user_waypoint_lon_degrees">
               <span>Degrees&nbsp;&deg;</span>
             </label>
           </HtmlInput>
@@ -648,7 +648,7 @@ const EditUserWaypointForm = ({
           >
             <input
               {...register("lon_minutes", { valueAsNumber: true })}
-              id="waypoint_lon_minutes"
+              id="user_waypoint_lon_minutes"
               type="number"
               autoComplete="off"
               required={true}
@@ -658,7 +658,7 @@ const EditUserWaypointForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_minutes">
+            <label htmlFor="user_waypoint_lon_minutes">
               <span>Minutes&nbsp;'</span>
             </label>
           </HtmlInput>
@@ -669,7 +669,7 @@ const EditUserWaypointForm = ({
           >
             <input
               {...register("lon_seconds", { valueAsNumber: true })}
-              id="waypoint_lon_seconds"
+              id="user_waypoint_lon_seconds"
               type="number"
               autoComplete="off"
               required={true}
@@ -679,7 +679,7 @@ const EditUserWaypointForm = ({
             ) : (
               <p>&nbsp;</p>
             )}
-            <label htmlFor="waypoint_lon_seconds">
+            <label htmlFor="user_waypoint_lon_seconds">
               <span>Seconds&nbsp;"</span>
             </label>
           </HtmlInput>

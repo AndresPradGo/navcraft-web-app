@@ -514,7 +514,7 @@ const EditDepartureArrivalForm = ({
                   : []
               }
               setValue={(value: string) => setValue("aerodrome", value)}
-              name="editDepartureArrival-aerodrome"
+              name={`edit-${isDeparture ? "departure" : "arrival"}-aerodrome`}
               formIsOpen={isOpen}
               resetValue={currentData.aerodrome}
             >
@@ -542,7 +542,9 @@ const EditDepartureArrivalForm = ({
               >
                 <input
                   {...register("wind_magnitude_knot", { valueAsNumber: true })}
-                  id="editDepartureArrival-wind_magnitude_knot"
+                  id={`edit-${
+                    isDeparture ? "departure" : "arrival"
+                  }-wind_magnitude_knot`}
                   type="number"
                   autoComplete="off"
                   required={true}
@@ -552,7 +554,11 @@ const EditDepartureArrivalForm = ({
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor="editDepartureArrival-wind_magnitude_knot">
+                <label
+                  htmlFor={`edit-${
+                    isDeparture ? "departure" : "arrival"
+                  }-wind_magnitude_knot`}
+                >
                   <WindMagnitudeIcon />
                   {"Wind Magnitude [Kts]"}
                 </label>
@@ -568,7 +574,9 @@ const EditDepartureArrivalForm = ({
                   {...register("wind_direction", {
                     setValueAs: handleWindDirectionValue,
                   })}
-                  id="editDepartureArrival-wind_direction"
+                  id={`edit-${
+                    isDeparture ? "departure" : "arrival"
+                  }-wind_direction`}
                   type="number"
                   autoComplete="off"
                   required={false}
@@ -578,7 +586,11 @@ const EditDepartureArrivalForm = ({
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor="editDepartureArrival-wind_direction">
+                <label
+                  htmlFor={`edit-${
+                    isDeparture ? "departure" : "arrival"
+                  }-wind_direction`}
+                >
                   <WindDirectionIcon />
                   {"Wind Direction [\u00B0True]"}
                 </label>
@@ -592,7 +604,9 @@ const EditDepartureArrivalForm = ({
               >
                 <input
                   {...register("temperature_c", { valueAsNumber: true })}
-                  id="editDepartureArrival-temperature_c"
+                  id={`edit-${
+                    isDeparture ? "departure" : "arrival"
+                  }-temperature_c`}
                   type="number"
                   autoComplete="off"
                   required={true}
@@ -602,7 +616,11 @@ const EditDepartureArrivalForm = ({
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor="editDepartureArrival-temperature_c">
+                <label
+                  htmlFor={`edit-${
+                    isDeparture ? "departure" : "arrival"
+                  }-temperature_c`}
+                >
                   <TemperatureIcon />
                   {"Temperature [\u00B0C]"}
                 </label>
@@ -616,7 +634,9 @@ const EditDepartureArrivalForm = ({
               >
                 <input
                   {...register("altimeter_inhg", { valueAsNumber: true })}
-                  id="editDepartureArrival-altimeter_inhg"
+                  id={`edit-${
+                    isDeparture ? "departure" : "arrival"
+                  }-altimeter_inhg`}
                   type="number"
                   autoComplete="off"
                   required={true}
@@ -627,7 +647,11 @@ const EditDepartureArrivalForm = ({
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor="editDepartureArrival-altimeter_inhg">
+                <label
+                  htmlFor={`edit-${
+                    isDeparture ? "departure" : "arrival"
+                  }-altimeter_inhg`}
+                >
                   <AltimeterIcon />
                   {"Altimeter [in Hg]"}
                 </label>
