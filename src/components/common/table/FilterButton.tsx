@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
-import styled from "styled-components";
-import { VscFilter, VscFilterFilled } from "react-icons/vsc";
-import { TbFilterOff } from "react-icons/tb";
+import { Dispatch, SetStateAction } from 'react';
+import styled from 'styled-components';
+import { VscFilter, VscFilterFilled } from 'react-icons/vsc';
+import { TbFilterOff } from 'react-icons/tb';
 
-import Button from "../button/Button";
-import { usePopperButton } from "../button";
-import { FilterAction } from "./filtersReducer";
+import Button from '../button/Button';
+import { usePopperButton } from '../button';
+import { FilterAction } from './filtersReducer';
 
 interface HtmlFormProps {
   ref: Dispatch<SetStateAction<HTMLElement | null>>;
@@ -14,15 +14,15 @@ interface HtmlFormProps {
 
 const HtmlForm = styled.ul<HtmlFormProps>`
   transition: all 0.2s ease-out;
-  max-height: ${(props) => (props.$expanded ? "300px" : "0")};
+  max-height: ${(props) => (props.$expanded ? '300px' : '0')};
   width: 280px;
   overflow-x: hidden;
-  overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
+  overflow-y: ${(props) => (props.$expanded ? 'auto' : 'hidden')};
   z-index: 10;
   margin: 0;
-  padding: ${(props) => (props.$expanded ? "5px 0" : "0")};
+  padding: ${(props) => (props.$expanded ? '5px 0' : '0')};
   border: ${(props) =>
-    props.$expanded ? "1px groove var(--color-grey-bright)" : "none"};
+    props.$expanded ? '1px groove var(--color-grey-bright)' : 'none'};
   border-radius: 5px;
   background-color: var(--color-primary-light);
 
@@ -69,7 +69,7 @@ const HtmlCheckbox = styled.label`
     background-color: var(--color-primary);
   }
 
-  & input[type="checkbox"] {
+  & input[type='checkbox'] {
     cursor: pointer;
     margin: 0;
     min-height: 15px;
@@ -116,8 +116,8 @@ const FilterButton = ({ text, filters, appliedFilters, dispatch }: Props) => {
   const popperTools = usePopperButton();
 
   const handleSelectItem = (index: number, remove: boolean) => {
-    if (remove) dispatch({ type: "REMOVE", index: index });
-    else dispatch({ type: "ADD", index: index });
+    if (remove) dispatch({ type: 'REMOVE', index: index });
+    else dispatch({ type: 'ADD', index: index });
   };
 
   return (
@@ -150,7 +150,7 @@ const FilterButton = ({ text, filters, appliedFilters, dispatch }: Props) => {
       >
         <button
           onClick={() => {
-            dispatch({ type: "CLEAR" });
+            dispatch({ type: 'CLEAR' });
             popperTools.closeExpandible();
           }}
         >

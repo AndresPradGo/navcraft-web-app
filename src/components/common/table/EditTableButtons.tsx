@@ -1,8 +1,8 @@
-import { BiSolidEditAlt } from "react-icons/bi";
-import { RiDeleteBinLine, RiArrowRightLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { BiSolidEditAlt } from 'react-icons/bi';
+import { RiDeleteBinLine, RiArrowRightLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import Button from "../button/Button";
+import Button from '../button/Button';
 
 const HtmlButtonGroup = styled.div`
   display: flex;
@@ -32,21 +32,21 @@ const OpenIcon = styled(RiArrowRightLine)`
 
 export type EditButtonsPropsTypeUnion =
   | (() => void)
-  | ("open" | "edit" | "delete" | undefined);
+  | ('open' | 'edit' | 'delete' | undefined);
 export interface Props {
   handleEdit: string | (() => void);
   handleDelete: () => void;
-  permissions?: "open" | "edit" | "delete" | "open-delete" | "edit-delete";
+  permissions?: 'open' | 'edit' | 'delete' | 'open-delete' | 'edit-delete';
 }
 
 const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
   if (!permissions) return <HtmlButtonGroup />;
-  if (permissions === "edit-delete")
+  if (permissions === 'edit-delete')
     return (
       <HtmlButtonGroup>
         <Button
-          href={typeof handleEdit === "string" ? handleEdit : undefined}
-          handleClick={typeof handleEdit !== "string" ? handleEdit : undefined}
+          href={typeof handleEdit === 'string' ? handleEdit : undefined}
+          handleClick={typeof handleEdit !== 'string' ? handleEdit : undefined}
           height="24px"
           borderRadious={40}
         >
@@ -68,12 +68,12 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
         </Button>
       </HtmlButtonGroup>
     );
-  if (permissions === "open-delete")
+  if (permissions === 'open-delete')
     return (
       <HtmlButtonGroup>
         <Button
-          href={typeof handleEdit === "string" ? handleEdit : undefined}
-          handleClick={typeof handleEdit !== "string" ? handleEdit : undefined}
+          href={typeof handleEdit === 'string' ? handleEdit : undefined}
+          handleClick={typeof handleEdit !== 'string' ? handleEdit : undefined}
           height="24px"
           borderRadious={40}
         >
@@ -95,7 +95,7 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
         </Button>
       </HtmlButtonGroup>
     );
-  if (permissions === "delete")
+  if (permissions === 'delete')
     return (
       <HtmlButtonGroup>
         <Button
@@ -116,13 +116,13 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
   return (
     <HtmlButtonGroup>
       <Button
-        href={typeof handleEdit === "string" ? handleEdit : undefined}
-        handleClick={typeof handleEdit !== "string" ? handleEdit : undefined}
+        href={typeof handleEdit === 'string' ? handleEdit : undefined}
+        handleClick={typeof handleEdit !== 'string' ? handleEdit : undefined}
         height="24px"
         borderRadious={40}
         margin="10px"
       >
-        {permissions === "edit" ? (
+        {permissions === 'edit' ? (
           <>
             EDIT <EditIcon />
           </>

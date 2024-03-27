@@ -1,10 +1,10 @@
-import { IoWarningOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { IoWarningOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import Button from "../../../components/common/button";
-import useDeleteArrangementComponent from "../hooks/useDeleteArrangementComponent";
+import Button from '../../../components/common/button';
+import useDeleteArrangementComponent from '../hooks/useDeleteArrangementComponent';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -111,7 +111,7 @@ const CloseIcon = styled(LiaTimesSolid)`
 
 interface Props {
   closeModal: () => void;
-  type: "Baggage Compartment" | "Fuel Tank" | "Seat Row";
+  type: 'Baggage Compartment' | 'Fuel Tank' | 'Seat Row';
   name: string;
   id: number;
   profileId: number;

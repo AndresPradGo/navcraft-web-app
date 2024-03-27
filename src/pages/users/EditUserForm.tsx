@@ -1,11 +1,11 @@
-import { FormEvent, useState, useEffect } from "react";
-import { AiOutlineSave } from "react-icons/ai";
-import { FaUserGear, FaUserCheck, FaUserShield } from "react-icons/fa6";
-import { LiaTimesSolid } from "react-icons/lia";
-import { styled } from "styled-components";
+import { FormEvent, useState, useEffect } from 'react';
+import { AiOutlineSave } from 'react-icons/ai';
+import { FaUserGear, FaUserCheck, FaUserShield } from 'react-icons/fa6';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { styled } from 'styled-components';
 
-import Button from "../../components/common/button";
-import useEditUser from "./useEditUser";
+import Button from '../../components/common/button';
+import useEditUser from './useEditUser';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -69,7 +69,7 @@ const HtmlCheckbox = styled.label`
     background-color: var(--color-primary);
   }
 
-  & input[type="checkbox"] {
+  & input[type='checkbox'] {
     cursor: pointer;
     margin: 0;
     min-height: 20px;
@@ -155,10 +155,10 @@ const EditUserForm = ({ userData, closeModal, isOpen }: Props) => {
     if (isOpen) setUserState(userData);
   }, [isOpen]);
 
-  const handleSelectItem = (box: "active" | "admin") => {
+  const handleSelectItem = (box: 'active' | 'admin') => {
     const newState = { ...userState };
-    if (box === "active") newState.is_active = !newState.is_active;
-    else if (box === "admin") newState.is_admin = !newState.is_admin;
+    if (box === 'active') newState.is_active = !newState.is_active;
+    else if (box === 'admin') newState.is_admin = !newState.is_admin;
 
     setUserState(newState);
   };
@@ -187,7 +187,7 @@ const EditUserForm = ({ userData, closeModal, isOpen }: Props) => {
           <input
             type="checkbox"
             id="active-user"
-            onChange={() => handleSelectItem("active")}
+            onChange={() => handleSelectItem('active')}
             checked={userState.is_active}
           />
           <span>
@@ -199,7 +199,7 @@ const EditUserForm = ({ userData, closeModal, isOpen }: Props) => {
           <input
             type="checkbox"
             id="admin-user"
-            onChange={() => handleSelectItem("admin")}
+            onChange={() => handleSelectItem('admin')}
             checked={userState.is_admin}
           />
           <span>

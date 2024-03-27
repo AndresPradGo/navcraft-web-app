@@ -1,2 +1,2 @@
-import DeleteAircraftModelForm from './DeleteAircraftModelForm'
-export default DeleteAircraftModelForm
+import DeleteAircraftModelForm from './DeleteAircraftModelForm';
+export default DeleteAircraftModelForm;

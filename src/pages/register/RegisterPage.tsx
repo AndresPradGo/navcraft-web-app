@@ -1,18 +1,18 @@
-import { Link } from "react-router-dom";
-import { useForm, FieldValues } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { TfiEmail } from "react-icons/tfi";
-import { TbLock, TbLockCheck } from "react-icons/tb";
-import { AiOutlineForm } from "react-icons/ai";
-import { FaUser } from "react-icons/fa6";
-import { z } from "zod";
-import { styled } from "styled-components";
+import { Link } from 'react-router-dom';
+import { useForm, FieldValues } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { TfiEmail } from 'react-icons/tfi';
+import { TbLock, TbLockCheck } from 'react-icons/tb';
+import { AiOutlineForm } from 'react-icons/ai';
+import { FaUser } from 'react-icons/fa6';
+import { z } from 'zod';
+import { styled } from 'styled-components';
 
-import Button from "../../components/common/button/index";
-import useRegister from "./useRegister";
-import useSetTitle from "../../hooks/useSetTitle";
-import Loader from "../../components/Loader";
+import Button from '../../components/common/button/index';
+import useRegister from './useRegister';
+import useSetTitle from '../../hooks/useSetTitle';
+import Loader from '../../components/Loader';
 
 const HtmlPageContainer = styled.div`
   position: relative;
@@ -47,7 +47,7 @@ const HtmlFormContainer = styled.div`
   z-index: 5;
 
   &::before {
-    content: " ";
+    content: ' ';
     position: absolute;
     bottom: 50%;
     right: 50%;
@@ -68,7 +68,7 @@ const HtmlFormContainer = styled.div`
   }
 
   &::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     bottom: 50%;
     right: 50%;
@@ -100,7 +100,7 @@ const HtmlAnimationSpan = styled.span`
   inset: 0;
 
   &::before {
-    content: " ";
+    content: ' ';
     position: absolute;
     bottom: 50%;
     right: 50%;
@@ -122,7 +122,7 @@ const HtmlAnimationSpan = styled.span`
   }
 
   &::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     bottom: 50%;
     right: 50%;
@@ -289,26 +289,26 @@ const HtmlRegisterLink = styled(Link)`
 
 const passwordSchema = z
   .string()
-  .min(8, { message: "Must be at least 8 characters long" })
-  .max(25, { message: "Must be at most 25 characters long" })
+  .min(8, { message: 'Must be at least 8 characters long' })
+  .max(25, { message: 'Must be at most 25 characters long' })
   .refine((password) => !/\s/.test(password), {
-    message: "Cannot contain white spaces",
+    message: 'Cannot contain white spaces',
   })
   .refine((password) => /[0-9]/.test(password), {
-    message: "Must contain at least one number",
+    message: 'Must contain at least one number',
   })
   .refine((password) => /[a-z]/.test(password), {
-    message: "Must contain at least one lowercase letter",
+    message: 'Must contain at least one lowercase letter',
   })
   .refine((password) => /[A-Z]/.test(password), {
-    message: "Must contain at least one uppercase letter",
+    message: 'Must contain at least one uppercase letter',
   });
 
 const schema = z.object({
   name: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(255, { message: "Must be at most 255 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(255, { message: 'Must be at most 255 characters long' })
     .regex(/^[a-zA-Z0-9\s']+$/, {
       message: "Only letters, numbers, spaces and symbol '",
     }),
@@ -328,16 +328,16 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
   const registerMutation = useRegister(() => {
-    navigate("/profile");
+    navigate('/profile');
   });
 
-  useSetTitle("Register");
+  useSetTitle('Register');
 
   const submitHandler = (data: FieldValues) => {
     if (data.confirmPassword !== data.password)
-      setError("confirmPassword", {
-        type: "manual",
-        message: "Password confirmation does not match",
+      setError('confirmPassword', {
+        type: 'manual',
+        message: 'Password confirmation does not match',
       });
     else
       registerMutation.mutate({
@@ -358,7 +358,7 @@ const RegisterPage = () => {
               <h1>Register</h1>
               <HtmlInputContainer>
                 <HtmlInputField
-                  {...register("name")}
+                  {...register('name')}
                   id="name"
                   type="text"
                   required="required"
@@ -372,7 +372,7 @@ const RegisterPage = () => {
               </HtmlInputContainer>
               <HtmlInputContainer>
                 <HtmlInputField
-                  {...register("email")}
+                  {...register('email')}
                   id="email"
                   type="text"
                   required="required"
@@ -386,7 +386,7 @@ const RegisterPage = () => {
               </HtmlInputContainer>
               <HtmlInputContainer>
                 <HtmlInputField
-                  {...register("password")}
+                  {...register('password')}
                   id="password"
                   type="password"
                   required="required"
@@ -400,7 +400,7 @@ const RegisterPage = () => {
               </HtmlInputContainer>
               <HtmlInputContainer>
                 <HtmlInputField
-                  {...register("confirmPassword")}
+                  {...register('confirmPassword')}
                   id="confirmPassword"
                   type="password"
                   required="required"

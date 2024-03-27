@@ -1,12 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import useSideBar from "../../sidebar/useSideBar";
-import { ReactNode } from "react";
+import useSideBar from '../../sidebar/useSideBar';
+import { ReactNode } from 'react';
 import EditTableButtons, {
   Props as EditButtonsProps,
   EditButtonsPropsTypeUnion,
-} from "./EditTableButtons";
-import Loader from "../../Loader";
+} from './EditTableButtons';
+import Loader from '../../Loader';
 
 interface HtmlTagProps {
   $sideBarIsExpanded: boolean;
@@ -36,20 +36,20 @@ const HtmlTableHead = styled.thead<HtmlTagProps>`
 
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
     position: ${(props) =>
-      props.$sideBarIsExpanded ? "absolute" : "relative"};
+      props.$sideBarIsExpanded ? 'absolute' : 'relative'};
     clip: ${(props) =>
-      props.$sideBarIsExpanded ? "rect(1px 1px 1px 1px)" : "auto"};
-    height: ${(props) => (props.$sideBarIsExpanded ? "1px" : "auto")};
-    width: ${(props) => (props.$sideBarIsExpanded ? "1px" : "auto")};
+      props.$sideBarIsExpanded ? 'rect(1px 1px 1px 1px)' : 'auto'};
+    height: ${(props) => (props.$sideBarIsExpanded ? '1px' : 'auto')};
+    width: ${(props) => (props.$sideBarIsExpanded ? '1px' : 'auto')};
 
     & tr th:first-of-type {
       border-radius: ${(props) =>
-        props.$sideBarIsExpanded ? "0" : "3px 0 0 3px"};
+        props.$sideBarIsExpanded ? '0' : '3px 0 0 3px'};
     }
 
     & tr th:last-of-type {
       border-radius: ${(props) =>
-        props.$sideBarIsExpanded ? "0" : "0 3px 3px 0"};
+        props.$sideBarIsExpanded ? '0' : '0 3px 3px 0'};
     }
   }
 
@@ -77,16 +77,16 @@ const HtmlTableBody = styled.tbody<HtmlTagProps>`
 
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
     display: ${(props) =>
-      props.$sideBarIsExpanded ? "block" : "table-row-group"};
+      props.$sideBarIsExpanded ? 'block' : 'table-row-group'};
 
     & tr th:first-of-type {
       border-radius: ${(props) =>
-        props.$sideBarIsExpanded ? "0" : "3px 0 0 3px"};
+        props.$sideBarIsExpanded ? '0' : '3px 0 0 3px'};
     }
 
     & tr td:last-of-type {
       border-radius: ${(props) =>
-        props.$sideBarIsExpanded ? "0" : "0 3px 3px 0"};
+        props.$sideBarIsExpanded ? '0' : '0 3px 3px 0'};
     }
   }
 
@@ -107,8 +107,8 @@ const HtmlTableRow = styled.tr<HtmlTagProps>`
   display: flex;
   box-shadow: ${(props) =>
     props.$isResult
-      ? "0 0 5px 2px var(--color-shadow)"
-      : "0 0 0 0 transparent"};
+      ? '0 0 5px 2px var(--color-shadow)'
+      : '0 0 0 0 transparent'};
   flex-direction: column;
   align-items: center;
   padding: 0;
@@ -117,21 +117,21 @@ const HtmlTableRow = styled.tr<HtmlTagProps>`
   white-space: normal;
   border-radius: 3px;
 
-  font-weight: ${(props) => (props.$isResult ? "bold" : "normal")};
-  font-style: ${(props) => (props.$isResult ? "italic" : "normal")};
+  font-weight: ${(props) => (props.$isResult ? 'bold' : 'normal')};
+  font-style: ${(props) => (props.$isResult ? 'italic' : 'normal')};
   overflow: hidden;
   perspective: 1px;
 
   background-color: ${(props) =>
-    props.$isResult ? "var(--color-primary)" : "var(--color-primary-bright)"};
+    props.$isResult ? 'var(--color-primary)' : 'var(--color-primary-bright)'};
   overflow: hidden;
   perspective: 1px;
 
   margin-bottom: 24px;
 
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
-    display: ${(props) => (props.$sideBarIsExpanded ? "flex" : "table-row")};
-    padding-bottom: ${(props) => (props.$sideBarIsExpanded ? "20" : "0")}px;
+    display: ${(props) => (props.$sideBarIsExpanded ? 'flex' : 'table-row')};
+    padding-bottom: ${(props) => (props.$sideBarIsExpanded ? '20' : '0')}px;
   }
 
   @media screen and (min-width: ${(props) => props.$breakingPoint + 315}px) {
@@ -159,8 +159,8 @@ const HtmlTableHeaderCell = styled.th<HtmlTagProps>`
   color: var(--color-grey-dark);
 
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
-    display: ${(props) => (props.$sideBarIsExpanded ? "block" : "table-cell")};
-    padding: ${(props) => (props.$sideBarIsExpanded ? "8px" : "16px 10px")};
+    display: ${(props) => (props.$sideBarIsExpanded ? 'block' : 'table-cell')};
+    padding: ${(props) => (props.$sideBarIsExpanded ? '8px' : '16px 10px')};
   }
 
   @media screen and (min-width: ${(props) => props.$breakingPoint + 315}px) {
@@ -172,10 +172,10 @@ const HtmlTableHeaderCell = styled.th<HtmlTagProps>`
 const HtmlTableBodyHeaderCell = styled(HtmlTableHeaderCell)`
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
     background-color: ${(props) =>
-      props.$sideBarIsExpanded ? "var(--color-highlight)" : "transparent"};
+      props.$sideBarIsExpanded ? 'var(--color-highlight)' : 'transparent'};
     color: ${(props) =>
-      props.$sideBarIsExpanded ? "var(--color-white)" : "var(--color-white)"};
-    text-align: ${(props) => (props.$sideBarIsExpanded ? "center" : "left")};
+      props.$sideBarIsExpanded ? 'var(--color-white)' : 'var(--color-white)'};
+    text-align: ${(props) => (props.$sideBarIsExpanded ? 'center' : 'left')};
 
     &:first-of-type {
       text-align: center;
@@ -185,7 +185,7 @@ const HtmlTableBodyHeaderCell = styled(HtmlTableHeaderCell)`
   @media screen and (min-width: ${(props) => props.$breakingPoint + 315}px) {
     background-color: transparent;
     color: ${(props) =>
-      props.$isResult ? "var(--color-white)" : "var(--color-white)"};
+      props.$isResult ? 'var(--color-white)' : 'var(--color-white)'};
     text-align: left;
 
     &:first-of-type {
@@ -201,7 +201,7 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
   text-align: right;
   padding: 8px 16px;
   color: ${(props) =>
-    props.$isResult ? "var(--color-grey-bright)" : "var(--color-grey-bright)"};
+    props.$isResult ? 'var(--color-grey-bright)' : 'var(--color-grey-bright)'};
   text-wrap: wrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -218,22 +218,22 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
     margin-right: 10px;
     float: left;
     color: ${(props) =>
-      props.$isResult ? "var(--color-white)" : "var(--color-white)"};
+      props.$isResult ? 'var(--color-white)' : 'var(--color-white)'};
     font-weight: bold;
   }
 
   @media screen and (min-width: 425px) {
-    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 16px" : "8px 10%")};
+    padding: ${(props) => (props.$sideBarIsExpanded ? '8px 16px' : '8px 10%')};
   }
 
   @media screen and (min-width: 525px) {
-    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 5%" : "8px 10%")};
+    padding: ${(props) => (props.$sideBarIsExpanded ? '8px 5%' : '8px 10%')};
   }
 
   @media screen and (min-width: ${(props) => props.$breakingPoint}px) {
-    padding: ${(props) => (props.$sideBarIsExpanded ? "8px 15%" : "16px 10px")};
-    display: ${(props) => (props.$sideBarIsExpanded ? "block" : "table-cell")};
-    text-align: ${(props) => (props.$sideBarIsExpanded ? "right" : "center")};
+    padding: ${(props) => (props.$sideBarIsExpanded ? '8px 15%' : '16px 10px')};
+    display: ${(props) => (props.$sideBarIsExpanded ? 'block' : 'table-cell')};
+    text-align: ${(props) => (props.$sideBarIsExpanded ? 'right' : 'center')};
 
     &:last-of_type {
       border-right: 0px;
@@ -241,8 +241,8 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
 
     &:before {
       content: ${(props) =>
-        props.$sideBarIsExpanded ? "attr(data-title)" : "none"};
-      margin-right: ${(props) => (props.$sideBarIsExpanded ? "10px" : "0")};
+        props.$sideBarIsExpanded ? 'attr(data-title)' : 'none'};
+      margin-right: ${(props) => (props.$sideBarIsExpanded ? '10px' : '0')};
     }
   }
 
@@ -287,8 +287,8 @@ const Table = ({
   const keysWithButtons = [...keys];
   const headersWithButtons = { ...headers };
   if (hasButtons) {
-    keysWithButtons.push("buttons");
-    headersWithButtons.buttons = "";
+    keysWithButtons.push('buttons');
+    headersWithButtons.buttons = '';
   }
 
   const truncatedBreakingPoint = breakingPoint < 0 ? 526 : breakingPoint;
@@ -335,7 +335,7 @@ const Table = ({
             >
               {keysWithButtons.map((key, idx) =>
                 idx ? (
-                  key === "buttons" ? (
+                  key === 'buttons' ? (
                     row.id === 0 ? (
                       <HtmlTableDataCell
                         key={`${key}${row.id}`}
@@ -379,7 +379,7 @@ const Table = ({
                   >
                     {row[key] as ReactNode}
                   </HtmlTableBodyHeaderCell>
-                )
+                ),
               )}
             </HtmlTableRow>
           ))}

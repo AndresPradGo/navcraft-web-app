@@ -1,35 +1,35 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { BsCalendarWeek } from "react-icons/bs";
-import { MdOutlineStart } from "react-icons/md";
-import { SlBadge } from "react-icons/sl";
-import { LiaMapSignsSolid, LiaMountainSolid } from "react-icons/lia";
-import { ImCompass2 } from "react-icons/im";
-import { PiEyeBold } from "react-icons/pi";
-import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
-import { PiAirTrafficControlDuotone } from "react-icons/pi";
-import { WiDayCloudyGusts } from "react-icons/wi";
-import { styled } from "styled-components";
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { BsCalendarWeek } from 'react-icons/bs';
+import { MdOutlineStart } from 'react-icons/md';
+import { SlBadge } from 'react-icons/sl';
+import { LiaMapSignsSolid, LiaMountainSolid } from 'react-icons/lia';
+import { ImCompass2 } from 'react-icons/im';
+import { PiEyeBold } from 'react-icons/pi';
+import { TbMapSearch, TbWorldLatitude, TbWorldLongitude } from 'react-icons/tb';
+import { PiAirTrafficControlDuotone } from 'react-icons/pi';
+import { WiDayCloudyGusts } from 'react-icons/wi';
+import { styled } from 'styled-components';
 
-import { ContentLayout } from "../layout";
-import useAerodromeData from "./useAerodromeData";
-import Loader from "../../components/Loader";
-import RunwaysTable from "./RunwaysTable";
-import { Modal, useModal } from "../../components/common/modal";
-import SideBarContent from "./SideBarContent";
-import DeleteUserAerodromeForm from "../../components/deleteUserAerodromeForm";
-import EditUserAerodromeForm from "../../components/editUserAerodromeForm";
-import useAuth from "../../hooks/useAuth";
-import usePathList from "../../router/usePathList";
-import EditOfficialAerodromeForm from "../../components/editOfficialAerodromeForm";
-import useAerodromeStatusList from "../../hooks/useAerodromeStatusList";
-import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm/index";
-import DataTableList, { DataType } from "../../components/common/DataTableList";
-import formatUTCDate from "../../utils/formatUTCDate";
-import getUTCNowString from "../../utils/getUTCNowString";
-import AnnouncementBox from "../../components/common/AnnouncementBox";
-import useSetTitle from "../../hooks/useSetTitle";
-import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
+import { ContentLayout } from '../layout';
+import useAerodromeData from './useAerodromeData';
+import Loader from '../../components/Loader';
+import RunwaysTable from './RunwaysTable';
+import { Modal, useModal } from '../../components/common/modal';
+import SideBarContent from './SideBarContent';
+import DeleteUserAerodromeForm from '../../components/deleteUserAerodromeForm';
+import EditUserAerodromeForm from '../../components/editUserAerodromeForm';
+import useAuth from '../../hooks/useAuth';
+import usePathList from '../../router/usePathList';
+import EditOfficialAerodromeForm from '../../components/editOfficialAerodromeForm';
+import useAerodromeStatusList from '../../hooks/useAerodromeStatusList';
+import DeleteVfrWaypointForm from '../../components/deleteVfrWaypointForm/index';
+import DataTableList, { DataType } from '../../components/common/DataTableList';
+import formatUTCDate from '../../utils/formatUTCDate';
+import getUTCNowString from '../../utils/getUTCNowString';
+import AnnouncementBox from '../../components/common/AnnouncementBox';
+import useSetTitle from '../../hooks/useSetTitle';
+import useUnauthorizedErrorHandler from '../../hooks/useUnauthorizedErrorHandler';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -164,7 +164,7 @@ const AerodromePage = () => {
   const user = useAuth();
   const pathname = usePathList();
 
-  const privateEndpoint = pathname[1] === "private-aerodrome";
+  const privateEndpoint = pathname[1] === 'private-aerodrome';
   const userIsAdmin = !!user?.is_admin;
 
   const [runwayId, setRunwayId] = useState<number>(0);
@@ -179,86 +179,86 @@ const AerodromePage = () => {
     error: statusListError,
   } = useAerodromeStatusList();
 
-  if (statusListError) throw new Error("");
+  if (statusListError) throw new Error('');
 
   const {
     data: aerodromeData,
     error,
     isLoading,
-  } = useAerodromeData(parseInt(id || "0") || 0);
+  } = useAerodromeData(parseInt(id || '0') || 0);
 
   useSetTitle(
     aerodromeData
       ? `Aerodrome ${aerodromeData.code} ${aerodromeData.name}`
-      : "Aerodrome Data"
+      : 'Aerodrome Data',
   );
 
   const isPrivateData = !aerodromeData?.registered;
 
   useUnauthorizedErrorHandler([error]);
   if (
-    (error && error.message !== "Network Error") ||
+    (error && error.message !== 'Network Error') ||
     (isPrivateData !== privateEndpoint && aerodromeData !== undefined)
   )
-    throw new Error("notFound");
-  else if ((error && error.message === "Network Error") || statusListError)
-    throw new Error("");
+    throw new Error('notFound');
+  else if ((error && error.message === 'Network Error') || statusListError)
+    throw new Error('');
   if (isLoading || statusListIsLoading) return <Loader />;
 
   const userCanEdit = userIsAdmin || isPrivateData;
 
   const aerodromeDataList = [
     {
-      key: "code",
-      title: "Code",
+      key: 'code',
+      title: 'Code',
       icon: <CodeIcon />,
       data: aerodromeData?.code,
     },
     {
-      key: "name",
-      title: "Name",
+      key: 'name',
+      title: 'Name',
       icon: <NameIcon />,
       data: aerodromeData?.name,
     },
     {
-      key: "latitude",
-      title: "Latitude",
+      key: 'latitude',
+      title: 'Latitude',
       icon: <LatitudeIcon />,
       data: `${aerodromeData?.lat_direction} ${aerodromeData?.lat_degrees}\u00B0 ${aerodromeData?.lat_minutes}' ${aerodromeData?.lat_seconds}"`,
     },
     {
-      key: "longitude",
-      title: "Longitude",
+      key: 'longitude',
+      title: 'Longitude',
       icon: <LongitudeIcon />,
       data: `${aerodromeData?.lon_direction} ${aerodromeData?.lon_degrees}\u00B0 ${aerodromeData?.lon_minutes}' ${aerodromeData?.lon_seconds}"`,
     },
     {
-      key: "elevation_ft",
-      title: "Elevation [ft]",
+      key: 'elevation_ft',
+      title: 'Elevation [ft]',
       icon: <TerrainIcon />,
       data: aerodromeData?.elevation_ft,
     },
     {
-      key: "magnetic_variation",
-      title: "Magnetic Var",
+      key: 'magnetic_variation',
+      title: 'Magnetic Var',
       icon: <CompassIcon />,
       data: `${Math.abs(
         aerodromeData?.magnetic_variation
           ? aerodromeData?.magnetic_variation
-          : 0
+          : 0,
       )}\u00B0${
         aerodromeData?.magnetic_variation
           ? aerodromeData?.magnetic_variation < 0
-            ? "E"
+            ? 'E'
             : aerodromeData?.magnetic_variation > 0
-            ? "W"
-            : ""
-          : ""
+              ? 'W'
+              : ''
+          : ''
       }`,
     },
     {
-      key: "status",
-      title: "Status",
+      key: 'status',
+      title: 'Status',
       icon: <StatusIcon />,
       data: aerodromeData?.status,
     },
@@ -266,36 +266,36 @@ const AerodromePage = () => {
 
   if (!isPrivateData) {
     aerodromeDataList.push({
-      key: "weather",
-      title: "Available Weather",
+      key: 'weather',
+      title: 'Available Weather',
       icon: <WeatherIcon />,
       data: aerodromeData?.has_taf
-        ? `TAF${(aerodromeData?.has_metar && ", METAR") || ""}${
-            (aerodromeData?.has_fds && ", FDs") || ""
+        ? `TAF${(aerodromeData?.has_metar && ', METAR') || ''}${
+            (aerodromeData?.has_fds && ', FDs') || ''
           }`
         : aerodromeData?.has_metar
-        ? `METAR${(aerodromeData?.has_fds && ", FDs") || ""}`
-        : aerodromeData?.has_fds
-        ? "FDs"
-        : "-",
+          ? `METAR${(aerodromeData?.has_fds && ', FDs') || ''}`
+          : aerodromeData?.has_fds
+            ? 'FDs'
+            : '-',
     });
     if (userIsAdmin) {
       aerodromeDataList.push({
-        key: "visible",
-        title: "Visible",
+        key: 'visible',
+        title: 'Visible',
         icon: <VisibleIcon />,
-        data: aerodromeData.hidden ? "No" : "Yes",
+        data: aerodromeData.hidden ? 'No' : 'Yes',
       });
     }
   }
 
   aerodromeDataList.push({
-    key: "last_updated_utc",
-    title: "Date Updated",
+    key: 'last_updated_utc',
+    title: 'Date Updated',
     icon: <DateIcon />,
     data: formatUTCDate(
       aerodromeData?.last_updated_utc || getUTCNowString(),
-      true
+      true,
     ),
   });
 
@@ -318,20 +318,20 @@ const AerodromePage = () => {
                         lat_minutes: aerodromeData.lat_minutes,
                         lat_seconds: aerodromeData.lat_seconds,
                         lat_direction:
-                          aerodromeData.lat_direction === "S"
-                            ? "South"
-                            : "North",
+                          aerodromeData.lat_direction === 'S'
+                            ? 'South'
+                            : 'North',
                         lon_degrees: aerodromeData.lon_degrees,
                         lon_minutes: aerodromeData.lon_minutes,
                         lon_seconds: aerodromeData.lon_seconds,
                         lon_direction:
-                          aerodromeData.lon_direction === "E" ? "East" : "West",
+                          aerodromeData.lon_direction === 'E' ? 'East' : 'West',
                         elevation_ft: aerodromeData.elevation_ft,
                         magnetic_variation: aerodromeData.magnetic_variation,
                         status: aerodromeData.status,
                         status_id:
                           statusList.find(
-                            (item) => aerodromeData.status === item.status
+                            (item) => aerodromeData.status === item.status,
                           )?.id || 3,
                         hide: aerodromeData.hidden,
                         has_taf: aerodromeData.has_taf,
@@ -340,19 +340,19 @@ const AerodromePage = () => {
                       }
                     : {
                         id: 0,
-                        code: "",
-                        name: "",
+                        code: '',
+                        name: '',
                         lat_degrees: 0,
                         lat_minutes: 0,
                         lat_seconds: 0,
-                        lat_direction: "North",
+                        lat_direction: 'North',
                         lon_degrees: 0,
                         lon_minutes: 0,
                         lon_seconds: 0,
-                        lon_direction: "West",
+                        lon_direction: 'West',
                         elevation_ft: 0,
                         magnetic_variation: 0,
-                        status: "Unknown",
+                        status: 'Unknown',
                         status_id: 3,
                         hide: true,
                         has_taf: false,
@@ -365,7 +365,7 @@ const AerodromePage = () => {
             ) : (
               <EditUserAerodromeForm
                 isAdmin={!!userIsAdmin}
-                queryKey={"all"}
+                queryKey={'all'}
                 closeModal={editModal.handleClose}
                 aerodromeData={
                   aerodromeData
@@ -377,30 +377,30 @@ const AerodromePage = () => {
                         lat_minutes: aerodromeData.lat_minutes,
                         lat_seconds: aerodromeData.lat_seconds,
                         lat_direction:
-                          aerodromeData.lat_direction === "S"
-                            ? "South"
-                            : "North",
+                          aerodromeData.lat_direction === 'S'
+                            ? 'South'
+                            : 'North',
                         lon_degrees: aerodromeData.lon_degrees,
                         lon_minutes: aerodromeData.lon_minutes,
                         lon_seconds: aerodromeData.lon_seconds,
                         lon_direction:
-                          aerodromeData.lon_direction === "E" ? "East" : "West",
+                          aerodromeData.lon_direction === 'E' ? 'East' : 'West',
                         elevation_ft: aerodromeData.elevation_ft,
                         magnetic_variation: aerodromeData.magnetic_variation,
                         status: 6,
                       }
                     : {
                         id: 0,
-                        code: "",
-                        name: "",
+                        code: '',
+                        name: '',
                         lat_degrees: 0,
                         lat_minutes: 0,
                         lat_seconds: 0,
-                        lat_direction: "North",
+                        lat_direction: 'North',
                         lon_degrees: 0,
                         lon_minutes: 0,
                         lon_seconds: 0,
-                        lon_direction: "West",
+                        lon_direction: 'West',
                         elevation_ft: 0,
                         magnetic_variation: 0,
                         status: 6,
@@ -414,7 +414,7 @@ const AerodromePage = () => {
             {!isPrivateData ? (
               <DeleteVfrWaypointForm
                 closeModal={deleteModal.handleClose}
-                name={aerodromeData?.name || ""}
+                name={aerodromeData?.name || ''}
                 id={aerodromeData?.id || 0}
                 isAerodrome={true}
                 redirect={true}
@@ -423,7 +423,7 @@ const AerodromePage = () => {
               <DeleteUserAerodromeForm
                 isAdmin={!!userIsAdmin}
                 closeModal={deleteModal.handleClose}
-                name={aerodromeData?.name || ""}
+                name={aerodromeData?.name || ''}
                 id={aerodromeData?.id || 0}
                 redirect={true}
                 queryKey="all"
@@ -444,7 +444,7 @@ const AerodromePage = () => {
               handleEditAerodrome={editModal.handleOpen}
             />
           ) : (
-            ""
+            ''
           )
         }
       >
@@ -459,7 +459,7 @@ const AerodromePage = () => {
                 <i>Waypoints</i> <MdOutlineStart />
               </span>
               <span>
-                <i>{isPrivateData ? "Private " : ""}Aerodrome:</i>
+                <i>{isPrivateData ? 'Private ' : ''}Aerodrome:</i>
                 <i>
                   <PiAirTrafficControlDuotone />
                   {aerodromeData?.code}
@@ -484,7 +484,7 @@ const AerodromePage = () => {
           ) : null}
           <DataTableList dataList={aerodromeDataList as DataType[]} />
           <RunwaysTable
-            aerodromeName={aerodromeData?.code || ""}
+            aerodromeName={aerodromeData?.code || ''}
             canEdit={userCanEdit}
             editModal={editRunwayModal}
             runwaysData={aerodromeData?.runways || []}

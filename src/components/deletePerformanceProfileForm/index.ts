@@ -1,2 +1,2 @@
-import DeletePerformanceProfileForm from './DeletePerformanceProfileForm'
-export default DeletePerformanceProfileForm
+import DeletePerformanceProfileForm from './DeletePerformanceProfileForm';
+export default DeletePerformanceProfileForm;

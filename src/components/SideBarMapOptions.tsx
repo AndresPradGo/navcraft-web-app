@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
-import { FaMapMarkedAlt } from "react-icons/fa";
-import { GrMapLocation } from "react-icons/gr";
-import { TbMapOff } from "react-icons/tb";
-import { styled } from "styled-components";
+import { ReactNode } from 'react';
+import { FaMapMarkedAlt } from 'react-icons/fa';
+import { GrMapLocation } from 'react-icons/gr';
+import { TbMapOff } from 'react-icons/tb';
+import { styled } from 'styled-components';
 
-import Button from "./common/button";
+import Button from './common/button';
 
 const HtmlButtonList = styled.div`
   width: 100%;
@@ -73,7 +73,7 @@ const HtmlCheckbox = styled.label<InputProps>`
   &:focus {
   }
 
-  & input[type="checkbox"] {
+  & input[type='checkbox'] {
     cursor: pointer;
     margin: 0;
     min-height: 15px;
@@ -136,17 +136,17 @@ const SideBarMapOptions = ({
   disableBtn,
 }: Props) => {
   const btnStyles = {
-    width: "100%",
-    height: "40px",
+    width: '100%',
+    height: '40px',
     fontSize: 15,
-    margin: "5px 0",
+    margin: '5px 0',
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
-    color: "var(--color-primary-dark)",
-    hoverColor: "var(--color-grey-dark)",
-    backgroundColor: "var(--color-contrast)",
-    backgroundHoverColor: "var(--color-contrast-hover)",
+    color: 'var(--color-primary-dark)',
+    hoverColor: 'var(--color-grey-dark)',
+    backgroundColor: 'var(--color-contrast)',
+    backgroundHoverColor: 'var(--color-contrast-hover)',
     onlyHover: true,
   };
 
@@ -161,7 +161,7 @@ const SideBarMapOptions = ({
           <Button
             {...btnStyles}
             handleClick={() => {
-              mapStateSetter("open", false);
+              mapStateSetter('open', false);
             }}
           >
             Close Map
@@ -172,7 +172,7 @@ const SideBarMapOptions = ({
             {...btnStyles}
             disabled={disableBtn}
             handleClick={() => {
-              mapStateSetter("open", true);
+              mapStateSetter('open', true);
             }}
           >
             Open Map
@@ -183,7 +183,7 @@ const SideBarMapOptions = ({
           <HtmlCheckbox
             key={`checkbox-${filter.key}`}
             htmlFor={`checkbox-${filter.key}`}
-            $color={mapState[filter.key] ? filter.color : "grey"}
+            $color={mapState[filter.key] ? filter.color : 'grey'}
           >
             <input
               type="checkbox"

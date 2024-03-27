@@ -1,9 +1,9 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { styled } from "styled-components";
+import { useQueryClient } from '@tanstack/react-query';
+import { styled } from 'styled-components';
 
-import ExpandibleTable from "../../../components/common/ExpandibleTable";
-import { CruisePerformanceDataFromAPI } from "../hooks/useCruiseData";
-import useModelPermissions from "../useModelPermissions";
+import ExpandibleTable from '../../../components/common/ExpandibleTable';
+import { CruisePerformanceDataFromAPI } from '../hooks/useCruiseData';
+import useModelPermissions from '../useModelPermissions';
 
 const HtmlDataContainer = styled.div`
   transition: all 2s;
@@ -29,7 +29,7 @@ interface Props {
 const CruiseSection = ({ profileId }: Props) => {
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<CruisePerformanceDataFromAPI>([
-    "aircraftCruisePerformance",
+    'aircraftCruisePerformance',
     profileId,
   ]);
 
@@ -37,36 +37,36 @@ const CruiseSection = ({ profileId }: Props) => {
 
   const performanceTableData = {
     keys: [
-      "data_point",
-      "weight_lb",
-      "pressure_alt_ft",
-      "temperature_c",
-      "bhp_percent",
-      "gph",
-      "rpm",
-      "ktas",
+      'data_point',
+      'weight_lb',
+      'pressure_alt_ft',
+      'temperature_c',
+      'bhp_percent',
+      'gph',
+      'rpm',
+      'ktas',
     ],
     headers: {
-      data_point: "",
-      weight_lb: "Weight [lb]",
-      pressure_alt_ft: "Pressure Alt [ft]",
-      temperature_c: "OAT [\u00B0C]",
-      bhp_percent: "% BHP",
-      gph: "GPH",
-      rpm: "RPM",
-      ktas: "KTAS",
+      data_point: '',
+      weight_lb: 'Weight [lb]',
+      pressure_alt_ft: 'Pressure Alt [ft]',
+      temperature_c: 'OAT [\u00B0C]',
+      bhp_percent: '% BHP',
+      gph: 'GPH',
+      rpm: 'RPM',
+      ktas: 'KTAS',
     },
     rows: data
       ? data.performance_data.map((item, idx) => ({
           id: idx + 1,
-          data_point: "",
-          weight_lb: item.weight_lb || "-",
-          pressure_alt_ft: item.pressure_alt_ft || "-",
-          temperature_c: item.temperature_c || "-",
-          bhp_percent: item.bhp_percent || "-",
-          gph: item.gph || "-",
-          rpm: item.rpm || "-",
-          ktas: item.ktas || "-",
+          data_point: '',
+          weight_lb: item.weight_lb || '-',
+          pressure_alt_ft: item.pressure_alt_ft || '-',
+          temperature_c: item.temperature_c || '-',
+          bhp_percent: item.bhp_percent || '-',
+          gph: item.gph || '-',
+          rpm: item.rpm || '-',
+          ktas: item.ktas || '-',
           handleEdit: () => {},
           handleDelete: () => {},
           permissions: undefined,
@@ -76,9 +76,9 @@ const CruiseSection = ({ profileId }: Props) => {
   };
 
   const dataInstructions = [
-    "This is the list of data-points of the cruise performance table.",
-    "This table is only to display the performance data.",
-    "To edit the data, you need to import it from a CSV-file, by opening the form from the sidebar, and following the instructions in the form.",
+    'This is the list of data-points of the cruise performance table.',
+    'This table is only to display the performance data.',
+    'To edit the data, you need to import it from a CSV-file, by opening the form from the sidebar, and following the instructions in the form.',
   ];
 
   return (

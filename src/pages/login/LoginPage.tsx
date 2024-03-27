@@ -1,22 +1,22 @@
-import { Link } from "react-router-dom";
-import { useForm, FieldValues } from "react-hook-form";
-import { useNavigate, Navigate, useSearchParams } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { IoShieldCheckmarkOutline } from "react-icons/io5";
-import { MdOutlineLogin } from "react-icons/md";
-import { TfiEmail } from "react-icons/tfi";
-import { TbLockOpen } from "react-icons/tb";
-import { toast } from "react-toastify";
-import { z } from "zod";
+import { Link } from 'react-router-dom';
+import { useForm, FieldValues } from 'react-hook-form';
+import { useNavigate, Navigate, useSearchParams } from 'react-router-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { IoShieldCheckmarkOutline } from 'react-icons/io5';
+import { MdOutlineLogin } from 'react-icons/md';
+import { TfiEmail } from 'react-icons/tfi';
+import { TbLockOpen } from 'react-icons/tb';
+import { toast } from 'react-toastify';
+import { z } from 'zod';
 
-import { styled } from "styled-components";
-import Button from "../../components/common/button/index";
-import useLogin from "./useLogin";
-import useAuth from "../../hooks/useAuth";
-import useSetTitle from "../../hooks/useSetTitle";
-import Loader from "../../components/Loader";
-import { useEffect } from "react";
-import useTrial from "./useTrial";
+import { styled } from 'styled-components';
+import Button from '../../components/common/button/index';
+import useLogin from './useLogin';
+import useAuth from '../../hooks/useAuth';
+import useSetTitle from '../../hooks/useSetTitle';
+import Loader from '../../components/Loader';
+import { useEffect } from 'react';
+import useTrial from './useTrial';
 
 const HtmlPageContainer = styled.div`
   position: relative;
@@ -51,7 +51,7 @@ const HtmlFormContainer = styled.div`
   z-index: 5;
 
   &::before {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -72,7 +72,7 @@ const HtmlFormContainer = styled.div`
   }
 
   &::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -104,7 +104,7 @@ const HtmlAnimationSpan = styled.span`
   inset: 0;
 
   &::before {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -126,7 +126,7 @@ const HtmlAnimationSpan = styled.span`
   }
 
   &::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -277,7 +277,7 @@ const HtmlRegisterContainer = styled.div`
   margin-top: 10px;
 
   &::after {
-    content: "Or";
+    content: 'Or';
     margin-top: 5px;
     width: 100%;
     display: flex;
@@ -297,19 +297,19 @@ const HtmlRegisterLink = styled(Link)`
 
 const passwordSchema = z
   .string()
-  .min(8, { message: "Must be at least 8 characters long" })
-  .max(25, { message: "Must be at most 25 characters long" })
+  .min(8, { message: 'Must be at least 8 characters long' })
+  .max(25, { message: 'Must be at most 25 characters long' })
   .refine((password) => !/\s/.test(password), {
-    message: "Cannot contain white spaces",
+    message: 'Cannot contain white spaces',
   })
   .refine((password) => /[0-9]/.test(password), {
-    message: "Must contain at least one number",
+    message: 'Must contain at least one number',
   })
   .refine((password) => /[a-z]/.test(password), {
-    message: "Must contain at least one lowercase letter",
+    message: 'Must contain at least one lowercase letter',
   })
   .refine((password) => /[A-Z]/.test(password), {
-    message: "Must contain at least one uppercase letter",
+    message: 'Must contain at least one uppercase letter',
   });
 
 const schema = z.object({
@@ -324,7 +324,7 @@ const LoginPage = () => {
   if (userIsLogedin) return <Navigate to="/flights" />;
 
   const [searchParams, _] = useSearchParams();
-  const credentials = searchParams.get("credentials");
+  const credentials = searchParams.get('credentials');
 
   const {
     register,
@@ -334,37 +334,37 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const login = useLogin(() => {
-    navigate("/flights");
+    navigate('/flights');
   });
   const trialMutation = useTrial(() => {
-    navigate("/flights");
+    navigate('/flights');
   });
 
-  useSetTitle("Login");
+  useSetTitle('Login');
 
   useEffect(() => {
-    if (credentials && credentials === "invalid") {
+    if (credentials && credentials === 'invalid') {
       toast.error(
-        "Invalid credentials, please login with a valid email and password, or start a new trial.",
+        'Invalid credentials, please login with a valid email and password, or start a new trial.',
         {
-          position: "top-center",
+          position: 'top-center',
           autoClose: 10000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
-        }
+          theme: 'dark',
+        },
       );
-      navigate("/login");
+      navigate('/login');
     }
   }, []);
 
   const submitHandler = (data: FieldValues) => {
     const formData = new FormData();
-    formData.append("username", data.email);
-    formData.append("password", data.password);
+    formData.append('username', data.email);
+    formData.append('password', data.password);
     login.mutate(formData);
   };
   return (
@@ -379,7 +379,7 @@ const LoginPage = () => {
               <h1>Login</h1>
               <HtmlInputContainer>
                 <HtmlInputField
-                  {...register("email")}
+                  {...register('email')}
                   id="email"
                   type="text"
                   required="required"
@@ -393,7 +393,7 @@ const LoginPage = () => {
               </HtmlInputContainer>
               <HtmlInputContainer>
                 <HtmlInputField
-                  {...register("password")}
+                  {...register('password')}
                   id="password"
                   type="password"
                   required="required"

@@ -1,2 +1,2 @@
-import PerformanceProfilePage from './PerformanceProfilePage'
-export default PerformanceProfilePage
+import PerformanceProfilePage from './PerformanceProfilePage';
+export default PerformanceProfilePage;

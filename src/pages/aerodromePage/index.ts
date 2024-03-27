@@ -1,2 +1,2 @@
-import AerodromePage from './AerodromePage'
-export default AerodromePage
+import AerodromePage from './AerodromePage';
+export default AerodromePage;

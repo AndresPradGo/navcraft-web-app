@@ -1,23 +1,23 @@
-import { useEffect } from "react";
-import { AiOutlineFieldNumber, AiOutlineSave } from "react-icons/ai";
-import { BsSignIntersectionSide } from "react-icons/bs";
-import { CgMoveUp } from "react-icons/cg";
-import { FaLinesLeaning } from "react-icons/fa6";
-import { GiConcreteBag } from "react-icons/gi";
-import { LiaTimesSolid } from "react-icons/lia";
-import { MdAddRoad, MdEditRoad } from "react-icons/md";
-import { PiAirTrafficControlDuotone } from "react-icons/pi";
-import { TfiRuler } from "react-icons/tfi";
-import { styled } from "styled-components";
-import { useForm, FieldValues } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect } from 'react';
+import { AiOutlineFieldNumber, AiOutlineSave } from 'react-icons/ai';
+import { BsSignIntersectionSide } from 'react-icons/bs';
+import { CgMoveUp } from 'react-icons/cg';
+import { FaLinesLeaning } from 'react-icons/fa6';
+import { GiConcreteBag } from 'react-icons/gi';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { MdAddRoad, MdEditRoad } from 'react-icons/md';
+import { PiAirTrafficControlDuotone } from 'react-icons/pi';
+import { TfiRuler } from 'react-icons/tfi';
+import { styled } from 'styled-components';
+import { useForm, FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../common/button";
-import DataList from "../common/datalist";
-import useRunwaySurfaces from "../../hooks/useRunwaySurfaces";
-import Loader from "../Loader";
-import useEditRunway from "./useEditRunway";
+import Button from '../common/button';
+import DataList from '../common/datalist';
+import useRunwaySurfaces from '../../hooks/useRunwaySurfaces';
+import Loader from '../Loader';
+import useEditRunway from './useEditRunway';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -82,7 +82,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -91,14 +91,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -118,9 +118,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -128,21 +128,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -243,32 +243,32 @@ const CloseIcon = styled(LiaTimesSolid)`
 
 const schema = z.object({
   number: z
-    .number({ invalid_type_error: "Enter valid runway number" })
-    .int("Enter valid runway number")
-    .min(1, "Enter valid runway number")
-    .max(36, "Enter valid runway number"),
+    .number({ invalid_type_error: 'Enter valid runway number' })
+    .int('Enter valid runway number')
+    .min(1, 'Enter valid runway number')
+    .max(36, 'Enter valid runway number'),
   position: z.union([z.string().nullable(), z.literal(null)]),
   length_ft: z
-    .number({ invalid_type_error: "Enter round number" })
-    .int("Round Numbers only"),
+    .number({ invalid_type_error: 'Enter round number' })
+    .int('Round Numbers only'),
   thld_displ: z.union([
     z
-      .number({ invalid_type_error: "Round Numbers only" })
-      .int("Round Numbers only")
+      .number({ invalid_type_error: 'Round Numbers only' })
+      .int('Round Numbers only')
       .nullable(),
     z.literal(null),
   ]),
   intersection_departure_length_ft: z.union([
     z
-      .number({ invalid_type_error: "Round Numbers only" })
-      .int("Round Numbers only")
+      .number({ invalid_type_error: 'Round Numbers only' })
+      .int('Round Numbers only')
       .nullable(),
     z.literal(null),
   ]),
   surface: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(50, { message: "Must be at most 50 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(50, { message: 'Must be at most 50 characters long' })
     .regex(/^[-a-zA-Z ']+$/, {
       message: "Only letters, spaces and symbols ' -",
     }),
@@ -309,8 +309,8 @@ const EditRunwayForm = ({
   const mutation = useEditRunway(fromAerodrome);
 
   useEffect(() => {
-    register("position");
-    register("surface");
+    register('position');
+    register('surface');
   }, []);
 
   useEffect(() => {
@@ -330,31 +330,31 @@ const EditRunwayForm = ({
   useEffect(() => {
     const wrongIntxnDep = checkIntersectionDeparture({
       intersection_departure_length_ft: watch(
-        "intersection_departure_length_ft"
+        'intersection_departure_length_ft',
       ),
-      length_ft: watch("length_ft"),
+      length_ft: watch('length_ft'),
     });
-    if (!wrongIntxnDep) clearErrors("intersection_departure_length_ft");
-  }, [watch("intersection_departure_length_ft"), watch("length_ft")]);
+    if (!wrongIntxnDep) clearErrors('intersection_departure_length_ft');
+  }, [watch('intersection_departure_length_ft'), watch('length_ft')]);
 
   useEffect(() => {
     const wrongThldDispl = checkThresholdDisplacement({
-      thld_displ: watch("thld_displ"),
-      length_ft: watch("length_ft"),
+      thld_displ: watch('thld_displ'),
+      length_ft: watch('length_ft'),
     });
-    if (!wrongThldDispl) clearErrors("thld_displ");
-  }, [watch("thld_displ"), watch("length_ft")]);
+    if (!wrongThldDispl) clearErrors('thld_displ');
+  }, [watch('thld_displ'), watch('length_ft')]);
 
   const checkIntersectionDeparture = (data: FieldValues): boolean => {
     const errorMessage =
-      "Threshold displacement must be less than runway length";
+      'Threshold displacement must be less than runway length';
 
     if (errors.intersection_departure_length_ft)
       if (errors.intersection_departure_length_ft.message !== errorMessage)
         return true;
     if ((data.intersection_departure_length_ft || 1) >= data.length_ft) {
-      setError("intersection_departure_length_ft", {
-        type: "manual",
+      setError('intersection_departure_length_ft', {
+        type: 'manual',
         message: errorMessage,
       });
       return true;
@@ -364,14 +364,14 @@ const EditRunwayForm = ({
 
   const checkThresholdDisplacement = (data: FieldValues): boolean => {
     const errorMessage =
-      "Threshold displacement must be less than runway length";
+      'Threshold displacement must be less than runway length';
 
     if (errors.thld_displ)
       if (errors.thld_displ.message !== errorMessage) return true;
 
     if ((data.thld_displ || 1) >= data.length_ft) {
-      setError("thld_displ", {
-        type: "manual",
+      setError('thld_displ', {
+        type: 'manual',
         message: errorMessage,
       });
       return true;
@@ -392,13 +392,13 @@ const EditRunwayForm = ({
     const wrongThldDispl = checkThresholdDisplacement(data);
     const wrongIntxnDep = checkIntersectionDeparture(data);
     const surface_id = surfaces?.find(
-      (item) => item.surface === data.surface
+      (item) => item.surface === data.surface,
     )?.id;
 
     if (!surface_id) {
-      setError("surface", {
-        type: "manual",
-        message: "Select a valid option",
+      setError('surface', {
+        type: 'manual',
+        message: 'Select a valid option',
       });
     }
 
@@ -410,13 +410,13 @@ const EditRunwayForm = ({
         aerodrome_id: runwayData.aerodromeId,
         number: data.number,
         position:
-          pos === "Right"
-            ? "R"
-            : pos === "Left"
-            ? "L"
-            : pos === "Center"
-            ? "C"
-            : undefined,
+          pos === 'Right'
+            ? 'R'
+            : pos === 'Left'
+              ? 'L'
+              : pos === 'Center'
+                ? 'C'
+                : undefined,
         length_ft: data.length_ft,
         landing_length_ft: data.thld_displ
           ? data.length_ft - data.thld_displ
@@ -433,7 +433,7 @@ const EditRunwayForm = ({
       <h1>
         <div>
           {runwayData.id !== 0 ? <EditRunwayIcon /> : <AddRunwayIcon />}
-          {`${runwayData.id !== 0 ? "Edit" : "Add"} Runway`}
+          {`${runwayData.id !== 0 ? 'Edit' : 'Add'} Runway`}
         </div>
         <CloseIcon onClick={handleCancel} />
       </h1>
@@ -447,12 +447,12 @@ const EditRunwayForm = ({
               {aerodromeName}
             </h2>
             <HtmlInput
-              $hasValue={!!watch("number") || watch("number") === 0}
+              $hasValue={!!watch('number') || watch('number') === 0}
               $accepted={!errors.number}
               $required={true}
             >
               <input
-                {...register("number", { valueAsNumber: true })}
+                {...register('number', { valueAsNumber: true })}
                 id="runway_number"
                 type="number"
                 autoComplete="off"
@@ -466,51 +466,51 @@ const EditRunwayForm = ({
             </HtmlInput>
             <DataList
               setError={(message) =>
-                setError("position", {
-                  type: "manual",
+                setError('position', {
+                  type: 'manual',
                   message: message,
                 })
               }
-              clearErrors={() => clearErrors("position")}
+              clearErrors={() => clearErrors('position')}
               required={false}
-              value={watch("position") || ""}
+              value={watch('position') || ''}
               hasError={!!errors.position}
-              errorMessage={errors.position?.message || ""}
-              options={["Right", "Left", "Center"]}
-              setValue={(value: string) => setValue("position", value)}
+              errorMessage={errors.position?.message || ''}
+              options={['Right', 'Left', 'Center']}
+              setValue={(value: string) => setValue('position', value)}
               name="runway_position"
               formIsOpen={isOpen}
-              resetValue={runwayData.position ? runwayData.position : ""}
+              resetValue={runwayData.position ? runwayData.position : ''}
             >
               <PositionIcon /> Parallel Position
             </DataList>
             <DataList
               setError={(message) =>
-                setError("surface", {
-                  type: "manual",
+                setError('surface', {
+                  type: 'manual',
                   message: message,
                 })
               }
-              clearErrors={() => clearErrors("surface")}
+              clearErrors={() => clearErrors('surface')}
               required={true}
-              value={watch("surface")}
+              value={watch('surface')}
               hasError={!!errors.surface}
-              errorMessage={errors.surface?.message || ""}
+              errorMessage={errors.surface?.message || ''}
               options={surfaces ? surfaces.map((item) => item.surface) : []}
-              setValue={(value: string) => setValue("surface", value)}
+              setValue={(value: string) => setValue('surface', value)}
               name="runway_surface"
               formIsOpen={isOpen}
-              resetValue={runwayData.surface ? runwayData.surface : ""}
+              resetValue={runwayData.surface ? runwayData.surface : ''}
             >
               <SurfaceIcon /> Surface
             </DataList>
             <HtmlInput
-              $hasValue={!!watch("length_ft") || watch("length_ft") === 0}
+              $hasValue={!!watch('length_ft') || watch('length_ft') === 0}
               $accepted={!errors.length_ft}
               $required={true}
             >
               <input
-                {...register("length_ft", { valueAsNumber: true })}
+                {...register('length_ft', { valueAsNumber: true })}
                 id="runway_length_ft"
                 type="number"
                 autoComplete="off"
@@ -523,16 +523,16 @@ const EditRunwayForm = ({
               )}
               <label htmlFor="runway_length_ft">
                 <LengthIcon />
-                {"Length [ft]"}
+                {'Length [ft]'}
               </label>
             </HtmlInput>
             <HtmlInput
               $required={false}
-              $hasValue={!!watch("thld_displ") || watch("thld_displ") === 0}
+              $hasValue={!!watch('thld_displ') || watch('thld_displ') === 0}
               $accepted={!errors.thld_displ}
             >
               <input
-                {...register("thld_displ", {
+                {...register('thld_displ', {
                   setValueAs: handleOptionalLengthValues,
                 })}
                 id="runway_thld_displ"
@@ -546,19 +546,19 @@ const EditRunwayForm = ({
               )}
               <label htmlFor="runway_thld_displ">
                 <DisplacementIcon />
-                {"Thld Displ [ft]"}
+                {'Thld Displ [ft]'}
               </label>
             </HtmlInput>
             <HtmlInput
               $required={false}
               $hasValue={
-                !!watch("intersection_departure_length_ft") ||
-                watch("intersection_departure_length_ft") === 0
+                !!watch('intersection_departure_length_ft') ||
+                watch('intersection_departure_length_ft') === 0
               }
               $accepted={!errors.intersection_departure_length_ft}
             >
               <input
-                {...register("intersection_departure_length_ft", {
+                {...register('intersection_departure_length_ft', {
                   setValueAs: handleOptionalLengthValues,
                 })}
                 id="runway_intersection_departure_length_ft"
@@ -572,7 +572,7 @@ const EditRunwayForm = ({
               )}
               <label htmlFor="runway_intersection_departure_length_ft">
                 <IntersectionIcon />
-                {"Intxn Dep [ft]"}
+                {'Intxn Dep [ft]'}
               </label>
             </HtmlInput>
           </HtmlInputContainer>

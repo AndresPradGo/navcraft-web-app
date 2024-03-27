@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { styled } from "styled-components";
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { styled } from 'styled-components';
 
-import NavBarExpandButton from "./NavBarExpandButton";
-import { SideBarExpandButton } from "../sidebar";
-import { useSideBar } from "../sidebar";
-import useNavLinks from "./useNavLinks";
-import { usePathList } from "../../router";
+import NavBarExpandButton from './NavBarExpandButton';
+import { SideBarExpandButton } from '../sidebar';
+import { useSideBar } from '../sidebar';
+import useNavLinks from './useNavLinks';
+import { usePathList } from '../../router';
 
 interface HtmlNavBarContainerProps {
   $expanded: boolean;
@@ -24,7 +24,7 @@ const HtmlNavBarContainer = styled.div<HtmlNavBarContainerProps>`
   justify-content: center;
   align-items: center;
   min-width: 100vw;
-  max-height: ${(props) => (props.$expanded ? "100vh" : "61px")};
+  max-height: ${(props) => (props.$expanded ? '100vh' : '61px')};
 
   border-bottom: 1px solid var(--color-grey-dark);
 
@@ -100,7 +100,7 @@ const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
   padding: 5px 10px;
 
   border-bottom: ${(props) =>
-    props.$expanded ? "1px solid var(--color-grey-dark)" : "0px"};
+    props.$expanded ? '1px solid var(--color-grey-dark)' : '0px'};
 
   & div:first-of-type {
     min-width: 40px;
@@ -233,10 +233,10 @@ const NavBar = () => {
 
   let currentPath = usePathList();
   let activeLinkDataList = linksList.filter(
-    (item) => item.href === `/${currentPath[0]}`
+    (item) => item.href === `/${currentPath[0]}`,
   );
   if (!activeLinkDataList.length)
-    activeLinkDataList = linksList.filter((item) => item.href === "/flights");
+    activeLinkDataList = linksList.filter((item) => item.href === '/flights');
   const activeLinkData = activeLinkDataList[0];
   const ActiveLinkIcon = activeLinkData.icon;
 

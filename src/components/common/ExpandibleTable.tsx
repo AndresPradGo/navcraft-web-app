@@ -1,11 +1,11 @@
-import { useState, ReactNode } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
-import { BsChevronDown } from "react-icons/bs";
-import { styled } from "styled-components";
+import { useState, ReactNode } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { BsChevronDown } from 'react-icons/bs';
+import { styled } from 'styled-components';
 
-import Button from "./button";
-import Table, { TableProps } from "./table/";
-import Loader from "../Loader";
+import Button from './button';
+import Table, { TableProps } from './table/';
+import Loader from '../Loader';
 
 interface HtmlContainerProps {
   $marginTop: number;
@@ -27,7 +27,7 @@ const HtmlTitleContainer = styled.div<HtmlHighlightedTableProps>`
   padding: 0 0 5px 5px;
   border-bottom: 1px solid
     ${(props) =>
-      props.$highlight ? "var(--color-white)" : "var(--color-grey)"};
+      props.$highlight ? 'var(--color-white)' : 'var(--color-grey)'};
 
   & div {
     display: flex;
@@ -36,7 +36,7 @@ const HtmlTitleContainer = styled.div<HtmlHighlightedTableProps>`
     & h3:first-of-type {
       margin: 0;
       color: ${(props) =>
-        props.$highlight ? "var(--color-white)" : "var(--color-grey-bright)"};
+        props.$highlight ? 'var(--color-white)' : 'var(--color-grey-bright)'};
     }
   }
 
@@ -53,7 +53,7 @@ const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
   cursor: pointer;
   margin-right: 5px;
   font-size: 25px;
-  transform: rotate(${(props) => (props.$isOpen ? "-180deg" : "0deg")});
+  transform: rotate(${(props) => (props.$isOpen ? '-180deg' : '0deg')});
   transition: 0.3s transform linear;
 
   &:hover,
@@ -67,13 +67,16 @@ const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
 `;
 
 const HtmlTableContainer = styled.div<HtmlTagProps>`
-  transition: padding 0.6s, max-height 0.3s, opacity 0.6s;
+  transition:
+    padding 0.6s,
+    max-height 0.3s,
+    opacity 0.6s;
   border-bottom: 1px solid
     ${(props) =>
-      props.$highlight ? "var(--color-white)" : "var(--color-grey)"};
-  padding: ${(props) => (props.$isOpen ? "15px" : "0px 15px")};
-  max-height: ${(props) => (props.$isOpen ? "10000vh" : "0px")};
-  opacity: ${(props) => (props.$isOpen ? "1" : "0")};
+      props.$highlight ? 'var(--color-white)' : 'var(--color-grey)'};
+  padding: ${(props) => (props.$isOpen ? '15px' : '0px 15px')};
+  max-height: ${(props) => (props.$isOpen ? '10000vh' : '0px')};
+  opacity: ${(props) => (props.$isOpen ? '1' : '0')};
   overflow: hidden;
 `;
 

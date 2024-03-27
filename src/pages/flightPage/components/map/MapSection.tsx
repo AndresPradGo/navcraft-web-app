@@ -1,37 +1,37 @@
-import { useState, useEffect } from "react";
-import { renderToString } from "react-dom/server";
-import { useQueryClient } from "@tanstack/react-query";
+import { useState, useEffect } from 'react';
+import { renderToString } from 'react-dom/server';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
   Polyline,
-} from "react-leaflet";
-import { BiTargetLock, BiSolidEditAlt } from "react-icons/bi";
-import { GoDotFill } from "react-icons/go";
-import { LuCircleDotDashed } from "react-icons/lu";
-import { TbMapPinOff } from "react-icons/tb";
-import L from "leaflet";
-import { styled } from "styled-components";
+} from 'react-leaflet';
+import { BiTargetLock, BiSolidEditAlt } from 'react-icons/bi';
+import { GoDotFill } from 'react-icons/go';
+import { LuCircleDotDashed } from 'react-icons/lu';
+import { TbMapPinOff } from 'react-icons/tb';
+import L from 'leaflet';
+import { styled } from 'styled-components';
 import getDegreeCoordinates, {
   LatLngLiteral,
-} from "../../../../utils/getDegreeCoordinates";
-import { OfficialAerodromeDataFromAPI } from "../../../../services/officialAerodromeClient";
-import { FlightDataFromApi } from "../../../../services/flightClient";
-import { NavLogLegData } from "../../hooks/useNavLogData";
-import { VfrWaypointDataFromAPI } from "../../../../services/vfrWaypointClient";
-import { WaypointDataFromAPI } from "../../../../services/userWaypointClient";
+} from '../../../../utils/getDegreeCoordinates';
+import { OfficialAerodromeDataFromAPI } from '../../../../services/officialAerodromeClient';
+import { FlightDataFromApi } from '../../../../services/flightClient';
+import { NavLogLegData } from '../../hooks/useNavLogData';
+import { VfrWaypointDataFromAPI } from '../../../../services/vfrWaypointClient';
+import { WaypointDataFromAPI } from '../../../../services/userWaypointClient';
 import {
   MapStateType,
   MapInputStyleType,
-} from "../../../../components/SideBarMapOptions";
-import Button from "../../../../components/common/button";
-import { Modal, useModal } from "../../../../components/common/modal";
-import NewMarker from "./NewMarker";
-import DropMarkerForm from "./DropMarkerForm";
-import getPath from "../../../../utils/getPath";
-import useDeleteLeg from "../../hooks/useDeleteLeg";
+} from '../../../../components/SideBarMapOptions';
+import Button from '../../../../components/common/button';
+import { Modal, useModal } from '../../../../components/common/modal';
+import NewMarker from './NewMarker';
+import DropMarkerForm from './DropMarkerForm';
+import getPath from '../../../../utils/getPath';
+import useDeleteLeg from '../../hooks/useDeleteLeg';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -104,27 +104,27 @@ const MapSection = ({
 
   const queryClient = useQueryClient();
   const flightData = queryClient.getQueryData<FlightDataFromApi>([
-    "flight",
+    'flight',
     flightId,
   ]);
 
   const aerodromes = queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>([
-    "aerodromes",
-    "all",
+    'aerodromes',
+    'all',
   ]);
 
   const vfrWaypoints = queryClient.getQueryData<VfrWaypointDataFromAPI[]>([
-    "waypoints",
-    "vfr",
+    'waypoints',
+    'vfr',
   ]);
 
   const userWaypoints = queryClient.getQueryData<WaypointDataFromAPI[]>([
-    "waypoints",
-    "user",
+    'waypoints',
+    'user',
   ]);
 
   const legsData = queryClient.getQueryData<NavLogLegData[]>([
-    "navLog",
+    'navLog',
     flightId,
   ]);
 
@@ -161,8 +161,8 @@ const MapSection = ({
     : 0;
   const zoomLevel = Math.round(
     Math.log2(
-      (40008000 * Math.cos((center.lat * Math.PI) / 180)) / (totalDistance / 2)
-    ) - 11
+      (40008000 * Math.cos((center.lat * Math.PI) / 180)) / (totalDistance / 2),
+    ) - 11,
   );
 
   const path = getPath(departureAerodrome, flightData, arrivalAerodrome);
@@ -209,9 +209,9 @@ const MapSection = ({
               openModal={modal.handleOpen}
               newWaypoint={newWaypoint}
               iconString={renderToString(
-                <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
+                <HtmlIcon style={{ color: 'var(--color-nav-1)' }}>
                   {<LuCircleDotDashed />}
-                </HtmlIcon>
+                </HtmlIcon>,
               )}
               handleFocusLegIdx={setFocusLegIdx}
               handleNewWaypointCoordinates={setNewWaypoint}
@@ -223,18 +223,18 @@ const MapSection = ({
             {mapState.showAerodromes
               ? officialAerodromesToDisplay.map((a) => {
                   const marker = markers.find(
-                    (m) => m.key === "showAerodromes"
+                    (m) => m.key === 'showAerodromes',
                   );
                   return (
                     <Marker
                       icon={L.divIcon({
-                        className: "custom--icon",
+                        className: 'custom--icon',
                         html: renderToString(
                           <HtmlIcon
-                            style={{ color: marker?.color, opacity: "0.6" }}
+                            style={{ color: marker?.color, opacity: '0.6' }}
                           >
                             {marker?.icon}
-                          </HtmlIcon>
+                          </HtmlIcon>,
                         ),
                         iconSize: [30, 30],
                       })}
@@ -256,18 +256,18 @@ const MapSection = ({
             {mapState.showVfrWaypoints
               ? vfrWaypointsToDisplay.map((w) => {
                   const marker = markers.find(
-                    (m) => m.key === "showVfrWaypoints"
+                    (m) => m.key === 'showVfrWaypoints',
                   );
                   return (
                     <Marker
                       icon={L.divIcon({
-                        className: "custom--icon",
+                        className: 'custom--icon',
                         html: renderToString(
                           <HtmlIcon
-                            style={{ color: marker?.color, opacity: "0.6" }}
+                            style={{ color: marker?.color, opacity: '0.6' }}
                           >
                             {marker?.icon}
-                          </HtmlIcon>
+                          </HtmlIcon>,
                         ),
                         iconSize: [30, 30],
                       })}
@@ -289,18 +289,18 @@ const MapSection = ({
             {mapState.showSavedAerodromes
               ? userAerodromesToDisplay.map((a) => {
                   const marker = markers.find(
-                    (m) => m.key === "showSavedAerodromes"
+                    (m) => m.key === 'showSavedAerodromes',
                   );
                   return (
                     <Marker
                       icon={L.divIcon({
-                        className: "custom--icon",
+                        className: 'custom--icon',
                         html: renderToString(
                           <HtmlIcon
-                            style={{ color: marker?.color, opacity: "0.6" }}
+                            style={{ color: marker?.color, opacity: '0.6' }}
                           >
                             {marker?.icon}
-                          </HtmlIcon>
+                          </HtmlIcon>,
                         ),
                         iconSize: [30, 30],
                       })}
@@ -322,18 +322,18 @@ const MapSection = ({
             {mapState.showSavedWaypoints
               ? userWaypointsToDisplay.map((w) => {
                   const marker = markers.find(
-                    (m) => m.key === "showSavedWaypoints"
+                    (m) => m.key === 'showSavedWaypoints',
                   );
                   return (
                     <Marker
                       icon={L.divIcon({
-                        className: "custom--icon",
+                        className: 'custom--icon',
                         html: renderToString(
                           <HtmlIcon
-                            style={{ color: marker?.color, opacity: "0.6" }}
+                            style={{ color: marker?.color, opacity: '0.6' }}
                           >
                             {marker?.icon}
-                          </HtmlIcon>
+                          </HtmlIcon>,
                         ),
                         iconSize: [30, 30],
                       })}
@@ -355,11 +355,11 @@ const MapSection = ({
             <Marker
               zIndexOffset={999}
               icon={L.divIcon({
-                className: "custom--icon",
+                className: 'custom--icon',
                 html: renderToString(
-                  <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
+                  <HtmlIcon style={{ color: 'var(--color-nav-1)' }}>
                     {<BiTargetLock />}
-                  </HtmlIcon>
+                  </HtmlIcon>,
                 ),
                 iconSize: [40, 40],
               })}
@@ -379,7 +379,7 @@ const MapSection = ({
                     backgroundHoverColor="var(--color-primary-light)"
                     borderRadious={40}
                     margin="10px 0 0"
-                    alignSelf={"center"}
+                    alignSelf={'center'}
                     shadow={true}
                     handleClick={() => {
                       if (mapRef) mapRef.closePopup();
@@ -396,11 +396,11 @@ const MapSection = ({
             <Marker
               zIndexOffset={999}
               icon={L.divIcon({
-                className: "custom--icon",
+                className: 'custom--icon',
                 html: renderToString(
-                  <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
+                  <HtmlIcon style={{ color: 'var(--color-nav-1)' }}>
                     {<BiTargetLock />}
-                  </HtmlIcon>
+                  </HtmlIcon>,
                 ),
                 iconSize: [40, 40],
               })}
@@ -420,7 +420,7 @@ const MapSection = ({
                     backgroundHoverColor="var(--color-primary-light)"
                     borderRadious={40}
                     margin="10px 0 0"
-                    alignSelf={"center"}
+                    alignSelf={'center'}
                     shadow={true}
                     handleClick={() => {
                       if (mapRef) mapRef.closePopup();
@@ -452,7 +452,7 @@ const MapSection = ({
                 <Polyline
                   key={`path-${idx}`}
                   pathOptions={{
-                    color: "var(--color-nav-2)",
+                    color: 'var(--color-nav-2)',
                     weight: 6,
                   }}
                   positions={
@@ -485,11 +485,11 @@ const MapSection = ({
                   zIndexOffset={999}
                   key={`waypoint-${idx}`}
                   icon={L.divIcon({
-                    className: "custom--icon",
+                    className: 'custom--icon',
                     html: renderToString(
-                      <HtmlIcon style={{ color: "var(--color-nav-1)" }}>
+                      <HtmlIcon style={{ color: 'var(--color-nav-1)' }}>
                         {<GoDotFill />}
-                      </HtmlIcon>
+                      </HtmlIcon>,
                     ),
                     iconSize: [30, 30],
                   })}
@@ -509,13 +509,13 @@ const MapSection = ({
                         backgroundHoverColor="var(--color-warning-hover)"
                         borderRadious={40}
                         margin="10px 0 0"
-                        alignSelf={"center"}
+                        alignSelf={'center'}
                         shadow={true}
                         handleClick={() => {
                           if (mapRef) mapRef.closePopup();
                           deleteMutation.mutate({
                             id: leg.id,
-                            identifier: leg.waypoint?.name || "",
+                            identifier: leg.waypoint?.name || '',
                           });
                         }}
                         width="120px"

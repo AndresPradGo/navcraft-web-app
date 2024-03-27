@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useForm, FieldValues } from "react-hook-form";
-import { useQueryClient } from "@tanstack/react-query";
-import { AiOutlineSave } from "react-icons/ai";
-import { IoAirplane } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { MdConnectingAirports } from "react-icons/md";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useForm, FieldValues } from 'react-hook-form';
+import { useQueryClient } from '@tanstack/react-query';
+import { AiOutlineSave } from 'react-icons/ai';
+import { IoAirplane } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { MdConnectingAirports } from 'react-icons/md';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import DataList from "../../../components/common/datalist";
-import { AircraftDataFromAPI } from "../../../services/aircraftClient";
-import useChangeAircraft from "../hooks/useChangeAircraft";
-import Loader from "../../../components/Loader";
+import Button from '../../../components/common/button';
+import DataList from '../../../components/common/datalist';
+import { AircraftDataFromAPI } from '../../../services/aircraftClient';
+import useChangeAircraft from '../hooks/useChangeAircraft';
+import Loader from '../../../components/Loader';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -108,14 +108,14 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
   color: var(--color-grey);
-  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
+  opacity: ${(props) => (props.$disabled ? '0.3' : '1')};
 
   &:hover,
   &:focus {
     color: ${(props) =>
-      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
+      props.$disabled ? 'var(--color-grey)' : 'var(--color-white)'};
   }
 
   @media screen and (min-width: 510px) {
@@ -146,8 +146,8 @@ const ChangeAircraftForm = ({
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const aircraftList = queryClient.getQueryData<AircraftDataFromAPI[]>([
-    "aircraft",
-    "list",
+    'aircraft',
+    'list',
   ]);
 
   const {
@@ -172,7 +172,7 @@ const ChangeAircraftForm = ({
   }, [submited, mutation.isLoading]);
 
   useEffect(() => {
-    register("aircraft");
+    register('aircraft');
   }, []);
 
   useEffect(() => {
@@ -185,13 +185,13 @@ const ChangeAircraftForm = ({
 
   const submitHandler = (data: FieldValues) => {
     const aircraftId = aircraftList?.find(
-      (a) => a.registration === data.aircraft
+      (a) => a.registration === data.aircraft,
     )?.id;
 
     if (!aircraftId) {
-      setError("aircraft", {
-        type: "manual",
-        message: "Select a valid option",
+      setError('aircraft', {
+        type: 'manual',
+        message: 'Select a valid option',
       });
     } else {
       mutation.mutate({
@@ -207,11 +207,11 @@ const ChangeAircraftForm = ({
       <h1>
         <div>
           <TitleIcon />
-          {aircraft === "" && noAircraft
-            ? "Select Aircraft"
-            : "Change Aircraft"}
+          {aircraft === '' && noAircraft
+            ? 'Select Aircraft'
+            : 'Change Aircraft'}
         </div>
-        {mutation.isLoading || (aircraft === "" && noAircraft) ? (
+        {mutation.isLoading || (aircraft === '' && noAircraft) ? (
           <CloseIcon onClick={() => {}} $disabled={true} />
         ) : (
           <CloseIcon onClick={closeModal} $disabled={false} />
@@ -222,7 +222,7 @@ const ChangeAircraftForm = ({
           <Loader message="Calculating flight data . . ." margin={50} />
         ) : (
           <>
-            {aircraft === "" && noAircraft ? (
+            {aircraft === '' && noAircraft ? (
               <p>
                 This flight doesn't have an aircraft, or the aircraft does not
                 have a performance profile. Select a valid aircraft to continue.
@@ -230,22 +230,22 @@ const ChangeAircraftForm = ({
             ) : null}
             <DataList
               setError={(message) =>
-                setError("aircraft", {
-                  type: "manual",
+                setError('aircraft', {
+                  type: 'manual',
                   message: message,
                 })
               }
-              clearErrors={() => clearErrors("aircraft")}
+              clearErrors={() => clearErrors('aircraft')}
               required={true}
-              value={watch("aircraft")}
+              value={watch('aircraft')}
               hasError={!!errors.aircraft}
-              errorMessage={errors.aircraft?.message || ""}
+              errorMessage={errors.aircraft?.message || ''}
               options={
                 aircraftList
                   ? aircraftList.map((item) => item.registration)
                   : []
               }
-              setValue={(value: string) => setValue("aircraft", value)}
+              setValue={(value: string) => setValue('aircraft', value)}
               name="changeAircraft"
               formIsOpen={isOpen}
               resetValue={aircraft}
@@ -256,7 +256,7 @@ const ChangeAircraftForm = ({
         )}
       </HtmlInputContainer>
       <HtmlButtons>
-        {aircraft === "" && noAircraft ? (
+        {aircraft === '' && noAircraft ? (
           <Button
             color="var(--color-primary-dark)"
             hoverColor="var(--color-primary-dark)"
@@ -266,7 +266,7 @@ const ChangeAircraftForm = ({
             margin="5px 0"
             borderRadious={4}
             handleClick={() => {
-              navigate("/flights");
+              navigate('/flights');
             }}
             btnType="button"
             width="120px"

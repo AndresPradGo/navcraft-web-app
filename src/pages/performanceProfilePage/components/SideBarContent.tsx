@@ -1,33 +1,33 @@
-import { BiSolidSelectMultiple, BiSolidEditAlt } from "react-icons/bi";
-import { IoAirplaneOutline } from "react-icons/io5";
-import { BsSpeedometer } from "react-icons/bs";
+import { BiSolidSelectMultiple, BiSolidEditAlt } from 'react-icons/bi';
+import { IoAirplaneOutline } from 'react-icons/io5';
+import { BsSpeedometer } from 'react-icons/bs';
 import {
   FaPlaneDeparture,
   FaPlaneArrival,
   FaTools,
   FaSitemap,
-} from "react-icons/fa";
-import { FaFileExport, FaDownload } from "react-icons/fa6";
-import { ImRoad } from "react-icons/im";
+} from 'react-icons/fa';
+import { FaFileExport, FaDownload } from 'react-icons/fa6';
+import { ImRoad } from 'react-icons/im';
 import {
   MdBalance,
   MdLuggage,
   MdAirlineSeatReclineNormal,
   MdPropaneTank,
   MdOutlineAdd,
-} from "react-icons/md";
-import { TbPlaneInflight } from "react-icons/tb";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { TbTrendingUp2, TbWindsock } from "react-icons/tb";
-import { styled } from "styled-components";
+} from 'react-icons/md';
+import { TbPlaneInflight } from 'react-icons/tb';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { TbTrendingUp2, TbWindsock } from 'react-icons/tb';
+import { styled } from 'styled-components';
 
 import SideBarIndex, {
   PageSectionDataType,
-} from "../../../components/common/SideBarIndex";
-import SideBarBtnList from "../../../components/common/SideBarBtnList";
-import SideBarTitle from "../../../components/common/SideBarTitle";
-import useFetchFile from "../../../hooks/useFetchFile";
-import useModelPermissions from "../useModelPermissions";
+} from '../../../components/common/SideBarIndex';
+import SideBarBtnList from '../../../components/common/SideBarBtnList';
+import SideBarTitle from '../../../components/common/SideBarTitle';
+import useFetchFile from '../../../hooks/useFetchFile';
+import useModelPermissions from '../useModelPermissions';
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -211,25 +211,25 @@ const SideBarContent = ({
   const fileFetcher = useFetchFile();
 
   const baseStyles = {
-    width: "100%",
-    height: "40px",
+    width: '100%',
+    height: '40px',
     fontSize: 15,
-    margin: "5px 0",
+    margin: '5px 0',
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
   };
   const commonStyles = {
     ...baseStyles,
-    color: "var(--color-grey-bright)",
-    hoverColor: "var(--color-white)",
-    backgroundColor: "var(--color-primary-bright)",
-    backgroundHoverColor: "var(--color-primary-light)",
+    color: 'var(--color-grey-bright)',
+    hoverColor: 'var(--color-white)',
+    backgroundColor: 'var(--color-primary-bright)',
+    backgroundHoverColor: 'var(--color-primary-light)',
   };
 
   const profileButtons = [
     {
-      text: "Edit Profile",
+      text: 'Edit Profile',
       icon: <PerformanceIcon />,
       styles: { ...commonStyles },
       onClick: handleEditProfile,
@@ -241,21 +241,21 @@ const SideBarContent = ({
         ...baseStyles,
         disabled: disableSelect,
         hoverColor: disableSelect
-          ? "var(--color-white)"
-          : "var(--color-primary-dark)",
+          ? 'var(--color-white)'
+          : 'var(--color-primary-dark)',
         backgroundHoverColor: disableSelect
-          ? "var(--color-primary-light)"
+          ? 'var(--color-primary-light)'
           : undefined,
       },
       onClick: disableSelect ? () => {} : handleSelectProfile,
     },
     {
-      text: "Delete Profile",
+      text: 'Delete Profile',
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
-        backgroundColor: "var(--color-warning)",
-        backgroundHoverColor: "var(--color-warning-hover)",
+        backgroundColor: 'var(--color-warning)',
+        backgroundHoverColor: 'var(--color-warning-hover)',
       },
       onClick: handleDeleteProfile,
     },
@@ -263,18 +263,18 @@ const SideBarContent = ({
 
   const modelButtons = [
     {
-      text: "Edit Model",
+      text: 'Edit Model',
       icon: <ModelIcon />,
       styles: { ...commonStyles },
       onClick: handleEditProfile,
     },
     {
-      text: "Delete Model",
+      text: 'Delete Model',
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
-        backgroundColor: "var(--color-warning)",
-        backgroundHoverColor: "var(--color-warning-hover)",
+        backgroundColor: 'var(--color-warning)',
+        backgroundHoverColor: 'var(--color-warning-hover)',
       },
       onClick: handleDeleteProfile,
     },
@@ -282,19 +282,19 @@ const SideBarContent = ({
 
   const arrangementButtons = [
     {
-      text: "Add Compartment",
+      text: 'Add Compartment',
       icon: <BaggageIcon />,
       styles: { ...commonStyles },
       onClick: handleAddBaggage,
     },
     {
-      text: "Add Seat Row",
+      text: 'Add Seat Row',
       icon: <SeatIcon />,
       styles: { ...commonStyles },
       onClick: handleAddSeat,
     },
     {
-      text: "Add Fuel Tank",
+      text: 'Add Fuel Tank',
       icon: <TankIcon />,
       styles: { ...commonStyles, disabled: disableAddFuelTank },
       onClick: handleAddFuel,
@@ -303,13 +303,13 @@ const SideBarContent = ({
 
   const weightBalanceButtons = [
     {
-      text: "Edit W&B Data",
+      text: 'Edit W&B Data',
       icon: <EditIcon />,
       styles: { ...commonStyles },
       onClick: handleEditWBData,
     },
     {
-      text: "Add W&B Profile",
+      text: 'Add W&B Profile',
       icon: <AddIcon />,
       styles: { ...commonStyles, disabled: disableAddWeightBalance },
       onClick: handleAddWBProfile,
@@ -318,29 +318,29 @@ const SideBarContent = ({
 
   const takeoffButtons = [
     {
-      text: "Edit Wind Adjustments",
+      text: 'Edit Wind Adjustments',
       icon: <WindIcon />,
       styles: { ...commonStyles },
       onClick: handleEditTakeoffData,
     },
     {
-      text: "Add Runway Adjustment",
+      text: 'Add Runway Adjustment',
       icon: <RunwayIcon />,
       styles: { ...commonStyles },
       onClick: handleAddTakeoffData,
     },
     {
-      text: "Download Data",
+      text: 'Download Data',
       icon: <DownloadIcon />,
       styles: { ...baseStyles },
       onClick: () => {
         fileFetcher(
-          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=true`
+          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=true`,
         );
       },
     },
     {
-      text: "Import Data",
+      text: 'Import Data',
       icon: <ImportIcon />,
       styles: { ...commonStyles },
       onClick: handleImportTakeoffData,
@@ -349,13 +349,13 @@ const SideBarContent = ({
 
   const climbButtons = [
     {
-      text: "Edit Adjustment Values",
+      text: 'Edit Adjustment Values',
       icon: <EditIcon />,
       styles: { ...commonStyles },
       onClick: handleEditClimbData,
     },
     {
-      text: "Download Data",
+      text: 'Download Data',
       icon: <DownloadIcon />,
       styles: { ...baseStyles },
       onClick: () => {
@@ -363,7 +363,7 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Import Data",
+      text: 'Import Data',
       icon: <ImportIcon />,
       styles: { ...commonStyles },
       onClick: handleImportClimbData,
@@ -372,7 +372,7 @@ const SideBarContent = ({
 
   const cruiseButtons = [
     {
-      text: "Download Data",
+      text: 'Download Data',
       icon: <DownloadIcon />,
       styles: { ...baseStyles },
       onClick: () => {
@@ -380,7 +380,7 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Import Data",
+      text: 'Import Data',
       icon: <ImportIcon />,
       styles: { ...commonStyles },
       onClick: handleImportCruiseData,
@@ -389,29 +389,29 @@ const SideBarContent = ({
 
   const landButtons = [
     {
-      text: "Edit Wind Adjustments",
+      text: 'Edit Wind Adjustments',
       icon: <WindIcon />,
       styles: { ...commonStyles },
       onClick: handleEditLandData,
     },
     {
-      text: "Add Runway Adjustment",
+      text: 'Add Runway Adjustment',
       icon: <RunwayIcon />,
       styles: { ...commonStyles },
       onClick: handleAddLandData,
     },
     {
-      text: "Download Data",
+      text: 'Download Data',
       icon: <DownloadIcon />,
       styles: { ...baseStyles },
       onClick: () => {
         fileFetcher(
-          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=false`
+          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=false`,
         );
       },
     },
     {
-      text: "Import Data",
+      text: 'Import Data',
       icon: <ImportIcon />,
       styles: { ...commonStyles },
       onClick: handleImportLandData,
@@ -420,17 +420,17 @@ const SideBarContent = ({
 
   const downloadButtons = [
     {
-      text: "Takeoff Performance",
+      text: 'Takeoff Performance',
       icon: <TakeoffIcon />,
       styles: { ...baseStyles },
       onClick: () => {
         fileFetcher(
-          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=true`
+          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=true`,
         );
       },
     },
     {
-      text: "Climb Performance",
+      text: 'Climb Performance',
       icon: <ClimbIcon />,
       styles: { ...baseStyles },
       onClick: () => {
@@ -438,7 +438,7 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Cruise Performance",
+      text: 'Cruise Performance',
       icon: <CruiseIcon />,
       styles: { ...baseStyles },
       onClick: () => {
@@ -446,12 +446,12 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Landing Performance",
+      text: 'Landing Performance',
       icon: <LandingIcon />,
       styles: { ...baseStyles },
       onClick: () => {
         fileFetcher(
-          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=false`
+          `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=false`,
         );
       },
     },
@@ -460,7 +460,7 @@ const SideBarContent = ({
   return (
     <HtmlContainer>
       <SideBarTitle>{`Aircraft  ${
-        isModel ? "Model" : "Performance Profile"
+        isModel ? 'Model' : 'Performance Profile'
       }`}</SideBarTitle>
       <SideBarIndex
         handleChangeSection={handleChangeSection}

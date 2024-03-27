@@ -1,9 +1,9 @@
-import { LiaTimesSolid } from "react-icons/lia";
-import { styled } from "styled-components";
-import { Dispatch } from "react";
+import { LiaTimesSolid } from 'react-icons/lia';
+import { styled } from 'styled-components';
+import { Dispatch } from 'react';
 
-import { FilterAction } from "./filtersReducer";
-import { FiltersType } from "./FilterButton";
+import { FilterAction } from './filtersReducer';
+import { FiltersType } from './FilterButton';
 
 const HtmlContainer = styled.div`
   width: 98%;
@@ -58,7 +58,7 @@ const FilterTags = ({ filters, selectedFilters, dispatch }: Props) => {
             <HtmlFilterTag key={`${filter.key}-${filter.value}`}>
               <span>{filter.title}</span>
               <LiaTimesSolid
-                onClick={() => dispatch({ type: "REMOVE", index: idx })}
+                onClick={() => dispatch({ type: 'REMOVE', index: idx })}
               />
             </HtmlFilterTag>
           );

@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
-import { FaDownload, FaRegFilePdf } from "react-icons/fa6";
-import { styled } from "styled-components";
-import { PDFViewer, usePDF } from "@react-pdf/renderer";
+import { ReactNode } from 'react';
+import { FaDownload, FaRegFilePdf } from 'react-icons/fa6';
+import { styled } from 'styled-components';
+import { PDFViewer, usePDF } from '@react-pdf/renderer';
 
-import PdfDocument from "./PdfDocument";
-import type { Props as PdfContent } from "./PdfDocument";
-import Button from "../button/index";
-import FlightWarningList from "../../FlightWarningList";
+import PdfDocument from './PdfDocument';
+import type { Props as PdfContent } from './PdfDocument';
+import Button from '../button/index';
+import FlightWarningList from '../../FlightWarningList';
 
 const HtmlPDFViwerContainer = styled.div`
   width: 100%;
@@ -92,7 +92,7 @@ const PdfRenderer = ({ content, btnText, handleBtnClick }: Props) => {
         <FlightWarningList
           warnings={[
             [
-              "PDF Viwer is only supported in desktop web-browsers. To view the briefing in a mobile browser, open the PDF in a new tab.",
+              'PDF Viwer is only supported in desktop web-browsers. To view the briefing in a mobile browser, open the PDF in a new tab.',
             ],
           ]}
         />

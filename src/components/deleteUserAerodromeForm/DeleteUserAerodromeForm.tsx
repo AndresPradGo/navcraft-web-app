@@ -1,11 +1,11 @@
-import { IoWarningOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { IoWarningOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import Button from "../common/button";
-import useDeleteUserAerodrome from "./useDeleteUserAerodrome";
-import { useNavigate } from "react-router-dom";
+import Button from '../common/button';
+import useDeleteUserAerodrome from './useDeleteUserAerodrome';
+import { useNavigate } from 'react-router-dom';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -113,7 +113,7 @@ interface Props {
   closeModal: () => void;
   name: string;
   id: number;
-  queryKey: "user" | "all";
+  queryKey: 'user' | 'all';
   isAdmin: boolean;
   redirect?: boolean;
 }
@@ -128,7 +128,7 @@ const DeleteUserAerodromeForm = ({
 }: Props) => {
   const navigate = useNavigate();
   const deleteMutation = useDeleteUserAerodrome(() => {
-    if (redirect) navigate("/waypoints?section=aerodromes");
+    if (redirect) navigate('/waypoints?section=aerodromes');
   }, queryKey);
 
   const handleDelete = () => {
@@ -144,7 +144,7 @@ const DeleteUserAerodromeForm = ({
       <h1>
         <div>
           <TitleIcon />
-          {`Delete${isAdmin ? " User " : " "}Aerodrome`}
+          {`Delete${isAdmin ? ' User ' : ' '}Aerodrome`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>

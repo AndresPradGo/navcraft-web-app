@@ -1,58 +1,58 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { AiOutlineSwap } from "react-icons/ai";
-import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { BsCalendarDate, BsNewspaper } from "react-icons/bs";
-import { FaClipboardList, FaRoute, FaCloudSunRain } from "react-icons/fa";
-import { FaScaleUnbalanced, FaHandHoldingDroplet } from "react-icons/fa6";
-import { IoAirplane } from "react-icons/io5";
-import { MdOutlineStart } from "react-icons/md";
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { AiOutlineSwap } from 'react-icons/ai';
+import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from 'react-icons/bi';
+import { BsCalendarDate, BsNewspaper } from 'react-icons/bs';
+import { FaClipboardList, FaRoute, FaCloudSunRain } from 'react-icons/fa';
+import { FaScaleUnbalanced, FaHandHoldingDroplet } from 'react-icons/fa6';
+import { IoAirplane } from 'react-icons/io5';
+import { MdOutlineStart } from 'react-icons/md';
 import {
   PiMapPinDuotone,
   PiChartPolarDuotone,
   PiCircleDuotone,
-} from "react-icons/pi";
-import { RiMapPinUserFill } from "react-icons/ri";
-import { styled } from "styled-components";
+} from 'react-icons/pi';
+import { RiMapPinUserFill } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import { ContentLayout } from "../layout";
-import useFlightData from "./hooks/useFlightData";
-import Loader from "../../components/Loader";
-import useAerodromesData from "../../hooks/useAerodromesData";
-import useAircraftDataList from "../../hooks/useAircraftDataList";
-import formatUTCDate from "../../utils/formatUTCDate";
-import formatUTCTime from "../../utils/formatUTCTime";
-import SideBarContent from "./components/SideBarContent";
-import { useModal, Modal } from "../../components/common/modal";
-import DeleteFlightForm from "../../components/deleteFlightForm";
-import EditFlightForm from "./components/EditFlightForm";
-import ChangeAircraftForm from "./components/ChangeAircraftForm";
-import EditDepartureArrivalForm from "./components/EditDepartureArrivalForm";
-import RefreshWeatherForm from "./components/RefreshWeatherForm";
-import MapSection from "./components/map/MapSection";
-import { useSideBar } from "../../components/sidebar";
-import useNavLogData from "./hooks/useNavLogData";
-import useWeightBalanceReport from "./hooks/useWeightBalanceReport";
-import useTakeoffLandingDistances from "./hooks/useTakeoffLandingDistances";
-import useFuelCalculations from "./hooks/useFuelCalculations";
-import useVfrWaypointsData from "../../hooks/useVfrWaypointsData";
-import useUserWaypointsData from "../../hooks/useUserWaypointsData";
+import { ContentLayout } from '../layout';
+import useFlightData from './hooks/useFlightData';
+import Loader from '../../components/Loader';
+import useAerodromesData from '../../hooks/useAerodromesData';
+import useAircraftDataList from '../../hooks/useAircraftDataList';
+import formatUTCDate from '../../utils/formatUTCDate';
+import formatUTCTime from '../../utils/formatUTCTime';
+import SideBarContent from './components/SideBarContent';
+import { useModal, Modal } from '../../components/common/modal';
+import DeleteFlightForm from '../../components/deleteFlightForm';
+import EditFlightForm from './components/EditFlightForm';
+import ChangeAircraftForm from './components/ChangeAircraftForm';
+import EditDepartureArrivalForm from './components/EditDepartureArrivalForm';
+import RefreshWeatherForm from './components/RefreshWeatherForm';
+import MapSection from './components/map/MapSection';
+import { useSideBar } from '../../components/sidebar';
+import useNavLogData from './hooks/useNavLogData';
+import useWeightBalanceReport from './hooks/useWeightBalanceReport';
+import useTakeoffLandingDistances from './hooks/useTakeoffLandingDistances';
+import useFuelCalculations from './hooks/useFuelCalculations';
+import useVfrWaypointsData from '../../hooks/useVfrWaypointsData';
+import useUserWaypointsData from '../../hooks/useUserWaypointsData';
 import {
   MapStateType,
   MapInputStyleType,
-} from "../../components/SideBarMapOptions";
-import NavLogSection from "./components/NavLogSection";
-import TakeoffLandinDistancesSection from "./components/TakeoffLandinDistancesSection";
-import AddLegForm from "./components/AddLegForm";
-import WeightBalanceSection from "./components/WeightBalanceSection";
-import FuelCalculationsSection from "./components/FuelCalculationsSection";
-import WeatherBriefingSection from "./components/WeatherBriefingSection";
-import NotamsBriefingSection from "./components/NotamsBriefingSection";
-import useSetTitle from "../../hooks/useSetTitle";
-import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
-import AnnouncementBox from "../../components/common/AnnouncementBox";
-import useWeatherBriefing from "./hooks/useWeatherBriefing";
-import useNotamBriefing from "./hooks/useNotamBriefing";
+} from '../../components/SideBarMapOptions';
+import NavLogSection from './components/NavLogSection';
+import TakeoffLandinDistancesSection from './components/TakeoffLandinDistancesSection';
+import AddLegForm from './components/AddLegForm';
+import WeightBalanceSection from './components/WeightBalanceSection';
+import FuelCalculationsSection from './components/FuelCalculationsSection';
+import WeatherBriefingSection from './components/WeatherBriefingSection';
+import NotamsBriefingSection from './components/NotamsBriefingSection';
+import useSetTitle from '../../hooks/useSetTitle';
+import useUnauthorizedErrorHandler from '../../hooks/useUnauthorizedErrorHandler';
+import AnnouncementBox from '../../components/common/AnnouncementBox';
+import useWeatherBriefing from './hooks/useWeatherBriefing';
+import useNotamBriefing from './hooks/useNotamBriefing';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -69,14 +69,14 @@ interface TitleData {
   $isMap: boolean;
 }
 const HtmlTitleContainer = styled.div<TitleData>`
-  margin-bottom: ${(props) => (props.$isMap ? "0" : "30px")};
+  margin-bottom: ${(props) => (props.$isMap ? '0' : '30px')};
   width: 100%;
   max-width: 1380px;
   align-self: center;
-  padding: 0 ${(props) => (props.$isMap ? "3%" : "0")};
+  padding: 0 ${(props) => (props.$isMap ? '3%' : '0')};
 
   @media screen and (min-width: 1000px) {
-    padding: 0 ${(props) => (props.$isMap ? "30px" : "0")};
+    padding: 0 ${(props) => (props.$isMap ? '30px' : '0')};
   }
 
   & div:first-of-type {
@@ -187,8 +187,8 @@ const FlightPage = () => {
     showSavedWaypoints: false,
     showCharts: false,
   });
-  const [formToDisplay, setFormToDisplay] = useState<"delete" | "edit">(
-    "delete"
+  const [formToDisplay, setFormToDisplay] = useState<'delete' | 'edit'>(
+    'delete',
   );
 
   const generalModal = useModal();
@@ -201,7 +201,7 @@ const FlightPage = () => {
   const { handleExpandSideBar } = useSideBar();
 
   const { id: stringId } = useParams();
-  const flightId = parseInt(stringId || "0");
+  const flightId = parseInt(stringId || '0');
   const { data: flightData, error, isLoading } = useFlightData(flightId);
 
   const {
@@ -218,16 +218,16 @@ const FlightPage = () => {
     error: aerodromesError,
   } = useAerodromesData(true);
   const departure = aerodromes?.find(
-    (a) => a.id === flightData?.departure_aerodrome_id
+    (a) => a.id === flightData?.departure_aerodrome_id,
   );
   const arrival = aerodromes?.find(
-    (a) => a.id === flightData?.arrival_aerodrome_id
+    (a) => a.id === flightData?.arrival_aerodrome_id,
   );
 
   useSetTitle(
     departure && arrival
       ? `Flight from ${departure.code} to ${arrival.code}`
-      : "Flight"
+      : 'Flight',
   );
 
   const missingAerodrome = !departure || !arrival;
@@ -262,7 +262,7 @@ const FlightPage = () => {
   } = useWeightBalanceReport(
     flightId,
     !aircraft || !aircraftProfile,
-    missingAerodrome
+    missingAerodrome,
   );
 
   const { isLoading: vfrWaypointsIsLoading, error: vfrWaypointsError } =
@@ -282,7 +282,7 @@ const FlightPage = () => {
   } = useFuelCalculations(
     flightId,
     !aircraft || !aircraftProfile,
-    missingAerodrome
+    missingAerodrome,
   );
 
   const {
@@ -293,18 +293,18 @@ const FlightPage = () => {
   } = useTakeoffLandingDistances(
     flightId,
     !aircraft || !aircraftProfile,
-    missingAerodrome
+    missingAerodrome,
   );
 
   useUnauthorizedErrorHandler([error]);
 
   if (
-    (error && error.message !== "Network Error") ||
-    (legsError && legsError.response?.data.detail === "Flight not found.")
+    (error && error.message !== 'Network Error') ||
+    (legsError && legsError.response?.data.detail === 'Flight not found.')
   )
-    throw new Error("notFound");
+    throw new Error('notFound');
   else if (
-    (error && error.message === "Network Error") ||
+    (error && error.message === 'Network Error') ||
     aerodromesError ||
     weatherBriefingError ||
     notamBriefingError ||
@@ -314,7 +314,7 @@ const FlightPage = () => {
       legsError?.response?.data.detail !==
         "The flight's aircraft doesn't have preferred performance profile." &&
       legsError?.response?.data.detail !==
-        "Please make sure the flight has a departure and arrival aerodrome.") ||
+        'Please make sure the flight has a departure and arrival aerodrome.') ||
     vfrWaypointsError ||
     userWaypointsError ||
     (weightBalanceError &&
@@ -323,23 +323,23 @@ const FlightPage = () => {
       weightBalanceError?.response?.data.detail !==
         "The flight's aircraft doesn't have preferred performance profile." &&
       weightBalanceError?.response?.data.detail !==
-        "Please make sure the flight has a departure and arrival aerodrome.") ||
+        'Please make sure the flight has a departure and arrival aerodrome.') ||
     (fuelCalculationsError &&
       fuelCalculationsError?.response?.data.detail !==
         "Flight doesn't have an aircraft." &&
       fuelCalculationsError?.response?.data.detail !==
         "The flight's aircraft doesn't have preferred performance profile." &&
       fuelCalculationsError?.response?.data.detail !==
-        "Please make sure the flight has a departure and arrival aerodrome.") ||
+        'Please make sure the flight has a departure and arrival aerodrome.') ||
     (takeoffLandingDistancesError &&
       takeoffLandingDistancesError?.response?.data.detail !==
         "Flight doesn't have an aircraft." &&
       takeoffLandingDistancesError?.response?.data.detail !==
         "The flight's aircraft doesn't have preferred performance profile." &&
       takeoffLandingDistancesError?.response?.data.detail !==
-        "Please make sure the flight has a departure and arrival aerodrome.")
+        'Please make sure the flight has a departure and arrival aerodrome.')
   )
-    throw new Error("");
+    throw new Error('');
 
   if (
     aircraftListIsLoading ||
@@ -356,44 +356,44 @@ const FlightPage = () => {
 
   const sections = [
     {
-      key: "navLog",
-      title: "Flight Summary",
+      key: 'navLog',
+      title: 'Flight Summary',
       icon: <FaClipboardList />,
     },
     {
-      key: "weightBalance",
-      title: "Weight & Balance",
+      key: 'weightBalance',
+      title: 'Weight & Balance',
       icon: <FaScaleUnbalanced />,
     },
     {
-      key: "fuelLog",
-      title: "Fuel Calculations",
+      key: 'fuelLog',
+      title: 'Fuel Calculations',
       icon: <FaHandHoldingDroplet />,
     },
     {
-      key: "takeoff",
-      title: "Takeoff Distances",
+      key: 'takeoff',
+      title: 'Takeoff Distances',
       icon: <BiSolidPlaneTakeOff />,
     },
     {
-      key: "landing",
-      title: "Landing Distances",
+      key: 'landing',
+      title: 'Landing Distances',
       icon: <BiSolidPlaneLand />,
     },
     {
-      key: "weather",
-      title: "Weather Briefing",
+      key: 'weather',
+      title: 'Weather Briefing',
       icon: <FaCloudSunRain />,
     },
     {
-      key: "notam",
-      title: "NOTAMs Briefing",
+      key: 'notam',
+      title: 'NOTAMs Briefing',
       icon: <BsNewspaper />,
     },
   ];
 
   const handleMapStateChange = (key: keyof MapStateType, value: boolean) => {
-    if (key === "open") handleExpandSideBar(false);
+    if (key === 'open') handleExpandSideBar(false);
     setMapState((prev) => {
       const newMapState = { ...prev };
       newMapState[key] = value;
@@ -401,7 +401,7 @@ const FlightPage = () => {
     });
   };
 
-  const aircraftRegistration = aircraft?.registration || "";
+  const aircraftRegistration = aircraft?.registration || '';
 
   const handleChangeToNextTable = () => {
     if (sectionIdx >= sections.length - 1) setSectionIdx(0);
@@ -410,28 +410,28 @@ const FlightPage = () => {
 
   const mapInputs = [
     {
-      key: "showAerodromes",
+      key: 'showAerodromes',
       icon: <PiChartPolarDuotone />,
-      text: "Aerodromes",
-      color: "var(--color-nav-3)",
+      text: 'Aerodromes',
+      color: 'var(--color-nav-3)',
     },
     {
-      key: "showVfrWaypoints",
+      key: 'showVfrWaypoints',
       icon: <PiMapPinDuotone />,
-      text: "VFR Waypoints",
-      color: "var(--color-nav-4)",
+      text: 'VFR Waypoints',
+      color: 'var(--color-nav-4)',
     },
     {
-      key: "showSavedAerodromes",
+      key: 'showSavedAerodromes',
       icon: <PiCircleDuotone />,
-      text: "Saved Aerodromes",
-      color: "var(--color-nav-3)",
+      text: 'Saved Aerodromes',
+      color: 'var(--color-nav-3)',
     },
     {
-      key: "showSavedWaypoints",
+      key: 'showSavedWaypoints',
       icon: <RiMapPinUserFill />,
-      text: "Saved Waypoints",
-      color: "var(--color-nav-4)",
+      text: 'Saved Waypoints',
+      color: 'var(--color-nav-4)',
     },
   ] as MapInputStyleType[];
 
@@ -458,7 +458,7 @@ const FlightPage = () => {
           noAerodrome={!arrival}
           flightId={flightId}
           currentData={{
-            aerodrome: `${arrival?.code}: ${arrival?.name}` || "",
+            aerodrome: `${arrival?.code}: ${arrival?.name}` || '',
             wind_magnitude_knot: flightData
               ? flightData.arrival_weather.wind_magnitude_knot
               : 0,
@@ -482,7 +482,7 @@ const FlightPage = () => {
           noAerodrome={!departure}
           flightId={flightId}
           currentData={{
-            aerodrome: `${departure?.code}: ${departure?.name}` || "",
+            aerodrome: `${departure?.code}: ${departure?.name}` || '',
             wind_magnitude_knot: flightData
               ? flightData.departure_weather.wind_magnitude_knot
               : 0,
@@ -514,14 +514,14 @@ const FlightPage = () => {
         />
       </Modal>
       <Modal isOpen={generalModal.isOpen}>
-        {formToDisplay === "delete" ? (
+        {formToDisplay === 'delete' ? (
           <DeleteFlightForm
             closeModal={generalModal.handleClose}
             route={`from ${departure?.code} to ${arrival?.code}`}
             flightId={flightId}
             redirect={true}
           />
-        ) : formToDisplay === "edit" ? (
+        ) : formToDisplay === 'edit' ? (
           <EditFlightForm
             closeModal={generalModal.handleClose}
             flightId={flightId}
@@ -558,12 +558,12 @@ const FlightPage = () => {
             mapInputs={mapInputs}
             handleChangeSection={(id: number) => {
               setSectionIdx(id);
-              handleMapStateChange("open", false);
+              handleMapStateChange('open', false);
             }}
             sectionIndex={sectionIdx}
             sectionOptions={sections}
             handleEditFlight={() => {
-              setFormToDisplay("edit");
+              setFormToDisplay('edit');
               generalModal.handleOpen();
             }}
             handleEditDeparture={departureModal.handleOpen}
@@ -571,7 +571,7 @@ const FlightPage = () => {
             handleChangeAircraft={aircraftModal.handleOpen}
             handleRefreshWeather={weatherModal.handleOpen}
             handleDeleteFlight={() => {
-              setFormToDisplay("delete");
+              setFormToDisplay('delete');
               generalModal.handleOpen();
             }}
           />
@@ -613,9 +613,9 @@ const FlightPage = () => {
                   <BsCalendarDate />
                   {flightData
                     ? `${formatUTCDate(
-                        flightData.departure_time
+                        flightData.departure_time,
                       )}@${formatUTCTime(flightData.departure_time)}`
-                    : ""}
+                    : ''}
                 </i>
               </span>
             </div>
@@ -648,8 +648,8 @@ const FlightPage = () => {
                   flightData.weather_hours_from_etd
                 } hours away from the ETD.${
                   flightData.weather_hours_from_etd > 4
-                    ? " For a more accurate flight plan, update the weather data closer to the ETD."
-                    : ""
+                    ? ' For a more accurate flight plan, update the weather data closer to the ETD.'
+                    : ''
                 }`}
               />
             )
@@ -686,7 +686,7 @@ const FlightPage = () => {
           ) : sectionIdx === 3 ? (
             <TakeoffLandinDistancesSection
               isTakeoff={true}
-              aerodrome={departure ? departure.name : "-"}
+              aerodrome={departure ? departure.name : '-'}
               elevation={departure ? departure.elevation_ft : 0}
               flightId={flightId}
               isLoading={
@@ -697,7 +697,7 @@ const FlightPage = () => {
           ) : sectionIdx === 4 ? (
             <TakeoffLandinDistancesSection
               isTakeoff={false}
-              aerodrome={arrival ? arrival.name : "-"}
+              aerodrome={arrival ? arrival.name : '-'}
               elevation={arrival ? arrival.elevation_ft : 0}
               flightId={flightId}
               isLoading={

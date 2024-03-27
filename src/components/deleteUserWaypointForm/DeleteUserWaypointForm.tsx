@@ -1,10 +1,10 @@
-import { IoWarningOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { IoWarningOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import Button from "../common/button";
-import useDeleteUserWaypoint from "./useDeleteUserWaypoint";
+import Button from '../common/button';
+import useDeleteUserWaypoint from './useDeleteUserWaypoint';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -132,7 +132,7 @@ const DeleteUserWaypointForm = ({ closeModal, name, id, isAdmin }: Props) => {
       <h1>
         <div>
           <TitleIcon />
-          {`Delete${isAdmin ? " User " : " "}Waypoint`}
+          {`Delete${isAdmin ? ' User ' : ' '}Waypoint`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>

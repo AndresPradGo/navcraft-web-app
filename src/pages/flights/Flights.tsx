@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { PiAirplaneInFlightDuotone } from "react-icons/pi";
-import { IoAdd } from "react-icons/io5";
-import { styled } from "styled-components";
+import { useState } from 'react';
+import { PiAirplaneInFlightDuotone } from 'react-icons/pi';
+import { IoAdd } from 'react-icons/io5';
+import { styled } from 'styled-components';
 
-import { ContentLayout } from "../layout";
-import Table from "../../components/common/table";
-import Button from "../../components/common/button/index";
-import { Modal, useModal } from "../../components/common/modal";
-import AddFlightForm from "./AddFlightForm";
-import useAircraftDataList from "../../hooks/useAircraftDataList";
-import Loader from "../../components/Loader";
-import useAerodromesData from "../../hooks/useAerodromesData";
-import useFlightsList from "./useFlightsList";
-import formatUTCDate from "../../utils/formatUTCDate";
-import formatUTCTime from "../../utils/formatUTCTime";
-import DeleteFlightForm from "../../components/deleteFlightForm";
-import useSetTitle from "../../hooks/useSetTitle";
-import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
+import { ContentLayout } from '../layout';
+import Table from '../../components/common/table';
+import Button from '../../components/common/button/index';
+import { Modal, useModal } from '../../components/common/modal';
+import AddFlightForm from './AddFlightForm';
+import useAircraftDataList from '../../hooks/useAircraftDataList';
+import Loader from '../../components/Loader';
+import useAerodromesData from '../../hooks/useAerodromesData';
+import useFlightsList from './useFlightsList';
+import formatUTCDate from '../../utils/formatUTCDate';
+import formatUTCTime from '../../utils/formatUTCTime';
+import DeleteFlightForm from '../../components/deleteFlightForm';
+import useSetTitle from '../../hooks/useSetTitle';
+import useUnauthorizedErrorHandler from '../../hooks/useUnauthorizedErrorHandler';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -68,10 +68,10 @@ const AddIcon = styled(IoAdd)`
 
 const flights = () => {
   const [deleteFlightData, setDeleteFlightData] = useState({
-    route: "",
+    route: '',
     id: 0,
   });
-  useSetTitle("Flights");
+  useSetTitle('Flights');
   const addModal = useModal();
   const deleteModal = useModal();
   const {
@@ -100,28 +100,28 @@ const flights = () => {
 
   if (flightsIsLoading || aircraftListIsLoading || aerodromesIsLoading)
     return <Loader />;
-  if (flightsError || aircraftListError || aerodromesError) throw new Error("");
+  if (flightsError || aircraftListError || aerodromesError) throw new Error('');
 
   const tableData = {
-    keys: ["route", "aircraft", "date", "etd", "waypoints"],
+    keys: ['route', 'aircraft', 'date', 'etd', 'waypoints'],
     headers: {
-      route: "Route",
-      aircraft: "Aircraft",
-      date: "Date",
-      etd: "ETD",
-      waypoints: "Waypoints",
+      route: 'Route',
+      aircraft: 'Aircraft',
+      date: 'Date',
+      etd: 'ETD',
+      waypoints: 'Waypoints',
     },
     rows:
       flights && aerodromes && aircraftList
         ? flights.map((flight) => {
             const departure =
               aerodromes.find((a) => a.id === flight.departure_aerodrome_id)
-                ?.code || "#";
+                ?.code || '#';
             const arrival =
               aerodromes.find((a) => a.id === flight.arrival_aerodrome_id)
-                ?.code || "#";
+                ?.code || '#';
             const aircraft = aircraftList.find(
-              (a) => a.id === flight.aircraft_id
+              (a) => a.id === flight.aircraft_id,
             );
 
             return {
@@ -129,12 +129,12 @@ const flights = () => {
               route: `${departure} - ${arrival}`,
               departure: departure,
               destination: arrival,
-              aircraft: aircraft ? aircraft.registration : "-",
+              aircraft: aircraft ? aircraft.registration : '-',
               date: formatUTCDate(flight.departure_time),
               dateSort: flight.departure_time,
               etd: formatUTCTime(flight.departure_time),
               waypoints:
-                flight.waypoints.length > 0 ? flight.waypoints.join(", ") : "-",
+                flight.waypoints.length > 0 ? flight.waypoints.join(', ') : '-',
               handleEdit: `flight/${flight.id}`,
               handleDelete: () => {
                 setDeleteFlightData({
@@ -143,37 +143,37 @@ const flights = () => {
                 });
                 deleteModal.handleOpen();
               },
-              permissions: "open-delete" as "open-delete",
+              permissions: 'open-delete' as 'open-delete',
             };
           })
         : [],
   };
   const sortData = [
     {
-      title: "Departure",
-      key: "departure",
+      title: 'Departure',
+      key: 'departure',
     },
     {
-      title: "Destination",
-      key: "destination",
+      title: 'Destination',
+      key: 'destination',
     },
     {
-      title: "Aircraft",
-      key: "aircraft",
+      title: 'Aircraft',
+      key: 'aircraft',
     },
     {
-      title: "Date",
-      key: "dateSort",
+      title: 'Date',
+      key: 'dateSort',
     },
     {
-      title: "ETD",
-      key: "etd",
+      title: 'ETD',
+      key: 'etd',
     },
   ];
 
   const searchBarParameters = {
-    placeHolder: "Search Flights",
-    columnKeys: ["departure", "destination", "aircraft", "waypoints"],
+    placeHolder: 'Search Flights',
+    columnKeys: ['departure', 'destination', 'aircraft', 'waypoints'],
   };
 
   const uniqueValues = new Set();
@@ -181,9 +181,9 @@ const flights = () => {
   const flightsAircraft = flights
     .map((f) => {
       const registration =
-        aircraftList.find((a) => a.id === f.aircraft_id)?.registration || "";
+        aircraftList.find((a) => a.id === f.aircraft_id)?.registration || '';
       return {
-        key: "aircraft",
+        key: 'aircraft',
         title: `Aircraft: ${registration}`,
         value: registration,
       };
@@ -201,9 +201,9 @@ const flights = () => {
   const departures = flights
     .map((f) => {
       const code =
-        aerodromes.find((a) => a.id === f.departure_aerodrome_id)?.code || "";
+        aerodromes.find((a) => a.id === f.departure_aerodrome_id)?.code || '';
       return {
-        key: "departure",
+        key: 'departure',
         title: `Departure: ${code}`,
         value: code,
       };
@@ -221,9 +221,9 @@ const flights = () => {
   const destinations = flights
     .map((f) => {
       const code =
-        aerodromes.find((a) => a.id === f.arrival_aerodrome_id)?.code || "";
+        aerodromes.find((a) => a.id === f.arrival_aerodrome_id)?.code || '';
       return {
-        key: "destination",
+        key: 'destination',
         title: `Destination: ${code}`,
         value: code,
       };
@@ -237,7 +237,7 @@ const flights = () => {
     });
 
   const filterParameters = {
-    text: "Filter Flights",
+    text: 'Filter Flights',
     filters: [...departures, ...destinations, ...flightsAircraft],
   };
 

@@ -1,6 +1,6 @@
-import { LiaTimesSolid } from "react-icons/lia";
-import { FaFileCsv } from "react-icons/fa6";
-import { styled } from "styled-components";
+import { LiaTimesSolid } from 'react-icons/lia';
+import { FaFileCsv } from 'react-icons/fa6';
+import { styled } from 'styled-components';
 
 const HtmlFileTag = styled.p`
   overflow: hidden;

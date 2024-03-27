@@ -1,6 +1,6 @@
-import { styled } from "styled-components";
-import { LiaTimesSolid } from "react-icons/lia";
-import { useState, FormEvent } from "react";
+import { styled } from 'styled-components';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { useState, FormEvent } from 'react';
 
 const HtmlContainer = styled.div`
   margin: 10px 0;
@@ -16,7 +16,7 @@ const HtmlForm = styled.form<FormProps>`
   transition: all 0.2s linear;
   background: var(--color-grey-dark);
   border: 1px solid
-    ${(props) => (props.$isFocus ? "var(--color-white)" : "var(--color-grey)")};
+    ${(props) => (props.$isFocus ? 'var(--color-white)' : 'var(--color-grey)')};
   border-radius: 200px;
   width: 100%;
   display: flex;
@@ -91,7 +91,7 @@ const SearchBar = ({ placeHolder, text, setText }: Props) => {
 
   const handleClearSearch = (event: FormEvent) => {
     event.preventDefault();
-    setText("");
+    setText('');
   };
 
   return (
@@ -104,7 +104,7 @@ const SearchBar = ({ placeHolder, text, setText }: Props) => {
           id="search"
           type="text"
           autoComplete="off"
-          placeholder={placeHolder ? placeHolder : "Search..."}
+          placeholder={placeHolder ? placeHolder : 'Search...'}
           value={text}
         />
         <button type="submit">

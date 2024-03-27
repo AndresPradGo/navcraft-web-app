@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { AiOutlineSave } from "react-icons/ai";
-import { LiaTimesSolid } from "react-icons/lia";
-import { MdAltRoute } from "react-icons/md";
-import { RiMapPinAddFill } from "react-icons/ri";
-import { TbRoute } from "react-icons/tb";
-import { styled } from "styled-components";
-import { useForm, FieldValues } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { AiOutlineSave } from 'react-icons/ai';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { MdAltRoute } from 'react-icons/md';
+import { RiMapPinAddFill } from 'react-icons/ri';
+import { TbRoute } from 'react-icons/tb';
+import { styled } from 'styled-components';
+import { useForm, FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import DataList from "../../../components/common/datalist";
-import usePostNewLeg from "../hooks/usePostNewLeg";
-import { OfficialAerodromeDataFromAPI } from "../../../services/officialAerodromeClient";
-import { VfrWaypointDataFromAPI } from "../../../services/vfrWaypointClient";
-import { WaypointDataFromAPI } from "../../../services/userWaypointClient";
-import { FlightDataFromApi } from "../../../services/flightClient";
-import Loader from "../../../components/Loader";
+import Button from '../../../components/common/button';
+import DataList from '../../../components/common/datalist';
+import usePostNewLeg from '../hooks/usePostNewLeg';
+import { OfficialAerodromeDataFromAPI } from '../../../services/officialAerodromeClient';
+import { VfrWaypointDataFromAPI } from '../../../services/vfrWaypointClient';
+import { WaypointDataFromAPI } from '../../../services/userWaypointClient';
+import { FlightDataFromApi } from '../../../services/flightClient';
+import Loader from '../../../components/Loader';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -58,7 +58,7 @@ interface HtmlInputContainerProps {
 const HtmlInputContainer = styled.div<HtmlInputContainerProps>`
   display: flex;
   flex-direction: column;
-  justify-content: ${(props) => (props.$isLoading ? "center" : "flex-start")};
+  justify-content: ${(props) => (props.$isLoading ? 'center' : 'flex-start')};
   min-height: 100%;
   width: 100%;
   overflow-y: auto;
@@ -129,14 +129,14 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
   color: var(--color-grey);
-  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
+  opacity: ${(props) => (props.$disabled ? '0.3' : '1')};
 
   &:hover,
   &:focus {
     color: ${(props) =>
-      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
+      props.$disabled ? 'var(--color-grey)' : 'var(--color-white)'};
   }
 
   @media screen and (min-width: 510px) {
@@ -167,23 +167,23 @@ const AddLegForm = ({
 }: Props) => {
   const queryClient = useQueryClient();
   const flightData = queryClient.getQueryData<FlightDataFromApi>([
-    "flight",
+    'flight',
     flightId,
   ]);
 
   const aerodromes = queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>([
-    "aerodromes",
-    "all",
+    'aerodromes',
+    'all',
   ]);
 
   const vfrWaypoints = queryClient.getQueryData<VfrWaypointDataFromAPI[]>([
-    "waypoints",
-    "vfr",
+    'waypoints',
+    'vfr',
   ]);
 
   const userWaypoints = queryClient.getQueryData<WaypointDataFromAPI[]>([
-    "waypoints",
-    "user",
+    'waypoints',
+    'user',
   ]);
 
   const {
@@ -208,15 +208,15 @@ const AddLegForm = ({
   }, [submited, mutation.isLoading]);
 
   useEffect(() => {
-    register("interceptingWaypoint");
-    register("newWaypoint");
+    register('interceptingWaypoint');
+    register('newWaypoint');
   }, []);
 
   useEffect(() => {
     if (isOpen) {
       reset({
-        interceptingWaypoint: "",
-        newWaypoint: "",
+        interceptingWaypoint: '',
+        newWaypoint: '',
       });
     }
   }, [isOpen]);
@@ -225,60 +225,60 @@ const AddLegForm = ({
     const sequence = flightWaypoints.indexOf(data.interceptingWaypoint) + 1;
     const aerodromeData = aerodromes?.find(
       (a) =>
-        `${a.code}: ${a.name}${a.registered ? "" : " (saved)"}` ===
-        data.newWaypoint
+        `${a.code}: ${a.name}${a.registered ? '' : ' (saved)'}` ===
+        data.newWaypoint,
     );
     let waypointId = aerodromeData?.id;
     let type:
-      | "aerodrome"
-      | "waypoint"
-      | "user aerodrome"
-      | "user waypoint"
+      | 'aerodrome'
+      | 'waypoint'
+      | 'user aerodrome'
+      | 'user waypoint'
       | undefined = aerodromeData?.registered
-      ? "aerodrome"
+      ? 'aerodrome'
       : waypointId
-      ? "user aerodrome"
-      : undefined;
+        ? 'user aerodrome'
+        : undefined;
     if (!waypointId) {
       const waypointData = vfrWaypoints?.find(
-        (v) => `${v.code}: ${v.name}` === data.newWaypoint
+        (v) => `${v.code}: ${v.name}` === data.newWaypoint,
       );
       waypointId = waypointData?.id;
-      type = waypointId ? "waypoint" : undefined;
+      type = waypointId ? 'waypoint' : undefined;
     }
     if (!waypointId) {
       const waypointData = userWaypoints?.find(
-        (u) => `${u.code}: ${u.name} (saved)` === data.newWaypoint
+        (u) => `${u.code}: ${u.name} (saved)` === data.newWaypoint,
       );
       waypointId = waypointData?.id;
-      type = waypointId ? "user waypoint" : undefined;
+      type = waypointId ? 'user waypoint' : undefined;
     }
 
     if (sequence === 0) {
-      setError("interceptingWaypoint", {
-        type: "manual",
-        message: "Select a valid option",
+      setError('interceptingWaypoint', {
+        type: 'manual',
+        message: 'Select a valid option',
       });
     } else if (!waypointId) {
-      setError("newWaypoint", {
-        type: "manual",
-        message: "Select a valid option",
+      setError('newWaypoint', {
+        type: 'manual',
+        message: 'Select a valid option',
       });
     } else {
       mutation.mutate({
         type,
         existing_waypoint_id: waypointId,
         new_waypoint: {
-          code: "",
-          name: "",
+          code: '',
+          name: '',
           lat_degrees: 0,
           lat_minutes: 0,
           lat_seconds: 0,
-          lat_direction: "N",
+          lat_direction: 'N',
           lon_degrees: 0,
           lon_minutes: 0,
           lon_seconds: 0,
-          lon_direction: "W",
+          lon_direction: 'W',
         },
         sequence,
       });
@@ -288,15 +288,15 @@ const AddLegForm = ({
 
   const flightWaypoints = [
     `${departureAerodrome.code}: ${departureAerodrome.name}${
-      departureAerodrome.registered ? "" : " (saved)"
+      departureAerodrome.registered ? '' : ' (saved)'
     }`,
   ];
   for (const leg of flightData?.legs || []) {
     if (leg.waypoint)
       flightWaypoints.push(
         `${leg.waypoint.code}: ${leg.waypoint.name}${
-          !leg.waypoint.from_user_waypoint ? "" : " (saved)"
-        }`
+          !leg.waypoint.from_user_waypoint ? '' : ' (saved)'
+        }`,
       );
   }
 
@@ -306,10 +306,10 @@ const AddLegForm = ({
     .concat(
       userWaypoints?.map((u) => `${u.code}: ${u.name} (saved)`) || [],
       aerodromes?.map(
-        (a) => `${a.code}: ${a.name}${a.registered ? "" : " (saved)"}`
-      ) || []
+        (a) => `${a.code}: ${a.name}${a.registered ? '' : ' (saved)'}`,
+      ) || [],
     )
-    .filter((item) => item !== watch("interceptingWaypoint"))
+    .filter((item) => item !== watch('interceptingWaypoint'))
     .sort();
 
   return (
@@ -332,19 +332,19 @@ const AddLegForm = ({
           <>
             <DataList
               setError={(message) =>
-                setError("interceptingWaypoint", {
-                  type: "manual",
+                setError('interceptingWaypoint', {
+                  type: 'manual',
                   message: message,
                 })
               }
-              clearErrors={() => clearErrors("interceptingWaypoint")}
+              clearErrors={() => clearErrors('interceptingWaypoint')}
               required={true}
-              value={watch("interceptingWaypoint")}
+              value={watch('interceptingWaypoint')}
               hasError={!!errors.interceptingWaypoint}
-              errorMessage={errors.interceptingWaypoint?.message || ""}
+              errorMessage={errors.interceptingWaypoint?.message || ''}
               options={flightWaypoints}
               setValue={(value: string) =>
-                setValue("interceptingWaypoint", value)
+                setValue('interceptingWaypoint', value)
               }
               name="addFlightLeg-interceptingWaypoint"
               formIsOpen={isOpen}
@@ -355,18 +355,18 @@ const AddLegForm = ({
             </DataList>
             <DataList
               setError={(message) =>
-                setError("newWaypoint", {
-                  type: "manual",
+                setError('newWaypoint', {
+                  type: 'manual',
                   message: message,
                 })
               }
-              clearErrors={() => clearErrors("newWaypoint")}
+              clearErrors={() => clearErrors('newWaypoint')}
               required={true}
-              value={watch("newWaypoint")}
+              value={watch('newWaypoint')}
               hasError={!!errors.newWaypoint}
-              errorMessage={errors.newWaypoint?.message || ""}
+              errorMessage={errors.newWaypoint?.message || ''}
               options={newWaypointOptions}
-              setValue={(value: string) => setValue("newWaypoint", value)}
+              setValue={(value: string) => setValue('newWaypoint', value)}
               name="addFlightLeg-newWaypoint"
               formIsOpen={isOpen}
               resetValue=""

@@ -1,13 +1,13 @@
-import { FaTools } from "react-icons/fa";
-import { FaUser, FaUserShield } from "react-icons/fa6";
-import { IoAirplane, IoAirplaneOutline } from "react-icons/io5";
-import { styled } from "styled-components";
+import { FaTools } from 'react-icons/fa';
+import { FaUser, FaUserShield } from 'react-icons/fa6';
+import { IoAirplane, IoAirplaneOutline } from 'react-icons/io5';
+import { styled } from 'styled-components';
 
 import SideBarIndex, {
   PageSectionDataType,
-} from "../../components/common/SideBarIndex";
-import SideBarBtnList from "../../components/common/SideBarBtnList";
-import SideBarTitle from "../../components/common/SideBarTitle";
+} from '../../components/common/SideBarIndex';
+import SideBarBtnList from '../../components/common/SideBarBtnList';
+import SideBarTitle from '../../components/common/SideBarTitle';
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -67,22 +67,22 @@ const SideBarContent = ({
   sectionOptions,
 }: Props) => {
   const baseStyles = {
-    width: "100%",
-    height: "40px",
+    width: '100%',
+    height: '40px',
     fontSize: 15,
-    margin: "5px 0",
+    margin: '5px 0',
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
-    color: "var(--color-grey-bright)",
-    hoverColor: "var(--color-white)",
-    backgroundColor: "var(--color-primary-bright)",
-    backgroundHoverColor: "var(--color-primary-light)",
+    color: 'var(--color-grey-bright)',
+    hoverColor: 'var(--color-white)',
+    backgroundColor: 'var(--color-primary-bright)',
+    backgroundHoverColor: 'var(--color-primary-light)',
   };
 
   const userButton = [
     {
-      text: "Add Aircraft",
+      text: 'Add Aircraft',
       icon: <AddAircraftIcon />,
       styles: baseStyles,
       onClick: handleAddAircraft,
@@ -91,7 +91,7 @@ const SideBarContent = ({
 
   const adminButton = [
     {
-      text: "Add Model",
+      text: 'Add Model',
       icon: <AddModelIcon />,
       styles: baseStyles,
       onClick: handleAddModel,

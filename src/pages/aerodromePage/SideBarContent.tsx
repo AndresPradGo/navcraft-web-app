@@ -1,11 +1,11 @@
-import { BiSolidEditAlt } from "react-icons/bi";
-import { FaTools } from "react-icons/fa";
-import { MdAddRoad } from "react-icons/md";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { BiSolidEditAlt } from 'react-icons/bi';
+import { FaTools } from 'react-icons/fa';
+import { MdAddRoad } from 'react-icons/md';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import SideBarBtnList from "../../components/common/SideBarBtnList";
-import SideBarTitle from "../../components/common/SideBarTitle";
+import SideBarBtnList from '../../components/common/SideBarBtnList';
+import SideBarTitle from '../../components/common/SideBarTitle';
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -52,22 +52,22 @@ const SideBarContent = ({
   handleEditAerodrome,
 }: Props) => {
   const commonStyles = {
-    width: "100%",
-    height: "40px",
+    width: '100%',
+    height: '40px',
     fontSize: 15,
-    margin: "10px 0",
+    margin: '10px 0',
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
-    color: "var(--color-grey-bright)",
-    hoverColor: "var(--color-white)",
-    backgroundColor: "var(--color-primary-bright)",
-    backgroundHoverColor: "var(--color-primary-light)",
+    color: 'var(--color-grey-bright)',
+    hoverColor: 'var(--color-white)',
+    backgroundColor: 'var(--color-primary-bright)',
+    backgroundHoverColor: 'var(--color-primary-light)',
   };
 
   const buttons = [
     {
-      text: "Edit Aerodrome",
+      text: 'Edit Aerodrome',
       icon: <EditIcon />,
       styles: {
         ...commonStyles,
@@ -77,7 +77,7 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Add Runway",
+      text: 'Add Runway',
       icon: <AddRunwayIcon />,
       styles: {
         ...commonStyles,
@@ -87,12 +87,12 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Delete Aerodrome",
+      text: 'Delete Aerodrome',
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
-        backgroundColor: "var(--color-warning)",
-        backgroundHoverColor: "var(--color-warning-hover)",
+        backgroundColor: 'var(--color-warning)',
+        backgroundHoverColor: 'var(--color-warning-hover)',
       },
       onClick: () => {
         handleDeleteAerodrome();

@@ -1,23 +1,23 @@
-import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { FaTools } from "react-icons/fa";
-import { FaDownload } from "react-icons/fa6";
-import { LuRefreshCw } from "react-icons/lu";
-import { MdConnectingAirports } from "react-icons/md";
-import { PiGearDuotone, PiClipboardTextDuotone } from "react-icons/pi";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { VscGraphLine } from "react-icons/vsc";
-import { styled } from "styled-components";
+import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from 'react-icons/bi';
+import { FaTools } from 'react-icons/fa';
+import { FaDownload } from 'react-icons/fa6';
+import { LuRefreshCw } from 'react-icons/lu';
+import { MdConnectingAirports } from 'react-icons/md';
+import { PiGearDuotone, PiClipboardTextDuotone } from 'react-icons/pi';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { VscGraphLine } from 'react-icons/vsc';
+import { styled } from 'styled-components';
 
 import SideBarIndex, {
   PageSectionDataType,
-} from "../../../components/common/SideBarIndex";
-import SideBarBtnList from "../../../components/common/SideBarBtnList";
-import SideBarTitle from "../../../components/common/SideBarTitle";
+} from '../../../components/common/SideBarIndex';
+import SideBarBtnList from '../../../components/common/SideBarBtnList';
+import SideBarTitle from '../../../components/common/SideBarTitle';
 import SideBarMapOptions, {
   MapStateType,
   MapInputStyleType,
-} from "../../../components/SideBarMapOptions";
-import useFetchFile from "../../../hooks/useFetchFile";
+} from '../../../components/SideBarMapOptions';
+import useFetchFile from '../../../hooks/useFetchFile';
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -117,60 +117,60 @@ const SideBarContent = ({
   const fileFetcher = useFetchFile();
 
   const baseStyles = {
-    width: "100%",
-    height: "40px",
+    width: '100%',
+    height: '40px',
     fontSize: 15,
-    margin: "5px 0",
+    margin: '5px 0',
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
   };
   const commonStyles = {
     ...baseStyles,
-    color: "var(--color-grey-bright)",
-    hoverColor: "var(--color-white)",
-    backgroundColor: "var(--color-primary-bright)",
-    backgroundHoverColor: "var(--color-primary-light)",
+    color: 'var(--color-grey-bright)',
+    hoverColor: 'var(--color-white)',
+    backgroundColor: 'var(--color-primary-bright)',
+    backgroundHoverColor: 'var(--color-primary-light)',
   };
 
   const buttons = [
     {
-      text: "Edit Flight Settings",
+      text: 'Edit Flight Settings',
       icon: <EditIcon />,
       styles: { ...commonStyles },
       onClick: handleEditFlight,
     },
     {
-      text: "Edit Departure Settings",
+      text: 'Edit Departure Settings',
       icon: <DepartureIcon />,
       styles: { ...commonStyles },
       onClick: handleEditDeparture,
     },
     {
-      text: "Edit Arrival Settings",
+      text: 'Edit Arrival Settings',
       icon: <ArrivalIcon />,
       styles: { ...commonStyles },
       onClick: handleEditArrival,
     },
     {
-      text: "Change Aircraft",
+      text: 'Change Aircraft',
       icon: <AircraftIcon />,
       styles: { ...commonStyles },
       onClick: handleChangeAircraft,
     },
     {
-      text: "Refresh Weather Data",
+      text: 'Refresh Weather Data',
       icon: <RefreshIcon />,
       styles: { ...commonStyles },
       onClick: handleRefreshWeather,
     },
     {
-      text: "Delete Flight",
+      text: 'Delete Flight',
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
-        backgroundColor: "var(--color-warning)",
-        backgroundHoverColor: "var(--color-warning-hover)",
+        backgroundColor: 'var(--color-warning)',
+        backgroundHoverColor: 'var(--color-warning-hover)',
       },
       onClick: handleDeleteFlight,
     },
@@ -178,7 +178,7 @@ const SideBarContent = ({
 
   const downloadButtons = [
     {
-      text: "Navigation Log",
+      text: 'Navigation Log',
       icon: <ReportIcon />,
       styles: { ...baseStyles },
       onClick: () => {
@@ -186,7 +186,7 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Weight & Balance Graph",
+      text: 'Weight & Balance Graph',
       icon: <GraphIcon />,
       styles: { ...baseStyles },
       onClick: () => {

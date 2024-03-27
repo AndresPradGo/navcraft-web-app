@@ -1,16 +1,16 @@
-import { BsPersonFillAdd } from "react-icons/bs";
-import { FaTools } from "react-icons/fa";
-import { FaUserPen, FaUserGear, FaUserXmark } from "react-icons/fa6";
-import { MdOutlineLogout } from "react-icons/md";
-import { PiAirTrafficControlDuotone } from "react-icons/pi";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { TbMailCog, TbLockCog, TbMapPinPlus } from "react-icons/tb";
-import { styled } from "styled-components";
-import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { BsPersonFillAdd } from 'react-icons/bs';
+import { FaTools } from 'react-icons/fa';
+import { FaUserPen, FaUserGear, FaUserXmark } from 'react-icons/fa6';
+import { MdOutlineLogout } from 'react-icons/md';
+import { PiAirTrafficControlDuotone } from 'react-icons/pi';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { TbMailCog, TbLockCog, TbMapPinPlus } from 'react-icons/tb';
+import { styled } from 'styled-components';
+import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
-import SideBarBtnList from "../../../components/common/SideBarBtnList";
-import SideBarTitle from "../../../components/common/SideBarTitle";
+import SideBarBtnList from '../../../components/common/SideBarBtnList';
+import SideBarTitle from '../../../components/common/SideBarTitle';
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -105,21 +105,21 @@ const SideBarContent = ({
   const queryClient = useQueryClient();
 
   const commonStyles = {
-    color: "var(--color-grey-bright)",
-    hoverColor: "var(--color-white)",
-    backgroundColor: "var(--color-primary-bright)",
-    backgroundHoverColor: "var(--color-primary-light)",
-    width: "100%",
-    height: "40px",
+    color: 'var(--color-grey-bright)',
+    hoverColor: 'var(--color-white)',
+    backgroundColor: 'var(--color-primary-bright)',
+    backgroundHoverColor: 'var(--color-primary-light)',
+    width: '100%',
+    height: '40px',
     fontSize: 15,
-    margin: "5px 0",
+    margin: '5px 0',
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
   };
   const buttons = [
     {
-      text: "Edit Profile",
+      text: 'Edit Profile',
       icon: <EditIcon />,
       styles: {
         ...commonStyles,
@@ -129,7 +129,7 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Change Email",
+      text: 'Change Email',
       icon: <EmailIcon />,
       styles: {
         ...commonStyles,
@@ -139,7 +139,7 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Change Password",
+      text: 'Change Password',
       icon: <PasswordIcon />,
       styles: {
         ...commonStyles,
@@ -152,7 +152,7 @@ const SideBarContent = ({
 
   const tableButtons = [
     {
-      text: "Add Passenger",
+      text: 'Add Passenger',
       icon: <AddPassengerIcon />,
       styles: {
         ...commonStyles,
@@ -162,7 +162,7 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Add Aerodrome",
+      text: 'Add Aerodrome',
       icon: <AddAerodromeIcon />,
       styles: {
         ...commonStyles,
@@ -172,7 +172,7 @@ const SideBarContent = ({
       },
     },
     {
-      text: "Add Waypoint",
+      text: 'Add Waypoint',
       icon: <AddWaypointIcon />,
       styles: {
         ...commonStyles,
@@ -185,31 +185,31 @@ const SideBarContent = ({
 
   const exitButtons = [
     {
-      text: "Logout",
+      text: 'Logout',
       icon: <LogoutIcon />,
       styles: {
         ...commonStyles,
-        color: "var(--color-grey)",
-        hoverColor: "var(--color-white)",
-        backgroundColor: "var(--color-grey)",
-        backgroundHoverColor: "var(--color-white)",
+        color: 'var(--color-grey)',
+        hoverColor: 'var(--color-white)',
+        backgroundColor: 'var(--color-grey)',
+        backgroundHoverColor: 'var(--color-white)',
         fill: false,
       },
       onClick: () => {
         queryClient.clear();
-        localStorage.removeItem("token");
-        localStorage.removeItem("token_type");
-        navigate("/login");
+        localStorage.removeItem('token');
+        localStorage.removeItem('token_type');
+        navigate('/login');
       },
     },
     {
-      text: "Delete Account",
+      text: 'Delete Account',
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
 
-        backgroundColor: "var(--color-warning)",
-        backgroundHoverColor: "var(--color-warning-hover)",
+        backgroundColor: 'var(--color-warning)',
+        backgroundHoverColor: 'var(--color-warning-hover)',
       },
       onClick: () => {
         handleDeleteAccountOpen();

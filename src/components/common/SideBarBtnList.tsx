@@ -1,7 +1,7 @@
-import { styled } from "styled-components";
+import { styled } from 'styled-components';
 
-import Button, { BaseButtonType } from "./button";
-import { ReactNode } from "react";
+import Button, { BaseButtonType } from './button';
+import { ReactNode } from 'react';
 
 interface HtmlProps {
   $paddingBottom: boolean;

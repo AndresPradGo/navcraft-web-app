@@ -1,13 +1,13 @@
-import { Dispatch } from "react";
+import { Dispatch } from 'react';
 import {
   BsArrowLeft,
   BsArrowRight,
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
-} from "react-icons/bs";
-import { styled } from "styled-components";
+} from 'react-icons/bs';
+import { styled } from 'styled-components';
 
-import { PageAction } from "./pageReducer";
+import { PageAction } from './pageReducer';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -88,8 +88,8 @@ const Pagination = ({ currentPage, finalPage, dispatch }: Props) => {
     <HtmlContainer>
       {currentPage > 1 ? (
         <IconContainer>
-          <DoubleLeftIcon onClick={() => dispatch({ type: "RESET" })} />
-          <LeftIcon onClick={() => dispatch({ type: "DECREASE" })} />
+          <DoubleLeftIcon onClick={() => dispatch({ type: 'RESET' })} />
+          <LeftIcon onClick={() => dispatch({ type: 'DECREASE' })} />
         </IconContainer>
       ) : (
         <IconContainer />
@@ -97,9 +97,9 @@ const Pagination = ({ currentPage, finalPage, dispatch }: Props) => {
       <span>{`Page ${currentPage} / ${finalPage}`}</span>
       {currentPage < finalPage ? (
         <IconContainer>
-          <RightIcon onClick={() => dispatch({ type: "INCREASE" })} />
+          <RightIcon onClick={() => dispatch({ type: 'INCREASE' })} />
           <DoubleRightIcon
-            onClick={() => dispatch({ type: "SET", page: finalPage })}
+            onClick={() => dispatch({ type: 'SET', page: finalPage })}
           />
         </IconContainer>
       ) : (

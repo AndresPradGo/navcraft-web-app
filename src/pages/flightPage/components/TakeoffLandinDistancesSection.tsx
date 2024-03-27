@@ -1,22 +1,22 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { BsThermometerSun } from "react-icons/bs";
-import { FaArrowUpFromGroundWater } from "react-icons/fa6";
-import { GiWeight } from "react-icons/gi";
-import { LiaMountainSolid } from "react-icons/lia";
+import { useQueryClient } from '@tanstack/react-query';
+import { BsThermometerSun } from 'react-icons/bs';
+import { FaArrowUpFromGroundWater } from 'react-icons/fa6';
+import { GiWeight } from 'react-icons/gi';
+import { LiaMountainSolid } from 'react-icons/lia';
 import {
   PiAirTrafficControlDuotone,
   PiWindLight,
   PiClipboardTextDuotone,
-} from "react-icons/pi";
-import { TbWindsock } from "react-icons/tb";
-import { WiBarometer } from "react-icons/wi";
-import { styled } from "styled-components";
+} from 'react-icons/pi';
+import { TbWindsock } from 'react-icons/tb';
+import { WiBarometer } from 'react-icons/wi';
+import { styled } from 'styled-components';
 
-import { FlightDataFromApi } from "../../../services/flightClient";
-import { TakeoffLandingDistancesDataFromApi } from "../hooks/useTakeoffLandingDistances";
-import DataTableList from "../../../components/common/DataTableList";
-import Table from "../../../components/common/ExpandibleTable";
-import FlightWarningList from "../../../components/FlightWarningList";
+import { FlightDataFromApi } from '../../../services/flightClient';
+import { TakeoffLandingDistancesDataFromApi } from '../hooks/useTakeoffLandingDistances';
+import DataTableList from '../../../components/common/DataTableList';
+import Table from '../../../components/common/ExpandibleTable';
+import FlightWarningList from '../../../components/FlightWarningList';
 
 const WeightIcon = styled(GiWeight)`
   font-size: 25px;
@@ -93,13 +93,13 @@ const TakeoffLandinDistancesSection = ({
 }: Props) => {
   const queryClient = useQueryClient();
   const flightData = queryClient.getQueryData<FlightDataFromApi>([
-    "flight",
+    'flight',
     flightId,
   ]);
 
   const distancesData =
     queryClient.getQueryData<TakeoffLandingDistancesDataFromApi>([
-      "takeoffLandingDistances",
+      'takeoffLandingDistances',
       flightId,
     ]);
 
@@ -107,98 +107,98 @@ const TakeoffLandinDistancesSection = ({
     flightData && distancesData
       ? [
           {
-            key: "weight_lb",
-            title: "Weight [lb]",
+            key: 'weight_lb',
+            title: 'Weight [lb]',
             icon: <WeightIcon />,
             data: isTakeoff
               ? distancesData.departure.length
                 ? Math.round(distancesData.departure[0].weight_lb * 100) / 100
                 : 0
               : distancesData.arrival.length
-              ? Math.round(distancesData.arrival[0].weight_lb * 100) / 100
-              : 0,
+                ? Math.round(distancesData.arrival[0].weight_lb * 100) / 100
+                : 0,
           },
           {
-            key: "aerodrome",
-            title: "Aerodrome",
+            key: 'aerodrome',
+            title: 'Aerodrome',
             icon: <AerodromeIcon />,
             data: aerodrome,
           },
           {
-            key: "elevation",
-            title: "Elevation [ft]",
+            key: 'elevation',
+            title: 'Elevation [ft]',
             icon: <ElevationIcon />,
             data: elevation,
           },
           {
-            key: "altimeter_inhg",
-            title: "Altimeter [in Hg]",
+            key: 'altimeter_inhg',
+            title: 'Altimeter [in Hg]',
             icon: <AltimeterIcon />,
             data: isTakeoff
               ? flightData.departure_weather.altimeter_inhg
               : flightData.arrival_weather.altimeter_inhg,
           },
           {
-            key: "pressure_altitude",
-            title: "Pressure Alt [ft]",
+            key: 'pressure_altitude',
+            title: 'Pressure Alt [ft]',
             icon: <PressureAltitudeIcon />,
             data: isTakeoff
               ? distancesData.departure.length
                 ? distancesData.departure[0].pressure_altitude_ft
                 : 0
               : distancesData.arrival.length
-              ? distancesData.arrival[0].pressure_altitude_ft
-              : 0,
+                ? distancesData.arrival[0].pressure_altitude_ft
+                : 0,
           },
           {
-            key: "temperature_c",
-            title: "Temperature [\u00B0C]",
+            key: 'temperature_c',
+            title: 'Temperature [\u00B0C]',
             icon: <TemperatureIcon />,
             data: isTakeoff
               ? flightData.departure_weather.temperature_c
               : flightData.arrival_weather.temperature_c,
           },
           {
-            key: "wind_magnitude_knot",
-            title: "Wind Magnitude [Kts]",
+            key: 'wind_magnitude_knot',
+            title: 'Wind Magnitude [Kts]',
             icon: <WindMagnitudeIcon />,
             data: isTakeoff
-              ? flightData.departure_weather.wind_magnitude_knot || "-"
-              : flightData.arrival_weather.wind_magnitude_knot || "-",
+              ? flightData.departure_weather.wind_magnitude_knot || '-'
+              : flightData.arrival_weather.wind_magnitude_knot || '-',
           },
           {
-            key: "wind_direction",
-            title: "Wind Direction [\u00B0True]",
+            key: 'wind_direction',
+            title: 'Wind Direction [\u00B0True]',
             icon: <WindDirectionIcon />,
             data: isTakeoff
               ? (flightData.departure_weather.wind_direction === 0
-                  ? "VRB"
-                  : flightData.departure_weather.wind_direction) || "-"
+                  ? 'VRB'
+                  : flightData.departure_weather.wind_direction) || '-'
               : (flightData.arrival_weather.wind_direction === 0
-                  ? "VRB"
-                  : flightData.arrival_weather.wind_direction) || "-",
+                  ? 'VRB'
+                  : flightData.arrival_weather.wind_direction) || '-',
           },
         ]
       : [];
   const tableData = {
     keys: [
-      "runway",
-      "x_wind_knot",
-      "headwind_knot",
-      "length",
-      "ground_roll_ft",
-      "obstacle_clearance_ft",
-      "adjusted_ground_roll_ft",
-      "adjusted_obstacle_clearance_ft",
+      'runway',
+      'x_wind_knot',
+      'headwind_knot',
+      'length',
+      'ground_roll_ft',
+      'obstacle_clearance_ft',
+      'adjusted_ground_roll_ft',
+      'adjusted_obstacle_clearance_ft',
     ],
     headers: {
-      runway: "Runway",
-      x_wind_knot: "X-Wind [Kts]",
-      headwind_knot: "Headwind [Kts]",
-      length: "Rwy Length [ft]",
-      ground_roll_ft: "Gnd Roll [ft]",
+      runway: 'Runway',
+      x_wind_knot: 'X-Wind [Kts]',
+      headwind_knot: 'Headwind [Kts]',
+      length: 'Rwy Length [ft]',
+      ground_roll_ft: 'Gnd Roll [ft]',
       obstacle_clearance_ft: "50' Clearance [ft]",
-      adjusted_ground_roll_ft: "Adjusted Gnd Roll [ft]",
+      adjusted_ground_roll_ft: 'Adjusted Gnd Roll [ft]',
       adjusted_obstacle_clearance_ft: "Adjusted 50' Clearance [ft]",
     },
     rows: distancesData
@@ -244,36 +244,36 @@ const TakeoffLandinDistancesSection = ({
 
   const sortData = [
     {
-      title: "Runway",
-      key: "runway",
+      title: 'Runway',
+      key: 'runway',
     },
     {
-      title: "X-Wind",
-      key: "x_wind_knot",
+      title: 'X-Wind',
+      key: 'x_wind_knot',
     },
     {
-      title: "Headwind",
-      key: "headwind_knot",
+      title: 'Headwind',
+      key: 'headwind_knot',
     },
     {
-      title: "Rwy Length [ft]",
-      key: "length",
+      title: 'Rwy Length [ft]',
+      key: 'length',
     },
     {
-      title: "Gnd Roll",
-      key: "ground_roll_ft",
+      title: 'Gnd Roll',
+      key: 'ground_roll_ft',
     },
     {
       title: "50' Clearance",
-      key: "obstacle_clearance_ft",
+      key: 'obstacle_clearance_ft',
     },
     {
-      title: "Adjusted Gnd Roll",
-      key: "adjusted_ground_roll_ft",
+      title: 'Adjusted Gnd Roll',
+      key: 'adjusted_ground_roll_ft',
     },
     {
       title: "Adjusted 50' Clearance",
-      key: "adjusted_obstacle_clearance_ft",
+      key: 'adjusted_obstacle_clearance_ft',
     },
   ];
 
@@ -282,7 +282,7 @@ const TakeoffLandinDistancesSection = ({
   if (isTakeoff) {
     if (flightData?.departure_weather.wind_direction === 0) {
       warnings.push(
-        "Wind direction is variable, so 30\u00B0 tailwind is being considered."
+        'Wind direction is variable, so 30\u00B0 tailwind is being considered.',
       );
     }
     if (distancesData && distancesData.departure.length) {
@@ -291,7 +291,7 @@ const TakeoffLandinDistancesSection = ({
         distancesData.departure[0].pressure_altitude_ft
       ) {
         warnings.push(
-          `The maximum pressure altitude recommended for takeoff performance is ${distancesData.departure[0].truncated_pressure_altitude_ft} ft`
+          `The maximum pressure altitude recommended for takeoff performance is ${distancesData.departure[0].truncated_pressure_altitude_ft} ft`,
         );
       }
       if (
@@ -299,14 +299,14 @@ const TakeoffLandinDistancesSection = ({
         distancesData.departure[0].temperature_c
       ) {
         warnings.push(
-          `The maximum temperature recommended for takeoff performance is ${distancesData.departure[0].truncated_temperature_c}\u00B0C`
+          `The maximum temperature recommended for takeoff performance is ${distancesData.departure[0].truncated_temperature_c}\u00B0C`,
         );
       }
     }
   } else {
     if (flightData?.arrival_weather.wind_direction === 0) {
       warnings.push(
-        "Wind direction is varible, so 30\u00B0 tailwind is being considered."
+        'Wind direction is varible, so 30\u00B0 tailwind is being considered.',
       );
     }
     if (distancesData && distancesData.arrival.length) {
@@ -315,7 +315,7 @@ const TakeoffLandinDistancesSection = ({
         distancesData.arrival[0].pressure_altitude_ft
       ) {
         warnings.push(
-          `The maximum pressure altitude recommended for landing performance is ${distancesData.arrival[0].truncated_pressure_altitude_ft} ft`
+          `The maximum pressure altitude recommended for landing performance is ${distancesData.arrival[0].truncated_pressure_altitude_ft} ft`,
         );
       }
       if (
@@ -323,7 +323,7 @@ const TakeoffLandinDistancesSection = ({
         distancesData.arrival[0].temperature_c
       ) {
         warnings.push(
-          `The maximum temperature recommended for landing performance is ${distancesData.arrival[0].truncated_temperature_c}\u00B0C`
+          `The maximum temperature recommended for landing performance is ${distancesData.arrival[0].truncated_temperature_c}\u00B0C`,
         );
       }
     }
@@ -336,11 +336,11 @@ const TakeoffLandinDistancesSection = ({
         title={
           isTakeoff
             ? isLoading
-              ? "Takeoff Performance Report"
-              : "Takeoff Performance Report"
+              ? 'Takeoff Performance Report'
+              : 'Takeoff Performance Report'
             : isLoading
-            ? "Landing Performance Report"
-            : "Landing Performance Report"
+              ? 'Landing Performance Report'
+              : 'Landing Performance Report'
         }
         hanldeAdd={() => {}}
         disableAdd={true}

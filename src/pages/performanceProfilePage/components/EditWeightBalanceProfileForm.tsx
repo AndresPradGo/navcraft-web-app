@@ -1,18 +1,18 @@
-import { useEffect, useState, FormEvent, ChangeEvent } from "react";
-import { AiOutlineSave, AiFillTag } from "react-icons/ai";
-import { BiSolidEditAlt } from "react-icons/bi";
-import { GiWeight, GiRadialBalance } from "react-icons/gi";
-import { LiaTimesSolid } from "react-icons/lia";
-import { MdOutlineAdd, MdBalance, MdOutlineLiveHelp } from "react-icons/md";
-import { VscGraphScatter } from "react-icons/vsc";
-import { styled } from "styled-components";
-import { z } from "zod";
+import { useEffect, useState, FormEvent, ChangeEvent } from 'react';
+import { AiOutlineSave, AiFillTag } from 'react-icons/ai';
+import { BiSolidEditAlt } from 'react-icons/bi';
+import { GiWeight, GiRadialBalance } from 'react-icons/gi';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { MdOutlineAdd, MdBalance, MdOutlineLiveHelp } from 'react-icons/md';
+import { VscGraphScatter } from 'react-icons/vsc';
+import { styled } from 'styled-components';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import WeightBalanceLimitsList from "./weightBalanceLimitsList/WeightBalanceLimitsList";
-import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
-import ExpandibleMessage from "../../../components/common/ExpandibleMessage";
-import useEditWeightBalanceProfile from "../hooks/useEditWeightBalanceProfile";
+import Button from '../../../components/common/button';
+import WeightBalanceLimitsList from './weightBalanceLimitsList/WeightBalanceLimitsList';
+import WeightBalanceGraph from '../../../components/WeightBalanceGraph';
+import ExpandibleMessage from '../../../components/common/ExpandibleMessage';
+import useEditWeightBalanceProfile from '../hooks/useEditWeightBalanceProfile';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -147,7 +147,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 10px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -156,14 +156,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -183,9 +183,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -193,21 +193,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -325,27 +325,27 @@ const SaveIcon = styled(AiOutlineSave)`
 
 const limitSchema = z.object({
   weight_lb: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(99999.94, { message: "Must be less than 99999.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(99999.94, { message: 'Must be less than 99999.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   cg_location_in: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(9999.94, { message: "Must be less than 9999.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(9999.94, { message: 'Must be less than 9999.95' })
+    .min(0, { message: 'Must be greater than zero' }),
 });
 export type LimitDataType = z.infer<typeof limitSchema>;
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(50, { message: "Must be at most 50 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(50, { message: 'Must be at most 50 characters long' })
     .regex(/^[\-a-zA-Z0-9\(\) ]+$/, {
-      message: "Only letters, numbers, white space, and symbols -()",
+      message: 'Only letters, numbers, white space, and symbols -()',
     }),
   limits: z
     .array(limitSchema)
-    .min(4, { message: "Must contain a minimum of 4 boundary points" }),
+    .min(4, { message: 'Must contain a minimum of 4 boundary points' }),
 });
 type FormDataType = z.infer<typeof formSchema>;
 export interface FormDataWithId extends FormDataType {
@@ -380,7 +380,7 @@ const EditWeightBalanceProfileForm = ({
   performanceProfileId,
 }: Props) => {
   const [values, setValues] = useState<FormDataType>({
-    name: "",
+    name: '',
     limits: [],
   });
   const [limitValues, setLimitValues] = useState<LimitDataType>({
@@ -421,7 +421,7 @@ const EditWeightBalanceProfileForm = ({
 
   const checkLimits = (newLimits: LimitDataType[]) => {
     const result = formSchema.safeParse({
-      name: "newName",
+      name: 'newName',
       limits: newLimits,
     });
     if (result.success) setErrors((prev) => ({ ...prev, limits: null }));
@@ -462,7 +462,7 @@ const EditWeightBalanceProfileForm = ({
     const input = e.target.id;
     const val = parseFloat(e.target.value);
 
-    if (input === `${labelKey ? labelKey : ""}-cg_location_in`) {
+    if (input === `${labelKey ? labelKey : ''}-cg_location_in`) {
       const result = limitSchema.safeParse({
         cg_location_in: val,
         weight_lb: 100,
@@ -519,7 +519,7 @@ const EditWeightBalanceProfileForm = ({
     } else {
       const newErrors = { ...limitErrors };
       for (const e of result.error.errors) {
-        newErrors[e.path[0] as "cg_location_in" | "weight_lb"] = e.message;
+        newErrors[e.path[0] as 'cg_location_in' | 'weight_lb'] = e.message;
       }
       setLimitErrors(newErrors);
     }
@@ -538,7 +538,7 @@ const EditWeightBalanceProfileForm = ({
     } else {
       const newErrors = { ...errors };
       for (const e of result.error.errors) {
-        newErrors[e.path[0] as "name" | "limits"] = e.message;
+        newErrors[e.path[0] as 'name' | 'limits'] = e.message;
       }
       setErrors(newErrors);
     }
@@ -550,18 +550,18 @@ const EditWeightBalanceProfileForm = ({
         <div>
           {data.id === 0 ? <TitleAddIcon /> : <EditIcon />}
           <BalanceIcon />
-          {`${data.id === 0 ? "Add New" : "Edit"} W&B Profile`}
+          {`${data.id === 0 ? 'Add New' : 'Edit'} W&B Profile`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
         <HtmlInput
           $required={true}
-          $hasValue={values.name.trim() !== ""}
+          $hasValue={values.name.trim() !== ''}
           $accepted={!errors.name}
         >
           <input
-            id={`${labelKey ? labelKey : ""}-name`}
+            id={`${labelKey ? labelKey : ''}-name`}
             type="text"
             autoComplete="off"
             required={true}
@@ -569,7 +569,7 @@ const EditWeightBalanceProfileForm = ({
             value={values.name}
           />
           {errors.name ? <p>{errors.name}</p> : <p>&nbsp;</p>}
-          <label htmlFor={`${labelKey ? labelKey : ""}-name`}>
+          <label htmlFor={`${labelKey ? labelKey : ''}-name`}>
             <NameIcon />
             Profile Name
           </label>
@@ -595,14 +595,14 @@ const EditWeightBalanceProfileForm = ({
                 $accepted={!limitErrors.cg_location_in}
               >
                 <input
-                  id={`${labelKey ? labelKey : ""}-cg_location_in`}
+                  id={`${labelKey ? labelKey : ''}-cg_location_in`}
                   type="number"
                   autoComplete="off"
                   required={false}
                   onChange={handleLimitChange}
                   value={
                     isNaN(limitValues.cg_location_in)
-                      ? ""
+                      ? ''
                       : limitValues.cg_location_in
                   }
                 />
@@ -611,9 +611,9 @@ const EditWeightBalanceProfileForm = ({
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor={`${labelKey ? labelKey : ""}-cg_location_in`}>
+                <label htmlFor={`${labelKey ? labelKey : ''}-cg_location_in`}>
                   <COGIcon />
-                  {"CoG [in]"}
+                  {'CoG [in]'}
                 </label>
               </HtmlInput>
               <HtmlInput
@@ -624,13 +624,13 @@ const EditWeightBalanceProfileForm = ({
                 $accepted={!limitErrors.weight_lb}
               >
                 <input
-                  id={`${labelKey ? labelKey : ""}-weight_lb`}
+                  id={`${labelKey ? labelKey : ''}-weight_lb`}
                   type="number"
                   autoComplete="off"
                   required={false}
                   onChange={handleLimitChange}
                   value={
-                    isNaN(limitValues.weight_lb) ? "" : limitValues.weight_lb
+                    isNaN(limitValues.weight_lb) ? '' : limitValues.weight_lb
                   }
                 />
                 {limitErrors.weight_lb ? (
@@ -638,9 +638,9 @@ const EditWeightBalanceProfileForm = ({
                 ) : (
                   <p>&nbsp;</p>
                 )}
-                <label htmlFor={`${labelKey ? labelKey : ""}-weight_lb`}>
+                <label htmlFor={`${labelKey ? labelKey : ''}-weight_lb`}>
                   <WeightIcon />
-                  {"Weight [lbs]"}
+                  {'Weight [lbs]'}
                 </label>
               </HtmlInput>
             </HtmlPairedInputsContainer>
@@ -683,7 +683,7 @@ const EditWeightBalanceProfileForm = ({
                       })),
                     },
                   ]}
-                  hideLegend={values.name === ""}
+                  hideLegend={values.name === ''}
                   width={400}
                 />
               ) : null}

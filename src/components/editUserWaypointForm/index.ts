@@ -1,2 +1,2 @@
 import EditUserWaypointForm from './EditUserWaypointForm';
-export default EditUserWaypointForm
+export default EditUserWaypointForm;

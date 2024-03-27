@@ -1,10 +1,10 @@
-import { IoWarningOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { IoWarningOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import Button from "../../../components/common/button";
-import useDeleteSurfaceAdjustmentValue from "../hooks/useDeleteSurfaceAdjustmentValue";
+import Button from '../../../components/common/button';
+import useDeleteSurfaceAdjustmentValue from '../hooks/useDeleteSurfaceAdjustmentValue';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -142,7 +142,7 @@ const DeleteSurfaceAdjustmentValueForm = ({
       </h1>
       <HtmlBodyContainer>
         <p>{`Are you sure you want to delete the ${
-          isTakeoff ? "takeoff" : "landing"
+          isTakeoff ? 'takeoff' : 'landing'
         } performance adjustment percentage, for "${surface}" runways?`}</p>
       </HtmlBodyContainer>
       <HtmlButtons>

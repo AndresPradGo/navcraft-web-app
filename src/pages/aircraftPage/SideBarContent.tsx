@@ -1,11 +1,11 @@
-import { BiSolidEditAlt } from "react-icons/bi";
-import { BsSpeedometer } from "react-icons/bs";
-import { FaTools } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { BiSolidEditAlt } from 'react-icons/bi';
+import { BsSpeedometer } from 'react-icons/bs';
+import { FaTools } from 'react-icons/fa';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import SideBarBtnList from "../../components/common/SideBarBtnList";
-import SideBarTitle from "../../components/common/SideBarTitle";
+import SideBarBtnList from '../../components/common/SideBarBtnList';
+import SideBarTitle from '../../components/common/SideBarTitle';
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -54,28 +54,28 @@ const SideBarContent = ({
   canAddProfile,
 }: Props) => {
   const commonStyles = {
-    width: "100%",
-    height: "40px",
+    width: '100%',
+    height: '40px',
     fontSize: 15,
-    margin: "10px 0",
+    margin: '10px 0',
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
-    color: "var(--color-grey-bright)",
-    hoverColor: "var(--color-white)",
-    backgroundColor: "var(--color-primary-bright)",
-    backgroundHoverColor: "var(--color-primary-light)",
+    color: 'var(--color-grey-bright)',
+    hoverColor: 'var(--color-white)',
+    backgroundColor: 'var(--color-primary-bright)',
+    backgroundHoverColor: 'var(--color-primary-light)',
   };
 
   const buttons = [
     {
-      text: "Edit Aircraft",
+      text: 'Edit Aircraft',
       icon: <EditIcon />,
       styles: commonStyles,
       onClick: handleEditAircraft,
     },
     {
-      text: "Add Performance Profile",
+      text: 'Add Performance Profile',
       icon: <PerformanceIcon />,
       styles: {
         ...commonStyles,
@@ -84,14 +84,14 @@ const SideBarContent = ({
       onClick: canAddProfile ? handleAddProfile : () => {},
     },
     {
-      text: "Delete Aircraft",
+      text: 'Delete Aircraft',
       icon: <DeleteIcon />,
       styles: {
         ...commonStyles,
-        color: "var(--color-grey-bright)",
-        hoverColor: "var(--color-white)",
-        backgroundColor: "var(--color-warning)",
-        backgroundHoverColor: "var(--color-warning-hover)",
+        color: 'var(--color-grey-bright)',
+        hoverColor: 'var(--color-white)',
+        backgroundColor: 'var(--color-warning)',
+        backgroundHoverColor: 'var(--color-warning-hover)',
       },
       onClick: handleDeleteAircraft,
     },

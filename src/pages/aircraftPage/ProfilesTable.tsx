@@ -1,13 +1,13 @@
-import { Dispatch, SetStateAction } from "react";
-import { FaCheck } from "react-icons/fa6";
-import { styled } from "styled-components";
+import { Dispatch, SetStateAction } from 'react';
+import { FaCheck } from 'react-icons/fa6';
+import { styled } from 'styled-components';
 
-import { useModal, Modal, UseModalType } from "../../components/common/modal";
-import { PerformanceProfileBaseData } from "../../services/aircraftClient";
-import { FuelTypeData } from "../../hooks/useFuelTypes";
-import DeletePerformanceProfileForm from "../../components/deletePerformanceProfileForm";
-import formatUTCDate from "../../utils/formatUTCDate";
-import ExpandibleTable from "../../components/common/ExpandibleTable";
+import { useModal, Modal, UseModalType } from '../../components/common/modal';
+import { PerformanceProfileBaseData } from '../../services/aircraftClient';
+import { FuelTypeData } from '../../hooks/useFuelTypes';
+import DeletePerformanceProfileForm from '../../components/deletePerformanceProfileForm';
+import formatUTCDate from '../../utils/formatUTCDate';
+import ExpandibleTable from '../../components/common/ExpandibleTable';
 
 const HtmlInstructionsList = styled.ul`
   & ul {
@@ -41,20 +41,20 @@ const ProfilesTable = ({
 }: Props) => {
   const deleteModal = useModal();
   const tableData = {
-    keys: ["name", "fuel", "complete", "selected", "updated"],
+    keys: ['name', 'fuel', 'complete', 'selected', 'updated'],
     headers: {
-      name: "Description",
-      fuel: "Fuel",
-      complete: "State",
-      selected: "Selected",
-      updated: "Date Updated",
+      name: 'Description',
+      fuel: 'Fuel',
+      complete: 'State',
+      selected: 'Selected',
+      updated: 'Date Updated',
     },
     rows: profiles.map((p) => ({
       id: p.id,
       name: p.performance_profile_name,
-      fuel: fuelTypes.find((item) => item.id === p.fuel_type_id)?.name || "-",
-      complete: p.is_complete ? "Complete" : "Incomplete",
-      selected: p.is_preferred ? <CheckIcon /> : "-",
+      fuel: fuelTypes.find((item) => item.id === p.fuel_type_id)?.name || '-',
+      complete: p.is_complete ? 'Complete' : 'Incomplete',
+      selected: p.is_preferred ? <CheckIcon /> : '-',
       updated: formatUTCDate(p.last_updated_utc),
       date: p.last_updated_utc,
       handleEdit: `profile/${p.id}`,
@@ -62,7 +62,7 @@ const ProfilesTable = ({
         setProfileId(p.id);
         deleteModal.handleOpen();
       },
-      permissions: "open-delete" as "open-delete",
+      permissions: 'open-delete' as 'open-delete',
     })),
     breakingPoint: 1000,
   };
@@ -75,7 +75,7 @@ const ProfilesTable = ({
           id={profileId}
           name={
             profiles.find((p) => p.id === profileId)
-              ?.performance_profile_name || ""
+              ?.performance_profile_name || ''
           }
           aircraftId={aircraftId}
         />

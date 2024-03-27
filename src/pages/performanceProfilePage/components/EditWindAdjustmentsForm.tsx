@@ -1,17 +1,17 @@
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave } from "react-icons/ai";
-import { LiaTimesSolid } from "react-icons/lia";
-import { PiWind } from "react-icons/pi";
-import { TbWindsock } from "react-icons/tb";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useForm, FieldValues } from 'react-hook-form';
+import { AiOutlineSave } from 'react-icons/ai';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { PiWind } from 'react-icons/pi';
+import { TbWindsock } from 'react-icons/tb';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import { TakeoffLandingDataFromAPI } from "../../../services/takeoffLandingPerformanceDataClient";
-import useEditWindAdjustmentData from "../hooks/useEditWindAdjustmentData";
+import Button from '../../../components/common/button';
+import { TakeoffLandingDataFromAPI } from '../../../services/takeoffLandingPerformanceDataClient';
+import useEditWindAdjustmentData from '../hooks/useEditWindAdjustmentData';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -76,7 +76,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -85,14 +85,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -112,9 +112,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -122,21 +122,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -203,13 +203,13 @@ const TailwindIcon = styled(PiWind)`
 
 const schema = z.object({
   percent_decrease_knot_headwind: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(99.94, { message: "Must be less than 99.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(99.94, { message: 'Must be less than 99.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   percent_increase_knot_tailwind: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(99.94, { message: "Must be less than 99.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(99.94, { message: 'Must be less than 99.95' })
+    .min(0, { message: 'Must be greater than zero' }),
 });
 
 export type WindAdjustmentDataFromForm = z.infer<typeof schema>;
@@ -228,7 +228,7 @@ const EditWindAdjustmentsForm = ({
 }: Props) => {
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<TakeoffLandingDataFromAPI>([
-    isTakeoff ? "takeoffPerformance" : "landingPerformance",
+    isTakeoff ? 'takeoffPerformance' : 'landingPerformance',
     profileId,
   ]);
 
@@ -266,7 +266,7 @@ const EditWindAdjustmentsForm = ({
       <h1>
         <div>
           <TitleIcon />
-          {`Edit ${isTakeoff ? "Takeoff" : "Landing"} Wind Adjustments`}
+          {`Edit ${isTakeoff ? 'Takeoff' : 'Landing'} Wind Adjustments`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
@@ -274,20 +274,20 @@ const EditWindAdjustmentsForm = ({
         <ul>
           <li>
             {`Percentages by which the ${
-              isTakeoff ? "takeoff" : "landing"
+              isTakeoff ? 'takeoff' : 'landing'
             } distance will be decreased/increased, with every knot of headwind/tailwind.`}
           </li>
         </ul>
         <HtmlInput
           $required={true}
           $hasValue={
-            !!watch("percent_decrease_knot_headwind") ||
-            watch("percent_decrease_knot_headwind") === 0
+            !!watch('percent_decrease_knot_headwind') ||
+            watch('percent_decrease_knot_headwind') === 0
           }
           $accepted={!errors.percent_decrease_knot_headwind}
         >
           <input
-            {...register("percent_decrease_knot_headwind", {
+            {...register('percent_decrease_knot_headwind', {
               valueAsNumber: true,
             })}
             id="percent_decrease_knot_headwind"
@@ -302,19 +302,19 @@ const EditWindAdjustmentsForm = ({
           )}
           <label htmlFor="percent_decrease_knot_headwind">
             <HeadwindIcon />
-            {"Headwind [%]"}
+            {'Headwind [%]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
           $hasValue={
-            !!watch("percent_increase_knot_tailwind") ||
-            watch("percent_increase_knot_tailwind") === 0
+            !!watch('percent_increase_knot_tailwind') ||
+            watch('percent_increase_knot_tailwind') === 0
           }
           $accepted={!errors.percent_increase_knot_tailwind}
         >
           <input
-            {...register("percent_increase_knot_tailwind", {
+            {...register('percent_increase_knot_tailwind', {
               valueAsNumber: true,
             })}
             id="percent_increase_knot_tailwind"
@@ -329,7 +329,7 @@ const EditWindAdjustmentsForm = ({
           )}
           <label htmlFor="percent_increase_knot_tailwind">
             <TailwindIcon />
-            {"Tailwind [%]"}
+            {'Tailwind [%]'}
           </label>
         </HtmlInput>
       </HtmlInputContainer>

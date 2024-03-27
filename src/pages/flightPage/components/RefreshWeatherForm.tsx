@@ -1,18 +1,18 @@
-import { FormEvent, useState, useEffect } from "react";
-import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { FaRoute, FaCloudSunRain } from "react-icons/fa";
-import { LuRefreshCw } from "react-icons/lu";
-import { LiaTimesSolid } from "react-icons/lia";
-import { styled } from "styled-components";
-import { useQueryClient } from "@tanstack/react-query";
+import { FormEvent, useState, useEffect } from 'react';
+import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from 'react-icons/bi';
+import { FaRoute, FaCloudSunRain } from 'react-icons/fa';
+import { LuRefreshCw } from 'react-icons/lu';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { styled } from 'styled-components';
+import { useQueryClient } from '@tanstack/react-query';
 
-import Button from "../../../components/common/button";
-import { FlightDataFromApi } from "../../../services/flightClient";
-import { NavLogLegData } from "../hooks/useNavLogData";
-import useRefreshWeather from "../hooks/useRefreshWeather";
-import Loader from "../../../components/Loader";
-import FlightWarningList from "../../../components/FlightWarningList";
-import getUTCNowString from "../../../utils/getUTCNowString";
+import Button from '../../../components/common/button';
+import { FlightDataFromApi } from '../../../services/flightClient';
+import { NavLogLegData } from '../hooks/useNavLogData';
+import useRefreshWeather from '../hooks/useRefreshWeather';
+import Loader from '../../../components/Loader';
+import FlightWarningList from '../../../components/FlightWarningList';
+import getUTCNowString from '../../../utils/getUTCNowString';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -55,7 +55,7 @@ const HtmlInputContainer = styled.div<InputContainerProps>`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: ${(props) => (props.$center ? "center" : "flex-start")};
+  align-items: ${(props) => (props.$center ? 'center' : 'flex-start')};
 
   border-top: 1px solid var(--color-grey);
   border-bottom: 1px solid var(--color-grey);
@@ -80,7 +80,7 @@ const HtmlCheckbox = styled.label`
     background-color: var(--color-primary);
   }
 
-  & input[type="checkbox"] {
+  & input[type='checkbox'] {
     cursor: pointer;
     margin: 0;
     min-height: 20px;
@@ -150,14 +150,14 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
   color: var(--color-grey);
-  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
+  opacity: ${(props) => (props.$disabled ? '0.3' : '1')};
 
   &:hover,
   &:focus {
     color: ${(props) =>
-      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
+      props.$disabled ? 'var(--color-grey)' : 'var(--color-white)'};
   }
 
   @media screen and (min-width: 510px) {
@@ -187,32 +187,32 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
 
   const queryClient = useQueryClient();
   const flightData = queryClient.getQueryData<FlightDataFromApi>([
-    "flight",
+    'flight',
     flightId,
   ]);
 
   const legsData = queryClient.getQueryData<NavLogLegData[]>([
-    "navLog",
+    'navLog',
     flightId,
   ]);
 
-  const fetching = queryClient.isFetching({ queryKey: ["navLog", flightId] });
+  const fetching = queryClient.isFetching({ queryKey: ['navLog', flightId] });
 
   const mutation = useRefreshWeather(flightId);
 
   useEffect(() => {
-    const storedDepartureWeather = localStorage.getItem("departureWeather");
-    const storedEnrouteWeather = localStorage.getItem("enrouteWeather");
-    const storedArrivalWeather = localStorage.getItem("arrivalWeather");
+    const storedDepartureWeather = localStorage.getItem('departureWeather');
+    const storedEnrouteWeather = localStorage.getItem('enrouteWeather');
+    const storedArrivalWeather = localStorage.getItem('arrivalWeather');
     if (
       storedDepartureWeather &&
       storedEnrouteWeather &&
       storedArrivalWeather
     ) {
       setFormState({
-        departureWeather: storedDepartureWeather === "true",
-        enrouteWeather: storedEnrouteWeather === "true",
-        arrivalWeather: storedArrivalWeather === "true",
+        departureWeather: storedDepartureWeather === 'true',
+        enrouteWeather: storedEnrouteWeather === 'true',
+        arrivalWeather: storedArrivalWeather === 'true',
       });
     }
   }, []);
@@ -223,13 +223,13 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
     }
   }, [submited, mutation.isLoading]);
 
-  const handleSelectItem = (box: "departure" | "enroute" | "arrival") => {
+  const handleSelectItem = (box: 'departure' | 'enroute' | 'arrival') => {
     const newState = { ...formState };
-    if (box === "departure")
+    if (box === 'departure')
       newState.departureWeather = !newState.departureWeather;
-    else if (box === "enroute")
+    else if (box === 'enroute')
       newState.enrouteWeather = !newState.enrouteWeather;
-    else if (box === "arrival")
+    else if (box === 'arrival')
       newState.arrivalWeather = !newState.arrivalWeather;
 
     setFormState(newState);
@@ -237,9 +237,9 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    localStorage.setItem("departureWeather", `${formState.departureWeather}`);
-    localStorage.setItem("enrouteWeather", `${formState.enrouteWeather}`);
-    localStorage.setItem("arrivalWeather", `${formState.arrivalWeather}`);
+    localStorage.setItem('departureWeather', `${formState.departureWeather}`);
+    localStorage.setItem('enrouteWeather', `${formState.enrouteWeather}`);
+    localStorage.setItem('arrivalWeather', `${formState.arrivalWeather}`);
 
     let takeoffWeather = undefined;
     let enrouteWeather = undefined;
@@ -286,7 +286,8 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
     }
     if (formState.arrivalWeather) {
       date.setHours(
-        date.getHours() + (flightData ? flightData.added_enroute_time_hours : 0)
+        date.getHours() +
+          (flightData ? flightData.added_enroute_time_hours : 0),
       );
       landingWeather = {
         dateTime: date.toISOString(),
@@ -336,7 +337,7 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
               <FlightWarningList
                 warnings={[
                   [
-                    "Weather data is not available for past ETD date-times. To refresh the weather data, update the ETD to a future date.",
+                    'Weather data is not available for past ETD date-times. To refresh the weather data, update the ETD to a future date.',
                   ],
                 ]}
               />
@@ -345,7 +346,7 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
               <input
                 type="checkbox"
                 id="refreshWeather-departureWeather"
-                onChange={() => handleSelectItem("departure")}
+                onChange={() => handleSelectItem('departure')}
                 checked={formState.departureWeather}
               />
               <span>
@@ -357,7 +358,7 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
               <input
                 type="checkbox"
                 id="refreshWeather-enrouteWeather"
-                onChange={() => handleSelectItem("enroute")}
+                onChange={() => handleSelectItem('enroute')}
                 checked={formState.enrouteWeather}
               />
               <span>
@@ -369,7 +370,7 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
               <input
                 type="checkbox"
                 id="refreshWeather-arrivalWeather"
-                onChange={() => handleSelectItem("arrival")}
+                onChange={() => handleSelectItem('arrival')}
                 checked={formState.arrivalWeather}
               />
               <span>
@@ -414,7 +415,7 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
             !!fetching ||
             mutation.isLoading
           }
-          disabledText={mutation.isLoading ? "Refreshing..." : "Refresh"}
+          disabledText={mutation.isLoading ? 'Refreshing...' : 'Refresh'}
         >
           Refresh
           <SaveIcon />

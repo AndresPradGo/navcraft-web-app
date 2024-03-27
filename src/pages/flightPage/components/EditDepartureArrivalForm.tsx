@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
-import { AiOutlineSave } from "react-icons/ai";
-import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { BsThermometerSun } from "react-icons/bs";
-import { FaCloudSunRain } from "react-icons/fa";
-import { FaArrowUpFromGroundWater } from "react-icons/fa6";
-import { LiaTimesSolid } from "react-icons/lia";
-import { PiAirTrafficControlDuotone, PiWindLight } from "react-icons/pi";
-import { TbWindsock } from "react-icons/tb";
-import { styled } from "styled-components";
-import { useForm, FieldValues } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { AiOutlineSave } from 'react-icons/ai';
+import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from 'react-icons/bi';
+import { BsThermometerSun } from 'react-icons/bs';
+import { FaCloudSunRain } from 'react-icons/fa';
+import { FaArrowUpFromGroundWater } from 'react-icons/fa6';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { PiAirTrafficControlDuotone, PiWindLight } from 'react-icons/pi';
+import { TbWindsock } from 'react-icons/tb';
+import { styled } from 'styled-components';
+import { useForm, FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import DataList from "../../../components/common/datalist";
-import getUTCNowString from "../../../utils/getUTCNowString";
-import useEditDepartureArrival from "../hooks/useEditDepartureArrival";
-import { OfficialAerodromeDataFromAPI } from "../../../services/officialAerodromeClient";
-import Loader from "../../../components/Loader";
+import Button from '../../../components/common/button';
+import DataList from '../../../components/common/datalist';
+import getUTCNowString from '../../../utils/getUTCNowString';
+import useEditDepartureArrival from '../hooks/useEditDepartureArrival';
+import { OfficialAerodromeDataFromAPI } from '../../../services/officialAerodromeClient';
+import Loader from '../../../components/Loader';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -86,8 +86,8 @@ const HtmlInputGroup = styled.div<InputGroupProps>`
   align-items: flex-start;
   width: 100%;
   padding: 40px 20px 0;
-  overflow: ${(props) => (props.$hide ? "hidden" : "auto")};
-  max-height: ${(props) => (props.$hide ? "0" : "1000vh")};
+  overflow: ${(props) => (props.$hide ? 'hidden' : 'auto')};
+  max-height: ${(props) => (props.$hide ? '0' : '1000vh')};
 
   & h2 {
     border-bottom: 1px solid var(--color-grey-bright);
@@ -123,7 +123,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -132,14 +132,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -159,9 +159,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white) !important;
     font-size: 15px;
 
@@ -169,21 +169,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -300,14 +300,14 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
   color: var(--color-grey);
-  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
+  opacity: ${(props) => (props.$disabled ? '0.3' : '1')};
 
   &:hover,
   &:focus {
     color: ${(props) =>
-      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
+      props.$disabled ? 'var(--color-grey)' : 'var(--color-white)'};
   }
 
   @media screen and (min-width: 510px) {
@@ -319,25 +319,25 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
 const schema = z.object({
   aerodrome: z.string(),
   wind_magnitude_knot: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Must be a round number")
-    .min(0, "Must be a positive number"),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Must be a round number')
+    .min(0, 'Must be a positive number'),
   wind_direction: z.union([
     z
-      .number({ invalid_type_error: "Enter a number" })
-      .int("Must be a round number")
-      .min(1, "Must be bewteen 1 and 360")
-      .max(360, "Must be bewteen 1 and 360")
+      .number({ invalid_type_error: 'Enter a number' })
+      .int('Must be a round number')
+      .min(1, 'Must be bewteen 1 and 360')
+      .max(360, 'Must be bewteen 1 and 360')
       .nullable(),
     z.literal(null),
   ]),
   temperature_c: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Must be a round number"),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Must be a round number'),
   altimeter_inhg: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(99.94, { message: "Must be less than 99.95" })
-    .min(-99.94, { message: "Must be greater than -99.95" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(99.94, { message: 'Must be less than 99.95' })
+    .min(-99.94, { message: 'Must be greater than -99.95' }),
 });
 type FormDataType = z.infer<typeof schema>;
 
@@ -362,8 +362,8 @@ const EditDepartureArrivalForm = ({
   const navigate = useNavigate();
 
   const aerodromes = queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>([
-    "aerodromes",
-    "all",
+    'aerodromes',
+    'all',
   ]);
 
   const {
@@ -388,7 +388,7 @@ const EditDepartureArrivalForm = ({
   }, [submited, mutation.isLoading]);
 
   useEffect(() => {
-    register("aerodrome");
+    register('aerodrome');
   }, []);
 
   useEffect(() => {
@@ -405,23 +405,23 @@ const EditDepartureArrivalForm = ({
 
   useEffect(() => {
     const wrongWindDirection = checkWindMagnitude({
-      wind_direction: watch("wind_direction"),
-      wind_magnitude_knot: watch("wind_magnitude_knot"),
+      wind_direction: watch('wind_direction'),
+      wind_magnitude_knot: watch('wind_magnitude_knot'),
     });
-    if (!wrongWindDirection) clearErrors("wind_direction");
-  }, [watch("wind_magnitude_knot"), watch("wind_direction")]);
+    if (!wrongWindDirection) clearErrors('wind_direction');
+  }, [watch('wind_magnitude_knot'), watch('wind_direction')]);
 
   const checkWindMagnitude = (data: FieldValues): boolean => {
     const message =
-      "If wind magnitude is not 0, you need to enter a wind direction";
+      'If wind magnitude is not 0, you need to enter a wind direction';
 
     if (errors.wind_direction) {
       if (errors.wind_direction.message !== message) return true;
     }
     const wrongData = data.wind_magnitude_knot && !data.wind_direction;
     if (wrongData) {
-      setError("wind_direction", {
-        type: "manual",
+      setError('wind_direction', {
+        type: 'manual',
         message: message,
       });
       return true;
@@ -437,17 +437,17 @@ const EditDepartureArrivalForm = ({
   const submitHandler = (data: FieldValues) => {
     const aerodromeId = aerodromes?.find(
       (a) =>
-        `${a.code}: ${a.name}${a.registered ? "" : " (saved)"}` ===
-        data.aerodrome
+        `${a.code}: ${a.name}${a.registered ? '' : ' (saved)'}` ===
+        data.aerodrome,
     )?.id;
     const wrongWindDirection = checkWindMagnitude({
       wind_direction: data.wind_direction,
       wind_magnitude_knot: data.wind_magnitude_knot,
     });
     if (!aerodromeId) {
-      setError("aerodrome", {
-        type: "manual",
-        message: "Select a valid option",
+      setError('aerodrome', {
+        type: 'manual',
+        message: 'Select a valid option',
       });
     } else if (!wrongWindDirection) {
       mutation.mutate({
@@ -470,8 +470,8 @@ const EditDepartureArrivalForm = ({
         <div>
           {isDeparture ? <DepartureIcon /> : <ArrivalIcon />}
           {noAerodrome
-            ? `Select ${isDeparture ? "Departure" : "Arrival"} Aerodrome`
-            : `Edit ${isDeparture ? "Departure" : "Arrival"} Settings`}
+            ? `Select ${isDeparture ? 'Departure' : 'Arrival'} Aerodrome`
+            : `Edit ${isDeparture ? 'Departure' : 'Arrival'} Settings`}
         </div>
         {mutation.isLoading || noAerodrome ? (
           <CloseIcon onClick={() => {}} $disabled={true} />
@@ -487,39 +487,39 @@ const EditDepartureArrivalForm = ({
             {noAerodrome ? (
               <p>
                 {`This flight doesn't have ${
-                  isDeparture ? "a departure" : "an arrival"
+                  isDeparture ? 'a departure' : 'an arrival'
                 } aerodrome. This happens when you delete your saved aerodrome, or when an official aerodrome is no longer registered in our database. Select a valid aerodrome to continue.`}
               </p>
             ) : null}
             <DataList
               setError={(message) =>
-                setError("aerodrome", {
-                  type: "manual",
+                setError('aerodrome', {
+                  type: 'manual',
                   message: message,
                 })
               }
-              clearErrors={() => clearErrors("aerodrome")}
+              clearErrors={() => clearErrors('aerodrome')}
               required={true}
-              value={watch("aerodrome")}
+              value={watch('aerodrome')}
               hasError={!!errors.aerodrome}
-              errorMessage={errors.aerodrome?.message || ""}
+              errorMessage={errors.aerodrome?.message || ''}
               options={
                 aerodromes
                   ? aerodromes.map(
                       (item) =>
                         `${item.code}: ${item.name}${
-                          item.registered ? "" : " (saved)"
-                        }`
+                          item.registered ? '' : ' (saved)'
+                        }`,
                     )
                   : []
               }
-              setValue={(value: string) => setValue("aerodrome", value)}
-              name={`edit-${isDeparture ? "departure" : "arrival"}-aerodrome`}
+              setValue={(value: string) => setValue('aerodrome', value)}
+              name={`edit-${isDeparture ? 'departure' : 'arrival'}-aerodrome`}
               formIsOpen={isOpen}
               resetValue={currentData.aerodrome}
             >
               <AerodromeIcon />
-              {`${isDeparture ? "Departure" : "Arrival"} Aerodrome`}
+              {`${isDeparture ? 'Departure' : 'Arrival'} Aerodrome`}
             </DataList>
             <HtmlInputGroup $hide={noAerodrome}>
               <h2>
@@ -535,15 +535,15 @@ const EditDepartureArrivalForm = ({
               <HtmlInput
                 $required={true}
                 $hasValue={
-                  !!watch("wind_magnitude_knot") ||
-                  watch("wind_magnitude_knot") === 0
+                  !!watch('wind_magnitude_knot') ||
+                  watch('wind_magnitude_knot') === 0
                 }
                 $accepted={!errors.wind_magnitude_knot}
               >
                 <input
-                  {...register("wind_magnitude_knot", { valueAsNumber: true })}
+                  {...register('wind_magnitude_knot', { valueAsNumber: true })}
                   id={`edit-${
-                    isDeparture ? "departure" : "arrival"
+                    isDeparture ? 'departure' : 'arrival'
                   }-wind_magnitude_knot`}
                   type="number"
                   autoComplete="off"
@@ -556,26 +556,26 @@ const EditDepartureArrivalForm = ({
                 )}
                 <label
                   htmlFor={`edit-${
-                    isDeparture ? "departure" : "arrival"
+                    isDeparture ? 'departure' : 'arrival'
                   }-wind_magnitude_knot`}
                 >
                   <WindMagnitudeIcon />
-                  {"Wind Magnitude [Kts]"}
+                  {'Wind Magnitude [Kts]'}
                 </label>
               </HtmlInput>
               <HtmlInput
                 $required={false}
                 $hasValue={
-                  !!watch("wind_direction") || watch("wind_direction") === 0
+                  !!watch('wind_direction') || watch('wind_direction') === 0
                 }
                 $accepted={!errors.wind_direction}
               >
                 <input
-                  {...register("wind_direction", {
+                  {...register('wind_direction', {
                     setValueAs: handleWindDirectionValue,
                   })}
                   id={`edit-${
-                    isDeparture ? "departure" : "arrival"
+                    isDeparture ? 'departure' : 'arrival'
                   }-wind_direction`}
                   type="number"
                   autoComplete="off"
@@ -588,24 +588,24 @@ const EditDepartureArrivalForm = ({
                 )}
                 <label
                   htmlFor={`edit-${
-                    isDeparture ? "departure" : "arrival"
+                    isDeparture ? 'departure' : 'arrival'
                   }-wind_direction`}
                 >
                   <WindDirectionIcon />
-                  {"Wind Direction [\u00B0True]"}
+                  {'Wind Direction [\u00B0True]'}
                 </label>
               </HtmlInput>
               <HtmlInput
                 $required={true}
                 $hasValue={
-                  !!watch("temperature_c") || watch("temperature_c") === 0
+                  !!watch('temperature_c') || watch('temperature_c') === 0
                 }
                 $accepted={!errors.temperature_c}
               >
                 <input
-                  {...register("temperature_c", { valueAsNumber: true })}
+                  {...register('temperature_c', { valueAsNumber: true })}
                   id={`edit-${
-                    isDeparture ? "departure" : "arrival"
+                    isDeparture ? 'departure' : 'arrival'
                   }-temperature_c`}
                   type="number"
                   autoComplete="off"
@@ -618,24 +618,24 @@ const EditDepartureArrivalForm = ({
                 )}
                 <label
                   htmlFor={`edit-${
-                    isDeparture ? "departure" : "arrival"
+                    isDeparture ? 'departure' : 'arrival'
                   }-temperature_c`}
                 >
                   <TemperatureIcon />
-                  {"Temperature [\u00B0C]"}
+                  {'Temperature [\u00B0C]'}
                 </label>
               </HtmlInput>
               <HtmlInput
                 $required={true}
                 $hasValue={
-                  !!watch("altimeter_inhg") || watch("altimeter_inhg") === 0
+                  !!watch('altimeter_inhg') || watch('altimeter_inhg') === 0
                 }
                 $accepted={!errors.altimeter_inhg}
               >
                 <input
-                  {...register("altimeter_inhg", { valueAsNumber: true })}
+                  {...register('altimeter_inhg', { valueAsNumber: true })}
                   id={`edit-${
-                    isDeparture ? "departure" : "arrival"
+                    isDeparture ? 'departure' : 'arrival'
                   }-altimeter_inhg`}
                   type="number"
                   autoComplete="off"
@@ -649,11 +649,11 @@ const EditDepartureArrivalForm = ({
                 )}
                 <label
                   htmlFor={`edit-${
-                    isDeparture ? "departure" : "arrival"
+                    isDeparture ? 'departure' : 'arrival'
                   }-altimeter_inhg`}
                 >
                   <AltimeterIcon />
-                  {"Altimeter [in Hg]"}
+                  {'Altimeter [in Hg]'}
                 </label>
               </HtmlInput>
             </HtmlInputGroup>
@@ -671,7 +671,7 @@ const EditDepartureArrivalForm = ({
             margin="5px 0"
             borderRadious={4}
             handleClick={() => {
-              navigate("/flights");
+              navigate('/flights');
             }}
             btnType="button"
             width="120px"

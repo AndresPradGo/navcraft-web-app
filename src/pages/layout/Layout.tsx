@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import { styled } from "styled-components";
+import { useEffect, useState } from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
+import { styled } from 'styled-components';
 
-import NavBar from "../../components/navbar";
-import { SideBarProvider } from "../../components/sidebar";
-import useAuth from "../../hooks/useAuth";
+import NavBar from '../../components/navbar';
+import { SideBarProvider } from '../../components/sidebar';
+import useAuth from '../../hooks/useAuth';
 
 const HtmlLayoutContainer = styled.div`
   transition: all 0.5s ease-out;
@@ -63,10 +63,10 @@ const Layout = () => {
 
     checkScreenWidth();
 
-    window.addEventListener("resize", checkScreenWidth);
+    window.addEventListener('resize', checkScreenWidth);
 
     return () => {
-      window.removeEventListener("resize", checkScreenWidth);
+      window.removeEventListener('resize', checkScreenWidth);
     };
   }, []);
 

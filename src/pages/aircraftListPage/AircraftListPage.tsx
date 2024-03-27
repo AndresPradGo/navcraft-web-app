@@ -1,26 +1,26 @@
-import { useState } from "react";
-import { AiOutlineSwap } from "react-icons/ai";
-import { IoAirplane, IoAirplaneOutline } from "react-icons/io5";
-import { styled } from "styled-components";
-import _ from "lodash";
+import { useState } from 'react';
+import { AiOutlineSwap } from 'react-icons/ai';
+import { IoAirplane, IoAirplaneOutline } from 'react-icons/io5';
+import { styled } from 'styled-components';
+import _ from 'lodash';
 
-import { ContentLayout } from "../layout";
-import useFuelTypes from "../../hooks/useFuelTypes";
-import Loader from "../../components/Loader";
-import useAircraftDataList from "../../hooks/useAircraftDataList";
-import useAuth from "../../hooks/useAuth";
-import Table from "../../components/common/table";
-import useAircraftModels from "../../hooks/useAircraftModels";
-import SideBarContent from "./SideBarContent";
-import { useModal, Modal } from "../../components/common/modal";
-import EditAircraftForm from "../../components/editAircraftForm";
-import EditAircraftModelForm from "../../components/editAircraftModelForm";
-import DeleteAircraftForm from "../../components/deleteAircraftForm";
-import DeleteAircraftModelForm from "../../components/deleteAircraftModelForm";
-import formatUTCDate from "../../utils/formatUTCDate";
-import { useSearchParams } from "react-router-dom";
-import useSetTitle from "../../hooks/useSetTitle";
-import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
+import { ContentLayout } from '../layout';
+import useFuelTypes from '../../hooks/useFuelTypes';
+import Loader from '../../components/Loader';
+import useAircraftDataList from '../../hooks/useAircraftDataList';
+import useAuth from '../../hooks/useAuth';
+import Table from '../../components/common/table';
+import useAircraftModels from '../../hooks/useAircraftModels';
+import SideBarContent from './SideBarContent';
+import { useModal, Modal } from '../../components/common/modal';
+import EditAircraftForm from '../../components/editAircraftForm';
+import EditAircraftModelForm from '../../components/editAircraftModelForm';
+import DeleteAircraftForm from '../../components/deleteAircraftForm';
+import DeleteAircraftModelForm from '../../components/deleteAircraftModelForm';
+import formatUTCDate from '../../utils/formatUTCDate';
+import { useSearchParams } from 'react-router-dom';
+import useSetTitle from '../../hooks/useSetTitle';
+import useUnauthorizedErrorHandler from '../../hooks/useUnauthorizedErrorHandler';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -109,14 +109,14 @@ const AircraftListPage = () => {
   const [searchParams] = useSearchParams();
 
   const [tableIndex, setTableIndex] = useState<number>(
-    searchParams.get("section") === "model" ? 1 : 0
+    searchParams.get('section') === 'model' ? 1 : 0,
   );
   const [modalForm, setModalForm] = useState<
-    "addAircraft" | "deleteAircraft" | "addModel" | "deleteModel"
-  >("addAircraft");
+    'addAircraft' | 'deleteAircraft' | 'addModel' | 'deleteModel'
+  >('addAircraft');
   const [idRowToDelete, setIdRowToDelete] = useState<number>(0);
 
-  useSetTitle("List of Aircraft");
+  useSetTitle('List of Aircraft');
 
   const modal = useModal();
   const addModelModal = useModal();
@@ -137,17 +137,17 @@ const AircraftListPage = () => {
     aircraftListError ||
     (aircraftModelsError && !!userIsAdmin)
   )
-    throw new Error("");
+    throw new Error('');
 
   const tableOptions = [
     {
-      key: "aircraftList",
-      title: "Aircraft",
+      key: 'aircraftList',
+      title: 'Aircraft',
       icon: <IoAirplane />,
     },
     {
-      key: "aircraftModels",
-      title: "Models",
+      key: 'aircraftModels',
+      title: 'Models',
       icon: <IoAirplaneOutline />,
     },
   ];
@@ -164,70 +164,70 @@ const AircraftListPage = () => {
   });
   const tableKeys = [
     [
-      "registration",
-      "abbreviation",
-      "make",
-      "model",
-      "state",
-      "fuel",
-      "updated",
+      'registration',
+      'abbreviation',
+      'make',
+      'model',
+      'state',
+      'fuel',
+      'updated',
     ],
   ];
   const tableHeaders = [
     {
-      registration: "Registration",
-      abbreviation: "Model",
-      make: "Make",
-      model: "Name",
-      state: "State",
-      fuel: "Fuel",
-      updated: "Date Updated",
+      registration: 'Registration',
+      abbreviation: 'Model',
+      make: 'Make',
+      model: 'Name',
+      state: 'State',
+      fuel: 'Fuel',
+      updated: 'Date Updated',
     },
   ] as { [key: string]: string }[];
 
   const sortData = [
     [
       {
-        key: "registration",
-        title: "Registration",
+        key: 'registration',
+        title: 'Registration',
       },
       {
-        key: "abbreviation",
-        title: "Model",
+        key: 'abbreviation',
+        title: 'Model',
       },
       {
-        key: "make",
-        title: "Make",
+        key: 'make',
+        title: 'Make',
       },
       {
-        key: "date",
-        title: "Date Updated",
+        key: 'date',
+        title: 'Date Updated',
       },
     ],
   ];
 
   const searchBarParameters = [
     {
-      placeHolder: "Search Aircraft",
-      columnKeys: ["registration", "abbreviation", "make", "model"],
+      placeHolder: 'Search Aircraft',
+      columnKeys: ['registration', 'abbreviation', 'make', 'model'],
     },
     {
-      placeHolder: "Search Models",
-      columnKeys: ["name"],
+      placeHolder: 'Search Models',
+      columnKeys: ['name'],
     },
   ];
 
   const filterParameters = [
     {
-      text: "Filter Aircraft",
+      text: 'Filter Aircraft',
       filters: [
         ...[...makes].map((make) => ({
-          key: "make",
+          key: 'make',
           title: `Make: ${make}`,
           value: make,
         })),
         ...[...models].map((model) => ({
-          key: "abbreviation",
+          key: 'abbreviation',
           title: `Model: ${model}`,
           value: model,
         })),
@@ -235,100 +235,100 @@ const AircraftListPage = () => {
           const fuelType =
             fuelTypes.find((fuel) => fuel.id === fuelId) || fuelTypes[0];
           return {
-            key: "fuel",
+            key: 'fuel',
             title: `Fuel: ${fuelType.name}`,
             value: fuelType.name,
           };
         }),
 
         {
-          key: "state",
-          title: "State: Complete",
-          value: "Complete",
+          key: 'state',
+          title: 'State: Complete',
+          value: 'Complete',
         },
         {
-          key: "state",
-          title: "State: Incomplete",
-          value: "Incomplete",
+          key: 'state',
+          title: 'State: Incomplete',
+          value: 'Incomplete',
         },
       ],
     },
   ];
 
   if (userIsAdmin) {
-    tableKeys.push(["id", "name", "state", "fuel", "updated"]);
+    tableKeys.push(['id', 'name', 'state', 'fuel', 'updated']);
 
     tableHeaders.push({
-      id: "ID",
-      name: "Description",
-      state: "State",
-      fuel: "Fuel",
-      updated: "Date Updated",
+      id: 'ID',
+      name: 'Description',
+      state: 'State',
+      fuel: 'Fuel',
+      updated: 'Date Updated',
     });
 
     sortData.push([
       {
-        key: "id",
-        title: "ID",
+        key: 'id',
+        title: 'ID',
       },
       {
-        key: "name",
-        title: "Name",
+        key: 'name',
+        title: 'Name',
       },
       {
-        key: "fuel",
-        title: "Fuel",
+        key: 'fuel',
+        title: 'Fuel',
       },
       {
-        key: "date",
-        title: "Date Updated",
+        key: 'date',
+        title: 'Date Updated',
       },
     ]);
 
     filterParameters.push({
-      text: "Filter Models",
+      text: 'Filter Models',
       filters: [
         ...fuelTypes.map((fuelType) => ({
-          key: "fuel",
+          key: 'fuel',
           title: `Fuel: ${fuelType.name}`,
           value: fuelType.name,
         })),
         {
-          key: "state",
-          title: "State: Complete",
-          value: "Complete",
+          key: 'state',
+          title: 'State: Complete',
+          value: 'Complete',
         },
         {
-          key: "state",
-          title: "State: Incomplete",
-          value: "Incomplete",
+          key: 'state',
+          title: 'State: Incomplete',
+          value: 'Incomplete',
         },
       ],
     });
   } else {
-    tableKeys.push(["name", "fuel"]);
+    tableKeys.push(['name', 'fuel']);
 
     tableHeaders.push({
-      name: "Description",
-      fuel: "Fuel",
+      name: 'Description',
+      fuel: 'Fuel',
     });
 
     sortData.push([
       {
-        key: "name",
-        title: "Name",
+        key: 'name',
+        title: 'Name',
       },
       {
-        key: "fuel",
-        title: "Fuel",
+        key: 'fuel',
+        title: 'Fuel',
       },
     ]);
 
     filterParameters.push({
-      text: "Filter Models",
+      text: 'Filter Models',
       filters: [
         ...fuelTypes.map((fuelType) => ({
-          key: "fuel",
+          key: 'fuel',
           title: fuelType.name,
           value: fuelType.name,
         })),
@@ -340,25 +340,25 @@ const AircraftListPage = () => {
     keys: tableKeys[tableIndex],
     headers: tableHeaders[tableIndex],
     rows:
-      tableOptions[tableIndex].key === "aircraftModels" && aircraftModels
+      tableOptions[tableIndex].key === 'aircraftModels' && aircraftModels
         ? aircraftModels.map((model) => ({
             id: model.id,
             name: model.performance_profile_name,
-            state: model.is_complete ? "Complete" : "Incomplete",
+            state: model.is_complete ? 'Complete' : 'Incomplete',
             fuel:
               fuelTypes.find((fuel) => fuel.id === model.fuel_type_id)?.name ||
-              "-",
+              '-',
             updated: formatUTCDate(model.last_updated_utc),
             date: model.last_updated_utc,
             handleEdit: `model/${model.id}`,
             handleDelete: () => {
-              setModalForm("deleteModel");
+              setModalForm('deleteModel');
               setIdRowToDelete(model.id);
               modal.handleOpen();
             },
             permissions: !!userIsAdmin
-              ? ("open-delete" as "open-delete")
-              : ("open" as "open"),
+              ? ('open-delete' as 'open-delete')
+              : ('open' as 'open'),
           }))
         : aircraftList.map((aircraft) => {
             const datesUpdated = aircraft.profiles.length
@@ -366,8 +366,8 @@ const AircraftListPage = () => {
                   date: profile.last_updated_utc,
                 }))
               : [{ date: aircraft.last_updated_utc }];
-            const dateUpdated = _.orderBy(datesUpdated, ["date"], ["desc"])[0][
-              "date"
+            const dateUpdated = _.orderBy(datesUpdated, ['date'], ['desc'])[0][
+              'date'
             ];
             return {
               id: aircraft.id,
@@ -376,8 +376,8 @@ const AircraftListPage = () => {
               make: aircraft.make,
               model: aircraft.model,
               state: aircraft.profiles.find((profile) => profile.is_complete)
-                ? "Complete"
-                : "Incomplete",
+                ? 'Complete'
+                : 'Incomplete',
               fuel:
                 fuelTypes.find((fuel) => {
                   const id =
@@ -387,16 +387,16 @@ const AircraftListPage = () => {
                       ?.fuel_type_id ||
                     -1;
                   return fuel.id === id;
-                })?.name || "-",
+                })?.name || '-',
               updated: formatUTCDate(dateUpdated),
               date: dateUpdated,
               handleEdit: `${aircraft.id}`,
               handleDelete: () => {
-                setModalForm("deleteAircraft");
+                setModalForm('deleteAircraft');
                 setIdRowToDelete(aircraft.id);
                 modal.handleOpen();
               },
-              permissions: "open-delete" as "open-delete",
+              permissions: 'open-delete' as 'open-delete',
             };
           }),
   };
@@ -412,9 +412,9 @@ const AircraftListPage = () => {
         <EditAircraftModelForm
           aircraftModelData={{
             id: 0,
-            performance_profile_name: "",
+            performance_profile_name: '',
             is_complete: false,
-            fuel_type: "",
+            fuel_type: '',
           }}
           closeModal={addModelModal.handleClose}
           isOpen={addModelModal.isOpen}
@@ -422,28 +422,28 @@ const AircraftListPage = () => {
         />
       </Modal>
       <Modal isOpen={modal.isOpen}>
-        {modalForm === "addAircraft" ? (
+        {modalForm === 'addAircraft' ? (
           <EditAircraftForm
             aircraftData={{
               id: 0,
-              make: "",
-              model: "",
-              abbreviation: "",
-              registration: "",
+              make: '',
+              model: '',
+              abbreviation: '',
+              registration: '',
             }}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
           />
-        ) : modalForm === "deleteAircraft" ? (
+        ) : modalForm === 'deleteAircraft' ? (
           <DeleteAircraftForm
             registration={
               aircraftList.find((a) => a.id === idRowToDelete)?.registration ||
-              ""
+              ''
             }
             id={idRowToDelete}
             closeModal={modal.handleClose}
           />
-        ) : modalForm === "deleteModel" ? (
+        ) : modalForm === 'deleteModel' ? (
           <DeleteAircraftModelForm
             id={idRowToDelete}
             closeModal={modal.handleClose}
@@ -454,11 +454,11 @@ const AircraftListPage = () => {
         sideBarContent={
           <SideBarContent
             handleAddAircraft={() => {
-              setModalForm("addAircraft");
+              setModalForm('addAircraft');
               modal.handleOpen();
             }}
             handleAddModel={() => {
-              setModalForm("addModel");
+              setModalForm('addModel');
               addModelModal.handleOpen();
             }}
             isAdmin={!!userIsAdmin}

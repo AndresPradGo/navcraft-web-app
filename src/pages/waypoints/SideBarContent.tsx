@@ -1,21 +1,21 @@
-import { FaTools } from "react-icons/fa";
+import { FaTools } from 'react-icons/fa';
 import {
   FaUser,
   FaUserShield,
   FaFileExport,
   FaDownload,
-} from "react-icons/fa6";
-import { PiAirTrafficControlDuotone } from "react-icons/pi";
-import { RiMapPinFill } from "react-icons/ri";
-import { TbMapPinPlus, TbRoad } from "react-icons/tb";
-import { styled } from "styled-components";
+} from 'react-icons/fa6';
+import { PiAirTrafficControlDuotone } from 'react-icons/pi';
+import { RiMapPinFill } from 'react-icons/ri';
+import { TbMapPinPlus, TbRoad } from 'react-icons/tb';
+import { styled } from 'styled-components';
 
-import useFetchFile from "../../hooks/useFetchFile";
+import useFetchFile from '../../hooks/useFetchFile';
 import SideBarIndex, {
   PageSectionDataType,
-} from "../../components/common/SideBarIndex";
-import SideBarBtnList from "../../components/common/SideBarBtnList";
-import SideBarTitle from "../../components/common/SideBarTitle";
+} from '../../components/common/SideBarIndex';
+import SideBarBtnList from '../../components/common/SideBarBtnList';
+import SideBarTitle from '../../components/common/SideBarTitle';
 
 const HtmlContainer = styled.div`
   margin: 15px 0;
@@ -109,25 +109,25 @@ const SideBarContent = ({
   const fileFetcher = useFetchFile();
 
   const baseStyles = {
-    width: "100%",
-    height: "40px",
+    width: '100%',
+    height: '40px',
     fontSize: 15,
-    margin: "5px 0",
+    margin: '5px 0',
     fill: true,
     borderWidth: 3,
     borderRadious: 4,
   };
   const commonStyles = {
     ...baseStyles,
-    color: "var(--color-grey-bright)",
-    hoverColor: "var(--color-white)",
-    backgroundColor: "var(--color-primary-bright)",
-    backgroundHoverColor: "var(--color-primary-light)",
+    color: 'var(--color-grey-bright)',
+    hoverColor: 'var(--color-white)',
+    backgroundColor: 'var(--color-primary-bright)',
+    backgroundHoverColor: 'var(--color-primary-light)',
   };
 
   const userButtons = [
     {
-      text: isAdmin ? "Add User Aerodrome" : "Add Aerodrome",
+      text: isAdmin ? 'Add User Aerodrome' : 'Add Aerodrome',
       icon: <AddAerodromeIcon />,
       styles: {
         ...commonStyles,
@@ -135,7 +135,7 @@ const SideBarContent = ({
       onClick: handleAddUserAerodrome,
     },
     {
-      text: isAdmin ? "Add User Waypoint" : "Add Waypoint",
+      text: isAdmin ? 'Add User Waypoint' : 'Add Waypoint',
       icon: <AddWaypointIcon />,
       styles: {
         ...commonStyles,
@@ -146,7 +146,7 @@ const SideBarContent = ({
 
   const adminButtons = [
     {
-      text: "Add Official Aerodrome",
+      text: 'Add Official Aerodrome',
       icon: <AddAerodromeIcon />,
       styles: {
         ...commonStyles,
@@ -154,7 +154,7 @@ const SideBarContent = ({
       onClick: handleAddOfficialAerodrome,
     },
     {
-      text: "Add VFR Waypoint",
+      text: 'Add VFR Waypoint',
       icon: <AddWaypointIcon />,
       styles: {
         ...commonStyles,
@@ -165,40 +165,40 @@ const SideBarContent = ({
 
   const downloadButtons = [
     {
-      text: "Official Aerodromes",
+      text: 'Official Aerodromes',
       icon: <AddAerodromeIcon />,
       styles: {
         ...baseStyles,
       },
       onClick: () => {
-        fileFetcher("manage-waypoints/aerodromes");
+        fileFetcher('manage-waypoints/aerodromes');
       },
     },
     {
-      text: "VFR Waypoints",
+      text: 'VFR Waypoints',
       icon: <WaypointIcon />,
       styles: {
         ...baseStyles,
       },
       onClick: () => {
-        fileFetcher("manage-waypoints");
+        fileFetcher('manage-waypoints');
       },
     },
     {
-      text: "Runways",
+      text: 'Runways',
       icon: <RunwayIcon />,
       styles: {
         ...baseStyles,
       },
       onClick: () => {
-        fileFetcher("runways/csv");
+        fileFetcher('runways/csv');
       },
     },
   ];
 
   const importButtons = [
     {
-      text: "Official Aerodromes",
+      text: 'Official Aerodromes',
       icon: <AddAerodromeIcon />,
       styles: {
         ...commonStyles,
@@ -206,7 +206,7 @@ const SideBarContent = ({
       onClick: handleManageAerodromes,
     },
     {
-      text: "VFR Waypoints",
+      text: 'VFR Waypoints',
       icon: <WaypointIcon />,
       styles: {
         ...commonStyles,
@@ -214,7 +214,7 @@ const SideBarContent = ({
       onClick: handleManageWaypoints,
     },
     {
-      text: "Runways",
+      text: 'Runways',
       icon: <RunwayIcon />,
       styles: {
         ...commonStyles,
@@ -233,7 +233,7 @@ const SideBarContent = ({
       />
       <SideBarBtnList
         titleIcon={isAdmin ? <UserIcon /> : <ToolsIcon />}
-        title={`${isAdmin ? "User " : ""}Tools`}
+        title={`${isAdmin ? 'User ' : ''}Tools`}
         buttons={userButtons}
       />
       {isAdmin ? (

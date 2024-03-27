@@ -5,19 +5,19 @@ import {
   DragEvent,
   ChangeEvent,
   FormEvent,
-} from "react";
-import { AiOutlineSave } from "react-icons/ai";
-import { FaFileExport, FaUpload } from "react-icons/fa6";
-import { LiaTimesSolid } from "react-icons/lia";
-import { LuFolderSearch } from "react-icons/lu";
-import { MdOutlineLiveHelp } from "react-icons/md";
-import { styled } from "styled-components";
+} from 'react';
+import { AiOutlineSave } from 'react-icons/ai';
+import { FaFileExport, FaUpload } from 'react-icons/fa6';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { LuFolderSearch } from 'react-icons/lu';
+import { MdOutlineLiveHelp } from 'react-icons/md';
+import { styled } from 'styled-components';
 
-import Button from "../button";
-import FileTag from "./FileTag";
-import useUploadFile from "./useUploadFile";
-import Loader from "../../Loader";
-import ExpandibleMessage from "../ExpandibleMessage";
+import Button from '../button';
+import FileTag from './FileTag';
+import useUploadFile from './useUploadFile';
+import Loader from '../../Loader';
+import ExpandibleMessage from '../ExpandibleMessage';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -60,7 +60,7 @@ interface InputContainerProps {
 const HtmlInputContainer = styled.div<InputContainerProps>`
   display: flex;
   flex-direction: column;
-  justify-content: ${(props) => (props.$loading ? "center" : "flex-start")};
+  justify-content: ${(props) => (props.$loading ? 'center' : 'flex-start')};
   width: 100%;
   overflow-y: auto;
   padding: 20px 0;
@@ -79,17 +79,17 @@ interface UploadSectionProps {
 }
 
 const HtmlUploadSection = styled.div<UploadSectionProps>`
-  cursor: ${(props) => (props.$fileIsOver ? "copy" : "default")};
+  cursor: ${(props) => (props.$fileIsOver ? 'copy' : 'default')};
   transition: all 0.2s linear;
   background-color: ${(props) =>
     props.$fileIsOver
-      ? "var(--color-primary-light)"
-      : "var(--color-primary-bright)"};
+      ? 'var(--color-primary-light)'
+      : 'var(--color-primary-bright)'};
   padding: 5px;
   margin: 20px 10px;
   width: calc(100% - 20px);
   & div {
-    transform: scale(${(props) => (props.$fileIsOver ? "0.95" : "1")});
+    transform: scale(${(props) => (props.$fileIsOver ? '0.95' : '1')});
     transition: all 0.2s linear;
     display: flex;
     flex-direction: column;
@@ -99,13 +99,13 @@ const HtmlUploadSection = styled.div<UploadSectionProps>`
     min-height: 300px;
     border: 2px dashed
       ${(props) =>
-        props.$fileIsOver ? "var(--color-grey-bright)" : "var(--color-grey)"};
+        props.$fileIsOver ? 'var(--color-grey-bright)' : 'var(--color-grey)'};
     color: ${(props) =>
-      props.$fileIsOver ? "var(--color-grey-bright)" : "var(--color-grey)"};
+      props.$fileIsOver ? 'var(--color-grey-bright)' : 'var(--color-grey)'};
 
     & p {
       transition: margin 0.2s linear;
-      margin: ${(props) => (props.$fileIsOver ? "10px 0" : "20px 0")};
+      margin: ${(props) => (props.$fileIsOver ? '10px 0' : '20px 0')};
     }
 
     & input {
@@ -180,14 +180,14 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
   color: var(--color-grey);
-  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
+  opacity: ${(props) => (props.$disabled ? '0.3' : '1')};
 
   &:hover,
   &:focus {
     color: ${(props) =>
-      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
+      props.$disabled ? 'var(--color-grey)' : 'var(--color-white)'};
   }
 
   @media screen and (min-width: 510px) {
@@ -240,7 +240,7 @@ const FileForm = ({
   const handleDragover = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const itemDraged = e.dataTransfer.items[0];
-    if (!file && itemDraged.kind === "file" && itemDraged.type === "text/csv")
+    if (!file && itemDraged.kind === 'file' && itemDraged.type === 'text/csv')
       setFileIsOver(true);
   };
 
@@ -252,13 +252,13 @@ const FileForm = ({
   const handleFileAdd = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const newFile = e.target.files ? e.target.files[0] : null;
-    if (!file && newFile && newFile.type === "text/csv") setFile(newFile);
+    if (!file && newFile && newFile.type === 'text/csv') setFile(newFile);
   };
 
   const handleFileDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const newFile = e.dataTransfer.items[0].getAsFile();
-    if (!file && newFile && newFile.type === "text/csv") {
+    if (!file && newFile && newFile.type === 'text/csv') {
       setFileIsOver(false);
       setFile(newFile);
     }
@@ -268,7 +268,7 @@ const FileForm = ({
     e.preventDefault();
     if (file && !mutation.isLoading) {
       const formData = new FormData();
-      formData.append("csv_file", file);
+      formData.append('csv_file', file);
       mutation.mutate(formData);
       setSubmited(true);
     }

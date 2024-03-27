@@ -1,2 +1,2 @@
-import DeleteRunwayForm from './DeleteRunwayForm'
-export default DeleteRunwayForm
+import DeleteRunwayForm from './DeleteRunwayForm';
+export default DeleteRunwayForm;

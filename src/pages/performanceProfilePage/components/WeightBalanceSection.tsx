@@ -1,21 +1,21 @@
-import { useState } from "react";
-import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from "react-icons/bi";
-import { GiRadialBalance } from "react-icons/gi";
-import { MdNoLuggage } from "react-icons/md";
-import { PiAirplane, PiAirplaneFill } from "react-icons/pi";
-import { styled } from "styled-components";
-import _ from "lodash";
+import { useState } from 'react';
+import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from 'react-icons/bi';
+import { GiRadialBalance } from 'react-icons/gi';
+import { MdNoLuggage } from 'react-icons/md';
+import { PiAirplane, PiAirplaneFill } from 'react-icons/pi';
+import { styled } from 'styled-components';
+import _ from 'lodash';
 
-import DataTableList from "../../../components/common/DataTableList";
-import ExpandibleTable from "../../../components/common/ExpandibleTable";
-import { useModal, Modal } from "../../../components/common/modal";
-import { WeightAndBalanceDataFromAPI } from "../../../services/weightBalanceClient";
-import formatUTCDate from "../../../utils/formatUTCDate";
-import WeightBalanceGraph from "../../../components/WeightBalanceGraph";
-import DeleteWeightBalanceProfileForm from "./DeleteWeightBalanceProfileForm";
-import EditWeightBalanceProfileForm from "../components/EditWeightBalanceProfileForm";
-import { useQueryClient } from "@tanstack/react-query";
-import useModelPermissions from "../useModelPermissions";
+import DataTableList from '../../../components/common/DataTableList';
+import ExpandibleTable from '../../../components/common/ExpandibleTable';
+import { useModal, Modal } from '../../../components/common/modal';
+import { WeightAndBalanceDataFromAPI } from '../../../services/weightBalanceClient';
+import formatUTCDate from '../../../utils/formatUTCDate';
+import WeightBalanceGraph from '../../../components/WeightBalanceGraph';
+import DeleteWeightBalanceProfileForm from './DeleteWeightBalanceProfileForm';
+import EditWeightBalanceProfileForm from '../components/EditWeightBalanceProfileForm';
+import { useQueryClient } from '@tanstack/react-query';
+import useModelPermissions from '../useModelPermissions';
 
 const HtmlDataContainer = styled.div`
   transition: all 2s;
@@ -99,7 +99,7 @@ const WeightBalanceSection = ({
   instructions,
   profileId,
 }: Props) => {
-  const [currentForm, setCurrentForm] = useState<"delete" | "edit">("delete");
+  const [currentForm, setCurrentForm] = useState<'delete' | 'edit'>('delete');
   const [selectedId, setSelectedId] = useState<number>(0);
 
   const { isModel, userIsAdmin } = useModelPermissions();
@@ -107,55 +107,55 @@ const WeightBalanceSection = ({
   const queryClient = useQueryClient();
   const weightBalanceData =
     queryClient.getQueryData<WeightAndBalanceDataFromAPI>([
-      "AircraftWeightBalanceData",
+      'AircraftWeightBalanceData',
       profileId,
     ]);
   const modal = useModal();
 
   const dataList = [
     {
-      key: "center_of_gravity_in",
-      title: "CoG [in]",
+      key: 'center_of_gravity_in',
+      title: 'CoG [in]',
       icon: <COGIcon />,
-      data: `${weightBalanceData?.center_of_gravity_in || "-"}`,
+      data: `${weightBalanceData?.center_of_gravity_in || '-'}`,
     },
     {
-      key: "empty_weight_lb",
-      title: "Empty Weight [lb]",
+      key: 'empty_weight_lb',
+      title: 'Empty Weight [lb]',
       icon: <EmptyIcon />,
-      data: `${weightBalanceData?.empty_weight_lb || "-"}`,
+      data: `${weightBalanceData?.empty_weight_lb || '-'}`,
     },
     {
-      key: "max_ramp_weight_lb",
-      title: "Max Ramp Weight [lb]",
+      key: 'max_ramp_weight_lb',
+      title: 'Max Ramp Weight [lb]',
       icon: <RampIcon />,
-      data: `${weightBalanceData?.max_ramp_weight_lb || "-"}`,
+      data: `${weightBalanceData?.max_ramp_weight_lb || '-'}`,
     },
     {
-      key: "max_takeoff_weight_lb",
-      title: "Max Takeoff Weight [lb]",
+      key: 'max_takeoff_weight_lb',
+      title: 'Max Takeoff Weight [lb]',
       icon: <TakeoffIcon />,
-      data: `${weightBalanceData?.max_takeoff_weight_lb || "-"}`,
+      data: `${weightBalanceData?.max_takeoff_weight_lb || '-'}`,
     },
     {
-      key: "max_landing_weight_lb",
-      title: "Max Landing Weight [lb]",
+      key: 'max_landing_weight_lb',
+      title: 'Max Landing Weight [lb]',
       icon: <LandingIcon />,
-      data: `${weightBalanceData?.max_landing_weight_lb || "-"}`,
+      data: `${weightBalanceData?.max_landing_weight_lb || '-'}`,
     },
     {
-      key: "baggage_allowance_lb",
-      title: "Baggage Allowance [lb]",
+      key: 'baggage_allowance_lb',
+      title: 'Baggage Allowance [lb]',
       icon: <LuggageIcon />,
-      data: `${weightBalanceData?.baggage_allowance_lb || "-"}`,
+      data: `${weightBalanceData?.baggage_allowance_lb || '-'}`,
     },
   ];
 
   const tableData = {
-    keys: ["name", "updated"],
+    keys: ['name', 'updated'],
     headers: {
-      name: "Name",
-      updated: "Date Updated",
+      name: 'Name',
+      updated: 'Date Updated',
     },
     rows: weightBalanceData
       ? weightBalanceData.weight_balance_profiles.map((profile) => ({
@@ -163,23 +163,23 @@ const WeightBalanceSection = ({
           name: profile.name,
           updated: formatUTCDate(profile.last_updated_utc),
           handleEdit: () => {
-            setCurrentForm("edit");
+            setCurrentForm('edit');
             setSelectedId(profile.id);
             modal.handleOpen();
           },
           handleDelete: () => {
-            setCurrentForm("delete");
+            setCurrentForm('delete');
             setSelectedId(profile.id);
             modal.handleOpen();
           },
-          permissions: "edit-delete" as "edit-delete",
+          permissions: 'edit-delete' as 'edit-delete',
         }))
       : [],
   };
 
   const profiles = weightBalanceData
     ? weightBalanceData.weight_balance_profiles.map((profile) => {
-        const orderLimits = _.orderBy(profile.limits, ["sequence"], ["asc"]);
+        const orderLimits = _.orderBy(profile.limits, ['sequence'], ['asc']);
 
         return {
           name: profile.name,
@@ -198,7 +198,7 @@ const WeightBalanceSection = ({
   const displayTable = !!profiles.length && profiles[0].limits.length;
 
   const profileToEdit = weightBalanceData?.weight_balance_profiles.find(
-    (p) => p.id === selectedId
+    (p) => p.id === selectedId,
   );
 
   return (
@@ -206,21 +206,21 @@ const WeightBalanceSection = ({
       {(isModel && userIsAdmin) || !isModel ? (
         <Modal
           isOpen={modal.isOpen}
-          width={currentForm === "edit" ? 718 : 600}
-          fullHeight={currentForm === "edit"}
+          width={currentForm === 'edit' ? 718 : 600}
+          fullHeight={currentForm === 'edit'}
         >
-          {currentForm === "delete" ? (
+          {currentForm === 'delete' ? (
             <DeleteWeightBalanceProfileForm
               closeModal={modal.handleClose}
               name={
                 weightBalanceData?.weight_balance_profiles.find(
-                  (p) => p.id === selectedId
-                )?.name || ""
+                  (p) => p.id === selectedId,
+                )?.name || ''
               }
               id={selectedId}
               profileId={profileId}
             />
-          ) : currentForm === "edit" ? (
+          ) : currentForm === 'edit' ? (
             <EditWeightBalanceProfileForm
               performanceProfileId={profileId}
               helpInstructions={instructions.slice(1)}
@@ -229,7 +229,7 @@ const WeightBalanceSection = ({
               labelKey="edit"
               data={{
                 id: selectedId,
-                name: profileToEdit?.name || "",
+                name: profileToEdit?.name || '',
                 limits:
                   profileToEdit?.limits.map((l) => ({
                     weight_lb: l.weight_lb,
@@ -248,7 +248,7 @@ const WeightBalanceSection = ({
             profiles={profiles}
             maxTakeoff={weightBalanceData?.max_takeoff_weight_lb}
             title="W&B Profiles"
-            margin={"35px 0 0"}
+            margin={'35px 0 0'}
           />
         ) : null}
       </HtmlDataContainer>

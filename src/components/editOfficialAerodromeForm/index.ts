@@ -1,2 +1,2 @@
 import EditOfficialAerodromeForm from './EditOfficialAerodromeForm';
-export default EditOfficialAerodromeForm
+export default EditOfficialAerodromeForm;

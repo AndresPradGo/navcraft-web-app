@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import { styled } from 'styled-components';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -30,10 +30,10 @@ const FlightWarningList = ({ warnings }: Props) => {
 
   return (
     <HtmlContainer>
-      <h3>{`WARNING${moreThanOne ? "S" : ""}!`}</h3>
+      <h3>{`WARNING${moreThanOne ? 'S' : ''}!`}</h3>
       <ul>
         {warnings.map((list, i) =>
-          list.map((w, j) => <li key={`${i}.${j}`}>{w}</li>)
+          list.map((w, j) => <li key={`${i}.${j}`}>{w}</li>),
         )}
       </ul>
     </HtmlContainer>

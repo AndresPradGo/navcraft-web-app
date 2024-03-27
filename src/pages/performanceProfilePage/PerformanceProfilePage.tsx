@@ -1,55 +1,55 @@
-import { useState } from "react";
-import { AiOutlineSwap } from "react-icons/ai";
-import { BsSpeedometer } from "react-icons/bs";
-import { FaPlaneDeparture, FaPlaneArrival, FaSitemap } from "react-icons/fa";
-import { IoAirplane, IoAirplaneOutline } from "react-icons/io5";
-import { MdBalance, MdOutlineStart } from "react-icons/md";
-import { TbPlaneInflight } from "react-icons/tb";
-import { TbTrendingUp2 } from "react-icons/tb";
-import { styled } from "styled-components";
+import { useState } from 'react';
+import { AiOutlineSwap } from 'react-icons/ai';
+import { BsSpeedometer } from 'react-icons/bs';
+import { FaPlaneDeparture, FaPlaneArrival, FaSitemap } from 'react-icons/fa';
+import { IoAirplane, IoAirplaneOutline } from 'react-icons/io5';
+import { MdBalance, MdOutlineStart } from 'react-icons/md';
+import { TbPlaneInflight } from 'react-icons/tb';
+import { TbTrendingUp2 } from 'react-icons/tb';
+import { styled } from 'styled-components';
 
-import modelPermissionsContext from "./modelPermissionsContext";
-import { usePathList } from "../../router";
-import useAuth from "../../hooks/useAuth";
-import ContentLayout from "../layout/ContentLayout";
-import SideBarContent from "./components/SideBarContent";
-import { PerformanceProfileBaseData } from "../../services/aircraftClient";
-import useAircraftData from "../../hooks/useAircraftData";
-import useAircraftModelData from "../../hooks/useAircraftModelData";
-import useFuelTypes from "../../hooks/useFuelTypes";
-import Loader from "../../components/Loader";
-import { useParams } from "react-router-dom";
-import AnnouncementBox from "../../components/common/AnnouncementBox";
-import ArrangementSection from "./components/ArrangementSection";
-import { Modal, useModal } from "../../components/common/modal";
-import EditBaggageCompartmentForm from "./components/EditBaggageCompartmentForm";
-import EditSeatRowForm from "./components/EditSeatRowForm";
-import EditFuelTankForm from "./components/EditFuelTankForm";
-import useAircraftArrangementData from "../../hooks/useAircraftArrangementData";
-import useWeightBalanceData from "../../hooks/useWeightBalanceData";
-import useTakeoffPerformanceData from "../../hooks/useTakeoffPerformanceData";
-import useLandingPerformanceData from "../../hooks/useLandingPerformanceData";
-import EditPerformanceProfileForm from "./components/EditPerformanceProfileForm";
-import EditAircraftModelForm from "../../components/editAircraftModelForm/index";
-import useSelectPerformanceProfile from "./hooks/useSelectPerformanceProfile";
-import DeletePerformanceProfileForm from "../../components/deletePerformanceProfileForm";
-import DeleteAircraftModelForm from "../../components/deleteAircraftModelForm";
-import WeightBalanceSection from "./components/WeightBalanceSection";
-import EditWeightAndBalanceDataForm from "./components/EditWeightAndBalanceDataForm";
-import EditWeightBalanceProfileForm from "./components/EditWeightBalanceProfileForm";
-import TakeoffLandingSection from "./components/TakeoffLandingSection";
-import useRunwaySurfaces from "../../hooks/useRunwaySurfaces";
-import EditWindAdjustmentsForm from "./components/EditWindAdjustmentsForm";
-import EditSurfaceAdjustmentForm from "./components/EditSurfaceAdjustmentForm";
-import FileForm from "../../components/common/fileForm/index";
-import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions";
-import EditClimbDataForm from "./components/EditClimbDataForm";
-import useClimbData from "./hooks/useClimbData";
-import useCruiseData from "./hooks/useCruiseData";
-import ClimbSection from "./components/ClimbSection";
-import CruiseSection from "./components/CruiseSection";
-import useSetTitle from "../../hooks/useSetTitle";
-import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
+import modelPermissionsContext from './modelPermissionsContext';
+import { usePathList } from '../../router';
+import useAuth from '../../hooks/useAuth';
+import ContentLayout from '../layout/ContentLayout';
+import SideBarContent from './components/SideBarContent';
+import { PerformanceProfileBaseData } from '../../services/aircraftClient';
+import useAircraftData from '../../hooks/useAircraftData';
+import useAircraftModelData from '../../hooks/useAircraftModelData';
+import useFuelTypes from '../../hooks/useFuelTypes';
+import Loader from '../../components/Loader';
+import { useParams } from 'react-router-dom';
+import AnnouncementBox from '../../components/common/AnnouncementBox';
+import ArrangementSection from './components/ArrangementSection';
+import { Modal, useModal } from '../../components/common/modal';
+import EditBaggageCompartmentForm from './components/EditBaggageCompartmentForm';
+import EditSeatRowForm from './components/EditSeatRowForm';
+import EditFuelTankForm from './components/EditFuelTankForm';
+import useAircraftArrangementData from '../../hooks/useAircraftArrangementData';
+import useWeightBalanceData from '../../hooks/useWeightBalanceData';
+import useTakeoffPerformanceData from '../../hooks/useTakeoffPerformanceData';
+import useLandingPerformanceData from '../../hooks/useLandingPerformanceData';
+import EditPerformanceProfileForm from './components/EditPerformanceProfileForm';
+import EditAircraftModelForm from '../../components/editAircraftModelForm/index';
+import useSelectPerformanceProfile from './hooks/useSelectPerformanceProfile';
+import DeletePerformanceProfileForm from '../../components/deletePerformanceProfileForm';
+import DeleteAircraftModelForm from '../../components/deleteAircraftModelForm';
+import WeightBalanceSection from './components/WeightBalanceSection';
+import EditWeightAndBalanceDataForm from './components/EditWeightAndBalanceDataForm';
+import EditWeightBalanceProfileForm from './components/EditWeightBalanceProfileForm';
+import TakeoffLandingSection from './components/TakeoffLandingSection';
+import useRunwaySurfaces from '../../hooks/useRunwaySurfaces';
+import EditWindAdjustmentsForm from './components/EditWindAdjustmentsForm';
+import EditSurfaceAdjustmentForm from './components/EditSurfaceAdjustmentForm';
+import FileForm from '../../components/common/fileForm/index';
+import getCsvUploadingInstructions from '../../utils/getCsvUploadingInstructions';
+import EditClimbDataForm from './components/EditClimbDataForm';
+import useClimbData from './hooks/useClimbData';
+import useCruiseData from './hooks/useCruiseData';
+import ClimbSection from './components/ClimbSection';
+import CruiseSection from './components/CruiseSection';
+import useSetTitle from '../../hooks/useSetTitle';
+import useUnauthorizedErrorHandler from '../../hooks/useUnauthorizedErrorHandler';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -205,23 +205,23 @@ const PerformanceProfilePage = () => {
   const [toEditId, setToEditId] = useState<number>(0);
   const [sectionIdx, setSectionIdx] = useState(0);
   const [currentForm, setCurrentForm] = useState<
-    | "deleteProfile"
-    | "addCompartment"
-    | "addSeat"
-    | "addTank"
-    | "editWeightBalanceData"
-    | "addWeightBalanceProfile"
-    | "editTakeoffWindAdjustments"
-    | "editLandingWindAdjustments"
-    | "importTakeoff"
-    | "importClimb"
-    | "importCruise"
-    | "importLanding"
-    | "editClimbAdjustments"
-  >("deleteProfile");
+    | 'deleteProfile'
+    | 'addCompartment'
+    | 'addSeat'
+    | 'addTank'
+    | 'editWeightBalanceData'
+    | 'addWeightBalanceProfile'
+    | 'editTakeoffWindAdjustments'
+    | 'editLandingWindAdjustments'
+    | 'importTakeoff'
+    | 'importClimb'
+    | 'importCruise'
+    | 'importLanding'
+    | 'editClimbAdjustments'
+  >('deleteProfile');
 
   const path = usePathList();
-  const isModel = path[1] === "model";
+  const isModel = path[1] === 'model';
   const user = useAuth();
   const userIsAdmin = !!(user?.is_active && user?.is_admin);
 
@@ -232,8 +232,8 @@ const PerformanceProfilePage = () => {
   const fileModal = useModal();
 
   const { id: stringId, aircraftId: stringAircraftId } = useParams();
-  const profileId = parseInt(stringId || "0");
-  const aircraftId = parseInt(stringAircraftId || "0");
+  const profileId = parseInt(stringId || '0');
+  const aircraftId = parseInt(stringAircraftId || '0');
 
   const selectProfileMutation = useSelectPerformanceProfile(aircraftId);
 
@@ -292,12 +292,12 @@ const PerformanceProfilePage = () => {
 
   useSetTitle(
     modelData && profileBaseData
-      ? `Aircraft ${isModel ? "Model" : "Profile"}: ${
+      ? `Aircraft ${isModel ? 'Model' : 'Profile'}: ${
           isModel
             ? modelData.performance_profile_name
             : profileBaseData.performance_profile_name
         }`
-      : "Aircraft Model"
+      : 'Aircraft Model',
   );
 
   const profileNotFound = aircraftData
@@ -306,14 +306,14 @@ const PerformanceProfilePage = () => {
 
   useUnauthorizedErrorHandler([error]);
   if (
-    (error && error.message !== "Network Error") ||
+    (error && error.message !== 'Network Error') ||
     (profileNotFound && !isModel) ||
-    (isModel && modelError && modelError.message !== "Network Error")
+    (isModel && modelError && modelError.message !== 'Network Error')
   )
-    throw new Error("notFound");
+    throw new Error('notFound');
   else if (
-    (error && error.message === "Network Error") ||
-    (isModel && modelError && modelError.message === "Network Error") ||
+    (error && error.message === 'Network Error') ||
+    (isModel && modelError && modelError.message === 'Network Error') ||
     fuelTypesError ||
     arrangementError ||
     weightBalanceError ||
@@ -323,7 +323,7 @@ const PerformanceProfilePage = () => {
     climbError ||
     cruiseError
   )
-    throw new Error("");
+    throw new Error('');
   if (
     isLoading ||
     modelLoading ||
@@ -344,62 +344,62 @@ const PerformanceProfilePage = () => {
 
   const sections = [
     {
-      key: "arrangement",
-      title: "Aircraft Arrangement",
+      key: 'arrangement',
+      title: 'Aircraft Arrangement',
       icon: <FaSitemap />,
     },
     {
-      key: "weight",
-      title: "Weight and Balance",
+      key: 'weight',
+      title: 'Weight and Balance',
       icon: <MdBalance />,
     },
     {
-      key: "takeoff",
-      title: "Takeoff Performance",
+      key: 'takeoff',
+      title: 'Takeoff Performance',
       icon: <FaPlaneDeparture />,
     },
     {
-      key: "climb",
-      title: "Climb Performance",
+      key: 'climb',
+      title: 'Climb Performance',
       icon: <TbTrendingUp2 />,
     },
     {
-      key: "cruise",
-      title: "Cruise Performance",
+      key: 'cruise',
+      title: 'Cruise Performance',
       icon: <TbPlaneInflight />,
     },
     {
-      key: "landing",
-      title: "Landing Performance",
+      key: 'landing',
+      title: 'Landing Performance',
       icon: <FaPlaneArrival />,
     },
   ];
 
   const addWeightBalanceProfileInstructions = [
-    "You can add up to 4 Weight and Balance Profiles.",
-    "To add or edit a W&B Profile, list all the boundary points of the profile.",
-    "Each point is composed of a CoG-location in inches aft of the datum, and an aircraft weight in pounds.",
-    "Enter the points in the right sequence, starting with the lighter and most forward configuration, and following a clockwise order.",
-    "Make sure the graph looks correct before saving the data.",
+    'You can add up to 4 Weight and Balance Profiles.',
+    'To add or edit a W&B Profile, list all the boundary points of the profile.',
+    'Each point is composed of a CoG-location in inches aft of the datum, and an aircraft weight in pounds.',
+    'Enter the points in the right sequence, starting with the lighter and most forward configuration, and following a clockwise order.',
+    'Make sure the graph looks correct before saving the data.',
   ];
 
   const handleAddBaggage = () => {
-    setCurrentForm("addCompartment");
+    setCurrentForm('addCompartment');
     modal.handleOpen();
   };
 
   const handleAddSeat = () => {
-    setCurrentForm("addSeat");
+    setCurrentForm('addSeat');
     modal.handleOpen();
   };
 
   const handleAddFuel = () => {
-    setCurrentForm("addTank");
+    setCurrentForm('addTank');
     modal.handleOpen();
   };
 
   const handleAddWeightBalanceProfile = () => {
-    setCurrentForm("addWeightBalanceProfile");
+    setCurrentForm('addWeightBalanceProfile');
     modal.handleOpen();
   };
 
@@ -420,12 +420,12 @@ const PerformanceProfilePage = () => {
 
   const takeoffSurfaceToEdit =
     takeoffData?.percent_increase_runway_surfaces.find(
-      (item) => item.surface_id === toEditId
+      (item) => item.surface_id === toEditId,
     ) || { surface_id: 0, percent: NaN };
 
   const landingSurfaceToEdit =
     landingData?.percent_increase_runway_surfaces.find(
-      (item) => item.surface_id === toEditId
+      (item) => item.surface_id === toEditId,
     ) || { surface_id: 0, percent: NaN };
 
   return (
@@ -436,68 +436,68 @@ const PerformanceProfilePage = () => {
       }}
     >
       <Modal isOpen={fileModal.isOpen} fullHeight={true}>
-        {currentForm === "importTakeoff" ? (
+        {currentForm === 'importTakeoff' ? (
           <FileForm
             closeModal={fileModal.handleClose}
             submissionData={{
               path: `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=true`,
-              successMessage: "Takeoff performance",
+              successMessage: 'Takeoff performance',
               queryKeys: [
-                ["takeoffPerformance", profileId],
-                ["aircraft", aircraftId],
+                ['takeoffPerformance', profileId],
+                ['aircraft', aircraftId],
               ],
             }}
-            title={"Import Takeoff Performance Data from CSV File"}
+            title={'Import Takeoff Performance Data from CSV File'}
             icon={<TakeoffIcon />}
-            instructions={getCsvUploadingInstructions("takeoff")}
+            instructions={getCsvUploadingInstructions('takeoff')}
             modalIsOpen={fileModal.isOpen}
           />
-        ) : currentForm === "importClimb" ? (
+        ) : currentForm === 'importClimb' ? (
           <FileForm
             closeModal={fileModal.handleClose}
             submissionData={{
               path: `aircraft-performance-data/climb/csv/${profileId}`,
-              successMessage: "Climb performance",
+              successMessage: 'Climb performance',
               queryKeys: [
-                ["aircraftClimbPerformance", profileId],
-                ["aircraft", aircraftId],
+                ['aircraftClimbPerformance', profileId],
+                ['aircraft', aircraftId],
               ],
             }}
-            title={"Import Climb Performance Data from CSV File"}
+            title={'Import Climb Performance Data from CSV File'}
             icon={<ClimbIcon />}
-            instructions={getCsvUploadingInstructions("climb")}
+            instructions={getCsvUploadingInstructions('climb')}
             modalIsOpen={fileModal.isOpen}
           />
-        ) : currentForm === "importCruise" ? (
+        ) : currentForm === 'importCruise' ? (
           <FileForm
             closeModal={fileModal.handleClose}
             submissionData={{
               path: `aircraft-performance-data/cruise/csv/${profileId}`,
-              successMessage: "Cruise performance",
+              successMessage: 'Cruise performance',
               queryKeys: [
-                ["aircraftCruisePerformance", profileId],
-                ["aircraft", aircraftId],
+                ['aircraftCruisePerformance', profileId],
+                ['aircraft', aircraftId],
               ],
             }}
-            title={"Import Cruise Performance Data from CSV File"}
+            title={'Import Cruise Performance Data from CSV File'}
             icon={<CruiseIcon />}
-            instructions={getCsvUploadingInstructions("cruise")}
+            instructions={getCsvUploadingInstructions('cruise')}
             modalIsOpen={fileModal.isOpen}
           />
-        ) : currentForm === "importLanding" ? (
+        ) : currentForm === 'importLanding' ? (
           <FileForm
             closeModal={fileModal.handleClose}
             submissionData={{
               path: `aircraft-performance-data/takeoff-landing/csv/${profileId}?is_takeoff=false`,
-              successMessage: "Landing performance",
+              successMessage: 'Landing performance',
               queryKeys: [
-                ["landingPerformance", profileId],
-                ["aircraft", aircraftId],
+                ['landingPerformance', profileId],
+                ['aircraft', aircraftId],
               ],
             }}
-            title={"Import Landing Performance Data from CSV File"}
+            title={'Import Landing Performance Data from CSV File'}
             icon={<LandingIcon />}
-            instructions={getCsvUploadingInstructions("landing")}
+            instructions={getCsvUploadingInstructions('landing')}
             modalIsOpen={fileModal.isOpen}
           />
         ) : null}
@@ -528,7 +528,7 @@ const PerformanceProfilePage = () => {
             closeModal={editProfileModal.handleClose}
             isOpen={editProfileModal.isOpen}
             aircraftId={aircraftId}
-            profileName={profileBaseData?.performance_profile_name || ""}
+            profileName={profileBaseData?.performance_profile_name || ''}
             fuelType={fuelType.name}
             profileId={profileId}
           />
@@ -538,7 +538,7 @@ const PerformanceProfilePage = () => {
             isOpen={editProfileModal.isOpen}
             aircraftModelData={{
               performance_profile_name:
-                profileBaseData?.performance_profile_name || "",
+                profileBaseData?.performance_profile_name || '',
               is_complete: !!profileBaseData?.is_complete,
               fuel_type: fuelType.name,
               id: profileId,
@@ -549,10 +549,10 @@ const PerformanceProfilePage = () => {
       </Modal>
       <Modal
         isOpen={modal.isOpen}
-        width={currentForm === "addWeightBalanceProfile" ? 718 : 600}
-        fullHeight={currentForm === "addWeightBalanceProfile"}
+        width={currentForm === 'addWeightBalanceProfile' ? 718 : 600}
+        fullHeight={currentForm === 'addWeightBalanceProfile'}
       >
-        {currentForm === "deleteProfile" ? (
+        {currentForm === 'deleteProfile' ? (
           isModel ? (
             userIsAdmin ? (
               <DeleteAircraftModelForm
@@ -565,16 +565,16 @@ const PerformanceProfilePage = () => {
             <DeletePerformanceProfileForm
               closeModal={modal.handleClose}
               id={profileId}
-              name={profileBaseData?.performance_profile_name || ""}
+              name={profileBaseData?.performance_profile_name || ''}
               aircraftId={aircraftId}
               redirect={true}
             />
           )
-        ) : currentForm === "addCompartment" ? (
+        ) : currentForm === 'addCompartment' ? (
           <EditBaggageCompartmentForm
             compartmentData={{
               id: 0,
-              name: "",
+              name: '',
               arm_in: 0,
               weight_limit_lb: NaN,
             }}
@@ -583,11 +583,11 @@ const PerformanceProfilePage = () => {
             profileId={profileId}
             aircraftId={aircraftId}
           />
-        ) : currentForm === "addSeat" ? (
+        ) : currentForm === 'addSeat' ? (
           <EditSeatRowForm
             seatRowData={{
               id: 0,
-              name: "",
+              name: '',
               arm_in: 0,
               number_of_seats: 1,
               weight_limit_lb: NaN,
@@ -597,11 +597,11 @@ const PerformanceProfilePage = () => {
             profileId={profileId}
             aircraftId={aircraftId}
           />
-        ) : currentForm === "addTank" ? (
+        ) : currentForm === 'addTank' ? (
           <EditFuelTankForm
             fuelTankData={{
               id: 0,
-              name: "",
+              name: '',
               arm_in: 0,
               fuel_capacity_gallons: 0,
               unusable_fuel_gallons: 0,
@@ -612,13 +612,13 @@ const PerformanceProfilePage = () => {
             profileId={profileId}
             aircraftId={aircraftId}
           />
-        ) : currentForm === "editWeightBalanceData" ? (
+        ) : currentForm === 'editWeightBalanceData' ? (
           <EditWeightAndBalanceDataForm
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             profileId={profileId}
           />
-        ) : currentForm === "addWeightBalanceProfile" ? (
+        ) : currentForm === 'addWeightBalanceProfile' ? (
           <EditWeightBalanceProfileForm
             performanceProfileId={profileId}
             helpInstructions={addWeightBalanceProfileInstructions.slice(1)}
@@ -626,25 +626,25 @@ const PerformanceProfilePage = () => {
             isOpen={modal.isOpen}
             data={{
               id: 0,
-              name: "",
+              name: '',
               limits: [],
             }}
           />
-        ) : currentForm === "editTakeoffWindAdjustments" ? (
+        ) : currentForm === 'editTakeoffWindAdjustments' ? (
           <EditWindAdjustmentsForm
             profileId={profileId}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             isTakeoff={true}
           />
-        ) : currentForm === "editLandingWindAdjustments" ? (
+        ) : currentForm === 'editLandingWindAdjustments' ? (
           <EditWindAdjustmentsForm
             profileId={profileId}
             closeModal={modal.handleClose}
             isOpen={modal.isOpen}
             isTakeoff={false}
           />
-        ) : currentForm === "editClimbAdjustments" ? (
+        ) : currentForm === 'editClimbAdjustments' ? (
           <EditClimbDataForm
             profileId={profileId}
             closeModal={modal.handleClose}
@@ -685,49 +685,49 @@ const PerformanceProfilePage = () => {
               selectProfileMutation.mutate(profileId);
             }}
             handleDeleteProfile={() => {
-              setCurrentForm("deleteProfile");
+              setCurrentForm('deleteProfile');
               modal.handleOpen();
             }}
             handleAddBaggage={handleAddBaggage}
             handleAddSeat={handleAddSeat}
             handleAddFuel={handleAddFuel}
             handleEditWBData={() => {
-              setCurrentForm("editWeightBalanceData");
+              setCurrentForm('editWeightBalanceData');
               modal.handleOpen();
             }}
             handleAddWBProfile={handleAddWeightBalanceProfile}
             handleEditTakeoffData={() => {
-              setCurrentForm("editTakeoffWindAdjustments");
+              setCurrentForm('editTakeoffWindAdjustments');
               modal.handleOpen();
             }}
             handleAddTakeoffData={() => {
               handleEditTakeoffSurfaceAdjustment(0);
             }}
             handleImportTakeoffData={() => {
-              setCurrentForm("importTakeoff");
+              setCurrentForm('importTakeoff');
               fileModal.handleOpen();
             }}
             handleEditClimbData={() => {
               modal.handleOpen();
-              setCurrentForm("editClimbAdjustments");
+              setCurrentForm('editClimbAdjustments');
             }}
             handleImportClimbData={() => {
-              setCurrentForm("importClimb");
+              setCurrentForm('importClimb');
               fileModal.handleOpen();
             }}
             handleImportCruiseData={() => {
-              setCurrentForm("importCruise");
+              setCurrentForm('importCruise');
               fileModal.handleOpen();
             }}
             handleEditLandData={() => {
-              setCurrentForm("editLandingWindAdjustments");
+              setCurrentForm('editLandingWindAdjustments');
               modal.handleOpen();
             }}
             handleAddLandData={() => {
               handleEditTakeoffSurfaceAdjustment(0);
             }}
             handleImportLandData={() => {
-              setCurrentForm("importLanding");
+              setCurrentForm('importLanding');
               fileModal.handleOpen();
             }}
             disableAddFuelTank={

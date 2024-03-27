@@ -1,16 +1,16 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 
-import useUserWaypointsData from "../../../hooks/useUserWaypointsData";
-import useAuth from "../../../hooks/useAuth";
+import useUserWaypointsData from '../../../hooks/useUserWaypointsData';
+import useAuth from '../../../hooks/useAuth';
 import {
   useModal,
   Modal,
   UseModalType,
-} from "../../../components/common/modal";
-import EditUserWaypointForm from "../../../components/editUserWaypointForm";
-import DeleteUserWaypointForm from "../../../components/deleteUserWaypointForm";
-import formatUTCDate from "../../../utils/formatUTCDate";
-import ExpandibleTable from "../../../components/common/ExpandibleTable";
+} from '../../../components/common/modal';
+import EditUserWaypointForm from '../../../components/editUserWaypointForm';
+import DeleteUserWaypointForm from '../../../components/deleteUserWaypointForm';
+import formatUTCDate from '../../../utils/formatUTCDate';
+import ExpandibleTable from '../../../components/common/ExpandibleTable';
 
 interface Props {
   editModal: UseModalType;
@@ -29,14 +29,14 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
   const waypointData = waypoints?.find((item) => item.id === waypointId);
 
   const tableData = {
-    keys: ["code", "name", "latitude", "longitude", "variation", "updated"],
+    keys: ['code', 'name', 'latitude', 'longitude', 'variation', 'updated'],
     headers: {
-      code: "Code",
-      name: "Name",
-      latitude: "Latitude",
-      longitude: "Longitude",
-      variation: "Magnetic Var.",
-      updated: "Date Updated",
+      code: 'Code',
+      name: 'Name',
+      latitude: 'Latitude',
+      longitude: 'Longitude',
+      variation: 'Magnetic Var.',
+      updated: 'Date Updated',
     },
     rows:
       !error && waypoints
@@ -49,15 +49,15 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
             updated: formatUTCDate(w.last_updated_utc),
             date: w.last_updated_utc,
             variation: `${Math.abs(
-              w.magnetic_variation ? w.magnetic_variation : 0
+              w.magnetic_variation ? w.magnetic_variation : 0,
             )}\u00B0${
               w.magnetic_variation
                 ? w.magnetic_variation < 0
-                  ? "E"
+                  ? 'E'
                   : w.magnetic_variation > 0
-                  ? "W"
-                  : ""
-                : ""
+                    ? 'W'
+                    : ''
+                : ''
             }`,
             handleEdit: () => {
               setWaypointId(w.id);
@@ -67,7 +67,7 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
               setWaypointId(w.id);
               deleteModal.handleOpen();
             },
-            permissions: "edit-delete" as "edit-delete",
+            permissions: 'edit-delete' as 'edit-delete',
           }))
         : [],
     breakingPoint: 1400,
@@ -75,16 +75,16 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
 
   const sortData = [
     {
-      key: "code",
-      title: "Code",
+      key: 'code',
+      title: 'Code',
     },
     {
-      key: "name",
-      title: "Name",
+      key: 'name',
+      title: 'Name',
     },
     {
-      title: "Date Updated",
-      key: "date",
+      title: 'Date Updated',
+      key: 'date',
     },
   ];
 
@@ -109,26 +109,26 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
                   lat_minutes: waypointData.lat_minutes,
                   lat_seconds: waypointData.lat_seconds,
                   lat_direction:
-                    waypointData.lat_direction === "S" ? "South" : "North",
+                    waypointData.lat_direction === 'S' ? 'South' : 'North',
                   lon_degrees: waypointData.lon_degrees,
                   lon_minutes: waypointData.lon_minutes,
                   lon_seconds: waypointData.lon_seconds,
                   lon_direction:
-                    waypointData.lon_direction === "E" ? "East" : "West",
+                    waypointData.lon_direction === 'E' ? 'East' : 'West',
                   magnetic_variation: waypointData.magnetic_variation,
                 }
               : {
                   id: 0,
-                  code: "",
-                  name: "",
+                  code: '',
+                  name: '',
                   lat_degrees: 0,
                   lat_minutes: 0,
                   lat_seconds: 0,
-                  lat_direction: "North",
+                  lat_direction: 'North',
                   lon_degrees: 0,
                   lon_minutes: 0,
                   lon_seconds: 0,
-                  lon_direction: "West",
+                  lon_direction: 'West',
                   magnetic_variation: NaN,
                 }
           }
@@ -139,7 +139,7 @@ const WaypointsTable = ({ editModal, waypointId, setWaypointId }: Props) => {
         <DeleteUserWaypointForm
           isAdmin={!!userIsAdmin}
           closeModal={deleteModal.handleClose}
-          name={waypointData?.name || ""}
+          name={waypointData?.name || ''}
           id={waypointData ? waypointData.id : 0}
         />
       </Modal>

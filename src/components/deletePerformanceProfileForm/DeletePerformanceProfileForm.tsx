@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import { IoWarningOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { useNavigate } from 'react-router-dom';
+import { IoWarningOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import Button from "../common/button";
-import useDeleteProfile from "./useDeletePerformanceProfile";
+import Button from '../common/button';
+import useDeleteProfile from './useDeletePerformanceProfile';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -131,7 +131,7 @@ const DeletePerformanceProfileForm = ({
     () => {
       if (!!redirect) navigate(`/aircraft/${aircraftId}`);
     },
-    !!redirect
+    !!redirect,
   );
 
   const handleDelete = () => {

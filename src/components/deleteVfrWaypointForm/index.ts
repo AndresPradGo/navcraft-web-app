@@ -1,2 +1,2 @@
 import DeleteVfrWaypointForm from './DeleteVfrWaypointForm';
-export default DeleteVfrWaypointForm
+export default DeleteVfrWaypointForm;

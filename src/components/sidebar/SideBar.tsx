@@ -1,7 +1,7 @@
-import { styled } from "styled-components";
+import { styled } from 'styled-components';
 
-import useSideBar from "./useSideBar";
-import { ReactNode } from "react";
+import useSideBar from './useSideBar';
+import { ReactNode } from 'react';
 
 interface HtmlSideBarContainerProps {
   $sideBarIsExpanded: boolean;
@@ -13,7 +13,7 @@ const HtmlSideBar = styled.div<HtmlSideBarContainerProps>`
   background-color: var(--color-primary-dark);
   transition: all 0.2s ease-out;
   overflow-x: hidden;
-  width: ${(props) => (props.$sideBarIsExpanded ? "95%" : "0px")};
+  width: ${(props) => (props.$sideBarIsExpanded ? '95%' : '0px')};
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -22,7 +22,7 @@ const HtmlSideBar = styled.div<HtmlSideBarContainerProps>`
   flex-shrink: 0;
 
   @media screen and (min-width: 635px) {
-    width: ${(props) => (props.$sideBarIsExpanded ? "315px" : "0px")};
+    width: ${(props) => (props.$sideBarIsExpanded ? '315px' : '0px')};
   }
 
   @media screen and (min-width: 1280px) {
@@ -42,7 +42,7 @@ const HtmlWraper = styled.div<HtmlSideBarContainerProps>`
   max-height: 100vh;
   width: 95%;
   transform: ${(props) =>
-    props.$sideBarIsExpanded ? "translate(0, 0)" : "translate(-100%, 0)"};
+    props.$sideBarIsExpanded ? 'translate(0, 0)' : 'translate(-100%, 0)'};
 
   @media screen and (min-width: 635px) {
     width: 315px;

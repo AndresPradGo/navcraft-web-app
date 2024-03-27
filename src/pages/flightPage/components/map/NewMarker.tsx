@@ -1,7 +1,7 @@
-import { useMapEvents, Marker } from "react-leaflet";
-import L from "leaflet";
+import { useMapEvents, Marker } from 'react-leaflet';
+import L from 'leaflet';
 
-import { LatLngLiteral } from "../../../../utils/getDegreeCoordinates";
+import { LatLngLiteral } from '../../../../utils/getDegreeCoordinates';
 
 interface Props {
   dropped: boolean;
@@ -58,7 +58,7 @@ const NewMarker = ({
           zIndexOffset={999}
           key="newWaypoint"
           icon={L.divIcon({
-            className: "custom--icon",
+            className: 'custom--icon',
             html: iconString,
             iconSize: [40, 40],
           })}

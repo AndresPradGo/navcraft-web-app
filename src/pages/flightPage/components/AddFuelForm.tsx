@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave } from "react-icons/ai";
-import { BsFillFuelPumpFill } from "react-icons/bs";
-import { LiaTimesSolid } from "react-icons/lia";
-import { PiGasCanDuotone } from "react-icons/pi";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect, useState } from 'react';
+import { useForm, FieldValues } from 'react-hook-form';
+import { AiOutlineSave } from 'react-icons/ai';
+import { BsFillFuelPumpFill } from 'react-icons/bs';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { PiGasCanDuotone } from 'react-icons/pi';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import useAddFuel from "../hooks/useAddFuel";
-import Loader from "../../../components/Loader";
+import Button from '../../../components/common/button';
+import useAddFuel from '../hooks/useAddFuel';
+import Loader from '../../../components/Loader';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -69,7 +69,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -78,14 +78,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -105,9 +105,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -115,21 +115,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -173,14 +173,14 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
   color: var(--color-grey);
-  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
+  opacity: ${(props) => (props.$disabled ? '0.3' : '1')};
 
   &:hover,
   &:focus {
     color: ${(props) =>
-      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
+      props.$disabled ? 'var(--color-grey)' : 'var(--color-white)'};
   }
 
   @media screen and (min-width: 510px) {
@@ -196,8 +196,8 @@ const GallonsIcon = styled(PiGasCanDuotone)`
 
 const schema = z.object({
   gallons: z
-    .number({ invalid_type_error: "Enter a number" })
-    .min(0, { message: "Must be a positive number" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .min(0, { message: 'Must be a positive number' }),
 });
 type FormDataType = z.infer<typeof schema>;
 
@@ -251,18 +251,18 @@ const AddFuelForm = ({
   }, [submited, mutation.isLoading]);
 
   useEffect(() => {
-    checkWithinCapacity(watch("gallons"));
-  }, [watch("gallons")]);
+    checkWithinCapacity(watch('gallons'));
+  }, [watch('gallons')]);
 
   const checkWithinCapacity = (gallons: number): boolean => {
     if (gallons > usableCapacity) {
-      setError("gallons", {
-        type: "manual",
+      setError('gallons', {
+        type: 'manual',
         message: `Maximum usable capacity is ${usableCapacity} gallons`,
       });
       return false;
     } else {
-      clearErrors("gallons");
+      clearErrors('gallons');
       return true;
     }
   };
@@ -297,11 +297,11 @@ const AddFuelForm = ({
         ) : (
           <HtmlInput
             $required={true}
-            $hasValue={!!watch("gallons") || watch("gallons") === 0}
+            $hasValue={!!watch('gallons') || watch('gallons') === 0}
             $accepted={!errors.gallons}
           >
             <input
-              {...register("gallons", { valueAsNumber: true })}
+              {...register('gallons', { valueAsNumber: true })}
               id={`${fuelData.id}-fuel`}
               type="number"
               autoComplete="off"
@@ -309,7 +309,7 @@ const AddFuelForm = ({
             {errors.gallons ? <p>{errors.gallons.message}</p> : <p>&nbsp;</p>}
             <label htmlFor={`${fuelData.id}-fuel`}>
               <GallonsIcon />
-              {"Gallons"}
+              {'Gallons'}
             </label>
           </HtmlInput>
         )}

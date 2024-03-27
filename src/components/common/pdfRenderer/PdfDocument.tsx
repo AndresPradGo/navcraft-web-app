@@ -1,20 +1,20 @@
-import { useCallback } from "react";
-import { Page, Text, View, Document, Image } from "@react-pdf/renderer";
+import { useCallback } from 'react';
+import { Page, Text, View, Document, Image } from '@react-pdf/renderer';
 
-import styles from "./PdfStyles";
+import styles from './PdfStyles';
 
 export interface WrapedComponets {
   components: {
     type:
-      | "title1"
-      | "title2"
-      | "title3"
-      | "text"
-      | "bulletpoint"
-      | "report"
-      | "image"
-      | "contrastImage"
-      | "highlightImage";
+      | 'title1'
+      | 'title2'
+      | 'title3'
+      | 'text'
+      | 'bulletpoint'
+      | 'report'
+      | 'image'
+      | 'contrastImage'
+      | 'highlightImage';
     content: string;
     margin?: string;
   }[];
@@ -34,7 +34,7 @@ const PdfDocument = ({ content }: Props) => {
   const renderFooter = useCallback(
     ({ pageNumber, totalPages }: { pageNumber: number; totalPages: number }) =>
       `Page ${pageNumber} of ${totalPages}`,
-    []
+    [],
   );
   return (
     <Document>
@@ -54,7 +54,7 @@ const PdfDocument = ({ content }: Props) => {
             break={!!section.break}
           >
             {section.components.map((item, subIdx) => {
-              if (item.type === "title1") {
+              if (item.type === 'title1') {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
@@ -68,7 +68,7 @@ const PdfDocument = ({ content }: Props) => {
                   </Text>
                 );
               }
-              if (item.type === "title2") {
+              if (item.type === 'title2') {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
@@ -82,7 +82,7 @@ const PdfDocument = ({ content }: Props) => {
                   </Text>
                 );
               }
-              if (item.type === "title3") {
+              if (item.type === 'title3') {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
@@ -96,7 +96,7 @@ const PdfDocument = ({ content }: Props) => {
                   </Text>
                 );
               }
-              if (item.type === "text") {
+              if (item.type === 'text') {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
@@ -110,7 +110,7 @@ const PdfDocument = ({ content }: Props) => {
                   </Text>
                 );
               }
-              if (item.type === "bulletpoint") {
+              if (item.type === 'bulletpoint') {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
@@ -128,7 +128,7 @@ const PdfDocument = ({ content }: Props) => {
                   </Text>
                 );
               }
-              if (item.type === "report") {
+              if (item.type === 'report') {
                 return (
                   <Text
                     key={`component-${idx}-${subIdx}`}
@@ -142,7 +142,7 @@ const PdfDocument = ({ content }: Props) => {
                   </Text>
                 );
               }
-              if (item.type === "image") {
+              if (item.type === 'image') {
                 return (
                   <Image
                     key={`component-${idx}-${subIdx}`}
@@ -156,8 +156,8 @@ const PdfDocument = ({ content }: Props) => {
                 );
               }
               if (
-                item.type === "contrastImage" ||
-                item.type === "highlightImage"
+                item.type === 'contrastImage' ||
+                item.type === 'highlightImage'
               ) {
                 return (
                   <View

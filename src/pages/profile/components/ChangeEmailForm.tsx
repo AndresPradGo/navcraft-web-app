@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { AiOutlineSave } from "react-icons/ai";
-import { LiaTimesSolid } from "react-icons/lia";
-import { TbMail, TbMailCog } from "react-icons/tb";
-import { useForm, FieldValues } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { AiOutlineSave } from 'react-icons/ai';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { TbMail, TbMailCog } from 'react-icons/tb';
+import { useForm, FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import { styled } from "styled-components";
-import Button from "../../../components/common/button";
-import useChangeEmail from "../hooks/useChangeEmail";
-import { ProfileData } from "../entities";
+import { styled } from 'styled-components';
+import Button from '../../../components/common/button';
+import useChangeEmail from '../hooks/useChangeEmail';
+import { ProfileData } from '../entities';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -68,7 +68,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -77,14 +77,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -104,9 +104,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -114,21 +114,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -194,7 +194,7 @@ interface Props {
 
 const ChangeEmailForm = ({ closeModal, isOpen }: Props) => {
   const queryClient = useQueryClient();
-  const userData = queryClient.getQueryData<ProfileData>(["profile"]);
+  const userData = queryClient.getQueryData<ProfileData>(['profile']);
 
   useEffect(() => {
     if (isOpen) {
@@ -239,12 +239,12 @@ const ChangeEmailForm = ({ closeModal, isOpen }: Props) => {
       </h1>
       <HtmlInputContainer>
         <HtmlInput
-          $hasValue={!!watch("email")}
+          $hasValue={!!watch('email')}
           $accepted={!errors.email}
           $required={true}
         >
           <input
-            {...register("email")}
+            {...register('email')}
             id="email"
             type="text"
             autoComplete="off"

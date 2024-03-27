@@ -1,21 +1,21 @@
-import { useEffect, useState, FormEvent, ChangeEvent } from "react";
-import { AiOutlineSave } from "react-icons/ai";
-import { LiaTimesSolid, LiaMapSignsSolid } from "react-icons/lia";
-import { MdOutlineLiveHelp } from "react-icons/md";
-import { RiMapPinAddFill } from "react-icons/ri";
-import { TbMapSearch } from "react-icons/tb";
-import { TfiMapAlt } from "react-icons/tfi";
-import { toast } from "react-toastify";
-import { styled } from "styled-components";
-import { z } from "zod";
+import { useEffect, useState, FormEvent, ChangeEvent } from 'react';
+import { AiOutlineSave } from 'react-icons/ai';
+import { LiaTimesSolid, LiaMapSignsSolid } from 'react-icons/lia';
+import { MdOutlineLiveHelp } from 'react-icons/md';
+import { RiMapPinAddFill } from 'react-icons/ri';
+import { TbMapSearch } from 'react-icons/tb';
+import { TfiMapAlt } from 'react-icons/tfi';
+import { toast } from 'react-toastify';
+import { styled } from 'styled-components';
+import { z } from 'zod';
 
-import Button from "../../../../components/common/button";
-import APIClient from "../../../../services/apiClient";
-import ExpandibleMessage from "../../../../components/common/ExpandibleMessage";
-import WaypointsList from "./WaypointsList";
-import formatCoordinate from "../../../../utils/formatCoordinate";
-import usePostNewLeg from "../../hooks/usePostNewLeg";
-import Loader from "../../../../components/Loader";
+import Button from '../../../../components/common/button';
+import APIClient from '../../../../services/apiClient';
+import ExpandibleMessage from '../../../../components/common/ExpandibleMessage';
+import WaypointsList from './WaypointsList';
+import formatCoordinate from '../../../../utils/formatCoordinate';
+import usePostNewLeg from '../../hooks/usePostNewLeg';
+import Loader from '../../../../components/Loader';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -57,7 +57,7 @@ interface InputContainerProps {
 const HtmlInputContainer = styled.div<InputContainerProps>`
   display: flex;
   flex-direction: column;
-  justify-content: ${(props) => (props.$loading ? "center" : "flex-start")};
+  justify-content: ${(props) => (props.$loading ? 'center' : 'flex-start')};
   width: 100%;
   overflow-y: auto;
   padding: 20px 10px;
@@ -91,8 +91,8 @@ const HtmlPairedInputsContainer = styled.div<HideInputsProps>`
   padding-bottom: 10px;
   flex-shrink: 0;
   overflow: hidden;
-  max-height: ${(props) => (props.$hidden ? "0" : "300px")};
-  opacity: ${(props) => (props.$hidden ? "0" : "1")};
+  max-height: ${(props) => (props.$hidden ? '0' : '300px')};
+  opacity: ${(props) => (props.$hidden ? '0' : '1')};
 
   & div {
     max-width: 205px;
@@ -119,7 +119,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 10px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -128,14 +128,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -155,9 +155,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -165,21 +165,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -253,14 +253,14 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
   color: var(--color-grey);
-  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
+  opacity: ${(props) => (props.$disabled ? '0.3' : '1')};
 
   &:hover,
   &:focus {
     color: ${(props) =>
-      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
+      props.$disabled ? 'var(--color-grey)' : 'var(--color-white)'};
   }
 
   @media screen and (min-width: 510px) {
@@ -272,50 +272,50 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
 const identifierSchema = z.object({
   code: z
     .string()
-    .min(2, { message: "2 to 12 characters long" })
-    .max(12, { message: "2 to 12 characters long" })
+    .min(2, { message: '2 to 12 characters long' })
+    .max(12, { message: '2 to 12 characters long' })
     .regex(/^[-A-Za-z0-9']+$/, {
       message: "Only symbols -'",
     }),
   name: z
     .string()
-    .min(2, { message: "2 to 50 characters long" })
-    .max(50, { message: "2 to 50 characters long" }),
+    .min(2, { message: '2 to 50 characters long' })
+    .max(50, { message: '2 to 50 characters long' }),
 });
 
 const coordinateSchema = z.object({
   lat_degrees: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers.')
     .min(0, `Latitude must be between S 89° 59' 59" and N 89° 59' 59"`)
     .max(89, `Latitude must be between S89° 59' 59" and N 89° 59' 59"`),
   lat_minutes: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
-    .min(0, "Minutes must be bewteen 0 and 59")
-    .max(59, "Minutes must be bewteen 0 and 59"),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers.')
+    .min(0, 'Minutes must be bewteen 0 and 59')
+    .max(59, 'Minutes must be bewteen 0 and 59'),
   lat_seconds: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
-    .min(0, "Seconds must be bewteen 0 and 59")
-    .max(59, "Seconds must be bewteen 0 and 59"),
-  lat_direction: z.enum(["N", "S"]),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers.')
+    .min(0, 'Seconds must be bewteen 0 and 59')
+    .max(59, 'Seconds must be bewteen 0 and 59'),
+  lat_direction: z.enum(['N', 'S']),
   lon_degrees: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers.')
     .min(0, `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`)
     .max(180, `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`),
   lon_minutes: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
-    .min(0, "Minutes must be bewteen 0 and 59")
-    .max(59, "Minutes must be bewteen 0 and 59"),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers.')
+    .min(0, 'Minutes must be bewteen 0 and 59')
+    .max(59, 'Minutes must be bewteen 0 and 59'),
   lon_seconds: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers.")
-    .min(0, "Seconds must be bewteen 0 and 59")
-    .max(59, "Seconds must be bewteen 0 and 59"),
-  lon_direction: z.enum(["E", "W"]),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers.')
+    .min(0, 'Seconds must be bewteen 0 and 59')
+    .max(59, 'Seconds must be bewteen 0 and 59'),
+  lon_direction: z.enum(['E', 'W']),
 });
 export type CoordinateDataType = z.infer<typeof coordinateSchema>;
 export type IdentifierDataType = z.infer<typeof identifierSchema>;
@@ -324,7 +324,7 @@ export interface NearbyWaypointType
   extends CoordinateDataType,
     IdentifierDataType {
   id: number;
-  type?: "aerodrome" | "waypoint" | "user aerodrome" | "user waypoint";
+  type?: 'aerodrome' | 'waypoint' | 'user aerodrome' | 'user waypoint';
   distance: number;
 }
 
@@ -355,11 +355,11 @@ const DropMarkerForm = ({
   isOpen,
   restoreFlight,
 }: Props) => {
-  const apiClient = new APIClient<string, NearbyWaypointType>("/waypoints");
+  const apiClient = new APIClient<string, NearbyWaypointType>('/waypoints');
 
   const [identifier, setIdentifier] = useState<IdentifierDataType>({
-    code: "",
-    name: "",
+    code: '',
+    name: '',
   });
   const [identifierError, setIdentifierError] = useState<{
     code: string | null;
@@ -369,15 +369,15 @@ const DropMarkerForm = ({
     name: null,
   });
   const [nearbyWaypoints, setNearbyWaypoints] = useState<NearbyWaypointType[]>(
-    []
+    [],
   );
   const [selectedWaypointId, setSelectedWaypointId] = useState<number | null>(
-    null
+    null,
   );
 
   const [error, setError] = useState<
-    | "Select a waypoint"
-    | "Enter a valid code and name for the new location"
+    | 'Select a waypoint'
+    | 'Enter a valid code and name for the new location'
     | null
   >(null);
 
@@ -397,8 +397,8 @@ const DropMarkerForm = ({
   useEffect(() => {
     if (isOpen) {
       setIdentifier({
-        code: "",
-        name: "",
+        code: '',
+        name: '',
       });
 
       setIdentifierError({
@@ -413,30 +413,30 @@ const DropMarkerForm = ({
           setNearbyWaypoints(
             res.filter((item) => {
               const nearbyWPIsVFR =
-                item.type === "aerodrome" || item.type === "waypoint";
+                item.type === 'aerodrome' || item.type === 'waypoint';
               return (
                 item.code !== currentWaypoint.code ||
                 item.name !== currentWaypoint.name ||
                 currentWaypoint.isVFR !== nearbyWPIsVFR ||
                 currentWaypoint.isUser !== !nearbyWPIsVFR
               );
-            })
+            }),
           );
           if (res.length > 0) setSelectedWaypointId(null);
           else setSelectedWaypointId(0);
           setIsLoading(false);
         })
         .catch((err) => {
-          if (isOpen && err.name !== "CanceledError") {
-            toast.error("Something went wrong, please try again", {
-              position: "top-center",
+          if (isOpen && err.name !== 'CanceledError') {
+            toast.error('Something went wrong, please try again', {
+              position: 'top-center',
               autoClose: 10000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "dark",
+              theme: 'dark',
             });
             handleCancel();
             setIsLoading(false);
@@ -450,10 +450,10 @@ const DropMarkerForm = ({
   }, [latitude, longitude, sequence]);
 
   const instructions = [
-    "Either select the location where you dropped the pin, or one of the nearby waypoints.",
-    "If you select the location, make sure to enter a name and a code, in order to identify the new waypoint in the navigation log.",
-    "If you are not sure about the location where you dropped the pin, you can view the new tentative flight path, by peeking the map.",
-    "After “peeking the map”, you can drag-and-drop the pin in a new location, or you can confirm the current location by clicking anywhere in the map.",
+    'Either select the location where you dropped the pin, or one of the nearby waypoints.',
+    'If you select the location, make sure to enter a name and a code, in order to identify the new waypoint in the navigation log.',
+    'If you are not sure about the location where you dropped the pin, you can view the new tentative flight path, by peeking the map.',
+    'After “peeking the map”, you can drag-and-drop the pin in a new location, or you can confirm the current location by clicking anywhere in the map.',
   ];
 
   const handleCancel = () => {
@@ -465,7 +465,7 @@ const DropMarkerForm = ({
     const newCode = e.target.value;
     const result = identifierSchema.safeParse({
       code: newCode,
-      name: "newName",
+      name: 'newName',
     });
     if (result.success) {
       setIdentifierError((prev) => ({ ...prev, code: null }));
@@ -481,7 +481,7 @@ const DropMarkerForm = ({
     const newName = e.target.value;
     const result = identifierSchema.safeParse({
       name: newName,
-      code: "newCode",
+      code: 'newCode',
     });
     if (result.success) {
       setIdentifierError((prev) => ({ ...prev, name: null }));
@@ -495,8 +495,8 @@ const DropMarkerForm = ({
 
   const handleSelect = (id: number) => {
     if (
-      error === "Select a waypoint" ||
-      (error === "Enter a valid code and name for the new location" && id !== 0)
+      error === 'Select a waypoint' ||
+      (error === 'Enter a valid code and name for the new location' && id !== 0)
     )
       setError(null);
     setSelectedWaypointId(id);
@@ -505,7 +505,7 @@ const DropMarkerForm = ({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!mutation.isLoading) {
-      if (selectedWaypointId === null) setError("Select a waypoint");
+      if (selectedWaypointId === null) setError('Select a waypoint');
       else if (selectedWaypointId === 0) {
         const result = identifierSchema.safeParse(identifier);
         if (result.success) {
@@ -523,29 +523,29 @@ const DropMarkerForm = ({
         } else {
           const newError = { ...identifierError };
           for (const e of result.error.errors) {
-            newError[e.path[0] as "name" | "code"] = e.message;
+            newError[e.path[0] as 'name' | 'code'] = e.message;
           }
           setIdentifierError(newError);
-          setError("Enter a valid code and name for the new location");
+          setError('Enter a valid code and name for the new location');
         }
       } else {
         const waypoint = nearbyWaypoints.find(
-          (w) => w.id === selectedWaypointId
+          (w) => w.id === selectedWaypointId,
         );
         mutation.mutate({
           type: waypoint?.type,
           existing_waypoint_id: selectedWaypointId,
           new_waypoint: {
-            code: waypoint?.code || "",
-            name: waypoint?.name || "",
+            code: waypoint?.code || '',
+            name: waypoint?.name || '',
             lat_degrees: waypoint?.lat_degrees || 1,
             lat_minutes: waypoint?.lat_minutes || 1,
             lat_seconds: waypoint?.lat_seconds || 1,
-            lat_direction: waypoint?.lat_direction || "N",
+            lat_direction: waypoint?.lat_direction || 'N',
             lon_degrees: waypoint?.lon_degrees || 1,
             lon_minutes: waypoint?.lon_minutes || 1,
             lon_seconds: waypoint?.lon_seconds || 1,
-            lon_direction: waypoint?.lon_direction || "W",
+            lon_direction: waypoint?.lon_direction || 'W',
           },
           sequence,
         });
@@ -578,7 +578,7 @@ const DropMarkerForm = ({
             <HtmlPairedInputsContainer $hidden={selectedWaypointId !== 0}>
               <HtmlInput
                 $required={selectedWaypointId === 0}
-                $hasValue={identifier.code !== ""}
+                $hasValue={identifier.code !== ''}
                 $accepted={!identifierError.code}
               >
                 <input
@@ -596,12 +596,12 @@ const DropMarkerForm = ({
                 )}
                 <label htmlFor="location-code">
                   <CodeIcon />
-                  {"Code"}
+                  {'Code'}
                 </label>
               </HtmlInput>
               <HtmlInput
                 $required={selectedWaypointId === 0}
-                $hasValue={identifier.name !== ""}
+                $hasValue={identifier.name !== ''}
                 $accepted={!identifierError.name}
               >
                 <input
@@ -619,7 +619,7 @@ const DropMarkerForm = ({
                 )}
                 <label htmlFor="location-name">
                   <NameIcon />
-                  {"Name"}
+                  {'Name'}
                 </label>
               </HtmlInput>
             </HtmlPairedInputsContainer>

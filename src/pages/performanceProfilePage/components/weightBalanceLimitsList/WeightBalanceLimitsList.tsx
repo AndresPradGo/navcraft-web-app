@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { styled } from "styled-components";
-import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
+import { useState } from 'react';
+import { styled } from 'styled-components';
+import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core';
 import {
   SortableContext,
   arrayMove,
   verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+} from '@dnd-kit/sortable';
 
-import { LimitDataType } from "../EditWeightBalanceProfileForm";
-import SortableLimit from "./SortableLimit";
+import { LimitDataType } from '../EditWeightBalanceProfileForm';
+import SortableLimit from './SortableLimit';
 
 const HtmlContainer = styled.div`
   width: 240px;
@@ -45,10 +45,10 @@ interface Props {
 }
 
 const WeightBalanceLimitsList = ({ limits, setLimits }: Props) => {
-  const [cursor, setCursor] = useState<"grab" | "grabbing">("grab");
+  const [cursor, setCursor] = useState<'grab' | 'grabbing'>('grab');
 
   const handleRemoveLimit = (index: number) => {
-    console.log("index");
+    console.log('index');
     const newLimits = [...limits];
     newLimits.splice(index, 1);
     setLimits(newLimits);
@@ -65,7 +65,7 @@ const WeightBalanceLimitsList = ({ limits, setLimits }: Props) => {
       setLimits(newArray);
       //return newArray;
     }
-    setCursor("grab");
+    setCursor('grab');
   };
 
   return (
@@ -80,7 +80,7 @@ const WeightBalanceLimitsList = ({ limits, setLimits }: Props) => {
             <SortableLimit
               key={limit.id}
               cursor={cursor}
-              setCursor={(cursor: "grab" | "grabbing") => setCursor(cursor)}
+              setCursor={(cursor: 'grab' | 'grabbing') => setCursor(cursor)}
               index={idx}
               limit={limit}
               handleRemoveLimit={handleRemoveLimit}

@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
-import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave } from "react-icons/ai";
-import { BsCalendarWeek } from "react-icons/bs";
-import { LiaTimesSolid, LiaRouteSolid } from "react-icons/lia";
-import { MdMoreTime } from "react-icons/md";
-import { PiGearDuotone, PiEngineDuotone } from "react-icons/pi";
-import { RiPinDistanceFill } from "react-icons/ri";
-import { TbDropletPlus, TbDropletHeart } from "react-icons/tb";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect, useState } from 'react';
+import { useForm, FieldValues } from 'react-hook-form';
+import { AiOutlineSave } from 'react-icons/ai';
+import { BsCalendarWeek } from 'react-icons/bs';
+import { LiaTimesSolid, LiaRouteSolid } from 'react-icons/lia';
+import { MdMoreTime } from 'react-icons/md';
+import { PiGearDuotone, PiEngineDuotone } from 'react-icons/pi';
+import { RiPinDistanceFill } from 'react-icons/ri';
+import { TbDropletPlus, TbDropletHeart } from 'react-icons/tb';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import { useQueryClient } from "@tanstack/react-query";
-import { FlightDataFromApi } from "../../../services/flightClient";
-import getUTCNowString from "../../../utils/getUTCNowString";
-import useEditFlight from "../hooks/useEditFlight";
-import Loader from "../../../components/Loader";
+import Button from '../../../components/common/button';
+import { useQueryClient } from '@tanstack/react-query';
+import { FlightDataFromApi } from '../../../services/flightClient';
+import getUTCNowString from '../../../utils/getUTCNowString';
+import useEditFlight from '../hooks/useEditFlight';
+import Loader from '../../../components/Loader';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -76,7 +76,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -85,14 +85,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -103,8 +103,8 @@ const HtmlInput = styled.div<RequiredInputProps>`
       font-size: 20px;
       transform: ${(props) =>
         props.$hasValue
-          ? "translate(7px, 7px) scale(0.8)"
-          : "translate(17px, 42px)"};
+          ? 'translate(7px, 7px) scale(0.8)'
+          : 'translate(17px, 42px)'};
     }
   }
 
@@ -120,9 +120,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 15px;
 
@@ -130,21 +130,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -184,14 +184,14 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
   color: var(--color-grey);
-  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
+  opacity: ${(props) => (props.$disabled ? '0.3' : '1')};
 
   &:hover,
   &:focus {
     color: ${(props) =>
-      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
+      props.$disabled ? 'var(--color-grey)' : 'var(--color-white)'};
   }
 
   @media screen and (min-width: 510px) {
@@ -250,30 +250,30 @@ const SaveIcon = styled(AiOutlineSave)`
 export const schema = z.object({
   departure_time: z.string(),
   bhp_percent: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Must be a round number")
-    .max(100, { message: "Must be less than 100" })
-    .min(20, { message: "Must be greater than 20" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Must be a round number')
+    .max(100, { message: 'Must be less than 100' })
+    .min(20, { message: 'Must be greater than 20' }),
   added_enroute_time_hours: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(99.94, { message: "Must be less than 99.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(99.94, { message: 'Must be less than 99.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   contingency_fuel_hours: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(99.94, { message: "Must be less than 99.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(99.94, { message: 'Must be less than 99.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   reserve_fuel_hours: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(99.94, { message: "Must be less than 99.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(99.94, { message: 'Must be less than 99.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   briefing_radius_nm: z
-    .number({ invalid_type_error: "Enter a number" })
-    .min(0, { message: "Must be greater than 0" })
-    .max(50, { message: "Must be less than 50" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .min(0, { message: 'Must be greater than 0' })
+    .max(50, { message: 'Must be less than 50' }),
   alternate_radius_nm: z
-    .number({ invalid_type_error: "Enter a number" })
-    .min(0, { message: "Must be greater than 0" })
-    .max(200, { message: "Must be less than 200" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .min(0, { message: 'Must be greater than 0' })
+    .max(200, { message: 'Must be less than 200' }),
 });
 
 export type EditFlightData = z.infer<typeof schema>;
@@ -301,7 +301,7 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
 
   const queryClient = useQueryClient();
   const flightData = queryClient.getQueryData<FlightDataFromApi>([
-    "flight",
+    'flight',
     flightId,
   ]);
 
@@ -327,8 +327,8 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
 
   const checkDepartureTime = (data: FieldValues): boolean => {
     const dateValue = `${data.departure_time}:00Z`;
-    const wrongFormat = "Enter a valid date-time";
-    const futureDateMessage = "Departure Time must be in the future";
+    const wrongFormat = 'Enter a valid date-time';
+    const futureDateMessage = 'Departure Time must be in the future';
 
     if (errors.departure_time) {
       if (
@@ -341,16 +341,16 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
     const datetimeSchema = z.string().datetime();
     const result = datetimeSchema.safeParse(dateValue);
     if (!result.success) {
-      setError("departure_time", {
-        type: "manual",
+      setError('departure_time', {
+        type: 'manual',
         message: wrongFormat,
       });
       return true;
     }
 
     if (dateValue < getUTCNowString()) {
-      setError("departure_time", {
-        type: "manual",
+      setError('departure_time', {
+        type: 'manual',
         message: futureDateMessage,
       });
       return true;
@@ -363,7 +363,7 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
       departure_time: data.departure_time,
     });
     if (!wrongDatatime) {
-      clearErrors("departure_time");
+      clearErrors('departure_time');
       const departureTime = `${data.departure_time}:00Z`;
       mutation.mutate({
         departure_time: departureTime,
@@ -397,12 +397,12 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
         ) : (
           <>
             <HtmlInput
-              $hasValue={!!watch("departure_time")}
+              $hasValue={!!watch('departure_time')}
               $accepted={!errors.departure_time}
               $required={true}
             >
               <input
-                {...register("departure_time")}
+                {...register('departure_time')}
                 id="editFlight-departure_time"
                 type="datetime-local"
                 autoComplete="off"
@@ -415,17 +415,17 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
               )}
               <label htmlFor="editFlight-departure_time">
                 <DateIcon />
-                {"ETD [UTC]"}
+                {'ETD [UTC]'}
               </label>
             </HtmlInput>
             <HtmlInput
               $required={true}
-              $hasValue={!!watch("bhp_percent") || watch("bhp_percent") === 0}
+              $hasValue={!!watch('bhp_percent') || watch('bhp_percent') === 0}
               $accepted={!errors.bhp_percent}
             >
               <input
-                {...register("bhp_percent", { valueAsNumber: true })}
-                id={"editFlight-bhp_percent"}
+                {...register('bhp_percent', { valueAsNumber: true })}
+                id={'editFlight-bhp_percent'}
                 type="number"
                 autoComplete="off"
               />
@@ -436,22 +436,22 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
               )}
               <label htmlFor="editFlight-bhp_percent">
                 <BHPIcon />
-                {"Cruise Prower [% of BHP]"}
+                {'Cruise Prower [% of BHP]'}
               </label>
             </HtmlInput>
             <HtmlInput
               $required={true}
               $hasValue={
-                !!watch("added_enroute_time_hours") ||
-                watch("added_enroute_time_hours") === 0
+                !!watch('added_enroute_time_hours') ||
+                watch('added_enroute_time_hours') === 0
               }
               $accepted={!errors.added_enroute_time_hours}
             >
               <input
-                {...register("added_enroute_time_hours", {
+                {...register('added_enroute_time_hours', {
                   valueAsNumber: true,
                 })}
-                id={"editFlight-added_enroute_time_hours"}
+                id={'editFlight-added_enroute_time_hours'}
                 step="any"
                 type="number"
                 autoComplete="off"
@@ -463,20 +463,20 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
               )}
               <label htmlFor="editFlight-added_enroute_time_hours">
                 <TimeIcon />
-                {"Additional Flight-Time [hours]"}
+                {'Additional Flight-Time [hours]'}
               </label>
             </HtmlInput>
             <HtmlInput
               $required={true}
               $hasValue={
-                !!watch("contingency_fuel_hours") ||
-                watch("contingency_fuel_hours") === 0
+                !!watch('contingency_fuel_hours') ||
+                watch('contingency_fuel_hours') === 0
               }
               $accepted={!errors.contingency_fuel_hours}
             >
               <input
-                {...register("contingency_fuel_hours", { valueAsNumber: true })}
-                id={"editFlight-contingency_fuel_hours"}
+                {...register('contingency_fuel_hours', { valueAsNumber: true })}
+                id={'editFlight-contingency_fuel_hours'}
                 step="any"
                 type="number"
                 autoComplete="off"
@@ -488,20 +488,20 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
               )}
               <label htmlFor="editFlight-contingency_fuel_hours">
                 <ContingencyIcon />
-                {"Contingency Fuel [hours]"}
+                {'Contingency Fuel [hours]'}
               </label>
             </HtmlInput>
             <HtmlInput
               $required={true}
               $hasValue={
-                !!watch("reserve_fuel_hours") ||
-                watch("reserve_fuel_hours") === 0
+                !!watch('reserve_fuel_hours') ||
+                watch('reserve_fuel_hours') === 0
               }
               $accepted={!errors.reserve_fuel_hours}
             >
               <input
-                {...register("reserve_fuel_hours", { valueAsNumber: true })}
-                id={"editFlight-reserve_fuel_hours"}
+                {...register('reserve_fuel_hours', { valueAsNumber: true })}
+                id={'editFlight-reserve_fuel_hours'}
                 step="any"
                 type="number"
                 autoComplete="off"
@@ -513,20 +513,20 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
               )}
               <label htmlFor="editFlight-reserve_fuel_hours">
                 <ReserveIcon />
-                {"Reserve Fuel [hours]"}
+                {'Reserve Fuel [hours]'}
               </label>
             </HtmlInput>
             <HtmlInput
               $required={true}
               $hasValue={
-                !!watch("briefing_radius_nm") ||
-                watch("briefing_radius_nm") === 0
+                !!watch('briefing_radius_nm') ||
+                watch('briefing_radius_nm') === 0
               }
               $accepted={!errors.briefing_radius_nm}
             >
               <input
-                {...register("briefing_radius_nm", { valueAsNumber: true })}
-                id={"editFlight-briefing_radius_nm"}
+                {...register('briefing_radius_nm', { valueAsNumber: true })}
+                id={'editFlight-briefing_radius_nm'}
                 type="number"
                 autoComplete="off"
               />
@@ -537,20 +537,20 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
               )}
               <label htmlFor="editFlight-briefing_radius_nm">
                 <RouteRadiusIcon />
-                {"Route Briefing Radius [NM]"}
+                {'Route Briefing Radius [NM]'}
               </label>
             </HtmlInput>
             <HtmlInput
               $required={true}
               $hasValue={
-                !!watch("alternate_radius_nm") ||
-                watch("alternate_radius_nm") === 0
+                !!watch('alternate_radius_nm') ||
+                watch('alternate_radius_nm') === 0
               }
               $accepted={!errors.alternate_radius_nm}
             >
               <input
-                {...register("alternate_radius_nm", { valueAsNumber: true })}
-                id={"editFlight-alternate_radius_nm"}
+                {...register('alternate_radius_nm', { valueAsNumber: true })}
+                id={'editFlight-alternate_radius_nm'}
                 type="number"
                 autoComplete="off"
               />
@@ -561,7 +561,7 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
               )}
               <label htmlFor="editFlight-alternate_radius_nm">
                 <AlternateRadiusIcon />
-                {"Alternate Radius [NM]"}
+                {'Alternate Radius [NM]'}
               </label>
             </HtmlInput>
           </>

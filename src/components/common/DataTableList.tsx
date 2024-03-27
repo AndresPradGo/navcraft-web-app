@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { styled } from "styled-components";
+import { ReactNode } from 'react';
+import { styled } from 'styled-components';
 
 interface HtmlTagProps {
   $maxWidth: number;
@@ -70,7 +70,7 @@ const DataTableList = ({ dataList, maxWidth, margin }: Props) => {
   return (
     <HtmlDataList
       $maxWidth={maxWidth !== undefined ? maxWidth : 700}
-      $margin={margin !== undefined ? margin : "35px 0"}
+      $margin={margin !== undefined ? margin : '35px 0'}
     >
       {dataList.map((item) => {
         return (

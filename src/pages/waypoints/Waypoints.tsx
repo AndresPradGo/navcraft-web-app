@@ -1,38 +1,38 @@
-import { useState } from "react";
-import { AiOutlineSwap } from "react-icons/ai";
-import { GiRoad } from "react-icons/gi";
-import { PiAirTrafficControlDuotone } from "react-icons/pi";
-import { RiMapPinFill } from "react-icons/ri";
-import { TbRoad } from "react-icons/tb";
-import { styled } from "styled-components";
+import { useState } from 'react';
+import { AiOutlineSwap } from 'react-icons/ai';
+import { GiRoad } from 'react-icons/gi';
+import { PiAirTrafficControlDuotone } from 'react-icons/pi';
+import { RiMapPinFill } from 'react-icons/ri';
+import { TbRoad } from 'react-icons/tb';
+import { styled } from 'styled-components';
 
-import { ContentLayout } from "../layout";
-import useAuth from "../../hooks/useAuth";
-import SideBarContent from "./SideBarContent";
-import useUserWaypointsData from "../../hooks/useUserWaypointsData";
-import useVfrWaypointsData from "../../hooks/useVfrWaypointsData";
-import Loader from "../../components/Loader";
-import useAerodromeStatusList from "../../hooks/useAerodromeStatusList";
-import useGetTableStructure from "./useGetTableStructure";
-import useAerodromesData from "../../hooks/useAerodromesData";
-import useRunwaysData from "./useRunwaysData";
-import Table from "../../components/common/table";
-import { useModal, Modal } from "../../components/common/modal";
-import EditUserWaypointForm from "../../components/editUserWaypointForm";
-import EditVfrWaypointForm from "../../components/editVfrWaypointForm";
-import DeleteUserWaypointForm from "../../components/deleteUserWaypointForm";
-import DeleteVfrWaypointForm from "../../components/deleteVfrWaypointForm";
-import DeleteUserAerodromeForm from "../../components/deleteUserAerodromeForm/index";
-import EditRunwayForm from "../../components/editRunwayForm/index";
-import DeleteRunwayForm from "../../components/deleteRunwayForm/index";
-import EditOfficialAerodromeForm from "../../components/editOfficialAerodromeForm";
-import EditUserAerodromeForm from "../../components/editUserAerodromeForm";
-import FileForm from "../../components/common/fileForm/index";
-import getCsvUploadingInstructions from "../../utils/getCsvUploadingInstructions";
-import formatUTCDate from "../../utils/formatUTCDate";
-import { useSearchParams } from "react-router-dom";
-import useSetTitle from "../../hooks/useSetTitle";
-import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
+import { ContentLayout } from '../layout';
+import useAuth from '../../hooks/useAuth';
+import SideBarContent from './SideBarContent';
+import useUserWaypointsData from '../../hooks/useUserWaypointsData';
+import useVfrWaypointsData from '../../hooks/useVfrWaypointsData';
+import Loader from '../../components/Loader';
+import useAerodromeStatusList from '../../hooks/useAerodromeStatusList';
+import useGetTableStructure from './useGetTableStructure';
+import useAerodromesData from '../../hooks/useAerodromesData';
+import useRunwaysData from './useRunwaysData';
+import Table from '../../components/common/table';
+import { useModal, Modal } from '../../components/common/modal';
+import EditUserWaypointForm from '../../components/editUserWaypointForm';
+import EditVfrWaypointForm from '../../components/editVfrWaypointForm';
+import DeleteUserWaypointForm from '../../components/deleteUserWaypointForm';
+import DeleteVfrWaypointForm from '../../components/deleteVfrWaypointForm';
+import DeleteUserAerodromeForm from '../../components/deleteUserAerodromeForm/index';
+import EditRunwayForm from '../../components/editRunwayForm/index';
+import DeleteRunwayForm from '../../components/deleteRunwayForm/index';
+import EditOfficialAerodromeForm from '../../components/editOfficialAerodromeForm';
+import EditUserAerodromeForm from '../../components/editUserAerodromeForm';
+import FileForm from '../../components/common/fileForm/index';
+import getCsvUploadingInstructions from '../../utils/getCsvUploadingInstructions';
+import formatUTCDate from '../../utils/formatUTCDate';
+import { useSearchParams } from 'react-router-dom';
+import useSetTitle from '../../hooks/useSetTitle';
+import useUnauthorizedErrorHandler from '../../hooks/useUnauthorizedErrorHandler';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -139,15 +139,15 @@ const Waypoints = () => {
   const [searchParams] = useSearchParams();
 
   const [tableIndex, setTableIndex] = useState<number>(
-    searchParams.get("section") === "aerodromes" ? 1 : 0
+    searchParams.get('section') === 'aerodromes' ? 1 : 0,
   );
   const [rowToEditId, setRowToEditId] = useState<number>(0);
   const [typeItemToEdit, setTypeItemToEdit] = useState<
-    | "VFR Waypoint"
-    | "userWaypoint"
-    | "Official Aerodrome"
-    | "userAerodrome"
-    | "Runway"
+    | 'VFR Waypoint'
+    | 'userWaypoint'
+    | 'Official Aerodrome'
+    | 'userAerodrome'
+    | 'Runway'
     | null
   >(null);
 
@@ -157,7 +157,7 @@ const Waypoints = () => {
   const editAerodromeModal = useModal();
   const uploadCsvModal = useModal();
 
-  useSetTitle("Waypoints and Aerodromes");
+  useSetTitle('Waypoints and Aerodromes');
 
   const {
     data: statusList,
@@ -191,7 +191,7 @@ const Waypoints = () => {
 
   const tableStructure = useGetTableStructure(
     !!userIsAdmin,
-    statusList ? statusList.map((item) => item.status) : []
+    statusList ? statusList.map((item) => item.status) : [],
   );
 
   useUnauthorizedErrorHandler([
@@ -217,22 +217,22 @@ const Waypoints = () => {
     aerodromesError ||
     (runwaysError && !!userIsAdmin)
   )
-    throw new Error("");
+    throw new Error('');
 
   const tableOptions = [
     {
-      key: "waypoints",
-      title: "Waypoints",
+      key: 'waypoints',
+      title: 'Waypoints',
       icon: <RiMapPinFill />,
     },
     {
-      key: "aerodromes",
-      title: "Aerodromes",
+      key: 'aerodromes',
+      title: 'Aerodromes',
       icon: <PiAirTrafficControlDuotone />,
     },
   ];
   if (userIsAdmin)
-    tableOptions.push({ key: "runways", title: "Runways", icon: <GiRoad /> });
+    tableOptions.push({ key: 'runways', title: 'Runways', icon: <GiRoad /> });
 
   const sortData = tableStructure[tableIndex].sortData;
   const searchBarParameters = tableStructure[tableIndex].searchBarParameters;
@@ -244,7 +244,7 @@ const Waypoints = () => {
       [key: string]: string;
     },
     rows:
-      tableOptions[tableIndex].title === "Waypoints" &&
+      tableOptions[tableIndex].title === 'Waypoints' &&
       userWaypoints &&
       vfrWaypoints
         ? [
@@ -252,165 +252,165 @@ const Waypoints = () => {
               id: vw.id,
               code: vw.code,
               name: vw.name,
-              type: "Official",
+              type: 'Official',
               latitude: `${vw.lat_direction}${vw.lat_degrees}\u00B0${vw.lat_minutes}'${vw.lat_seconds}"`,
               longitude: `${vw.lon_direction}${vw.lon_degrees}\u00B0${vw.lon_minutes}'${vw.lon_seconds}"`,
               variation: `${Math.abs(
-                vw.magnetic_variation ? vw.magnetic_variation : 0
+                vw.magnetic_variation ? vw.magnetic_variation : 0,
               )}\u00B0${
                 vw.magnetic_variation
                   ? vw.magnetic_variation < 0
-                    ? "E"
+                    ? 'E'
                     : vw.magnetic_variation > 0
-                    ? "W"
-                    : ""
-                  : ""
+                      ? 'W'
+                      : ''
+                  : ''
               }`,
-              visible: !vw.hidden ? "Yes" : "No",
+              visible: !vw.hidden ? 'Yes' : 'No',
               updated: formatUTCDate(vw.last_updated_utc),
               date: vw.last_updated_utc,
               handleEdit: () => {
-                setTypeItemToEdit("VFR Waypoint");
+                setTypeItemToEdit('VFR Waypoint');
                 setRowToEditId(vw.id);
                 editModal.handleOpen();
               },
               handleDelete: () => {
-                setTypeItemToEdit("VFR Waypoint");
+                setTypeItemToEdit('VFR Waypoint');
                 setRowToEditId(vw.id);
                 deleteModal.handleOpen();
               },
               permissions: !userIsAdmin
                 ? undefined
-                : ("edit-delete" as "edit-delete"),
+                : ('edit-delete' as 'edit-delete'),
             })),
             ...userWaypoints.map((uw) => ({
               id: uw.id,
               code: uw.code,
               name: uw.name,
-              type: "User Added",
+              type: 'User Added',
               latitude: `${uw.lat_direction}${uw.lat_degrees}\u00B0${uw.lat_minutes}'${uw.lat_seconds}"`,
               longitude: `${uw.lon_direction}${uw.lon_degrees}\u00B0${uw.lon_minutes}'${uw.lon_seconds}"`,
               variation: `${Math.abs(
-                uw.magnetic_variation ? uw.magnetic_variation : 0
+                uw.magnetic_variation ? uw.magnetic_variation : 0,
               )}\u00B0${
                 uw.magnetic_variation
                   ? uw.magnetic_variation < 0
-                    ? "E"
+                    ? 'E'
                     : uw.magnetic_variation > 0
-                    ? "W"
-                    : ""
-                  : ""
+                      ? 'W'
+                      : ''
+                  : ''
               }`,
-              visible: "Yes",
+              visible: 'Yes',
               updated: formatUTCDate(uw.last_updated_utc),
               date: uw.last_updated_utc,
               handleEdit: () => {
-                setTypeItemToEdit("userWaypoint");
+                setTypeItemToEdit('userWaypoint');
                 setRowToEditId(uw.id);
                 editModal.handleOpen();
               },
               handleDelete: () => {
-                setTypeItemToEdit("userWaypoint");
+                setTypeItemToEdit('userWaypoint');
                 setRowToEditId(uw.id);
                 deleteModal.handleOpen();
               },
-              permissions: "edit-delete" as "edit-delete",
+              permissions: 'edit-delete' as 'edit-delete',
             })),
           ]
-        : tableOptions[tableIndex].title === "Aerodromes" && aerodromes
-        ? aerodromes.map((a) => ({
-            id: a.id,
-            code: a.code,
-            name: a.name,
-            type: a.registered ? "Official" : "User Added",
-            latitude: `${a.lat_direction}${a.lat_degrees}\u00B0${a.lat_minutes}'${a.lat_seconds}"`,
-            longitude: `${a.lon_direction}${a.lon_degrees}\u00B0${a.lon_minutes}'${a.lon_seconds}"`,
-            variation: `${Math.abs(
-              a.magnetic_variation ? a.magnetic_variation : 0
-            )}\u00B0${
-              a.magnetic_variation
-                ? a.magnetic_variation < 0
-                  ? "E"
-                  : a.magnetic_variation > 0
-                  ? "W"
-                  : ""
-                : ""
-            }`,
-            status: a.status,
-            updated: formatUTCDate(a.last_updated_utc),
-            date: a.last_updated_utc,
-            runways: a.runways.length
-              ? a.runways
-                  .map(
-                    (r) =>
-                      `${r.number.toString().padStart(2, "0")}${
-                        r.position ? r.position : ""
-                      }`
-                  )
-                  .join(", ")
-              : "-",
-            weather: a.has_taf
-              ? `TAF${(a.has_metar && ", METAR") || ""}${
-                  (a.has_fds && ", FDs") || ""
-                }`
-              : a.has_metar
-              ? `METAR${(a.has_fds && ", FDs") || ""}`
-              : a.has_fds
-              ? "FDs"
-              : "-",
-            visible: !a.hidden ? "Yes" : "No",
-            has_taf: a.has_taf ? "Yes" : "No",
-            has_metar: a.has_metar ? "Yes" : "No",
-            has_fds: a.has_fds ? "Yes" : "No",
-            handleEdit: a.registered
-              ? `/waypoints/aerodrome/${a.id}`
-              : `/waypoints/private-aerodrome/${a.id}`,
-            handleDelete: () => {
-              if (a.registered) setTypeItemToEdit("Official Aerodrome");
-              else setTypeItemToEdit("userAerodrome");
-              setRowToEditId(a.id);
-              deleteModal.handleOpen();
-            },
-            permissions:
-              !userIsAdmin && a.registered
-                ? ("open" as "open")
-                : ("open-delete" as "open-delete"),
-          }))
-        : tableOptions[tableIndex].title === "Runways" && runways
-        ? runways.map((r) => ({
-            id: r.id,
-            aerodrome: r.aerodrome,
-            aerodrome_name:
-              aerodromes.find((a) => a.id === r.aerodrome_id)?.name || "-",
-            aerodrome_status:
-              aerodromes.find((a) => a.id === r.aerodrome_id)?.status ||
-              "Unknown",
-            runway: `${r.number < 10 ? "0" : ""}${r.number}${r.position || ""}`,
-            length_ft: r.length_ft,
-            thld_displ: r.landing_length_ft
-              ? r.length_ft - r.landing_length_ft
-              : "-",
-            intersection_departure_length_ft: `${
-              r.intersection_departure_length_ft || "-"
-            }`,
-            surface: r.surface,
-            updated: formatUTCDate(r.last_updated_utc),
-            date: r.last_updated_utc,
-            handleEdit: () => {
-              setTypeItemToEdit("Runway");
-              setRowToEditId(r.id);
-              editRunwayModal.handleOpen();
-            },
-            handleDelete: () => {
-              setTypeItemToEdit("Runway");
-              setRowToEditId(r.id);
-              deleteModal.handleOpen();
-            },
-            permissions: !userIsAdmin
-              ? undefined
-              : ("edit-delete" as "edit-delete"),
-          }))
-        : [],
+        : tableOptions[tableIndex].title === 'Aerodromes' && aerodromes
+          ? aerodromes.map((a) => ({
+              id: a.id,
+              code: a.code,
+              name: a.name,
+              type: a.registered ? 'Official' : 'User Added',
+              latitude: `${a.lat_direction}${a.lat_degrees}\u00B0${a.lat_minutes}'${a.lat_seconds}"`,
+              longitude: `${a.lon_direction}${a.lon_degrees}\u00B0${a.lon_minutes}'${a.lon_seconds}"`,
+              variation: `${Math.abs(
+                a.magnetic_variation ? a.magnetic_variation : 0,
+              )}\u00B0${
+                a.magnetic_variation
+                  ? a.magnetic_variation < 0
+                    ? 'E'
+                    : a.magnetic_variation > 0
+                      ? 'W'
+                      : ''
+                  : ''
+              }`,
+              status: a.status,
+              updated: formatUTCDate(a.last_updated_utc),
+              date: a.last_updated_utc,
+              runways: a.runways.length
+                ? a.runways
+                    .map(
+                      (r) =>
+                        `${r.number.toString().padStart(2, '0')}${
+                          r.position ? r.position : ''
+                        }`,
+                    )
+                    .join(', ')
+                : '-',
+              weather: a.has_taf
+                ? `TAF${(a.has_metar && ', METAR') || ''}${
+                    (a.has_fds && ', FDs') || ''
+                  }`
+                : a.has_metar
+                  ? `METAR${(a.has_fds && ', FDs') || ''}`
+                  : a.has_fds
+                    ? 'FDs'
+                    : '-',
+              visible: !a.hidden ? 'Yes' : 'No',
+              has_taf: a.has_taf ? 'Yes' : 'No',
+              has_metar: a.has_metar ? 'Yes' : 'No',
+              has_fds: a.has_fds ? 'Yes' : 'No',
+              handleEdit: a.registered
+                ? `/waypoints/aerodrome/${a.id}`
+                : `/waypoints/private-aerodrome/${a.id}`,
+              handleDelete: () => {
+                if (a.registered) setTypeItemToEdit('Official Aerodrome');
+                else setTypeItemToEdit('userAerodrome');
+                setRowToEditId(a.id);
+                deleteModal.handleOpen();
+              },
+              permissions:
+                !userIsAdmin && a.registered
+                  ? ('open' as 'open')
+                  : ('open-delete' as 'open-delete'),
+            }))
+          : tableOptions[tableIndex].title === 'Runways' && runways
+            ? runways.map((r) => ({
+                id: r.id,
+                aerodrome: r.aerodrome,
+                aerodrome_name:
+                  aerodromes.find((a) => a.id === r.aerodrome_id)?.name || '-',
+                aerodrome_status:
+                  aerodromes.find((a) => a.id === r.aerodrome_id)?.status ||
+                  'Unknown',
+                runway: `${r.number < 10 ? '0' : ''}${r.number}${r.position || ''}`,
+                length_ft: r.length_ft,
+                thld_displ: r.landing_length_ft
+                  ? r.length_ft - r.landing_length_ft
+                  : '-',
+                intersection_departure_length_ft: `${
+                  r.intersection_departure_length_ft || '-'
+                }`,
+                surface: r.surface,
+                updated: formatUTCDate(r.last_updated_utc),
+                date: r.last_updated_utc,
+                handleEdit: () => {
+                  setTypeItemToEdit('Runway');
+                  setRowToEditId(r.id);
+                  editRunwayModal.handleOpen();
+                },
+                handleDelete: () => {
+                  setTypeItemToEdit('Runway');
+                  setRowToEditId(r.id);
+                  deleteModal.handleOpen();
+                },
+                permissions: !userIsAdmin
+                  ? undefined
+                  : ('edit-delete' as 'edit-delete'),
+              }))
+            : [],
     breakingPoint: 1500,
   };
 
@@ -421,7 +421,7 @@ const Waypoints = () => {
 
   const vfrWaypointData = vfrWaypoints?.find((item) => item.id === rowToEditId);
   const userWaypointData = userWaypoints?.find(
-    (item) => item.id === rowToEditId
+    (item) => item.id === rowToEditId,
   );
   const aerodromeData = aerodromes?.find((item) => item.id === rowToEditId);
   const runwayData = runways?.find((item) => item.id === rowToEditId);
@@ -435,29 +435,29 @@ const Waypoints = () => {
           statusList={statusList}
           aerodromeData={{
             id: 0,
-            code: "",
-            name: "",
+            code: '',
+            name: '',
             lat_degrees: 0,
             lat_minutes: 0,
             lat_seconds: 0,
-            lat_direction: "North",
+            lat_direction: 'North',
             lon_degrees: 0,
             lon_minutes: 0,
             lon_seconds: 0,
-            lon_direction: "West",
+            lon_direction: 'West',
             elevation_ft: 0,
             magnetic_variation: NaN,
             hide: true,
             has_taf: false,
             has_metar: false,
             has_fds: false,
-            status: "",
+            status: '',
             status_id: 0,
           }}
         />
       </Modal>
       <Modal isOpen={editModal.isOpen}>
-        {typeItemToEdit === "VFR Waypoint" && userIsAdmin ? (
+        {typeItemToEdit === 'VFR Waypoint' && userIsAdmin ? (
           <EditVfrWaypointForm
             closeModal={editModal.handleClose}
             waypointData={
@@ -470,34 +470,34 @@ const Waypoints = () => {
                     lat_minutes: vfrWaypointData.lat_minutes,
                     lat_seconds: vfrWaypointData.lat_seconds,
                     lat_direction:
-                      vfrWaypointData.lat_direction === "S" ? "South" : "North",
+                      vfrWaypointData.lat_direction === 'S' ? 'South' : 'North',
                     lon_degrees: vfrWaypointData.lon_degrees,
                     lon_minutes: vfrWaypointData.lon_minutes,
                     lon_seconds: vfrWaypointData.lon_seconds,
                     lon_direction:
-                      vfrWaypointData.lon_direction === "E" ? "East" : "West",
+                      vfrWaypointData.lon_direction === 'E' ? 'East' : 'West',
                     magnetic_variation: vfrWaypointData.magnetic_variation,
                     hide: vfrWaypointData.hidden,
                   }
                 : {
                     id: 0,
-                    code: "",
-                    name: "",
+                    code: '',
+                    name: '',
                     lat_degrees: 0,
                     lat_minutes: 0,
                     lat_seconds: 0,
-                    lat_direction: "North",
+                    lat_direction: 'North',
                     lon_degrees: 0,
                     lon_minutes: 0,
                     lon_seconds: 0,
-                    lon_direction: "West",
+                    lon_direction: 'West',
                     magnetic_variation: NaN,
                     hide: true,
                   }
             }
             isOpen={editModal.isOpen}
           />
-        ) : typeItemToEdit === "userWaypoint" ? (
+        ) : typeItemToEdit === 'userWaypoint' ? (
           <EditUserWaypointForm
             isAdmin={!!userIsAdmin}
             closeModal={editModal.handleClose}
@@ -511,34 +511,34 @@ const Waypoints = () => {
                     lat_minutes: userWaypointData.lat_minutes,
                     lat_seconds: userWaypointData.lat_seconds,
                     lat_direction:
-                      userWaypointData.lat_direction === "S"
-                        ? "South"
-                        : "North",
+                      userWaypointData.lat_direction === 'S'
+                        ? 'South'
+                        : 'North',
                     lon_degrees: userWaypointData.lon_degrees,
                     lon_minutes: userWaypointData.lon_minutes,
                     lon_seconds: userWaypointData.lon_seconds,
                     lon_direction:
-                      userWaypointData.lon_direction === "E" ? "East" : "West",
+                      userWaypointData.lon_direction === 'E' ? 'East' : 'West',
                     magnetic_variation: userWaypointData.magnetic_variation,
                   }
                 : {
                     id: 0,
-                    code: "",
-                    name: "",
+                    code: '',
+                    name: '',
                     lat_degrees: 0,
                     lat_minutes: 0,
                     lat_seconds: 0,
-                    lat_direction: "North",
+                    lat_direction: 'North',
                     lon_degrees: 0,
                     lon_minutes: 0,
                     lon_seconds: 0,
-                    lon_direction: "West",
+                    lon_direction: 'West',
                     magnetic_variation: NaN,
                   }
             }
             isOpen={editModal.isOpen}
           />
-        ) : typeItemToEdit === "userAerodrome" ? (
+        ) : typeItemToEdit === 'userAerodrome' ? (
           <EditUserAerodromeForm
             isAdmin={!!userIsAdmin}
             closeModal={editModal.handleClose}
@@ -546,16 +546,16 @@ const Waypoints = () => {
             queryKey="all"
             aerodromeData={{
               id: 0,
-              code: "",
-              name: "",
+              code: '',
+              name: '',
               lat_degrees: 0,
               lat_minutes: 0,
               lat_seconds: 0,
-              lat_direction: "North",
+              lat_direction: 'North',
               lon_degrees: 0,
               lon_minutes: 0,
               lon_seconds: 0,
-              lon_direction: "West",
+              lon_direction: 'West',
               elevation_ft: 0,
               magnetic_variation: NaN,
               status: 3,
@@ -570,7 +570,7 @@ const Waypoints = () => {
             closeModal={editRunwayModal.handleClose}
             aerodromeName={
               aerodromes?.find((item) => item.id === runwayData?.aerodrome_id)
-                ?.code || ""
+                ?.code || ''
             }
             runwayData={
               runwayData
@@ -579,13 +579,13 @@ const Waypoints = () => {
                     aerodromeId: runwayData.aerodrome_id,
                     number: runwayData.number,
                     position:
-                      runwayData.position === "R"
-                        ? "Right"
-                        : runwayData.position === "L"
-                        ? "Left"
-                        : runwayData.position === "C"
-                        ? "Center"
-                        : "",
+                      runwayData.position === 'R'
+                        ? 'Right'
+                        : runwayData.position === 'L'
+                          ? 'Left'
+                          : runwayData.position === 'C'
+                            ? 'Center'
+                            : '',
                     length_ft: runwayData.length_ft,
                     thld_displ: runwayData.landing_length_ft
                       ? runwayData.length_ft - runwayData.landing_length_ft
@@ -600,11 +600,11 @@ const Waypoints = () => {
                     id: 0,
                     aerodromeId: 0,
                     number: NaN,
-                    position: "",
+                    position: '',
                     length_ft: NaN,
                     thld_displ: NaN,
                     intersection_departure_length_ft: NaN,
-                    surface: "",
+                    surface: '',
                   }
             }
             isOpen={editRunwayModal.isOpen}
@@ -612,48 +612,48 @@ const Waypoints = () => {
         </Modal>
       ) : null}
       <Modal isOpen={deleteModal.isOpen}>
-        {typeItemToEdit === "userWaypoint" ? (
+        {typeItemToEdit === 'userWaypoint' ? (
           <DeleteUserWaypointForm
             isAdmin={!!userIsAdmin}
             closeModal={deleteModal.handleClose}
-            name={userWaypointData ? userWaypointData.name : ""}
+            name={userWaypointData ? userWaypointData.name : ''}
             id={userWaypointData ? userWaypointData.id : 0}
           />
-        ) : typeItemToEdit === "VFR Waypoint" && userIsAdmin ? (
+        ) : typeItemToEdit === 'VFR Waypoint' && userIsAdmin ? (
           <DeleteVfrWaypointForm
             closeModal={deleteModal.handleClose}
-            name={vfrWaypointData ? vfrWaypointData.name : ""}
+            name={vfrWaypointData ? vfrWaypointData.name : ''}
             id={vfrWaypointData ? vfrWaypointData.id : 0}
           />
-        ) : typeItemToEdit === "Official Aerodrome" && userIsAdmin ? (
+        ) : typeItemToEdit === 'Official Aerodrome' && userIsAdmin ? (
           <DeleteVfrWaypointForm
             closeModal={deleteModal.handleClose}
-            name={aerodromeData ? aerodromeData.name : ""}
+            name={aerodromeData ? aerodromeData.name : ''}
             id={aerodromeData ? aerodromeData.id : 0}
             isAerodrome={true}
           />
-        ) : typeItemToEdit === "userAerodrome" ? (
+        ) : typeItemToEdit === 'userAerodrome' ? (
           <DeleteUserAerodromeForm
             isAdmin={!!userIsAdmin}
             closeModal={deleteModal.handleClose}
-            name={aerodromeData ? aerodromeData.name : ""}
+            name={aerodromeData ? aerodromeData.name : ''}
             id={aerodromeData ? aerodromeData.id : 0}
             queryKey="all"
           />
-        ) : typeItemToEdit === "Runway" ? (
+        ) : typeItemToEdit === 'Runway' ? (
           <DeleteRunwayForm
             fromAerodrome={false}
             aerodromeName={
               aerodromes?.find((item) => item.id === runwayData?.aerodrome_id)
-                ?.code || ""
+                ?.code || ''
             }
             closeModal={deleteModal.handleClose}
             name={
               runwayData
-                ? `${runwayData.number < 10 ? "0" : ""}${runwayData.number}${
-                    runwayData.position || ""
+                ? `${runwayData.number < 10 ? '0' : ''}${runwayData.number}${
+                    runwayData.position || ''
                   }`
-                : ""
+                : ''
             }
             id={rowToEditId}
             aerodromeId={runwayData ? runwayData.aerodrome_id : 0}
@@ -666,39 +666,39 @@ const Waypoints = () => {
             closeModal={uploadCsvModal.handleClose}
             title={`Import ${typeItemToEdit}s from CSV File`}
             icon={
-              typeItemToEdit === "Official Aerodrome" ? (
+              typeItemToEdit === 'Official Aerodrome' ? (
                 <AerodromeIcon />
-              ) : typeItemToEdit === "Runway" ? (
+              ) : typeItemToEdit === 'Runway' ? (
                 <RunwayIcon />
               ) : (
                 <WaypointIcon />
               )
             }
             instructions={getCsvUploadingInstructions(
-              typeItemToEdit === "Official Aerodrome"
-                ? "aerodromes"
-                : typeItemToEdit === "Runway"
-                ? "runways"
-                : "waypoints"
+              typeItemToEdit === 'Official Aerodrome'
+                ? 'aerodromes'
+                : typeItemToEdit === 'Runway'
+                  ? 'runways'
+                  : 'waypoints',
             )}
             submissionData={
-              typeItemToEdit === "Official Aerodrome"
+              typeItemToEdit === 'Official Aerodrome'
                 ? {
-                    path: "manage-waypoints/aerodromes",
+                    path: 'manage-waypoints/aerodromes',
                     successMessage: "Official Aerodromes'",
                     queryKeys: [],
                   }
-                : typeItemToEdit === "Runway"
-                ? {
-                    path: "runways/csv",
-                    successMessage: "Runways'",
-                    queryKeys: [],
-                  }
-                : {
-                    path: "manage-waypoints",
-                    successMessage: "VFR Waypoints'",
-                    queryKeys: [],
-                  }
+                : typeItemToEdit === 'Runway'
+                  ? {
+                      path: 'runways/csv',
+                      successMessage: "Runways'",
+                      queryKeys: [],
+                    }
+                  : {
+                      path: 'manage-waypoints',
+                      successMessage: "VFR Waypoints'",
+                      queryKeys: [],
+                    }
             }
             modalIsOpen={uploadCsvModal.isOpen}
           />
@@ -708,35 +708,35 @@ const Waypoints = () => {
         sideBarContent={
           <SideBarContent
             handleAddUserAerodrome={() => {
-              setTypeItemToEdit("userAerodrome");
+              setTypeItemToEdit('userAerodrome');
               setRowToEditId(0);
               editModal.handleOpen();
             }}
             handleAddUserWaypoint={() => {
-              setTypeItemToEdit("userWaypoint");
+              setTypeItemToEdit('userWaypoint');
               setRowToEditId(0);
               editModal.handleOpen();
             }}
             handleAddOfficialAerodrome={() => {
-              setTypeItemToEdit("Official Aerodrome");
+              setTypeItemToEdit('Official Aerodrome');
               setRowToEditId(0);
               editAerodromeModal.handleOpen();
             }}
             handleAddVFRWaypoint={() => {
-              setTypeItemToEdit("VFR Waypoint");
+              setTypeItemToEdit('VFR Waypoint');
               setRowToEditId(0);
               editModal.handleOpen();
             }}
             handleManageAerodromes={() => {
-              setTypeItemToEdit("Official Aerodrome");
+              setTypeItemToEdit('Official Aerodrome');
               uploadCsvModal.handleOpen();
             }}
             handleManageWaypoints={() => {
-              setTypeItemToEdit("VFR Waypoint");
+              setTypeItemToEdit('VFR Waypoint');
               uploadCsvModal.handleOpen();
             }}
             handleManageRunways={() => {
-              setTypeItemToEdit("Runway");
+              setTypeItemToEdit('Runway');
               uploadCsvModal.handleOpen();
             }}
             isAdmin={!!userIsAdmin}

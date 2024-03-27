@@ -1,15 +1,15 @@
-import { useEffect } from "react";
-import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave, AiFillTag } from "react-icons/ai";
-import { GiWeight } from "react-icons/gi";
-import { LiaTimesSolid, LiaRulerHorizontalSolid } from "react-icons/lia";
-import { MdLuggage } from "react-icons/md";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect } from 'react';
+import { useForm, FieldValues } from 'react-hook-form';
+import { AiOutlineSave, AiFillTag } from 'react-icons/ai';
+import { GiWeight } from 'react-icons/gi';
+import { LiaTimesSolid, LiaRulerHorizontalSolid } from 'react-icons/lia';
+import { MdLuggage } from 'react-icons/md';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import useEditBaggageCompartment from "../hooks/useEditBaggageCompartment";
+import Button from '../../../components/common/button';
+import useEditBaggageCompartment from '../hooks/useEditBaggageCompartment';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -68,7 +68,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -77,14 +77,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -104,9 +104,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -114,21 +114,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -197,20 +197,20 @@ const WeightIcon = styled(GiWeight)`
 const schema = z.object({
   name: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(50, { message: "Must be at most 50 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(50, { message: 'Must be at most 50 characters long' })
     .regex(/^[\-a-zA-Z0-9 ]+$/, {
-      message: "Only letters, numbers white space, and hyphens -",
+      message: 'Only letters, numbers white space, and hyphens -',
     }),
   arm_in: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(9999.94, { message: "Must be less than 9999.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(9999.94, { message: 'Must be less than 9999.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   weight_limit_lb: z.union([
     z
-      .number({ invalid_type_error: "Enter a number or leave blank" })
-      .max(9999.94, { message: "Must be less than 9999.95" })
-      .min(0, { message: "Must be greater than zero" })
+      .number({ invalid_type_error: 'Enter a number or leave blank' })
+      .max(9999.94, { message: 'Must be less than 9999.95' })
+      .min(0, { message: 'Must be greater than zero' })
       .nullable(),
     z.literal(null),
   ]),
@@ -276,19 +276,19 @@ const EditBaggageCompartmentForm = ({
       <h1>
         <div>
           <TitleIcon />
-          {`${compartmentData.id !== 0 ? "Edit" : "Add"} Baggage Compartment`}
+          {`${compartmentData.id !== 0 ? 'Edit' : 'Add'} Baggage Compartment`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("name")}
+          $hasValue={!!watch('name')}
           $accepted={!errors.name}
         >
           <input
-            {...register("name")}
-            id={`${compartmentData ? compartmentData.id : ""}-compartment_name`}
+            {...register('name')}
+            id={`${compartmentData ? compartmentData.id : ''}-compartment_name`}
             type="text"
             autoComplete="off"
             required={true}
@@ -296,7 +296,7 @@ const EditBaggageCompartmentForm = ({
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
           <label
             htmlFor={`${
-              compartmentData ? compartmentData.id : ""
+              compartmentData ? compartmentData.id : ''
             }-compartment_name`}
           >
             <NameIcon />
@@ -305,13 +305,13 @@ const EditBaggageCompartmentForm = ({
         </HtmlInput>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("arm_in") || watch("arm_in") === 0}
+          $hasValue={!!watch('arm_in') || watch('arm_in') === 0}
           $accepted={!errors.arm_in}
         >
           <input
-            {...register("arm_in", { valueAsNumber: true })}
+            {...register('arm_in', { valueAsNumber: true })}
             id={`${
-              compartmentData ? compartmentData.id : ""
+              compartmentData ? compartmentData.id : ''
             }-compartment_arm_in`}
             step="any"
             type="number"
@@ -320,27 +320,27 @@ const EditBaggageCompartmentForm = ({
           {errors.arm_in ? <p>{errors.arm_in.message}</p> : <p>&nbsp;</p>}
           <label
             htmlFor={`${
-              compartmentData ? compartmentData.id : ""
+              compartmentData ? compartmentData.id : ''
             }-compartment_arm_in`}
           >
             <ArmIcon />
-            {"Arm [in]"}
+            {'Arm [in]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={false}
           $hasValue={
-            !!watch("weight_limit_lb") || watch("weight_limit_lb") === 0
+            !!watch('weight_limit_lb') || watch('weight_limit_lb') === 0
           }
           $accepted={!errors.weight_limit_lb}
         >
           <input
-            {...register("weight_limit_lb", {
+            {...register('weight_limit_lb', {
               setValueAs: handleWeightLimitValue,
             })}
             step="any"
             id={`${
-              compartmentData ? compartmentData.id : ""
+              compartmentData ? compartmentData.id : ''
             }-compartment_weight_limit_lb`}
             type="number"
             autoComplete="off"
@@ -352,11 +352,11 @@ const EditBaggageCompartmentForm = ({
           )}
           <label
             htmlFor={`${
-              compartmentData ? compartmentData.id : ""
+              compartmentData ? compartmentData.id : ''
             }-compartment_weight_limit_lb`}
           >
             <WeightIcon />
-            {"Weight Limit [lb]"}
+            {'Weight Limit [lb]'}
           </label>
         </HtmlInput>
       </HtmlInputContainer>

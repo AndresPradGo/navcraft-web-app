@@ -1,6 +1,5 @@
-
-import { useState, Dispatch, SetStateAction, CSSProperties} from 'react';
-import { usePopper } from "react-popper";
+import { useState, Dispatch, SetStateAction, CSSProperties } from 'react';
+import { usePopper } from 'react-popper';
 interface SetReferenceFunctions {
   input: Dispatch<SetStateAction<HTMLInputElement | null>>;
   popper: Dispatch<SetStateAction<HTMLElement | null>>;
@@ -12,30 +11,29 @@ interface PopperToolsType {
   setReferences: SetReferenceFunctions;
   isExpanded: boolean;
   styles: CSSProperties;
-  inputRef: HTMLInputElement | null
+  inputRef: HTMLInputElement | null;
 }
 
 const usePopperInput = (): PopperToolsType => {
-    
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
   const [listRef, setListRef] = useState<HTMLElement | null>(null);
 
   const { styles } = usePopper(inputRef, listRef, {
-    placement: "bottom",
+    placement: 'bottom',
     modifiers: [
       {
-        name: "offset",
+        name: 'offset',
         options: { offset: [0, 5] },
       },
       {
-        name: "preventOverflow",
+        name: 'preventOverflow',
         options: {
           padding: 0,
         },
       },
       {
-        name: "flip",
+        name: 'flip',
         options: {
           fallbackPlacements: [],
         },
@@ -56,12 +54,12 @@ const usePopperInput = (): PopperToolsType => {
     handleInputClick,
     setReferences: {
       input: setInputRef,
-      popper:setListRef
+      popper: setListRef,
     },
     isExpanded,
     styles: styles.popper,
-    inputRef
-  }
-}
+    inputRef,
+  };
+};
 
 export default usePopperInput;

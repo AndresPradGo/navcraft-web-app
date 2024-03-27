@@ -1,2 +1,2 @@
-import EditRunwayForm from './EditRunwayForm'
-export default EditRunwayForm
+import EditRunwayForm from './EditRunwayForm';
+export default EditRunwayForm;

@@ -1,23 +1,23 @@
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave } from "react-icons/ai";
+import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useForm, FieldValues } from 'react-hook-form';
+import { AiOutlineSave } from 'react-icons/ai';
 import {
   BiSolidPlaneLand,
   BiSolidPlaneTakeOff,
   BiSolidEditAlt,
-} from "react-icons/bi";
-import { GiRadialBalance } from "react-icons/gi";
-import { LiaTimesSolid } from "react-icons/lia";
-import { MdNoLuggage, MdBalance } from "react-icons/md";
-import { PiAirplane, PiAirplaneFill } from "react-icons/pi";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+} from 'react-icons/bi';
+import { GiRadialBalance } from 'react-icons/gi';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { MdNoLuggage, MdBalance } from 'react-icons/md';
+import { PiAirplane, PiAirplaneFill } from 'react-icons/pi';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import { WeightAndBalanceDataFromAPI } from "../../../services/weightBalanceClient";
-import useEditWeightBalanceData from "../hooks/useEditWeightBalanceData";
+import Button from '../../../components/common/button';
+import { WeightAndBalanceDataFromAPI } from '../../../services/weightBalanceClient';
+import useEditWeightBalanceData from '../hooks/useEditWeightBalanceData';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -76,7 +76,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -85,14 +85,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -112,9 +112,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -122,21 +122,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -232,29 +232,29 @@ const COGIcon = styled(GiRadialBalance)`
 
 const schema = z.object({
   center_of_gravity_in: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(9999.94, { message: "Must be less than 9999.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(9999.94, { message: 'Must be less than 9999.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   empty_weight_lb: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(9999.94, { message: "Must be less than 9999.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(9999.94, { message: 'Must be less than 9999.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   max_ramp_weight_lb: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(9999.94, { message: "Must be less than 9999.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(9999.94, { message: 'Must be less than 9999.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   max_takeoff_weight_lb: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(9999.94, { message: "Must be less than 9999.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(9999.94, { message: 'Must be less than 9999.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   max_landing_weight_lb: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(9999.94, { message: "Must be less than 9999.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(9999.94, { message: 'Must be less than 9999.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   baggage_allowance_lb: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(9999.94, { message: "Must be less than 9999.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(9999.94, { message: 'Must be less than 9999.95' })
+    .min(0, { message: 'Must be greater than zero' }),
 });
 
 type FormDataType = z.infer<typeof schema>;
@@ -277,7 +277,7 @@ const EditWeightAndBalanceDataForm = ({
   const queryClient = useQueryClient();
   const weightBalanceData =
     queryClient.getQueryData<WeightAndBalanceDataFromAPI>([
-      "AircraftWeightBalanceData",
+      'AircraftWeightBalanceData',
       profileId,
     ]);
 
@@ -322,13 +322,13 @@ const EditWeightAndBalanceDataForm = ({
         <HtmlInput
           $required={true}
           $hasValue={
-            !!watch("center_of_gravity_in") ||
-            watch("center_of_gravity_in") === 0
+            !!watch('center_of_gravity_in') ||
+            watch('center_of_gravity_in') === 0
           }
           $accepted={!errors.center_of_gravity_in}
         >
           <input
-            {...register("center_of_gravity_in", { valueAsNumber: true })}
+            {...register('center_of_gravity_in', { valueAsNumber: true })}
             id="center_of_gravity_in"
             step="any"
             type="number"
@@ -341,18 +341,18 @@ const EditWeightAndBalanceDataForm = ({
           )}
           <label htmlFor="center_of_gravity_in">
             <COGIcon />
-            {"CoG [in]"}
+            {'CoG [in]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
           $hasValue={
-            !!watch("empty_weight_lb") || watch("empty_weight_lb") === 0
+            !!watch('empty_weight_lb') || watch('empty_weight_lb') === 0
           }
           $accepted={!errors.empty_weight_lb}
         >
           <input
-            {...register("empty_weight_lb", { valueAsNumber: true })}
+            {...register('empty_weight_lb', { valueAsNumber: true })}
             id="empty_weight_lb"
             step="any"
             type="number"
@@ -365,18 +365,18 @@ const EditWeightAndBalanceDataForm = ({
           )}
           <label htmlFor="empty_weight_lb">
             <EmptyIcon />
-            {"Empty Weight [lb]"}
+            {'Empty Weight [lb]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
           $hasValue={
-            !!watch("max_ramp_weight_lb") || watch("max_ramp_weight_lb") === 0
+            !!watch('max_ramp_weight_lb') || watch('max_ramp_weight_lb') === 0
           }
           $accepted={!errors.max_ramp_weight_lb}
         >
           <input
-            {...register("max_ramp_weight_lb", { valueAsNumber: true })}
+            {...register('max_ramp_weight_lb', { valueAsNumber: true })}
             id="max_ramp_weight_lb"
             step="any"
             type="number"
@@ -389,19 +389,19 @@ const EditWeightAndBalanceDataForm = ({
           )}
           <label htmlFor="max_ramp_weight_lb">
             <RampIcon />
-            {"Max Ramp Weight [lb]"}
+            {'Max Ramp Weight [lb]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
           $hasValue={
-            !!watch("max_takeoff_weight_lb") ||
-            watch("max_takeoff_weight_lb") === 0
+            !!watch('max_takeoff_weight_lb') ||
+            watch('max_takeoff_weight_lb') === 0
           }
           $accepted={!errors.max_takeoff_weight_lb}
         >
           <input
-            {...register("max_takeoff_weight_lb", { valueAsNumber: true })}
+            {...register('max_takeoff_weight_lb', { valueAsNumber: true })}
             id="max_takeoff_weight_lb"
             step="any"
             type="number"
@@ -414,19 +414,19 @@ const EditWeightAndBalanceDataForm = ({
           )}
           <label htmlFor="max_takeoff_weight_lb">
             <TakeoffIcon />
-            {"Max Takeoff Weight [lb]"}
+            {'Max Takeoff Weight [lb]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
           $hasValue={
-            !!watch("max_landing_weight_lb") ||
-            watch("max_landing_weight_lb") === 0
+            !!watch('max_landing_weight_lb') ||
+            watch('max_landing_weight_lb') === 0
           }
           $accepted={!errors.max_landing_weight_lb}
         >
           <input
-            {...register("max_landing_weight_lb", { valueAsNumber: true })}
+            {...register('max_landing_weight_lb', { valueAsNumber: true })}
             id="max_landing_weight_lb"
             step="any"
             type="number"
@@ -439,19 +439,19 @@ const EditWeightAndBalanceDataForm = ({
           )}
           <label htmlFor="max_landing_weight_lb">
             <LandingIcon />
-            {"Max Landing Weight [lb]"}
+            {'Max Landing Weight [lb]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
           $hasValue={
-            !!watch("baggage_allowance_lb") ||
-            watch("baggage_allowance_lb") === 0
+            !!watch('baggage_allowance_lb') ||
+            watch('baggage_allowance_lb') === 0
           }
           $accepted={!errors.baggage_allowance_lb}
         >
           <input
-            {...register("baggage_allowance_lb", { valueAsNumber: true })}
+            {...register('baggage_allowance_lb', { valueAsNumber: true })}
             id="baggage_allowance_lb"
             step="any"
             type="number"
@@ -464,7 +464,7 @@ const EditWeightAndBalanceDataForm = ({
           )}
           <label htmlFor="baggage_allowance_lb">
             <LuggageIcon />
-            {"Baggage Allowance [lb]"}
+            {'Baggage Allowance [lb]'}
           </label>
         </HtmlInput>
       </HtmlInputContainer>

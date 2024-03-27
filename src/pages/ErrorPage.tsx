@@ -1,9 +1,9 @@
-import { useRouteError, isRouteErrorResponse } from "react-router-dom";
-import { TbHome } from "react-icons/tb";
+import { useRouteError, isRouteErrorResponse } from 'react-router-dom';
+import { TbHome } from 'react-icons/tb';
 
-import { styled } from "styled-components";
+import { styled } from 'styled-components';
 
-import Button from "../components/common/button";
+import Button from '../components/common/button';
 
 const HtmlContainer = styled.div`
   width: 100vw;
@@ -49,10 +49,10 @@ const HomeIcon = styled(TbHome)`
 const ErrorPage = () => {
   const error = useRouteError();
   const pageNotFoundError =
-    isRouteErrorResponse(error) || (error as Error).message === "notFound";
-  const errorCode = pageNotFoundError ? "404" : "500";
+    isRouteErrorResponse(error) || (error as Error).message === 'notFound';
+  const errorCode = pageNotFoundError ? '404' : '500';
   const errorMessage = pageNotFoundError
-    ? "Page not found!"
+    ? 'Page not found!'
     : "An unexpected error occurred! We're looking into it.";
 
   return (

@@ -1,6 +1,6 @@
-import { ReactNode, useState, useEffect } from "react";
-import { styled } from "styled-components";
-import WithSideBar from "../../components/sidebar/WithSideBar";
+import { ReactNode, useState, useEffect } from 'react';
+import { styled } from 'styled-components';
+import WithSideBar from '../../components/sidebar/WithSideBar';
 
 interface MapProps {
   $mapIsOpen: boolean;
@@ -17,8 +17,8 @@ const HtmlMapContainer = styled.div<MapProps>`
   overflow: hidden;
   padding: 0;
 
-  max-width: ${(props) => (props.$mapIsOpen ? "200vw" : "0")};
-  transform: ${(props) => (props.$mapIsOpen ? "none" : "translate(-100vw)")};
+  max-width: ${(props) => (props.$mapIsOpen ? '200vw' : '0')};
+  transform: ${(props) => (props.$mapIsOpen ? 'none' : 'translate(-100vw)')};
 
   @media screen and (min-width: 768px) {
     height: calc(100vh - 71px);
@@ -26,7 +26,10 @@ const HtmlMapContainer = styled.div<MapProps>`
 `;
 
 const HtmlMainContainer = styled.div<MapProps>`
-  transition: transform 0.5s, max-width 0.5s, padding 0.5s;
+  transition:
+    transform 0.5s,
+    max-width 0.5s,
+    padding 0.5s;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -34,24 +37,24 @@ const HtmlMainContainer = styled.div<MapProps>`
   width: 100%;
   overflow: hidden;
 
-  padding: ${(props) => (!props.$mapIsOpen ? "10px 3%" : "10px 0")};
-  max-width: ${(props) => (!props.$mapIsOpen ? "1380px" : "0")};
+  padding: ${(props) => (!props.$mapIsOpen ? '10px 3%' : '10px 0')};
+  max-width: ${(props) => (!props.$mapIsOpen ? '1380px' : '0')};
   max-height: ${(props) =>
-    !props.$mapIsOpen ? "300000vh" : "calc(100vh - 61px)"};
-  transform: ${(props) => (!props.$mapIsOpen ? "none" : "translate(100vw)")};
+    !props.$mapIsOpen ? '300000vh' : 'calc(100vh - 61px)'};
+  transform: ${(props) => (!props.$mapIsOpen ? 'none' : 'translate(100vw)')};
 
   @media screen and (min-width: 425px) {
-    padding: ${(props) => (!props.$mapIsOpen ? "20px 3%" : "20px 0")};
+    padding: ${(props) => (!props.$mapIsOpen ? '20px 3%' : '20px 0')};
   }
 
   @media screen and (min-width: 768px) {
-    padding: ${(props) => (!props.$mapIsOpen ? "40px 3%" : "40px 0")};
+    padding: ${(props) => (!props.$mapIsOpen ? '40px 3%' : '40px 0')};
     max-height: ${(props) =>
-      !props.$mapIsOpen ? "300000vh" : "calc(100vh - 71px)"};
+      !props.$mapIsOpen ? '300000vh' : 'calc(100vh - 71px)'};
   }
 
   @media screen and (min-width: 1000px) {
-    padding: ${(props) => (!props.$mapIsOpen ? "40px 30px" : "40px 0")};
+    padding: ${(props) => (!props.$mapIsOpen ? '40px 30px' : '40px 0')};
   }
 `;
 
@@ -84,14 +87,14 @@ const ContentLayout = ({ children, sideBarContent, map }: Props) => {
 
   if (!map) {
     return (
-      <WithSideBar sideBarContent={sideBarContent ? sideBarContent : ""}>
+      <WithSideBar sideBarContent={sideBarContent ? sideBarContent : ''}>
         <HtmlMainContainer $mapIsOpen={false}>{children}</HtmlMainContainer>
       </WithSideBar>
     );
   }
 
   return (
-    <WithSideBar sideBarContent={sideBarContent ? sideBarContent : ""}>
+    <WithSideBar sideBarContent={sideBarContent ? sideBarContent : ''}>
       <HtmlMapContainer $mapIsOpen={renderMap}>
         {renderMap ? map.component : null}
       </HtmlMapContainer>

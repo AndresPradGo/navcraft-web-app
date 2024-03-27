@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { BsChevronUp, BsChevronDown } from "react-icons/bs";
-import { styled } from "styled-components";
+import { useEffect } from 'react';
+import { BsChevronUp, BsChevronDown } from 'react-icons/bs';
+import { styled } from 'styled-components';
 
-import useSideBar from "./useSideBar";
+import useSideBar from './useSideBar';
 
 interface ButtonProps {
   $expanded: boolean;
@@ -37,12 +37,12 @@ const Button = styled.button<ButtonProps>`
   .chevron-icon:first-child {
     transition: all 0.2s linear;
     transform: ${(props) =>
-      props.$expanded ? "translateY(13px)" : "translateY(3px)"};
+      props.$expanded ? 'translateY(13px)' : 'translateY(3px)'};
   }
   .chevron-icon:last-child {
     transition: all 0.2s linear;
     transform: ${(props) =>
-      props.$expanded ? "translateY(-13px)" : "translateY(-3px)"};
+      props.$expanded ? 'translateY(-13px)' : 'translateY(-3px)'};
   }
 
   &:hover,
@@ -98,11 +98,11 @@ const SideBarExpandButton = () => {
       if (width >= 1280) handleExpandSideBar(false);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
       handleExpandSideBar(false);
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 

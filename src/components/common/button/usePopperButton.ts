@@ -1,6 +1,5 @@
-
-import { useState, Dispatch, SetStateAction, CSSProperties} from 'react';
-import { usePopper } from "react-popper";
+import { useState, Dispatch, SetStateAction, CSSProperties } from 'react';
+import { usePopper } from 'react-popper';
 import { useEffect } from 'react';
 
 interface SetReferenceFunctions {
@@ -17,33 +16,32 @@ interface PopperToolsType {
 }
 
 const usePopperButton = (): PopperToolsType => {
-    
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [buttonRef, setButtonRef] = useState<HTMLElement | null>(null);
   const [listRef, setListRef] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     return () => {
-      document.removeEventListener("click", hadleClickOutside, true);
-      document.removeEventListener("keydown", hadleEscapeKey, true);
-    }
-  }, [])
+      document.removeEventListener('click', hadleClickOutside, true);
+      document.removeEventListener('keydown', hadleEscapeKey, true);
+    };
+  }, []);
 
   const { styles } = usePopper(buttonRef, listRef, {
-    placement: "bottom",
+    placement: 'bottom',
     modifiers: [
       {
-        name: "offset",
+        name: 'offset',
         options: { offset: [0, 5] },
       },
       {
-        name: "preventOverflow",
+        name: 'preventOverflow',
         options: {
           padding: 0,
         },
       },
       {
-        name: "flip",
+        name: 'flip',
         options: {
           fallbackPlacements: [],
         },
@@ -52,26 +50,27 @@ const usePopperButton = (): PopperToolsType => {
   });
 
   const closeExpandible = () => {
-    document.removeEventListener("click", hadleClickOutside, true);
-    document.removeEventListener("keydown", hadleEscapeKey, true);
+    document.removeEventListener('click', hadleClickOutside, true);
+    document.removeEventListener('keydown', hadleEscapeKey, true);
     setIsExpanded(false);
   };
 
   const hadleClickOutside = (event: MouseEvent) => {
-      if (
-        !listRef?.contains(event.target as Node) &&
-        !buttonRef?.contains(event.target as Node)
-      ) closeExpandible()
+    if (
+      !listRef?.contains(event.target as Node) &&
+      !buttonRef?.contains(event.target as Node)
+    )
+      closeExpandible();
   };
 
   const hadleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeExpandible();
+    if (event.key === 'Escape') closeExpandible();
   };
 
   const handleButtonClick = () => {
     if (!isExpanded) {
-      document.addEventListener("click", hadleClickOutside, true);
-      document.addEventListener("keydown", hadleEscapeKey, true);
+      document.addEventListener('click', hadleClickOutside, true);
+      document.addEventListener('keydown', hadleEscapeKey, true);
     }
     setIsExpanded(!isExpanded);
   };
@@ -81,11 +80,11 @@ const usePopperButton = (): PopperToolsType => {
     handleButtonClick,
     setReferences: {
       button: setButtonRef,
-      popper:setListRef
+      popper: setListRef,
     },
     isExpanded,
-    styles: styles.popper
-  }
-}
+    styles: styles.popper,
+  };
+};
 
 export default usePopperButton;

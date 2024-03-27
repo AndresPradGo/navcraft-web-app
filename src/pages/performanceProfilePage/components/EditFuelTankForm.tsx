@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave, AiFillTag } from "react-icons/ai";
-import { BsDropletHalf, BsFillDropletFill } from "react-icons/bs";
-import { LiaTimesSolid, LiaRulerHorizontalSolid } from "react-icons/lia";
-import { MdPropaneTank } from "react-icons/md";
-import { TbReorder } from "react-icons/tb";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect } from 'react';
+import { useForm, FieldValues } from 'react-hook-form';
+import { AiOutlineSave, AiFillTag } from 'react-icons/ai';
+import { BsDropletHalf, BsFillDropletFill } from 'react-icons/bs';
+import { LiaTimesSolid, LiaRulerHorizontalSolid } from 'react-icons/lia';
+import { MdPropaneTank } from 'react-icons/md';
+import { TbReorder } from 'react-icons/tb';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import useEditFuelTank from "../hooks/useEditFuelTank";
+import Button from '../../../components/common/button';
+import useEditFuelTank from '../hooks/useEditFuelTank';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -69,7 +69,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -78,14 +78,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -105,9 +105,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -115,21 +115,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -208,32 +208,32 @@ const SequenceIcon = styled(TbReorder)`
 const schema = z.object({
   name: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(50, { message: "Must be at most 50 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(50, { message: 'Must be at most 50 characters long' })
     .regex(/^[\-a-zA-Z0-9 ]+$/, {
-      message: "Only letters, numbers white space, and hyphens -",
+      message: 'Only letters, numbers white space, and hyphens -',
     }),
   arm_in: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(9999.94, { message: "Must be less than 9999.95" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(9999.94, { message: 'Must be less than 9999.95' })
+    .min(0, { message: 'Must be greater than zero' }),
   fuel_capacity_gallons: z
-    .number({ invalid_type_error: "Enter a number" })
-    .max(999.94, { message: "Must be less than 999.94" })
-    .min(0, { message: "Must be greater than zero" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .max(999.94, { message: 'Must be less than 999.94' })
+    .min(0, { message: 'Must be greater than zero' }),
   unusable_fuel_gallons: z.union([
     z
-      .number({ invalid_type_error: "Enter a number or leave blank" })
-      .max(999.94, { message: "Must be less than 999.94" })
-      .min(0, { message: "Must be greater than zero" })
+      .number({ invalid_type_error: 'Enter a number or leave blank' })
+      .max(999.94, { message: 'Must be less than 999.94' })
+      .min(0, { message: 'Must be greater than zero' })
       .nullable(),
     z.literal(null),
   ]),
   burn_sequence: z.union([
     z
-      .number({ invalid_type_error: "Enter a number or leave blank" })
-      .int("Enter a round number")
-      .min(1, { message: "Must be greater than or equal to 1" })
+      .number({ invalid_type_error: 'Enter a number or leave blank' })
+      .int('Enter a round number')
+      .min(1, { message: 'Must be greater than or equal to 1' })
       .nullable(),
     z.literal(null),
   ]),
@@ -303,60 +303,60 @@ const EditFuelTankForm = ({
       <h1>
         <div>
           <TitleIcon />
-          {`${fuelTankData.id !== 0 ? "Edit" : "Add"} Fuel Tank`}
+          {`${fuelTankData.id !== 0 ? 'Edit' : 'Add'} Fuel Tank`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("name")}
+          $hasValue={!!watch('name')}
           $accepted={!errors.name}
         >
           <input
-            {...register("name")}
-            id={`${fuelTankData ? fuelTankData.id : ""}-tank_name`}
+            {...register('name')}
+            id={`${fuelTankData ? fuelTankData.id : ''}-tank_name`}
             type="text"
             autoComplete="off"
             required={true}
           />
           {errors.name ? <p>{errors.name.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor={`${fuelTankData ? fuelTankData.id : ""}-tank_name`}>
+          <label htmlFor={`${fuelTankData ? fuelTankData.id : ''}-tank_name`}>
             <NameIcon />
             Name
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("arm_in") || watch("arm_in") === 0}
+          $hasValue={!!watch('arm_in') || watch('arm_in') === 0}
           $accepted={!errors.arm_in}
         >
           <input
-            {...register("arm_in", { valueAsNumber: true })}
-            id={`${fuelTankData ? fuelTankData.id : ""}-tank_arm_in`}
+            {...register('arm_in', { valueAsNumber: true })}
+            id={`${fuelTankData ? fuelTankData.id : ''}-tank_arm_in`}
             step="any"
             type="number"
             autoComplete="off"
           />
           {errors.arm_in ? <p>{errors.arm_in.message}</p> : <p>&nbsp;</p>}
-          <label htmlFor={`${fuelTankData ? fuelTankData.id : ""}-tank_arm_in`}>
+          <label htmlFor={`${fuelTankData ? fuelTankData.id : ''}-tank_arm_in`}>
             <ArmIcon />
-            {"Arm [in]"}
+            {'Arm [in]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
           $hasValue={
-            !!watch("fuel_capacity_gallons") ||
-            watch("fuel_capacity_gallons") === 0
+            !!watch('fuel_capacity_gallons') ||
+            watch('fuel_capacity_gallons') === 0
           }
           $accepted={!errors.fuel_capacity_gallons}
         >
           <input
-            {...register("fuel_capacity_gallons", { valueAsNumber: true })}
+            {...register('fuel_capacity_gallons', { valueAsNumber: true })}
             step="any"
             id={`${
-              fuelTankData ? fuelTankData.id : ""
+              fuelTankData ? fuelTankData.id : ''
             }-tank_fuel_capacity_gallons`}
             type="number"
             autoComplete="off"
@@ -368,27 +368,27 @@ const EditFuelTankForm = ({
           )}
           <label
             htmlFor={`${
-              fuelTankData ? fuelTankData.id : ""
+              fuelTankData ? fuelTankData.id : ''
             }-tank_fuel_capacity_gallons`}
           >
             <CapacityIcon />
-            {"Usable Capacity [gal]"}
+            {'Usable Capacity [gal]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={false}
           $hasValue={
-            !!watch("unusable_fuel_gallons") ||
-            watch("unusable_fuel_gallons") === 0
+            !!watch('unusable_fuel_gallons') ||
+            watch('unusable_fuel_gallons') === 0
           }
           $accepted={!errors.unusable_fuel_gallons}
         >
           <input
-            {...register("unusable_fuel_gallons", {
+            {...register('unusable_fuel_gallons', {
               setValueAs: handleNullableNumberValue,
             })}
             id={`${
-              fuelTankData ? fuelTankData.id : ""
+              fuelTankData ? fuelTankData.id : ''
             }-tank_unusable_fuel_gallons`}
             type="number"
             step="any"
@@ -401,23 +401,23 @@ const EditFuelTankForm = ({
           )}
           <label
             htmlFor={`${
-              fuelTankData ? fuelTankData.id : ""
+              fuelTankData ? fuelTankData.id : ''
             }-tank_unusable_fuel_gallons`}
           >
             <UnusableIcon />
-            {"Unusable Fuel [gal]"}
+            {'Unusable Fuel [gal]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={false}
-          $hasValue={!!watch("burn_sequence") || watch("burn_sequence") === 0}
+          $hasValue={!!watch('burn_sequence') || watch('burn_sequence') === 0}
           $accepted={!errors.burn_sequence}
         >
           <input
-            {...register("burn_sequence", {
+            {...register('burn_sequence', {
               setValueAs: handleNullableNumberValue,
             })}
-            id={`${fuelTankData ? fuelTankData.id : ""}-tank_burn_sequence`}
+            id={`${fuelTankData ? fuelTankData.id : ''}-tank_burn_sequence`}
             type="number"
             autoComplete="off"
           />
@@ -428,11 +428,11 @@ const EditFuelTankForm = ({
           )}
           <label
             htmlFor={`${
-              fuelTankData ? fuelTankData.id : ""
+              fuelTankData ? fuelTankData.id : ''
             }-tank_burn_sequence`}
           >
             <SequenceIcon />
-            {"Burn Sequence"}
+            {'Burn Sequence'}
           </label>
         </HtmlInput>
       </HtmlInputContainer>

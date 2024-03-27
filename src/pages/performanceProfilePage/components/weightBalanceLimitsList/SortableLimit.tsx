@@ -1,14 +1,14 @@
-import { GiWeight, GiRadialBalance } from "react-icons/gi";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { GiWeight, GiRadialBalance } from 'react-icons/gi';
+import { RiDeleteBinLine } from 'react-icons/ri';
 
-import { styled } from "styled-components";
-import { CSS } from "@dnd-kit/utilities";
-import { useSortable } from "@dnd-kit/sortable";
+import { styled } from 'styled-components';
+import { CSS } from '@dnd-kit/utilities';
+import { useSortable } from '@dnd-kit/sortable';
 
-import { LimitDataTypeWithId } from "./WeightBalanceLimitsList";
+import { LimitDataTypeWithId } from './WeightBalanceLimitsList';
 
 interface HtmlTagProps {
-  $cursor: "grab" | "grabbing" | "copy";
+  $cursor: 'grab' | 'grabbing' | 'copy';
 }
 const HtmlTag = styled.div<HtmlTagProps>`
   overflow: hidden;
@@ -82,8 +82,8 @@ interface Props {
   index: number;
   limit: LimitDataTypeWithId;
   handleRemoveLimit: (index: number) => void;
-  cursor: "grab" | "grabbing";
-  setCursor: (cursor: "grab" | "grabbing") => void;
+  cursor: 'grab' | 'grabbing';
+  setCursor: (cursor: 'grab' | 'grabbing') => void;
 }
 
 const SortableLimit = ({
@@ -111,10 +111,10 @@ const SortableLimit = ({
       <HtmlDragabbleContainer
         {...listeners}
         onMouseDown={() => {
-          setCursor("grabbing");
+          setCursor('grabbing');
         }}
         onMouseUp={() => {
-          setCursor("grab");
+          setCursor('grab');
         }}
       >
         <span>

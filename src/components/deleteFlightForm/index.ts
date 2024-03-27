@@ -1,2 +1,2 @@
 import DeleteFlightForm from './DeleteFlightForm';
-export default DeleteFlightForm
+export default DeleteFlightForm;

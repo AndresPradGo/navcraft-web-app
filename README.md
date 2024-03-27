@@ -58,10 +58,9 @@ Using the app is very simple!
    - You can generate weather and NOTAMs Briefings.
    - And much more...
 
-> [!TIP] 
+> [!TIP]
 >
 > - NavCraft APP is responsive, so you can use it on any device with a screen wider than just 375px.
->
 > - Google Chrome is recommended, but the app supports other browsers like Mozilla Firefox and Safari.
 
 # <a id="contributing"></a> 🤝 Contributing
@@ -170,7 +169,7 @@ Once you've created a new feature branch, you can start working on the code. The
   http://127.0.0.1:5173
   ```
 
-> [!TIP] 
+> [!TIP]
 > The `/src` directory in the host, is being mapped to the `/src` directory in the container. Thus, any changes you save will be automatically shared to the container. However, the `package.json` and `package-lock.json` files are not being mapped. If you install a new library, you'll need to rebuild the image for it to show in the container.
 
 ### 4. Submit a pull request <img align="center" alt="GitHub" width="36px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" style="max-width: 100%; margin: 0; padding: 0 0 1px; background: #FFF;border-radius: 50px"/>

@@ -1,20 +1,20 @@
-import { useEffect, useState, ChangeEvent, FormEvent } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { AiOutlineSave } from "react-icons/ai";
-import { BsChevronDown, BsPersonFillAdd } from "react-icons/bs";
-import { FaUser, FaWeightScale, FaUserSlash } from "react-icons/fa6";
-import { LiaTimesSolid } from "react-icons/lia";
-import { MdAirlineSeatReclineNormal } from "react-icons/md";
-import { styled } from "styled-components";
-import { z } from "zod";
+import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { AiOutlineSave } from 'react-icons/ai';
+import { BsChevronDown, BsPersonFillAdd } from 'react-icons/bs';
+import { FaUser, FaWeightScale, FaUserSlash } from 'react-icons/fa6';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { MdAirlineSeatReclineNormal } from 'react-icons/md';
+import { styled } from 'styled-components';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import useAddPerson from "../hooks/useAddPerson";
-import useRemovePerson from "../hooks/useRemovePerson";
-import Loader from "../../../components/Loader";
-import { PassengerData } from "../../../hooks/usePassengersData";
-import { ProfileData } from "../../profile/entities";
-import DataList from "../../../components/common/datalist";
+import Button from '../../../components/common/button';
+import useAddPerson from '../hooks/useAddPerson';
+import useRemovePerson from '../hooks/useRemovePerson';
+import Loader from '../../../components/Loader';
+import { PassengerData } from '../../../hooks/usePassengersData';
+import { ProfileData } from '../../profile/entities';
+import DataList from '../../../components/common/datalist';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -56,7 +56,7 @@ interface InputContainerProps {
 const HtmlInputContainer = styled.div<InputContainerProps>`
   display: flex;
   flex-direction: column;
-  justify-content: ${(props) => (props.$loading ? "center" : "flex-start")};
+  justify-content: ${(props) => (props.$loading ? 'center' : 'flex-start')};
   width: 100%;
   overflow-y: auto;
   padding: 20px 10px;
@@ -93,7 +93,7 @@ const HtmlSectionTitle = styled.div<HtmlSectionProps>`
   align-items: center;
   padding: 0 0 2px 5px;
   border-bottom: 1px solid
-    ${(props) => (props.$isOpen ? "var(--color-white)" : "var(--color-grey)")};
+    ${(props) => (props.$isOpen ? 'var(--color-white)' : 'var(--color-grey)')};
 
   & div {
     cursor: pointer;
@@ -103,7 +103,7 @@ const HtmlSectionTitle = styled.div<HtmlSectionProps>`
     & h3:first-of-type {
       margin: 0;
       color: ${(props) =>
-        props.$isOpen ? "var(--color-white)" : "var(--color-grey)"};
+        props.$isOpen ? 'var(--color-white)' : 'var(--color-grey)'};
     }
   }
 
@@ -117,10 +117,10 @@ const ToggleIcon = styled(BsChevronDown)<HtmlSectionProps>`
   cursor: pointer;
   margin-right: 5px;
   font-size: 25px;
-  transform: rotate(${(props) => (props.$isOpen ? "-180deg" : "0deg")});
+  transform: rotate(${(props) => (props.$isOpen ? '-180deg' : '0deg')});
   transition: 0.3s transform linear;
   color: ${(props) =>
-    props.$isOpen ? "var(--color-white)" : "var(--color-grey)"};
+    props.$isOpen ? 'var(--color-white)' : 'var(--color-grey)'};
 
   @media screen and (min-width: 425px) {
     margin-right: 20px;
@@ -128,13 +128,16 @@ const ToggleIcon = styled(BsChevronDown)<HtmlSectionProps>`
 `;
 
 const HtmlSectionContent = styled.div<HtmlSectionProps>`
-  transition: padding 0.6s, height 0.3s, opacity 0.6s;
-  border: ${(props) => (props.$isOpen ? "1px" : "0")} solid var(--color-white);
+  transition:
+    padding 0.6s,
+    height 0.3s,
+    opacity 0.6s;
+  border: ${(props) => (props.$isOpen ? '1px' : '0')} solid var(--color-white);
   border-top: 0;
   padding: 0px;
   height: ${(props) =>
-    props.$isOpen ? (props.$isPair ? "200px" : "350px") : "0px"};
-  opacity: ${(props) => (props.$isOpen ? "1" : "0")};
+    props.$isOpen ? (props.$isPair ? '200px' : '350px') : '0px'};
+  opacity: ${(props) => (props.$isOpen ? '1' : '0')};
   overflow: hidden;
   width: 100%;
   margin: 0;
@@ -142,7 +145,7 @@ const HtmlSectionContent = styled.div<HtmlSectionProps>`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  align-content: ${(props) => (props.$isPair ? "center" : "flex-start")};
+  align-content: ${(props) => (props.$isPair ? 'center' : 'flex-start')};
   flex-wrap: wrap;
   flex-shrink: 0;
 
@@ -186,7 +189,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   max-width: 250px;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -195,14 +198,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -222,9 +225,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -232,21 +235,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -297,14 +300,14 @@ const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
-  cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
   color: var(--color-grey);
-  opacity: ${(props) => (props.$disabled ? "0.3" : "1")};
+  opacity: ${(props) => (props.$disabled ? '0.3' : '1')};
 
   &:hover,
   &:focus {
     color: ${(props) =>
-      props.$disabled ? "var(--color-grey)" : "var(--color-white)"};
+      props.$disabled ? 'var(--color-grey)' : 'var(--color-white)'};
   }
 
   @media screen and (min-width: 510px) {
@@ -334,15 +337,15 @@ const WeightIcon = styled(FaWeightScale)`
 const newPassengerSchema = z.object({
   name: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(255, { message: "Must be at most 255 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(255, { message: 'Must be at most 255 characters long' })
     .regex(/^[A-Za-z0-9 /.'-]+$/, {
       message: "Only letters, numbers, spaces and symbols /'.-",
     }),
   weight_lb: z
-    .number({ invalid_type_error: "Enter a number" })
-    .nonnegative("Must be greater than or equal to 0")
-    .max(999.94, { message: "Must be less than 999.95" }),
+    .number({ invalid_type_error: 'Enter a number' })
+    .nonnegative('Must be greater than or equal to 0')
+    .max(999.94, { message: 'Must be less than 999.95' }),
 });
 
 type NewPersonType = z.infer<typeof newPassengerSchema>;
@@ -374,7 +377,7 @@ const AddPersonForm = ({
   const [fromSavedPassenger, setFromSavedPassenger] = useState(true);
 
   const [newPersonValues, setNewPersonValues] = useState<NewPersonType>({
-    name: "",
+    name: '',
     weight_lb: 0,
   });
   const [newPersonErrors, setNewPersonErrors] = useState<{
@@ -385,21 +388,21 @@ const AddPersonForm = ({
     weight_lb: null,
   });
 
-  const [savedPersonValue, setSavedPersonValue] = useState("");
+  const [savedPersonValue, setSavedPersonValue] = useState('');
   const [savedPersonErrors, setSavedPersonErrors] = useState<string | null>(
-    null
+    null,
   );
   const queryClient = useQueryClient();
   const savedPassengers = queryClient.getQueryData<PassengerData[]>([
-    "passengers",
+    'passengers',
   ]);
-  const profileData = queryClient.getQueryData<ProfileData>(["profile"]);
+  const profileData = queryClient.getQueryData<ProfileData>(['profile']);
   const passengerOptions = [
     `${profileData?.name} (SELF): ${
       Math.round((profileData?.weight || 1) * 100) / 100
     } lb`,
     ...(savedPassengers?.map(
-      (p) => `${p.name}: ${Math.round(p.weight_lb * 100) / 100} lb`
+      (p) => `${p.name}: ${Math.round(p.weight_lb * 100) / 100} lb`,
     ) || []),
   ];
 
@@ -413,10 +416,10 @@ const AddPersonForm = ({
         setSavedPersonValue(
           `${passengerData.name} (SELF): ${
             Math.round((passengerData?.weight_lb || 1) * 100) / 100
-          } lb`
+          } lb`,
         );
         setNewPersonValues({
-          name: "",
+          name: '',
           weight_lb: 0,
         });
       } else if (passengerData.passenger_profile_id) {
@@ -424,15 +427,15 @@ const AddPersonForm = ({
         setSavedPersonValue(
           `${passengerData.name}: ${
             Math.round(passengerData.weight_lb * 100) / 100
-          } lb`
+          } lb`,
         );
         setNewPersonValues({
-          name: "",
+          name: '',
           weight_lb: 0,
         });
       } else {
         setFromSavedPassenger(!passengerData.id);
-        setSavedPersonValue("");
+        setSavedPersonValue('');
         setNewPersonValues({
           name: passengerData.name,
           weight_lb: passengerData.weight_lb,
@@ -472,7 +475,7 @@ const AddPersonForm = ({
   const handleWeightChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newWeight = parseFloat(e.target.value);
     const result = newPassengerSchema.safeParse({
-      name: "newName",
+      name: 'newName',
       weight_lb: newWeight,
     });
     if (result.success) {
@@ -507,10 +510,10 @@ const AddPersonForm = ({
           const passenger = savedPassengers?.find(
             (p) =>
               savedPersonValue ===
-              `${p.name}: ${Math.round(p.weight_lb * 100) / 100} lb`
+              `${p.name}: ${Math.round(p.weight_lb * 100) / 100} lb`,
           );
           if (!passenger) {
-            setSavedPersonErrors("Select a valid value");
+            setSavedPersonErrors('Select a valid value');
           } else {
             mutation.mutate({
               id: passengerData.id,
@@ -539,7 +542,7 @@ const AddPersonForm = ({
         } else {
           const newError = { ...newPersonErrors };
           for (const e of result.error.errors) {
-            newError[e.path[0] as "name" | "weight_lb"] = e.message;
+            newError[e.path[0] as 'name' | 'weight_lb'] = e.message;
           }
           setNewPersonErrors({
             name: result.error.errors[0].message,
@@ -601,7 +604,7 @@ const AddPersonForm = ({
                   required={fromSavedPassenger}
                   value={savedPersonValue}
                   hasError={!!savedPersonErrors}
-                  errorMessage={savedPersonErrors || ""}
+                  errorMessage={savedPersonErrors || ''}
                   options={passengerOptions}
                   setValue={(value: string) => setSavedPersonValue(value)}
                   name={`seat-${seat.id}-profile`}
@@ -612,10 +615,10 @@ const AddPersonForm = ({
                           Math.round(passengerData.weight_lb * 100) / 100
                         } lb`
                       : passengerData.passenger_profile_id
-                      ? `${passengerData.name}: ${
-                          Math.round(passengerData.weight_lb * 100) / 100
-                        } lb`
-                      : ""
+                        ? `${passengerData.name}: ${
+                            Math.round(passengerData.weight_lb * 100) / 100
+                          } lb`
+                        : ''
                   }
                 >
                   <UserIcon /> Select Profile
@@ -641,7 +644,7 @@ const AddPersonForm = ({
               <HtmlSectionContent $isOpen={!fromSavedPassenger} $isPair={true}>
                 <HtmlInput
                   $required={!fromSavedPassenger}
-                  $hasValue={newPersonValues.name !== ""}
+                  $hasValue={newPersonValues.name !== ''}
                   $accepted={!newPersonErrors.name}
                 >
                   <input
@@ -658,7 +661,7 @@ const AddPersonForm = ({
                   )}
                   <label htmlFor={`seat-${seat.id}-name`}>
                     <NewUserIcon />
-                    {"Name"}
+                    {'Name'}
                   </label>
                 </HtmlInput>
                 <HtmlInput
@@ -684,7 +687,7 @@ const AddPersonForm = ({
                   )}
                   <label htmlFor={`seat-${seat.id}-weight`}>
                     <WeightIcon />
-                    {"Weight [lb]"}
+                    {'Weight [lb]'}
                   </label>
                 </HtmlInput>
               </HtmlSectionContent>

@@ -1,18 +1,18 @@
-import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave, AiFillTag } from "react-icons/ai";
-import { GiAirplane } from "react-icons/gi";
-import { IoAirplane } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { TfiHeadphoneAlt } from "react-icons/tfi";
-import { SiFloatplane } from "react-icons/si";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useEffect } from "react";
+import { useForm, FieldValues } from 'react-hook-form';
+import { AiOutlineSave, AiFillTag } from 'react-icons/ai';
+import { GiAirplane } from 'react-icons/gi';
+import { IoAirplane } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { TfiHeadphoneAlt } from 'react-icons/tfi';
+import { SiFloatplane } from 'react-icons/si';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useEffect } from 'react';
 
-import Button from "../common/button";
-import useAddAircraft from "./useAddAircraft";
-import useEditAircraft from "./useEditAircraft";
+import Button from '../common/button';
+import useAddAircraft from './useAddAircraft';
+import useEditAircraft from './useEditAircraft';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -72,7 +72,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -81,14 +81,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -108,9 +108,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -118,21 +118,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -209,31 +209,31 @@ const SaveIcon = styled(AiOutlineSave)`
 const schema = z.object({
   make: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(50, { message: "Must be at most 50 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(50, { message: 'Must be at most 50 characters long' })
     .regex(/^[\.\-a-zA-Z0-9\(\) ]+$/, {
-      message: "Only letters, numbers, white space, and symbols .-()",
+      message: 'Only letters, numbers, white space, and symbols .-()',
     }),
   model: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(50, { message: "Must be at most 50 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(50, { message: 'Must be at most 50 characters long' })
     .regex(/^[\.\-a-zA-Z0-9\(\) ]+$/, {
-      message: "Only letters, numbers, white space, and symbols .-()",
+      message: 'Only letters, numbers, white space, and symbols .-()',
     }),
   abbreviation: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(10, { message: "Must be at most 10 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(10, { message: 'Must be at most 10 characters long' })
     .regex(/^[\-a-zA-Z0-9]+$/, {
-      message: "Only letters, numbers, and symbol -",
+      message: 'Only letters, numbers, and symbol -',
     }),
   registration: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(10, { message: "Must be at most 10 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(10, { message: 'Must be at most 10 characters long' })
     .regex(/^[\-a-zA-Z0-9]+$/, {
-      message: "Only letters, numbers, and symbol -",
+      message: 'Only letters, numbers, and symbol -',
     }),
 });
 type FormDataType = z.infer<typeof schema>;
@@ -296,18 +296,18 @@ const EditAircraftForm = ({ aircraftData, closeModal, isOpen }: Props) => {
       <h1>
         <div>
           <TitleIcon />
-          {`${aircraftData.id !== 0 ? "Edit" : "Add New"} Aircraft`}
+          {`${aircraftData.id !== 0 ? 'Edit' : 'Add New'} Aircraft`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
       <HtmlInputContainer>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("registration")}
+          $hasValue={!!watch('registration')}
           $accepted={!errors.registration}
         >
           <input
-            {...register("registration")}
+            {...register('registration')}
             id="aircraft_registration"
             type="text"
             autoComplete="off"
@@ -320,16 +320,16 @@ const EditAircraftForm = ({ aircraftData, closeModal, isOpen }: Props) => {
           )}
           <label htmlFor="aircraft_registration">
             <RegistrationIcon />
-            {"Call Sign [ex: C-GABC]"}
+            {'Call Sign [ex: C-GABC]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("make")}
+          $hasValue={!!watch('make')}
           $accepted={!errors.make}
         >
           <input
-            {...register("make")}
+            {...register('make')}
             id="aircraft_make"
             type="text"
             autoComplete="off"
@@ -338,16 +338,16 @@ const EditAircraftForm = ({ aircraftData, closeModal, isOpen }: Props) => {
           {errors.make ? <p>{errors.make.message}</p> : <p>&nbsp;</p>}
           <label htmlFor="aircraft_make">
             <MakeIcon />
-            {"Make [ex: Cessna]"}
+            {'Make [ex: Cessna]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("abbreviation")}
+          $hasValue={!!watch('abbreviation')}
           $accepted={!errors.abbreviation}
         >
           <input
-            {...register("abbreviation")}
+            {...register('abbreviation')}
             id="aircraft_abbreviation"
             type="text"
             autoComplete="off"
@@ -360,16 +360,16 @@ const EditAircraftForm = ({ aircraftData, closeModal, isOpen }: Props) => {
           )}
           <label htmlFor="aircraft_abbreviation">
             <ModelIcon />
-            {"Model [ex: C172]"}
+            {'Model [ex: C172]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("model")}
+          $hasValue={!!watch('model')}
           $accepted={!errors.model}
         >
           <input
-            {...register("model")}
+            {...register('model')}
             id="aircraft_name"
             type="text"
             autoComplete="off"
@@ -378,7 +378,7 @@ const EditAircraftForm = ({ aircraftData, closeModal, isOpen }: Props) => {
           {errors.model ? <p>{errors.model.message}</p> : <p>&nbsp;</p>}
           <label htmlFor="aircraft_name">
             <NameIcon />
-            {"Name [ex: Cessna 172 M]"}
+            {'Name [ex: Cessna 172 M]'}
           </label>
         </HtmlInput>
       </HtmlInputContainer>

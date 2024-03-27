@@ -1,17 +1,17 @@
-import { LuCircleDotDashed } from "react-icons/lu";
+import { LuCircleDotDashed } from 'react-icons/lu';
 import {
   PiMapPinDuotone,
   PiChartPolarDuotone,
   PiCircleDuotone,
-} from "react-icons/pi";
-import { RiMapPinUserFill } from "react-icons/ri";
-import { styled } from "styled-components";
+} from 'react-icons/pi';
+import { RiMapPinUserFill } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import { NearbyWaypointType } from "./DropMarkerForm";
+import { NearbyWaypointType } from './DropMarkerForm';
 import getDegreeCoordinates, {
   LatLngLiteral,
-} from "../../../../utils/getDegreeCoordinates";
-import Loader from "../../../../components/Loader";
+} from '../../../../utils/getDegreeCoordinates';
+import Loader from '../../../../components/Loader';
 
 const HtmlContainer = styled.div`
   align-self: center;
@@ -52,18 +52,18 @@ const HtmlWaypointTag = styled.div<WaypointTagProps>`
   padding: 10px;
   border: 1px solid
     ${(props) =>
-      props.$selected ? "var(--color-white)" : "var(--color-primary-bright)"};
+      props.$selected ? 'var(--color-white)' : 'var(--color-primary-bright)'};
   background-color: ${(props) =>
     props.$selected
-      ? "var(--color-primary-light)"
-      : "var(--color-primary-bright)"};
-  cursor: ${(props) => (props.$selected ? "default" : "pointer")};
+      ? 'var(--color-primary-light)'
+      : 'var(--color-primary-bright)'};
+  cursor: ${(props) => (props.$selected ? 'default' : 'pointer')};
   border-radius: 3px;
 
   &:hover {
     border: 1px solid
       ${(props) =>
-        props.$selected ? "var(--color-white)" : "var(--color-primary-light)"};
+        props.$selected ? 'var(--color-white)' : 'var(--color-primary-light)'};
     background-color: var(--color-primary-light);
 
     & span i:last-of-type {
@@ -84,7 +84,7 @@ const HtmlWaypointTag = styled.div<WaypointTagProps>`
     & i:last-of-type {
       font-size: 12px;
       color: ${(props) =>
-        props.$selected ? "var(--color-grey-bright)" : "var(--color-grey)"};
+        props.$selected ? 'var(--color-grey-bright)' : 'var(--color-grey)'};
     }
   }
 `;
@@ -140,10 +140,10 @@ const WaypointsList = ({
 }: Props) => {
   const styleCoordinates = (coordinate: LatLngLiteral): string => {
     const styledLat = Math.round(Math.abs(coordinate.lat) * 100) / 100;
-    const latDir = coordinate.lat >= 0 ? "N" : "S";
+    const latDir = coordinate.lat >= 0 ? 'N' : 'S';
 
     const styledLng = Math.round(Math.abs(coordinate.lng) * 100) / 100;
-    const lngDir = coordinate.lng >= 0 ? "E" : "W";
+    const lngDir = coordinate.lng >= 0 ? 'E' : 'W';
 
     return `${latDir}${styledLat}\u00B0 / ${lngDir}${styledLng}\u00B0`;
   };
@@ -175,11 +175,11 @@ const WaypointsList = ({
                 handleSelectedId(w.id);
               }}
             >
-              {w.type === "aerodrome" ? (
+              {w.type === 'aerodrome' ? (
                 <AerodromeIcon />
-              ) : w.type === "waypoint" ? (
+              ) : w.type === 'waypoint' ? (
                 <WaypointIcon />
-              ) : w.type === "user aerodrome" ? (
+              ) : w.type === 'user aerodrome' ? (
                 <UserAerodromeIcon />
               ) : (
                 <UserWaypointIcon />
@@ -187,7 +187,7 @@ const WaypointsList = ({
               <span>
                 <i>{`${w.code}: ${w.name}`}</i>
                 <i>{`${styleCoordinates(
-                  getDegreeCoordinates(w)
+                  getDegreeCoordinates(w),
                 )} (${w.distance.toFixed(1)}nm away)`}</i>
               </span>
             </HtmlWaypointTag>

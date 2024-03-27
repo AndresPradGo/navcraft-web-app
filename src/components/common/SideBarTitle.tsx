@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import { styled } from 'styled-components';
 
 const HtmlHeading = styled.h1`
   text-align: center;

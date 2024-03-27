@@ -1,6 +1,6 @@
-import { ReactNode, Dispatch, SetStateAction } from "react";
-import { Link } from "react-router-dom";
-import { styled } from "styled-components";
+import { ReactNode, Dispatch, SetStateAction } from 'react';
+import { Link } from 'react-router-dom';
+import { styled } from 'styled-components';
 
 interface HtmlButtonProps {
   $color: string;
@@ -12,14 +12,14 @@ interface HtmlButtonProps {
   $minWidth: string;
   $maxWidth: string;
   $height: string;
-  $spaceChildren: "center" | "space-between" | "space-evenly" | "flex-start";
+  $spaceChildren: 'center' | 'space-between' | 'space-evenly' | 'flex-start';
   $fontSize: number;
   $borderRadious: number;
   $borderWidth: number;
   $margin: string;
   $padding: string;
   $onlyHover: boolean;
-  $alignSelf: "center" | "flex-start" | "flex-end" | undefined;
+  $alignSelf: 'center' | 'flex-start' | 'flex-end' | undefined;
 }
 
 const HtmlButton = styled.button<HtmlButtonProps>`
@@ -28,7 +28,7 @@ const HtmlButton = styled.button<HtmlButtonProps>`
   flex-direction: row;
   justify-content: ${(props) => props.$spaceChildren};
   align-items: center;
-  ${(props) => (props.$alignSelf ? "align-self:" + props.$alignSelf + ";" : "")}
+  ${(props) => (props.$alignSelf ? 'align-self:' + props.$alignSelf + ';' : '')}
   min-width: ${(props) => props.$minWidth};
   max-width: ${(props) => props.$maxWidth};
   height: ${(props) => props.$height};
@@ -45,16 +45,16 @@ const HtmlButton = styled.button<HtmlButtonProps>`
   margin: ${(props) => props.$margin};
   color: ${(props) => props.$color};
   background-color: ${(props) =>
-    props.$fill ? props.$backgroundColor : "transparent"};
+    props.$fill ? props.$backgroundColor : 'transparent'};
   box-shadow: ${(props) =>
     props.$shadow
-      ? "0 0 8px 1px var(--color-shadow)"
-      : "0 0 0 0 var(--color-primary-dark)"};
+      ? '0 0 8px 1px var(--color-shadow)'
+      : '0 0 0 0 var(--color-primary-dark)'};
 
-  &:hover${(props) => (props.$onlyHover ? "" : ", &:focus")} {
+  &:hover${(props) => (props.$onlyHover ? '' : ', &:focus')} {
     color: ${(props) => props.$hoverColor};
     background-color: ${(props) =>
-      props.$fill ? props.$backgroundHoverColor : "transparent"};
+      props.$fill ? props.$backgroundHoverColor : 'transparent'};
     border: ${(props) => props.$borderWidth}px solid
       ${(props) => props.$backgroundHoverColor};
   }
@@ -96,16 +96,16 @@ const HtmlLink = styled(Link)<HtmlButtonProps>`
   margin: ${(props) => props.$margin};
   color: ${(props) => props.$color};
   background-color: ${(props) =>
-    props.$fill ? props.$backgroundColor : "transparent"};
+    props.$fill ? props.$backgroundColor : 'transparent'};
   box-shadow: ${(props) =>
     props.$shadow
-      ? "0 0 8px 1px var(--color-shadow)"
-      : "0 0 0 0 var(--color-primary-dark)"};
+      ? '0 0 8px 1px var(--color-shadow)'
+      : '0 0 0 0 var(--color-primary-dark)'};
 
-  &:hover${(props) => (props.$onlyHover ? "" : ", &:focus")} {
+  &:hover${(props) => (props.$onlyHover ? '' : ', &:focus')} {
     color: ${(props) => props.$hoverColor};
     background-color: ${(props) =>
-      props.$fill ? props.$backgroundHoverColor : "transparent"};
+      props.$fill ? props.$backgroundHoverColor : 'transparent'};
     border: 2px solid ${(props) => props.$backgroundHoverColor};
   }
 `;
@@ -131,16 +131,16 @@ const HtmlAnchor = styled.a<HtmlButtonProps>`
   margin: ${(props) => props.$margin};
   color: ${(props) => props.$color};
   background-color: ${(props) =>
-    props.$fill ? props.$backgroundColor : "transparent"};
+    props.$fill ? props.$backgroundColor : 'transparent'};
   box-shadow: ${(props) =>
     props.$shadow
-      ? "0 0 8px 1px var(--color-shadow)"
-      : "0 0 0 0 var(--color-primary-dark)"};
+      ? '0 0 8px 1px var(--color-shadow)'
+      : '0 0 0 0 var(--color-primary-dark)'};
 
-  &:hover${(props) => (props.$onlyHover ? "" : ", &:focus")} {
+  &:hover${(props) => (props.$onlyHover ? '' : ', &:focus')} {
     color: ${(props) => props.$hoverColor};
     background-color: ${(props) =>
-      props.$fill ? props.$backgroundHoverColor : "transparent"};
+      props.$fill ? props.$backgroundHoverColor : 'transparent'};
     border: 2px solid ${(props) => props.$backgroundHoverColor};
   }
 `;
@@ -154,8 +154,8 @@ export interface Props {
   shadow?: boolean;
   width?: string;
   height?: string;
-  spaceChildren?: "center" | "space-between" | "space-evenly" | "flex-start";
-  alignSelf?: "center" | "flex-start" | "flex-end";
+  spaceChildren?: 'center' | 'space-between' | 'space-evenly' | 'flex-start';
+  alignSelf?: 'center' | 'flex-start' | 'flex-end';
   fontSize?: number;
   borderRadious?: number;
   borderWidth?: number;
@@ -167,7 +167,7 @@ export interface Props {
   isAnchor?: boolean;
   download?: string;
   reference?: Dispatch<SetStateAction<HTMLElement | null>>;
-  btnType?: "button" | "reset" | "submit";
+  btnType?: 'button' | 'reset' | 'submit';
   disabled?: boolean;
   disabledText?: string;
   onlyHover?: boolean;
@@ -203,14 +203,14 @@ const Button = ({
   const defaultColor = color
     ? color
     : fill
-    ? "var(--color-grey-dark)"
-    : "var(--color-highlight)";
+      ? 'var(--color-grey-dark)'
+      : 'var(--color-highlight)';
 
   const defaultHoverColor = hoverColor
     ? hoverColor
     : fill
-    ? "var(--color-grey-dark)"
-    : "var(--color-highlight-hover)";
+      ? 'var(--color-grey-dark)'
+      : 'var(--color-highlight-hover)';
 
   if (href) {
     if (isAnchor) {
@@ -220,25 +220,25 @@ const Button = ({
           $color={defaultColor}
           $hoverColor={defaultHoverColor}
           $backgroundColor={
-            backgroundColor ? backgroundColor : "var(--color-highlight)"
+            backgroundColor ? backgroundColor : 'var(--color-highlight)'
           }
           $backgroundHoverColor={
             backgroundHoverColor
               ? backgroundHoverColor
-              : "var(--color-highlight-hover)"
+              : 'var(--color-highlight-hover)'
           }
           $fill={fill}
           $shadow={shadow ? shadow : false}
-          $minWidth={width ? width : "0px"}
-          $maxWidth={width ? width : "100%"}
-          $height={height ? height : "30px"}
-          $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
+          $minWidth={width ? width : '0px'}
+          $maxWidth={width ? width : '100%'}
+          $height={height ? height : '30px'}
+          $spaceChildren={spaceChildren ? spaceChildren : 'space-evenly'}
           $alignSelf={alignSelf}
           $fontSize={fontSize ? fontSize : 12}
           $borderRadious={borderRadious ? borderRadious : 10}
           $borderWidth={borderWidth ? borderWidth : 0}
-          $margin={margin ? margin : "0px"}
-          $padding={padding ? padding : "5px 10px"}
+          $margin={margin ? margin : '0px'}
+          $padding={padding ? padding : '5px 10px'}
           onClick={handleClick ? handleClick : () => {}}
           href={href}
           download={download ? download : false}
@@ -255,25 +255,25 @@ const Button = ({
         $color={defaultColor}
         $hoverColor={defaultHoverColor}
         $backgroundColor={
-          backgroundColor ? backgroundColor : "var(--color-highlight)"
+          backgroundColor ? backgroundColor : 'var(--color-highlight)'
         }
         $backgroundHoverColor={
           backgroundHoverColor
             ? backgroundHoverColor
-            : "var(--color-highlight-hover)"
+            : 'var(--color-highlight-hover)'
         }
         $fill={fill}
         $shadow={shadow ? shadow : false}
-        $minWidth={width ? width : "0px"}
-        $maxWidth={width ? width : "100%"}
-        $height={height ? height : "30px"}
-        $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
+        $minWidth={width ? width : '0px'}
+        $maxWidth={width ? width : '100%'}
+        $height={height ? height : '30px'}
+        $spaceChildren={spaceChildren ? spaceChildren : 'space-evenly'}
         $alignSelf={alignSelf}
         $fontSize={fontSize ? fontSize : 12}
         $borderRadious={borderRadious ? borderRadious : 10}
         $borderWidth={borderWidth ? borderWidth : 0}
-        $margin={margin ? margin : "0px"}
-        $padding={padding ? padding : "5px 10px"}
+        $margin={margin ? margin : '0px'}
+        $padding={padding ? padding : '5px 10px'}
         onClick={handleClick ? handleClick : () => {}}
         to={href}
         $onlyHover={!!onlyHover}
@@ -285,30 +285,30 @@ const Button = ({
 
   return (
     <HtmlButton
-      type={btnType ? btnType : "button"}
+      type={btnType ? btnType : 'button'}
       ref={reference}
       $color={defaultColor}
       $hoverColor={defaultHoverColor}
       $backgroundColor={
-        backgroundColor ? backgroundColor : "var(--color-highlight)"
+        backgroundColor ? backgroundColor : 'var(--color-highlight)'
       }
       $backgroundHoverColor={
         backgroundHoverColor
           ? backgroundHoverColor
-          : "var(--color-highlight-hover)"
+          : 'var(--color-highlight-hover)'
       }
       $fill={fill}
       $shadow={shadow ? shadow : false}
-      $minWidth={width ? width : "0px"}
-      $maxWidth={width ? width : "100%"}
-      $height={height ? height : "30px"}
-      $spaceChildren={spaceChildren ? spaceChildren : "space-evenly"}
+      $minWidth={width ? width : '0px'}
+      $maxWidth={width ? width : '100%'}
+      $height={height ? height : '30px'}
+      $spaceChildren={spaceChildren ? spaceChildren : 'space-evenly'}
       $alignSelf={alignSelf}
       $fontSize={fontSize ? fontSize : 12}
       $borderRadious={borderRadious ? borderRadious : 10}
       $borderWidth={borderWidth ? borderWidth : 2}
-      $margin={margin ? margin : "0px"}
-      $padding={padding ? padding : "5px 10px"}
+      $margin={margin ? margin : '0px'}
+      $padding={padding ? padding : '5px 10px'}
       onClick={handleClick ? handleClick : () => {}}
       disabled={!!disabled}
       $onlyHover={!!onlyHover}

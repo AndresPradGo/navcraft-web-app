@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import useUserAerodromesData from "../hooks/useUserAerodromesData";
-import useAuth from "../../../hooks/useAuth";
-import EditUserAerodromeForm from "../../../components/editUserAerodromeForm";
-import DeleteUserAerodromeForm from "../../../components/deleteUserAerodromeForm";
-import formatUTCDate from "../../../utils/formatUTCDate";
-import ExpandibleTable from "../../../components/common/ExpandibleTable";
+import useUserAerodromesData from '../hooks/useUserAerodromesData';
+import useAuth from '../../../hooks/useAuth';
+import EditUserAerodromeForm from '../../../components/editUserAerodromeForm';
+import DeleteUserAerodromeForm from '../../../components/deleteUserAerodromeForm';
+import formatUTCDate from '../../../utils/formatUTCDate';
+import ExpandibleTable from '../../../components/common/ExpandibleTable';
 import {
   useModal,
   Modal,
   UseModalType,
-} from "../../../components/common/modal";
+} from '../../../components/common/modal';
 
 interface Props {
   editModal: UseModalType;
@@ -25,16 +25,16 @@ const AerodromesTable = ({ editModal }: Props) => {
   const { data: aerodromes, isLoading, error } = useUserAerodromesData();
   const aerodromeData = {
     id: 0,
-    code: "",
-    name: "",
+    code: '',
+    name: '',
     lat_degrees: 0,
     lat_minutes: 0,
     lat_seconds: 0,
-    lat_direction: "North" as "North",
+    lat_direction: 'North' as 'North',
     lon_degrees: 0,
     lon_minutes: 0,
     lon_seconds: 0,
-    lon_direction: "West" as "West",
+    lon_direction: 'West' as 'West',
     magnetic_variation: NaN,
     elevation_ft: 0,
     status: 6,
@@ -42,24 +42,24 @@ const AerodromesTable = ({ editModal }: Props) => {
 
   const tableData = {
     keys: [
-      "code",
-      "name",
-      "latitude",
-      "longitude",
-      "elevation_ft",
-      "runways",
-      "variation",
-      "updated",
+      'code',
+      'name',
+      'latitude',
+      'longitude',
+      'elevation_ft',
+      'runways',
+      'variation',
+      'updated',
     ],
     headers: {
-      code: "Code",
-      name: "Name",
-      latitude: "Latitude",
-      longitude: "Longitude",
-      elevation_ft: "Elevation [ft]",
-      runways: "Runways",
-      variation: "Magnetic Var.",
-      updated: "Date Updated",
+      code: 'Code',
+      name: 'Name',
+      latitude: 'Latitude',
+      longitude: 'Longitude',
+      elevation_ft: 'Elevation [ft]',
+      runways: 'Runways',
+      variation: 'Magnetic Var.',
+      updated: 'Date Updated',
     },
     rows:
       !error && aerodromes
@@ -70,15 +70,15 @@ const AerodromesTable = ({ editModal }: Props) => {
             latitude: `${a.lat_direction}${a.lat_degrees}\u00B0${a.lat_minutes}'${a.lat_seconds}"`,
             longitude: `${a.lon_direction}${a.lon_degrees}\u00B0${a.lon_minutes}'${a.lon_seconds}"`,
             variation: `${Math.abs(
-              a.magnetic_variation ? a.magnetic_variation : 0
+              a.magnetic_variation ? a.magnetic_variation : 0,
             )}\u00B0${
               a.magnetic_variation
                 ? a.magnetic_variation < 0
-                  ? "E"
+                  ? 'E'
                   : a.magnetic_variation > 0
-                  ? "W"
-                  : ""
-                : ""
+                    ? 'W'
+                    : ''
+                : ''
             }`,
             elevation_ft: a.elevation_ft,
             updated: formatUTCDate(a.last_updated_utc),
@@ -87,18 +87,18 @@ const AerodromesTable = ({ editModal }: Props) => {
               ? a.runways
                   .map(
                     (r) =>
-                      `${r.number.toString().padStart(2, "0")}${
-                        r.position ? r.position : ""
-                      }`
+                      `${r.number.toString().padStart(2, '0')}${
+                        r.position ? r.position : ''
+                      }`,
                   )
-                  .join(", ")
-              : "-",
+                  .join(', ')
+              : '-',
             handleEdit: `/waypoints/private-aerodrome/${a.id}`,
             handleDelete: () => {
               setAerodromeId(a.id);
               deleteModal.handleOpen();
             },
-            permissions: "open-delete" as "open-delete",
+            permissions: 'open-delete' as 'open-delete',
           }))
         : [],
     breakingPoint: 1400,
@@ -106,16 +106,16 @@ const AerodromesTable = ({ editModal }: Props) => {
 
   const sortData = [
     {
-      title: "Code",
-      key: "code",
+      title: 'Code',
+      key: 'code',
     },
     {
-      title: "Name",
-      key: "name",
+      title: 'Name',
+      key: 'name',
     },
     {
-      title: "Date Updated",
-      key: "date",
+      title: 'Date Updated',
+      key: 'date',
     },
   ];
 
@@ -124,7 +124,7 @@ const AerodromesTable = ({ editModal }: Props) => {
       <Modal isOpen={editModal.isOpen}>
         <EditUserAerodromeForm
           isAdmin={!!userIsAdmin}
-          queryKey={"user"}
+          queryKey={'user'}
           closeModal={editModal.handleClose}
           aerodromeData={aerodromeData}
           isOpen={editModal.isOpen}
@@ -134,7 +134,7 @@ const AerodromesTable = ({ editModal }: Props) => {
         <DeleteUserAerodromeForm
           isAdmin={!!userIsAdmin}
           closeModal={deleteModal.handleClose}
-          name={aerodromes?.find((item) => item.id === aerodromeId)?.name || ""}
+          name={aerodromes?.find((item) => item.id === aerodromeId)?.name || ''}
           id={aerodromeId}
           queryKey="user"
         />

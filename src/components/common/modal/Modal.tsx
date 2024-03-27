@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { styled } from "styled-components";
+import { ReactNode } from 'react';
+import { styled } from 'styled-components';
 
 interface ContainerProps {
   $isOpen: boolean;
@@ -22,7 +22,7 @@ const HtmlBody = styled.div<ContainerProps>`
   z-index: ${(props) => (props.$isOpen ? 9999 : -1)};
   background-color: var(--color-modal-background);
   opacity: ${(props) => (props.$isOpen ? 1 : 0)};
-  pointer-events: ${(props) => (props.$isOpen ? "auto" : "none")};
+  pointer-events: ${(props) => (props.$isOpen ? 'auto' : 'none')};
   backdrop-filter: blur(2px) saturate(180%);
 `;
 
@@ -34,18 +34,18 @@ interface ModalProps {
 
 const HtmlModal = styled.div<ModalProps>`
   transition: transform 0.3s ease-out;
-  transform: ${(props) => (props.$isOpen ? "none" : "translate(0, -50px)")};
+  transform: ${(props) => (props.$isOpen ? 'none' : 'translate(0, -50px)')};
   overflow-x: hidden;
   overflow-y: hidden;
   border: 1px solid var(--color-grey);
   border-radius: 8px;
-  min-height: ${(props) => (props.$fullHeight ? "97vh" : "200px")};
+  min-height: ${(props) => (props.$fullHeight ? '97vh' : '200px')};
   max-height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  pointer-events: ${(props) => (props.$isOpen ? "auto" : "none")};
+  pointer-events: ${(props) => (props.$isOpen ? 'auto' : 'none')};
   background-color: var(--color-primary);
   margin: 10px;
   flex-basis: ${(props) => props.$width}px;

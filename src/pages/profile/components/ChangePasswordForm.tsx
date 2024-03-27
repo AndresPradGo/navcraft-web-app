@@ -1,14 +1,14 @@
-import { AiOutlineSave } from "react-icons/ai";
-import { TbLock, TbLockCheck, TbLockOpen, TbLockCog } from "react-icons/tb";
-import { LiaTimesSolid } from "react-icons/lia";
-import { useForm, FieldValues } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { AiOutlineSave } from 'react-icons/ai';
+import { TbLock, TbLockCheck, TbLockOpen, TbLockCog } from 'react-icons/tb';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { useForm, FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import { styled } from "styled-components";
-import Button from "../../../components/common/button";
-import useChangePassword from "../hooks/useChangePassword";
-import { useEffect } from "react";
+import { styled } from 'styled-components';
+import Button from '../../../components/common/button';
+import useChangePassword from '../hooks/useChangePassword';
+import { useEffect } from 'react';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -66,7 +66,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -75,14 +75,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -102,9 +102,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -112,21 +112,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -197,19 +197,19 @@ const CloseIcon = styled(LiaTimesSolid)`
 
 const passwordSchema = z
   .string()
-  .min(8, { message: "Must be at least 8 characters long" })
-  .max(25, { message: "Must be at most 25 characters long" })
+  .min(8, { message: 'Must be at least 8 characters long' })
+  .max(25, { message: 'Must be at most 25 characters long' })
   .refine((password) => !/\s/.test(password), {
-    message: "Cannot contain white spaces",
+    message: 'Cannot contain white spaces',
   })
   .refine((password) => /[0-9]/.test(password), {
-    message: "Must contain at least one number",
+    message: 'Must contain at least one number',
   })
   .refine((password) => /[a-z]/.test(password), {
-    message: "Must contain at least one lowercase letter",
+    message: 'Must contain at least one lowercase letter',
   })
   .refine((password) => /[A-Z]/.test(password), {
-    message: "Must contain at least one uppercase letter",
+    message: 'Must contain at least one uppercase letter',
   });
 
 const schema = z.object({
@@ -240,21 +240,21 @@ const ChangePasswordForm = ({ closeModal, isOpen }: Props) => {
   useEffect(() => {
     if (isOpen) {
       reset({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
       });
     }
   }, [isOpen]);
 
   useEffect(() => {
-    if (watch("confirmPassword") !== watch("newPassword")) {
-      setError("confirmPassword", {
-        type: "manual",
-        message: "Password confirmation does not match",
+    if (watch('confirmPassword') !== watch('newPassword')) {
+      setError('confirmPassword', {
+        type: 'manual',
+        message: 'Password confirmation does not match',
       });
-    } else clearErrors("confirmPassword");
-  }, [watch("confirmPassword"), watch("newPassword")]);
+    } else clearErrors('confirmPassword');
+  }, [watch('confirmPassword'), watch('newPassword')]);
 
   const changePassword = useChangePassword();
 
@@ -264,9 +264,9 @@ const ChangePasswordForm = ({ closeModal, isOpen }: Props) => {
 
   const submitHandler = (data: FieldValues) => {
     if (data.confirmPassword !== data.newPassword)
-      setError("confirmPassword", {
-        type: "manual",
-        message: "Password confirmation does not match",
+      setError('confirmPassword', {
+        type: 'manual',
+        message: 'Password confirmation does not match',
       });
     else {
       closeModal();
@@ -288,12 +288,12 @@ const ChangePasswordForm = ({ closeModal, isOpen }: Props) => {
       </h1>
       <HtmlInputContainer>
         <HtmlInput
-          $hasValue={!!watch("currentPassword")}
+          $hasValue={!!watch('currentPassword')}
           $accepted={!errors.currentPassword}
           $required={true}
         >
           <input
-            {...register("currentPassword")}
+            {...register('currentPassword')}
             id="currentPassword"
             type="password"
             autoComplete="off"
@@ -310,12 +310,12 @@ const ChangePasswordForm = ({ closeModal, isOpen }: Props) => {
           </label>
         </HtmlInput>
         <HtmlInput
-          $hasValue={!!watch("newPassword")}
+          $hasValue={!!watch('newPassword')}
           $accepted={!errors.newPassword}
           $required={true}
         >
           <input
-            {...register("newPassword")}
+            {...register('newPassword')}
             id="newPassword"
             type="password"
             autoComplete="off"
@@ -332,12 +332,12 @@ const ChangePasswordForm = ({ closeModal, isOpen }: Props) => {
           </label>
         </HtmlInput>
         <HtmlInput
-          $hasValue={!!watch("confirmPassword")}
+          $hasValue={!!watch('confirmPassword')}
           $accepted={!errors.confirmPassword}
           $required={true}
         >
           <input
-            {...register("confirmPassword")}
+            {...register('confirmPassword')}
             id="confirmPassword"
             type="password"
             autoComplete="off"

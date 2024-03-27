@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave } from "react-icons/ai";
-import { BiSolidEditAlt } from "react-icons/bi";
-import { BsFillFuelPumpFill, BsThermometerSun } from "react-icons/bs";
-import { LiaTimesSolid } from "react-icons/lia";
-import { TbTrendingUp2 } from "react-icons/tb";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect } from 'react';
+import { useForm, FieldValues } from 'react-hook-form';
+import { AiOutlineSave } from 'react-icons/ai';
+import { BiSolidEditAlt } from 'react-icons/bi';
+import { BsFillFuelPumpFill, BsThermometerSun } from 'react-icons/bs';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { TbTrendingUp2 } from 'react-icons/tb';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../../../components/common/button";
-import useEditClimbData from "../hooks/useEditClimbData";
+import Button from '../../../components/common/button';
+import useEditClimbData from '../hooks/useEditClimbData';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -75,7 +75,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -84,14 +84,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 50px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 50px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -111,9 +111,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -121,21 +121,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -210,17 +210,17 @@ const ClimbIcon = styled(TbTrendingUp2)`
 const schema = z.object({
   take_off_taxi_fuel_gallons: z.union([
     z
-      .number({ invalid_type_error: "Enter a number" })
-      .max(99.94, { message: "Must be less than 99.94" })
-      .min(0, { message: "Must be greater than zero" })
+      .number({ invalid_type_error: 'Enter a number' })
+      .max(99.94, { message: 'Must be less than 99.94' })
+      .min(0, { message: 'Must be greater than zero' })
       .nullable(),
     z.literal(null),
   ]),
   percent_increase_climb_temperature_c: z.union([
     z
-      .number({ invalid_type_error: "Enter a number" })
-      .max(99.94, { message: "Must be less than 99.94" })
-      .min(0, { message: "Must be greater than zero" })
+      .number({ invalid_type_error: 'Enter a number' })
+      .max(99.94, { message: 'Must be less than 99.94' })
+      .min(0, { message: 'Must be greater than zero' })
       .nullable(),
     z.literal(null),
   ]),
@@ -294,13 +294,13 @@ const EditClimbDataForm = ({ data, closeModal, isOpen, profileId }: Props) => {
         <HtmlInput
           $required={false}
           $hasValue={
-            !!watch("take_off_taxi_fuel_gallons") ||
-            watch("take_off_taxi_fuel_gallons") === 0
+            !!watch('take_off_taxi_fuel_gallons') ||
+            watch('take_off_taxi_fuel_gallons') === 0
           }
           $accepted={!errors.take_off_taxi_fuel_gallons}
         >
           <input
-            {...register("take_off_taxi_fuel_gallons", {
+            {...register('take_off_taxi_fuel_gallons', {
               setValueAs: handleNullableNumberValue,
             })}
             id="take_off_taxi_fuel_gallons"
@@ -315,19 +315,19 @@ const EditClimbDataForm = ({ data, closeModal, isOpen, profileId }: Props) => {
           )}
           <label htmlFor="take_off_taxi_fuel_gallons">
             <FuelIcon />
-            {"Ground Fuel [gal]"}
+            {'Ground Fuel [gal]'}
           </label>
         </HtmlInput>
         <HtmlInput
           $required={false}
           $hasValue={
-            !!watch("percent_increase_climb_temperature_c") ||
-            watch("percent_increase_climb_temperature_c") === 0
+            !!watch('percent_increase_climb_temperature_c') ||
+            watch('percent_increase_climb_temperature_c') === 0
           }
           $accepted={!errors.percent_increase_climb_temperature_c}
         >
           <input
-            {...register("percent_increase_climb_temperature_c", {
+            {...register('percent_increase_climb_temperature_c', {
               setValueAs: handleNullableNumberValue,
             })}
             id="percent_increase_climb_temperature_c"
@@ -342,7 +342,7 @@ const EditClimbDataForm = ({ data, closeModal, isOpen, profileId }: Props) => {
           )}
           <label htmlFor="percent_increase_climb_temperature_c">
             <TemperatureIcon />
-            {"Temperature Losses [% per \u00B0C]"}
+            {'Temperature Losses [% per \u00B0C]'}
           </label>
         </HtmlInput>
       </HtmlInputContainer>

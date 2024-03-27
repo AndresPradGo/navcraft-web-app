@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave, AiFillTag } from "react-icons/ai";
+import { useEffect, useState } from 'react';
+import { useForm, FieldValues } from 'react-hook-form';
+import { AiOutlineSave, AiFillTag } from 'react-icons/ai';
 import {
   BsFillFuelPumpFill,
   BsChevronDown,
   BsSpeedometer,
-} from "react-icons/bs";
-import { IoAirplaneOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+} from 'react-icons/bs';
+import { IoAirplaneOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../common/button";
-import useAddAircraftProfile from "./useAddAircraftProfile";
-import { FuelTypeData } from "../../hooks/useFuelTypes";
-import DataList from "../common/datalist/index";
-import useAircraftModels from "../../hooks/useAircraftModels";
-import Loader from "../Loader";
+import Button from '../common/button';
+import useAddAircraftProfile from './useAddAircraftProfile';
+import { FuelTypeData } from '../../hooks/useFuelTypes';
+import DataList from '../common/datalist/index';
+import useAircraftModels from '../../hooks/useAircraftModels';
+import Loader from '../Loader';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -84,7 +84,7 @@ const HtmlSectionTitle = styled.div<HtmlSectionProps>`
   align-items: center;
   padding: 0 0 2px 5px;
   border-bottom: 1px solid
-    ${(props) => (props.$isOpen ? "var(--color-white)" : "var(--color-grey)")};
+    ${(props) => (props.$isOpen ? 'var(--color-white)' : 'var(--color-grey)')};
 
   & div {
     cursor: pointer;
@@ -94,7 +94,7 @@ const HtmlSectionTitle = styled.div<HtmlSectionProps>`
     & h3:first-of-type {
       margin: 0;
       color: ${(props) =>
-        props.$isOpen ? "var(--color-white)" : "var(--color-grey)"};
+        props.$isOpen ? 'var(--color-white)' : 'var(--color-grey)'};
     }
   }
 
@@ -108,10 +108,10 @@ const ToggleIcon = styled(BsChevronDown)<HtmlSectionProps>`
   cursor: pointer;
   margin-right: 5px;
   font-size: 25px;
-  transform: rotate(${(props) => (props.$isOpen ? "-180deg" : "0deg")});
+  transform: rotate(${(props) => (props.$isOpen ? '-180deg' : '0deg')});
   transition: 0.3s transform linear;
   color: ${(props) =>
-    props.$isOpen ? "var(--color-white)" : "var(--color-grey)"};
+    props.$isOpen ? 'var(--color-white)' : 'var(--color-grey)'};
 
   @media screen and (min-width: 425px) {
     margin-right: 20px;
@@ -119,12 +119,15 @@ const ToggleIcon = styled(BsChevronDown)<HtmlSectionProps>`
 `;
 
 const HtmlSectionContent = styled.div<HtmlSectionProps>`
-  transition: padding 0.6s, height 0.3s, opacity 0.6s;
-  border: ${(props) => (props.$isOpen ? "1px" : "0")} solid var(--color-white);
+  transition:
+    padding 0.6s,
+    height 0.3s,
+    opacity 0.6s;
+  border: ${(props) => (props.$isOpen ? '1px' : '0')} solid var(--color-white);
   border-top: 0;
   padding: 0px;
-  height: ${(props) => (props.$isOpen ? "400px" : "0px")};
-  opacity: ${(props) => (props.$isOpen ? "1" : "0")};
+  height: ${(props) => (props.$isOpen ? '400px' : '0px')};
+  opacity: ${(props) => (props.$isOpen ? '1' : '0')};
   overflow: hidden;
 
   & ul {
@@ -138,7 +141,7 @@ const HtmlSectionContent = styled.div<HtmlSectionProps>`
   }
 
   @media screen and (min-width: 490px) {
-    height: ${(props) => (props.$isOpen ? "310px" : "0px")};
+    height: ${(props) => (props.$isOpen ? '310px' : '0px')};
   }
 `;
 
@@ -169,7 +172,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 10px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -178,14 +181,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -205,9 +208,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -215,21 +218,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -305,24 +308,24 @@ const SaveIcon = styled(AiOutlineSave)`
 const schema = z.object({
   model: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(255, { message: "Must be at most 255 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(255, { message: 'Must be at most 255 characters long' })
     .regex(/^[a-zA-Z0-9\s.,()/\-]+$/, {
-      message: "Only letters, numbers, white space, and symbols .,-()/",
+      message: 'Only letters, numbers, white space, and symbols .,-()/',
     }),
   performance_profile_name: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(255, { message: "Must be at most 255 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(255, { message: 'Must be at most 255 characters long' })
     .regex(/^[a-zA-Z0-9\s.,()/\-]+$/, {
-      message: "Only letters, numbers, white space, and symbols .,-()/",
+      message: 'Only letters, numbers, white space, and symbols .,-()/',
     }),
   fuel_type: z
     .string()
-    .min(1, { message: "Select a valid option" })
-    .max(50, { message: "Must be at most 50 characters long" })
+    .min(1, { message: 'Select a valid option' })
+    .max(50, { message: 'Must be at most 50 characters long' })
     .regex(/^[-a-zA-Z0-9 /]+$/, {
-      message: "Only letters, numbers, white spaces, and symbols -/",
+      message: 'Only letters, numbers, white spaces, and symbols -/',
     }),
 });
 export type AircraftProfileDataFromForm = z.infer<typeof schema>;
@@ -348,9 +351,9 @@ const AddAircraftProfileForm = ({
 
   const [fromModel, setFromModel] = useState(true);
   const [savedValues, setSavedValues] = useState({
-    model: "",
-    performance_profile_name: "",
-    fuel_type: "",
+    model: '',
+    performance_profile_name: '',
+    fuel_type: '',
   });
 
   const addMutation = useAddAircraftProfile(aircraftId);
@@ -368,89 +371,89 @@ const AddAircraftProfileForm = ({
   useEffect(() => {
     if (isOpen) {
       reset({
-        model: "",
-        performance_profile_name: "Place Holder Name",
+        model: '',
+        performance_profile_name: 'Place Holder Name',
         fuel_type: fuelOptions[0].name,
       });
 
       setSavedValues({
-        model: "",
-        performance_profile_name: "",
-        fuel_type: "",
+        model: '',
+        performance_profile_name: '',
+        fuel_type: '',
       });
       setFromModel(true);
     }
   }, [isOpen]);
 
   if (aircraftModelsIsLoading) return <Loader />;
-  if (aircraftModelsError) throw new Error("");
+  if (aircraftModelsError) throw new Error('');
 
   const aircraftModels = preFilterAircraftModels.filter(
-    (model) => model.is_complete
+    (model) => model.is_complete,
   );
 
   const handleOpenSection = () => {
     const newFromModel = !fromModel;
     setFromModel(newFromModel);
     if (newFromModel) {
-      setValue("model", savedValues.model);
-      const newSavedName = watch("performance_profile_name");
-      const newSavedFuel = watch("fuel_type");
+      setValue('model', savedValues.model);
+      const newSavedName = watch('performance_profile_name');
+      const newSavedFuel = watch('fuel_type');
       setSavedValues((current) => ({
         ...current,
         performance_profile_name: newSavedName,
         fuel_type: newSavedFuel,
       }));
-      setValue("performance_profile_name", "Place Holder Name");
-      setValue("fuel_type", fuelOptions[0].name);
+      setValue('performance_profile_name', 'Place Holder Name');
+      setValue('fuel_type', fuelOptions[0].name);
     } else {
-      const newSavedModel = watch("model");
+      const newSavedModel = watch('model');
       setValue(
-        "performance_profile_name",
-        savedValues.performance_profile_name
+        'performance_profile_name',
+        savedValues.performance_profile_name,
       );
-      setValue("fuel_type", savedValues.fuel_type);
+      setValue('fuel_type', savedValues.fuel_type);
       setSavedValues((current) => ({
         ...current,
         model: newSavedModel,
       }));
-      setValue("model", "Place Holder Model");
+      setValue('model', 'Place Holder Model');
     }
   };
 
   const submitHandler = (data: FieldValues) => {
     if (fromModel) {
       const model = aircraftModels.find(
-        (item) => item.performance_profile_name.trim() === data.model
+        (item) => item.performance_profile_name.trim() === data.model,
       );
       if (model) {
         closeModal();
         addMutation.mutate({
           model_id: model.id,
-          type: "MODEL",
+          type: 'MODEL',
           performance_profile_name: model.performance_profile_name,
           fuel_type_id: model.fuel_type_id,
         });
       } else
-        setError("model", {
-          type: "manual",
-          message: "Select a model",
+        setError('model', {
+          type: 'manual',
+          message: 'Select a model',
         });
     } else {
       const fuelId = fuelOptions.find(
-        (item) => item.name === data.fuel_type
+        (item) => item.name === data.fuel_type,
       )?.id;
       if (fuelId) {
         closeModal();
         addMutation.mutate({
-          type: "BLANK",
+          type: 'BLANK',
           performance_profile_name: data.performance_profile_name,
           fuel_type_id: fuelId,
         });
       } else
-        setError("fuel_type", {
-          type: "manual",
-          message: "Select a valid fuel type",
+        setError('fuel_type', {
+          type: 'manual',
+          message: 'Select a valid fuel type',
         });
     }
   };
@@ -475,22 +478,22 @@ const AddAircraftProfileForm = ({
           <HtmlSectionContent $isOpen={fromModel}>
             <DataList
               setError={(_) =>
-                setError("model", {
-                  type: "manual",
-                  message: "Select a model",
+                setError('model', {
+                  type: 'manual',
+                  message: 'Select a model',
                 })
               }
-              clearErrors={() => clearErrors("model")}
+              clearErrors={() => clearErrors('model')}
               required={fromModel}
-              value={watch("model")}
+              value={watch('model')}
               hasError={!!errors.model}
-              errorMessage={errors.model?.message || ""}
+              errorMessage={errors.model?.message || ''}
               options={
                 aircraftModels
                   ? aircraftModels.map((item) => item.performance_profile_name)
                   : []
               }
-              setValue={(value: string) => setValue("model", value)}
+              setValue={(value: string) => setValue('model', value)}
               name="model"
               formIsOpen={isOpen}
               resetValue=""
@@ -523,18 +526,18 @@ const AddAircraftProfileForm = ({
           <HtmlSectionContent $isOpen={!fromModel}>
             <DataList
               setError={(message) =>
-                setError("fuel_type", {
-                  type: "manual",
+                setError('fuel_type', {
+                  type: 'manual',
                   message: message,
                 })
               }
-              clearErrors={() => clearErrors("fuel_type")}
+              clearErrors={() => clearErrors('fuel_type')}
               required={!fromModel}
-              value={watch("fuel_type")}
+              value={watch('fuel_type')}
               hasError={!!errors.fuel_type}
-              errorMessage={errors.fuel_type?.message || ""}
+              errorMessage={errors.fuel_type?.message || ''}
               options={fuelOptions ? fuelOptions.map((item) => item.name) : []}
-              setValue={(value: string) => setValue("fuel_type", value)}
+              setValue={(value: string) => setValue('fuel_type', value)}
               name="fuel_type"
               formIsOpen={isOpen}
               resetValue=""
@@ -544,11 +547,11 @@ const AddAircraftProfileForm = ({
             </DataList>
             <HtmlInput
               $required={true}
-              $hasValue={!!watch("performance_profile_name")}
+              $hasValue={!!watch('performance_profile_name')}
               $accepted={!errors.performance_profile_name}
             >
               <input
-                {...register("performance_profile_name")}
+                {...register('performance_profile_name')}
                 id="performance_profile_name"
                 type="text"
                 autoComplete="off"

@@ -1,10 +1,10 @@
-import { IoWarningOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { IoWarningOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import Button from "../../../components/common/button";
-import useDeletePassenger from "../hooks/useDeletePassenger";
+import Button from '../../../components/common/button';
+import useDeletePassenger from '../hooks/useDeletePassenger';
 
 const HtmlContainer = styled.div`
   width: 100%;

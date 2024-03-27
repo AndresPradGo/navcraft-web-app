@@ -1,18 +1,18 @@
-import { useForm, FieldValues } from "react-hook-form";
-import { AiOutlineSave, AiFillTag } from "react-icons/ai";
-import { BsFillFuelPumpFill } from "react-icons/bs";
-import { IoAirplaneOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useEffect } from "react";
+import { useForm, FieldValues } from 'react-hook-form';
+import { AiOutlineSave, AiFillTag } from 'react-icons/ai';
+import { BsFillFuelPumpFill } from 'react-icons/bs';
+import { IoAirplaneOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useEffect } from 'react';
 
-import Button from "../common/button";
-import useAddAircraftModel from "./useAddAircraftModel";
-import useEditAircraftModel from "./useEditAircraftModel";
-import { FuelTypeData } from "../../hooks/useFuelTypes";
-import DataList from "../common/datalist";
+import Button from '../common/button';
+import useAddAircraftModel from './useAddAircraftModel';
+import useEditAircraftModel from './useEditAircraftModel';
+import { FuelTypeData } from '../../hooks/useFuelTypes';
+import DataList from '../common/datalist';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -75,7 +75,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -84,14 +84,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -111,9 +111,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -121,21 +121,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -168,7 +168,7 @@ const HtmlCheckbox = styled.label`
     background-color: var(--color-primary);
   }
 
-  & input[type="checkbox"] {
+  & input[type='checkbox'] {
     cursor: pointer;
     margin: 0;
     min-height: 20px;
@@ -241,18 +241,18 @@ const SaveIcon = styled(AiOutlineSave)`
 const schema = z.object({
   performance_profile_name: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(255, { message: "Must be at most 255 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(255, { message: 'Must be at most 255 characters long' })
     .regex(/^[a-zA-Z0-9\s.,()/\-]+$/, {
-      message: "Only letters, numbers, white space, and symbols .,-()/",
+      message: 'Only letters, numbers, white space, and symbols .,-()/',
     }),
   is_complete: z.boolean(),
   fuel_type: z
     .string()
-    .min(1, { message: "Select a valid option" })
-    .max(50, { message: "Must be at most 50 characters long" })
+    .min(1, { message: 'Select a valid option' })
+    .max(50, { message: 'Must be at most 50 characters long' })
     .regex(/^[-a-zA-Z0-9 /]+$/, {
-      message: "Only letters, numbers, white spaces, and symbols -/",
+      message: 'Only letters, numbers, white spaces, and symbols -/',
     }),
 });
 type FormDataType = z.infer<typeof schema>;
@@ -318,9 +318,9 @@ const EditAircraftModelForm = ({
         });
       }
     } else {
-      setError("fuel_type", {
-        type: "manual",
-        message: "Select a valid option",
+      setError('fuel_type', {
+        type: 'manual',
+        message: 'Select a valid option',
       });
     }
   };
@@ -330,7 +330,7 @@ const EditAircraftModelForm = ({
       <h1>
         <div>
           <TitleIcon />
-          {`${aircraftModelData.id !== 0 ? "Edit" : "Add New"} Aircraft Model`}
+          {`${aircraftModelData.id !== 0 ? 'Edit' : 'Add New'} Aircraft Model`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>
@@ -338,7 +338,7 @@ const EditAircraftModelForm = ({
         {aircraftModelData.id !== 0 ? (
           <HtmlCheckbox htmlFor="is-complete">
             <input
-              {...register("is_complete")}
+              {...register('is_complete')}
               type="checkbox"
               id="is-complete"
             />
@@ -347,33 +347,33 @@ const EditAircraftModelForm = ({
         ) : null}
         <DataList
           setError={(message) =>
-            setError("fuel_type", {
-              type: "manual",
+            setError('fuel_type', {
+              type: 'manual',
               message: message,
             })
           }
-          clearErrors={() => clearErrors("fuel_type")}
+          clearErrors={() => clearErrors('fuel_type')}
           required={true}
-          value={watch("fuel_type")}
+          value={watch('fuel_type')}
           hasError={!!errors.fuel_type}
-          errorMessage={errors.fuel_type?.message || ""}
+          errorMessage={errors.fuel_type?.message || ''}
           options={fuelOptions ? fuelOptions.map((item) => item.name) : []}
-          setValue={(value: string) => setValue("fuel_type", value)}
+          setValue={(value: string) => setValue('fuel_type', value)}
           name="fuel_type"
           formIsOpen={isOpen}
           resetValue={
-            aircraftModelData.fuel_type ? aircraftModelData.fuel_type : ""
+            aircraftModelData.fuel_type ? aircraftModelData.fuel_type : ''
           }
         >
           <FuelIcon /> Fuel
         </DataList>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("performance_profile_name")}
+          $hasValue={!!watch('performance_profile_name')}
           $accepted={!errors.performance_profile_name}
         >
           <input
-            {...register("performance_profile_name")}
+            {...register('performance_profile_name')}
             id="performance_profile_name"
             type="text"
             autoComplete="off"

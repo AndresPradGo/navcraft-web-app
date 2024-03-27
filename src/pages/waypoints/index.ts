@@ -1,2 +1,2 @@
-import Waypoints from './Waypoints'
-export default Waypoints
+import Waypoints from './Waypoints';
+export default Waypoints;

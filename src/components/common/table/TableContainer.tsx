@@ -1,16 +1,16 @@
-import { useReducer, useState, useEffect } from "react";
-import { styled } from "styled-components";
+import { useReducer, useState, useEffect } from 'react';
+import { styled } from 'styled-components';
 
-import FilterButton, { FilterParametersType } from "./FilterButton";
-import Table, { Props as TableProps } from "./Table";
-import SearchBar, { SearchBarDataType } from "./SearchBar";
-import SortButton, { SortColumnType, SortDataType } from "./SortButton";
-import pageReducer from "./pageReducer";
-import Pagination from "./Pagination";
-import useProcessTableData from "./useProcessTableData";
-import sortReducer from "./sortReducer";
-import filtersReducer from "./filtersReducer";
-import FilterTags from "./FilterTags";
+import FilterButton, { FilterParametersType } from './FilterButton';
+import Table, { Props as TableProps } from './Table';
+import SearchBar, { SearchBarDataType } from './SearchBar';
+import SortButton, { SortColumnType, SortDataType } from './SortButton';
+import pageReducer from './pageReducer';
+import Pagination from './Pagination';
+import useProcessTableData from './useProcessTableData';
+import sortReducer from './sortReducer';
+import filtersReducer from './filtersReducer';
+import FilterTags from './FilterTags';
 
 const HtmlTableContainer = styled.div`
   display: flex;
@@ -62,23 +62,23 @@ const TableContainer = ({
   searchBarParameters,
   filterParameters,
 }: Props) => {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const [page, dispatchPage] = useReducer(pageReducer, 1);
   const [filters, dispatchFilters] = useReducer(filtersReducer, []);
   const [sort, dispatchSort] = useReducer(sortReducer, {
     index: 0,
-    order: "asc",
+    order: 'asc',
   } as SortDataType);
 
   useEffect(() => {
-    dispatchPage({ type: "RESET" });
+    dispatchPage({ type: 'RESET' });
   }, [searchText, filters.length]);
 
   useEffect(() => {
-    setSearchText("");
-    dispatchFilters({ type: "CLEAR" });
-    dispatchSort({ type: "RESET" });
-    dispatchPage({ type: "RESET" });
+    setSearchText('');
+    dispatchFilters({ type: 'CLEAR' });
+    dispatchSort({ type: 'RESET' });
+    dispatchPage({ type: 'RESET' });
   }, [
     emptyTableMessage,
     tableData.keys.length,
@@ -111,9 +111,9 @@ const TableContainer = ({
     filterParams:
       (filters.map((idx) => filterParameters?.filters[idx]) || []).map(
         (item) => ({
-          key: item?.key || "",
-          value: item?.value || "",
-        })
+          key: item?.key || '',
+          value: item?.value || '',
+        }),
       ) || [],
   });
 

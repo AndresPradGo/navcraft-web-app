@@ -1,13 +1,11 @@
 import APIClient from '../../services/apiClient';
-import {ProfileData} from './entities'
-
+import { ProfileData } from './entities';
 
 interface EditProfileData {
-    name: string,
-    weight_lb: number
+  name: string;
+  weight_lb: number;
 }
 
+const apiClient = new APIClient<EditProfileData, ProfileData>('/users');
 
-const apiClient = new APIClient<EditProfileData, ProfileData>("/users")
-
-export default apiClient
+export default apiClient;

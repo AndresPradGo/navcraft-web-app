@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { FaWeightScale } from "react-icons/fa6";
-import { TbMail } from "react-icons/tb";
-import { styled } from "styled-components";
+import { useState } from 'react';
+import { FaWeightScale } from 'react-icons/fa6';
+import { TbMail } from 'react-icons/tb';
+import { styled } from 'styled-components';
 
-import { ContentLayout } from "../layout";
-import SideBarContent from "./components/SideBarContent";
-import useProfileData from "../../hooks/useProfileData";
-import Loader from "../../components/Loader";
-import PassengersTable from "./components/PassengersTable";
-import WaypointsTable from "./components/WaypointsTable";
-import AerodromesTable from "./components/AerodromesTable";
-import { Modal, useModal } from "../../components/common/modal";
-import DeleteAccountForm from "./components/DeleteAccountForm";
-import ChangeEmailForm from "./components/ChangeEmailForm";
-import EditProfileForm from "./components/EditProfileForm";
-import ChangePasswordForm from "./components/ChangePasswordForm";
-import useSetTitle from "../../hooks/useSetTitle";
-import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
+import { ContentLayout } from '../layout';
+import SideBarContent from './components/SideBarContent';
+import useProfileData from '../../hooks/useProfileData';
+import Loader from '../../components/Loader';
+import PassengersTable from './components/PassengersTable';
+import WaypointsTable from './components/WaypointsTable';
+import AerodromesTable from './components/AerodromesTable';
+import { Modal, useModal } from '../../components/common/modal';
+import DeleteAccountForm from './components/DeleteAccountForm';
+import ChangeEmailForm from './components/ChangeEmailForm';
+import EditProfileForm from './components/EditProfileForm';
+import ChangePasswordForm from './components/ChangePasswordForm';
+import useSetTitle from '../../hooks/useSetTitle';
+import useUnauthorizedErrorHandler from '../../hooks/useUnauthorizedErrorHandler';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -145,11 +145,11 @@ const Profile = () => {
   const editAerodromeModal = useModal();
   const editWaypointModal = useModal();
 
-  useSetTitle("Profile");
+  useSetTitle('Profile');
 
   const { data: profileData, error, isLoading } = useProfileData();
   useUnauthorizedErrorHandler([error]);
-  if (error) throw new Error("");
+  if (error) throw new Error('');
   if (isLoading) return <Loader />;
 
   const handleAddPassenger = () => {
@@ -226,7 +226,7 @@ const Profile = () => {
                 <p>
                   <span>
                     {Math.round(
-                      (profileData ? profileData.weight : 0) * 0.4533
+                      (profileData ? profileData.weight : 0) * 0.4533,
                     )}
                   </span>
                   <span onClick={() => setWeightInKg(!weightInKg)}>Kg</span>

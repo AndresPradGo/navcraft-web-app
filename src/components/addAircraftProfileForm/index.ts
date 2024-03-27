@@ -1,2 +1,2 @@
-import AditAircraftProfileForm from './AddAircraftProfileForm'
-export default AditAircraftProfileForm
+import AditAircraftProfileForm from './AddAircraftProfileForm';
+export default AditAircraftProfileForm;

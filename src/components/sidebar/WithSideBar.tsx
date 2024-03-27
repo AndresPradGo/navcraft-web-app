@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
-import { styled } from "styled-components";
+import { ReactNode } from 'react';
+import { styled } from 'styled-components';
 
-import useSideBar from "./useSideBar";
-import SideBar from "./SideBar";
+import useSideBar from './useSideBar';
+import SideBar from './SideBar';
 
 const HtmlSideBarAndContentContainer = styled.div`
   grid-row: 1 / spans 2;
@@ -35,16 +35,16 @@ interface HtmlSideBarContainerProps {
   $sideBarIsExpanded: boolean;
 }
 const HtmlMainContainerWithSideBar = styled(
-  HtmlMainContainer
+  HtmlMainContainer,
 )<HtmlSideBarContainerProps>`
-  max-width: ${(props) => (props.$sideBarIsExpanded ? "0px" : "100vw")};
+  max-width: ${(props) => (props.$sideBarIsExpanded ? '0px' : '100vw')};
 
   transform: ${(props) =>
-    props.$sideBarIsExpanded ? "translate(100vw)" : "none"};
+    props.$sideBarIsExpanded ? 'translate(100vw)' : 'none'};
 
   @media screen and (min-width: 635px) {
     max-width: ${(props) =>
-      props.$sideBarIsExpanded ? "calc(100vw - 315px)" : "calc(100vw)"};
+      props.$sideBarIsExpanded ? 'calc(100vw - 315px)' : 'calc(100vw)'};
     transform: none;
   }
 `;

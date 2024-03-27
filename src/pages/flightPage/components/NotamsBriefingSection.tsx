@@ -1,22 +1,22 @@
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { LuRefreshCw } from "react-icons/lu";
-import { styled } from "styled-components";
+import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { LuRefreshCw } from 'react-icons/lu';
+import { styled } from 'styled-components';
 
-import type { FlightDataFromApi } from "../../../services/flightClient";
-import type { NavLogLegData } from "../hooks/useNavLogData";
-import FlightWarningList from "../../../components/FlightWarningList";
-import PdfRenderer from "../../../components/common/pdfRenderer";
-import type { PdfBodySection } from "../../../components/common/pdfRenderer";
-import formatUTCDate from "../../../utils/formatUTCDate";
-import formatUTCTime from "../../../utils/formatUTCTime";
+import type { FlightDataFromApi } from '../../../services/flightClient';
+import type { NavLogLegData } from '../hooks/useNavLogData';
+import FlightWarningList from '../../../components/FlightWarningList';
+import PdfRenderer from '../../../components/common/pdfRenderer';
+import type { PdfBodySection } from '../../../components/common/pdfRenderer';
+import formatUTCDate from '../../../utils/formatUTCDate';
+import formatUTCTime from '../../../utils/formatUTCTime';
 import type {
   NOTAMBriefingData,
   EnrouteRequest,
-} from "../services/briefingClient";
-import useNotamBriefingRequest from "../hooks/useNotamBriefingRequest";
-import Loader from "../../../components/Loader";
-import type { OfficialAerodromeDataFromAPI } from "../../../services/officialAerodromeClient";
+} from '../services/briefingClient';
+import useNotamBriefingRequest from '../hooks/useNotamBriefingRequest';
+import Loader from '../../../components/Loader';
+import type { OfficialAerodromeDataFromAPI } from '../../../services/officialAerodromeClient';
 
 const RefreshIcon = styled(LuRefreshCw)`
   font-size: 20px;
@@ -40,28 +40,28 @@ const NotamsBriefingSection = ({
   const queryClient = useQueryClient();
 
   const flightData = queryClient.getQueryData<FlightDataFromApi>([
-    "flight",
+    'flight',
     flightId,
   ]);
   const legsData = queryClient.getQueryData<NavLogLegData[]>([
-    "navLog",
+    'navLog',
     flightId,
   ]);
   const aerodromes = queryClient.getQueryData<OfficialAerodromeDataFromAPI[]>([
-    "aerodromes",
-    "all",
+    'aerodromes',
+    'all',
   ]);
 
   const mutation = useNotamBriefingRequest(flightId);
 
   const briefingData = queryClient.getQueryData<NOTAMBriefingData>([
-    "notamBriefing",
+    'notamBriefing',
     flightId,
   ]);
 
   useEffect(() => {
     if (
-      briefingData === "null" &&
+      briefingData === 'null' &&
       !mutation.isLoading &&
       !isLoading &&
       flightData &&
@@ -132,8 +132,8 @@ const NotamsBriefingSection = ({
   if (
     isLoading ||
     mutation.isLoading ||
-    briefingData === "mutating" ||
-    briefingData === "null"
+    briefingData === 'mutating' ||
+    briefingData === 'null'
   )
     return <Loader message="Fetching NOTAMs . . ." margin={50} />;
 
@@ -142,7 +142,7 @@ const NotamsBriefingSection = ({
       <FlightWarningList
         warnings={[
           [
-            "NOTAMs are not available for past ETD date-times. To get a NOTAMs briefing, update the ETD to a future date.",
+            'NOTAMs are not available for past ETD date-times. To get a NOTAMs briefing, update the ETD to a future date.',
           ],
         ]}
       />
@@ -153,36 +153,36 @@ const NotamsBriefingSection = ({
     const elapsedTime = legsData
       ? legsData.reduce(
           (sum, leg) => sum + leg.time_to_climb_min + leg.time_enroute_min,
-          0
+          0,
         )
       : 0;
     const eta = flightData
       ? `${formatUTCDate(
           flightData.departure_time,
           true,
-          elapsedTime + flightData.added_enroute_time_hours * 60
+          elapsedTime + flightData.added_enroute_time_hours * 60,
         )} at ${formatUTCTime(
           flightData.departure_time,
-          elapsedTime + flightData.added_enroute_time_hours * 60
+          elapsedTime + flightData.added_enroute_time_hours * 60,
         )}`
-      : "";
+      : '';
     const etd = flightData
       ? `${formatUTCDate(flightData.departure_time, true)} at ${formatUTCTime(
-          flightData.departure_time
+          flightData.departure_time,
         )}`
-      : "";
+      : '';
     const headers = [];
-    if (briefingData && briefingData !== "error") {
+    if (briefingData && briefingData !== 'error') {
       headers.push(
         `NOTAMs briefing on ${formatUTCDate(
           briefingData.dateTime,
-          true
-        )} at ${formatUTCTime(briefingData.dateTime)}`
+          true,
+        )} at ${formatUTCTime(briefingData.dateTime)}`,
       );
     }
     headers.push(
       `Departure: ${departureAerodrome.code} on ${etd}`,
-      `Arrival: ${arrivalAerodrome.code} on ${eta}`
+      `Arrival: ${arrivalAerodrome.code} on ${eta}`,
     );
 
     return headers;
@@ -190,36 +190,36 @@ const NotamsBriefingSection = ({
 
   const renderDepartureAerodrome = (body: PdfBodySection[]) => {
     body.push({
-      components: [{ type: "title1", content: "Departure" }],
-      margin: "0 0 20px",
+      components: [{ type: 'title1', content: 'Departure' }],
+      margin: '0 0 20px',
     });
 
     body.push({
       components: [
         {
-          type: "title2",
+          type: 'title2',
           content: `${departureAerodrome?.name} (${departureAerodrome?.code})`,
-          margin: "5px 0",
+          margin: '5px 0',
         },
       ],
       wrap: true,
-      margin: "0 0 0",
+      margin: '0 0 0',
     });
 
     if (!departureAerodrome.registered) {
       body[body.length - 1].components.push({
-        type: "text",
+        type: 'text',
         content: `${departureAerodrome?.name}, is not an official aerodormes, so NOTAMs are not published for this aerodrome.`,
       });
-    } else if (briefingData && briefingData !== "error") {
+    } else if (briefingData && briefingData !== 'error') {
       const notams = briefingData.notams.filter(
         (notam) =>
           notam.aerodromes.length === 1 &&
-          notam.aerodromes[0].code === departureAerodrome.code
+          notam.aerodromes[0].code === departureAerodrome.code,
       );
       if (notams.length === 0) {
         body[body.length - 1].components.push({
-          type: "text",
+          type: 'text',
           content: `Currently there are no published NOTAMs for ${departureAerodrome?.name}, that could affect this flight.`,
         });
       } else {
@@ -227,18 +227,18 @@ const NotamsBriefingSection = ({
           body.push({
             components: [
               {
-                type: "report",
+                type: 'report',
                 content: notam.data,
-                margin: "0",
+                margin: '0',
               },
               {
-                type: "text",
+                type: 'text',
                 content:
-                  "_____________________________________________________________________________",
-                margin: "0",
+                  '_____________________________________________________________________________',
+                margin: '0',
               },
             ],
-            margin: "10px 0 20px",
+            margin: '10px 0 20px',
             wrap: true,
           });
         });
@@ -248,37 +248,37 @@ const NotamsBriefingSection = ({
 
   const renderArrivalAerodrome = (body: PdfBodySection[]) => {
     body.push({
-      components: [{ type: "title1", content: "Arrival" }],
-      margin: "0 0 20px",
+      components: [{ type: 'title1', content: 'Arrival' }],
+      margin: '0 0 20px',
       break: true,
     });
 
     body.push({
       components: [
         {
-          type: "title2",
+          type: 'title2',
           content: `${arrivalAerodrome?.name} (${arrivalAerodrome?.code})`,
-          margin: "5px 0",
+          margin: '5px 0',
         },
       ],
       wrap: true,
-      margin: "0 0 0",
+      margin: '0 0 0',
     });
 
     if (!arrivalAerodrome.registered) {
       body[body.length - 1].components.push({
-        type: "text",
+        type: 'text',
         content: `${arrivalAerodrome?.name}, is not an official aerodormes, so NOTAMs are not published for this aerodrome.`,
       });
-    } else if (briefingData && briefingData !== "error") {
+    } else if (briefingData && briefingData !== 'error') {
       const notams = briefingData.notams.filter(
         (notam) =>
           notam.aerodromes.length === 1 &&
-          notam.aerodromes[0].code === arrivalAerodrome.code
+          notam.aerodromes[0].code === arrivalAerodrome.code,
       );
       if (notams.length === 0) {
         body[body.length - 1].components.push({
-          type: "text",
+          type: 'text',
           content: `Currently there are no published NOTAMs for ${arrivalAerodrome?.name}, that could affect this flight.`,
         });
       } else {
@@ -286,18 +286,18 @@ const NotamsBriefingSection = ({
           body.push({
             components: [
               {
-                type: "report",
+                type: 'report',
                 content: notam.data,
-                margin: "0",
+                margin: '0',
               },
               {
-                type: "text",
+                type: 'text',
                 content:
-                  "_____________________________________________________________________________",
-                margin: "0",
+                  '_____________________________________________________________________________',
+                margin: '0',
               },
             ],
-            margin: "10px 0 20px",
+            margin: '10px 0 20px',
             wrap: true,
           });
         });
@@ -307,8 +307,8 @@ const NotamsBriefingSection = ({
 
   const renderAlternates = (body: PdfBodySection[]) => {
     body.push({
-      components: [{ type: "title1", content: "Alternates" }],
-      margin: "0",
+      components: [{ type: 'title1', content: 'Alternates' }],
+      margin: '0',
       break: true,
     });
 
@@ -317,31 +317,31 @@ const NotamsBriefingSection = ({
       flightData?.alternates &&
       flightData.alternates.length > 0 &&
       briefingData &&
-      briefingData !== "error" &&
+      briefingData !== 'error' &&
       aerodromes
     ) {
       flightData.alternates.forEach((item) => {
         const notams = briefingData.notams.filter(
           (notam) =>
             notam.aerodromes.length === 1 &&
-            notam.aerodromes[0].code === item.code
+            notam.aerodromes[0].code === item.code,
         );
         const aerodrome = aerodromes.find((a) => a.code === item.code);
 
         body.push({
           components: [
             {
-              type: "title2",
+              type: 'title2',
               content: `${aerodrome?.name} (${aerodrome?.code})`,
-              margin: "20px 0 0",
+              margin: '20px 0 0',
             },
           ],
           wrap: true,
-          margin: notams.length === 0 ? "0 0 5px" : "0",
+          margin: notams.length === 0 ? '0 0 5px' : '0',
         });
         if (notams.length === 0) {
           body[body.length - 1].components.push({
-            type: "text",
+            type: 'text',
             content: `Currently there are no published NOTAMs for ${aerodrome?.name}, that could affect this flight.`,
           });
         } else {
@@ -349,18 +349,18 @@ const NotamsBriefingSection = ({
             body.push({
               components: [
                 {
-                  type: "report",
+                  type: 'report',
                   content: notam.data,
-                  margin: "0",
+                  margin: '0',
                 },
                 {
-                  type: "text",
+                  type: 'text',
                   content:
-                    "_____________________________________________________________________________",
-                  margin: "0",
+                    '_____________________________________________________________________________',
+                  margin: '0',
                 },
               ],
-              margin: "10px 0 20px",
+              margin: '10px 0 20px',
               wrap: true,
             });
           });
@@ -368,8 +368,8 @@ const NotamsBriefingSection = ({
       });
     } else {
       body[body.length - 1].components.push({
-        type: "text",
-        content: "There are no alternate options available for this flight.",
+        type: 'text',
+        content: 'There are no alternate options available for this flight.',
       });
     }
   };
@@ -379,15 +379,15 @@ const NotamsBriefingSection = ({
       flightData &&
       flightData.legs.reduce(
         (sum, leg) => sum + leg.briefing_aerodromes.length,
-        0
+        0,
       ) > 0 &&
       briefingData &&
-      briefingData !== "error" &&
+      briefingData !== 'error' &&
       aerodromes
     ) {
       body.push({
-        components: [{ type: "title1", content: "Enroute" }],
-        margin: "0",
+        components: [{ type: 'title1', content: 'Enroute' }],
+        margin: '0',
         break: true,
       });
       flightData.legs.forEach((leg) => {
@@ -395,24 +395,24 @@ const NotamsBriefingSection = ({
           const notams = briefingData.notams.filter(
             (notam) =>
               notam.aerodromes.length === 1 &&
-              notam.aerodromes[0].code.includes(item.code)
+              notam.aerodromes[0].code.includes(item.code),
           );
           const aerodrome = aerodromes.find((a) => a.code === item.code);
 
           body.push({
             components: [
               {
-                type: "title2",
+                type: 'title2',
                 content: `${aerodrome?.name} (${aerodrome?.code})`,
-                margin: "20px 0 0",
+                margin: '20px 0 0',
               },
             ],
             wrap: true,
-            margin: notams.length === 0 ? "0 0 5px" : "0",
+            margin: notams.length === 0 ? '0 0 5px' : '0',
           });
           if (notams.length === 0) {
             body[body.length - 1].components.push({
-              type: "text",
+              type: 'text',
               content: `Currently there are no published NOTAMs for ${aerodrome?.name}, that could affect this flight.`,
             });
           } else {
@@ -420,18 +420,18 @@ const NotamsBriefingSection = ({
               body.push({
                 components: [
                   {
-                    type: "report",
+                    type: 'report',
                     content: notam.data,
-                    margin: "0",
+                    margin: '0',
                   },
                   {
-                    type: "text",
+                    type: 'text',
                     content:
-                      "_____________________________________________________________________________",
-                    margin: "0",
+                      '_____________________________________________________________________________',
+                    margin: '0',
                   },
                 ],
-                margin: "10px 0 20px",
+                margin: '10px 0 20px',
                 wrap: true,
               });
             });
@@ -446,40 +446,40 @@ const NotamsBriefingSection = ({
       flightData &&
       flightData?.alternates &&
       briefingData &&
-      briefingData !== "error" &&
+      briefingData !== 'error' &&
       aerodromes
     ) {
       const notams = briefingData.notams.filter(
-        (notam) => notam.aerodromes.length > 1
+        (notam) => notam.aerodromes.length > 1,
       );
       if (notams.length > 0) {
         body.push({
-          components: [{ type: "title1", content: "Other Stations" }],
-          margin: "0",
+          components: [{ type: 'title1', content: 'Other Stations' }],
+          margin: '0',
           break: true,
         });
         body[body.length - 1].components.push({
-          type: "text",
+          type: 'text',
           content:
-            "Other stations include FIRs, NAVAIDs or other nearby aerodromes with NOTAMs that may affect more than one aerodrome along the route of the flight.",
+            'Other stations include FIRs, NAVAIDs or other nearby aerodromes with NOTAMs that may affect more than one aerodrome along the route of the flight.',
         });
 
         notams.forEach((notam) => {
           body.push({
             components: [
               {
-                type: "report",
+                type: 'report',
                 content: notam.data,
-                margin: "0",
+                margin: '0',
               },
               {
-                type: "text",
+                type: 'text',
                 content:
-                  "_____________________________________________________________________________",
-                margin: "0",
+                  '_____________________________________________________________________________',
+                margin: '0',
               },
             ],
-            margin: "10px 0 20px",
+            margin: '10px 0 20px',
             wrap: true,
           });
         });
@@ -489,12 +489,12 @@ const NotamsBriefingSection = ({
 
   const renderBody = (): PdfBodySection[] => {
     const noDataMessage =
-      "Unable to fetch weather data at the moment. This may be a problem with the Nav Canada website, or with our servers. While we look into it, visit the NavCanada website: https://plan.navcanada.ca/wxrecall/";
+      'Unable to fetch weather data at the moment. This may be a problem with the Nav Canada website, or with our servers. While we look into it, visit the NavCanada website: https://plan.navcanada.ca/wxrecall/';
     const body: PdfBodySection[] = [
-      { components: [{ type: "text", content: noDataMessage }] },
+      { components: [{ type: 'text', content: noDataMessage }] },
     ];
 
-    if (briefingData && briefingData !== "error" && flightData && legsData) {
+    if (briefingData && briefingData !== 'error' && flightData && legsData) {
       body.splice(0);
       renderDepartureAerodrome(body);
       renderEnroute(body);
@@ -512,7 +512,7 @@ const NotamsBriefingSection = ({
         <FlightWarningList
           warnings={[
             [
-              "Enroute Briefing radius will not work for legs that are longer than 150 NM.",
+              'Enroute Briefing radius will not work for legs that are longer than 150 NM.',
             ],
           ]}
         />

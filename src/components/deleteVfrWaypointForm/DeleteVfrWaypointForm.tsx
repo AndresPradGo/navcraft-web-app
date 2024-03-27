@@ -1,12 +1,12 @@
-import { IoWarningOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { IoWarningOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import Button from "../common/button";
-import useDeleteVfrWaypoint from "./useDeleteVfrWaypoint";
-import useDeleteOfficialAerodrome from "./useDeleteOfficialAerodrome";
-import { useNavigate } from "react-router-dom";
+import Button from '../common/button';
+import useDeleteVfrWaypoint from './useDeleteVfrWaypoint';
+import useDeleteOfficialAerodrome from './useDeleteOfficialAerodrome';
+import { useNavigate } from 'react-router-dom';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -129,7 +129,7 @@ const DeleteVfrWaypointForm = ({
   const navigate = useNavigate();
   const deleteMutation = useDeleteVfrWaypoint();
   const deleteAerodromeMutation = useDeleteOfficialAerodrome(() => {
-    if (redirect) navigate("/waypoints");
+    if (redirect) navigate('/waypoints');
   });
 
   const handleDelete = () => {
@@ -144,7 +144,7 @@ const DeleteVfrWaypointForm = ({
       <h1>
         <div>
           <TitleIcon />
-          {`Delete ${isAerodrome ? "Registered Aerodrome" : "VFR Waypoint"}`}
+          {`Delete ${isAerodrome ? 'Registered Aerodrome' : 'VFR Waypoint'}`}
         </div>
         <CloseIcon onClick={closeModal} />
       </h1>

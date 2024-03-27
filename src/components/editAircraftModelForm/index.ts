@@ -1,3 +1,3 @@
-import EditAircraftModelForm from './EditAircraftModelForm'
-export default EditAircraftModelForm
-export type {AircraftModelDataFromForm} from './EditAircraftModelForm'
+import EditAircraftModelForm from './EditAircraftModelForm';
+export default EditAircraftModelForm;
+export type { AircraftModelDataFromForm } from './EditAircraftModelForm';

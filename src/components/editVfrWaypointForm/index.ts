@@ -1,2 +1,2 @@
 import EditVfrWaypointForm from './EditVfrWaypointForm';
-export default EditVfrWaypointForm
+export default EditVfrWaypointForm;

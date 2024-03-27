@@ -1,7 +1,6 @@
-
 import { useContext } from 'react';
 import modelPermissionsContext from './modelPermissionsContext';
 
-const useModelPermissions = () => useContext(modelPermissionsContext)
+const useModelPermissions = () => useContext(modelPermissionsContext);
 
-export default useModelPermissions
+export default useModelPermissions;

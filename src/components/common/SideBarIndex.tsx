@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
-import { RiArchiveDrawerFill } from "react-icons/ri";
-import { animateScroll as scroll } from "react-scroll";
-import { styled } from "styled-components";
+import { ReactNode } from 'react';
+import { RiArchiveDrawerFill } from 'react-icons/ri';
+import { animateScroll as scroll } from 'react-scroll';
+import { styled } from 'styled-components';
 
-import Button from "./button";
-import useSideBar from "../sidebar/useSideBar";
+import Button from './button';
+import useSideBar from '../sidebar/useSideBar';
 
 const HtmlButtonList = styled.div`
   width: 100%;
@@ -89,7 +89,7 @@ const SideBarIndex = ({
     <HtmlButtonList>
       <h3>
         <SectionIcon />
-        {"Sections"}
+        {'Sections'}
       </h3>
       <div>
         {sectionOptions.map((item, index) => (
@@ -98,13 +98,13 @@ const SideBarIndex = ({
             handleClick={() => handleClick(index)}
             color={`${
               index === selectedIdx
-                ? "var(--color-white)"
-                : "var(--color-contrast)"
+                ? 'var(--color-white)'
+                : 'var(--color-contrast)'
             }`}
             hoverColor={`${
               index === selectedIdx
-                ? "var(--color-white)"
-                : "var(--color-white)"
+                ? 'var(--color-white)'
+                : 'var(--color-white)'
             }`}
             backgroundColor="transparent"
             backgroundHoverColor="transparent"

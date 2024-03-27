@@ -1,14 +1,14 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 
-import usePassengersData from "../../../hooks/usePassengersData";
+import usePassengersData from '../../../hooks/usePassengersData';
 import {
   useModal,
   Modal,
   UseModalType,
-} from "../../../components/common/modal";
-import PassengerForm from "../../../components/passengerForm";
-import DeletePassengerForm from "./DeletePassengerForm";
-import ExpandibleTable from "../../../components/common/ExpandibleTable";
+} from '../../../components/common/modal';
+import PassengerForm from '../../../components/passengerForm';
+import DeletePassengerForm from './DeletePassengerForm';
+import ExpandibleTable from '../../../components/common/ExpandibleTable';
 
 interface Props {
   editModal: UseModalType;
@@ -23,10 +23,10 @@ const PassengersTable = ({ editModal, passengerId, setPassengerId }: Props) => {
   const passengerData = passengers?.find((item) => item.id === passengerId);
 
   const tableData = {
-    keys: ["name", "weight_lb"],
+    keys: ['name', 'weight_lb'],
     headers: {
-      name: "Name",
-      weight_lb: "Weight [lb]",
+      name: 'Name',
+      weight_lb: 'Weight [lb]',
     },
     rows:
       !error && passengers
@@ -40,7 +40,7 @@ const PassengersTable = ({ editModal, passengerId, setPassengerId }: Props) => {
               setPassengerId(passenger.id);
               deleteModal.handleOpen();
             },
-            permissions: "edit-delete" as "edit-delete",
+            permissions: 'edit-delete' as 'edit-delete',
           }))
         : [],
     breakingPoint: 450,
@@ -48,8 +48,8 @@ const PassengersTable = ({ editModal, passengerId, setPassengerId }: Props) => {
 
   const sortData = [
     {
-      key: "name",
-      title: "Name",
+      key: 'name',
+      title: 'Name',
     },
   ];
 
@@ -64,7 +64,7 @@ const PassengersTable = ({ editModal, passengerId, setPassengerId }: Props) => {
         <PassengerForm
           closeModal={editModal.handleClose}
           passengerData={
-            passengerData ? passengerData : { id: 0, name: "", weight_lb: NaN }
+            passengerData ? passengerData : { id: 0, name: '', weight_lb: NaN }
           }
           isOpen={editModal.isOpen}
         />
@@ -72,7 +72,7 @@ const PassengersTable = ({ editModal, passengerId, setPassengerId }: Props) => {
       <Modal isOpen={deleteModal.isOpen}>
         <DeletePassengerForm
           closeModal={deleteModal.handleClose}
-          name={passengerData?.name || ""}
+          name={passengerData?.name || ''}
           id={passengerData?.id || 0}
         />
       </Modal>

@@ -1,12 +1,12 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import { IoWarningOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { IoWarningOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import Button from "../../../components/common/button";
-import useDeleteAccount from "../hooks/useDeleteAccount";
+import Button from '../../../components/common/button';
+import useDeleteAccount from '../hooks/useDeleteAccount';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -119,9 +119,9 @@ const DeleteAccountForm = ({ closeModal }: Props) => {
   const queryClient = useQueryClient();
   const deleteMutation = useDeleteAccount(() => {
     queryClient.clear();
-    localStorage.removeItem("token");
-    localStorage.removeItem("token_type");
-    navigate("/register");
+    localStorage.removeItem('token');
+    localStorage.removeItem('token_type');
+    navigate('/register');
   });
 
   const handleDelete = () => {

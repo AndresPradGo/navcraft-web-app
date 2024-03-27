@@ -1,10 +1,10 @@
-import { useState, ReactNode } from "react";
-import { animateScroll as scroll } from "react-scroll";
+import { useState, ReactNode } from 'react';
+import { animateScroll as scroll } from 'react-scroll';
 
-import SideBarContext from "./sideBarContext";
-import { usePathList } from "../../router";
-import useScroll from "../../hooks/useScroll";
-import useAuth from "../../hooks/useAuth";
+import SideBarContext from './sideBarContext';
+import { usePathList } from '../../router';
+import useScroll from '../../hooks/useScroll';
+import useAuth from '../../hooks/useAuth';
 
 interface Props {
   children: ReactNode;
@@ -13,35 +13,35 @@ interface Props {
 const SideBarProvider = ({ children }: Props) => {
   const pathsWithSideBar = [
     {
-      path: ["profile"],
+      path: ['profile'],
       needsAdmin: false,
     },
     {
-      path: ["waypoints", "private-aerodrome"],
+      path: ['waypoints', 'private-aerodrome'],
       needsAdmin: false,
     },
     {
-      path: ["waypoints", "aerodrome"],
+      path: ['waypoints', 'aerodrome'],
       needsAdmin: true,
     },
     {
-      path: ["waypoints"],
+      path: ['waypoints'],
       needsAdmin: false,
     },
     {
-      path: ["aircraft"],
+      path: ['aircraft'],
       needsAdmin: false,
     },
     {
-      path: ["aircraft", "profile"],
+      path: ['aircraft', 'profile'],
       needsAdmin: false,
     },
     {
-      path: ["aircraft", "model"],
+      path: ['aircraft', 'model'],
       needsAdmin: false,
     },
     {
-      path: ["flights", "flight"],
+      path: ['flights', 'flight'],
       needsAdmin: false,
     },
   ];

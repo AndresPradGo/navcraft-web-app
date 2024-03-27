@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent } from 'react';
 import {
   ComposedChart,
   Area,
@@ -13,9 +13,9 @@ import {
   ReferenceLine,
   Label,
   LabelList,
-} from "recharts";
-import { styled } from "styled-components";
-import useSideBar from "./sidebar/useSideBar";
+} from 'recharts';
+import { styled } from 'styled-components';
+import useSideBar from './sidebar/useSideBar';
 
 interface HtmlTagProps {
   $SideBarIsOpen: boolean;
@@ -50,9 +50,9 @@ const HtmlContainer = styled.div<HtmlTagProps>`
 
   @media screen and (min-width: 635px) {
     & h1 {
-      font-size: ${(props) => (props.$SideBarIsOpen ? "16px" : "28px")};
+      font-size: ${(props) => (props.$SideBarIsOpen ? '16px' : '28px')};
     }
-    font-size: ${(props) => (props.$SideBarIsOpen ? "10px" : "16px")};
+    font-size: ${(props) => (props.$SideBarIsOpen ? '10px' : '16px')};
   }
 
   @media screen and (min-width: 950px) {
@@ -103,10 +103,10 @@ const WeightBalanceGraph = ({
   const [selected, setSelected] = useState(profiles.map(() => false));
   const [mouseOver, setMouseOver] = useState(profiles.map(() => false));
   const colors = [
-    "var(--color-nav-1)",
-    "var(--color-nav-2)",
-    "var(--color-nav-3)",
-    "var(--color-nav-4)",
+    'var(--color-nav-1)',
+    'var(--color-nav-2)',
+    'var(--color-nav-3)',
+    'var(--color-nav-4)',
   ];
 
   const getYDomain = (dataMin: number, dataMax: number): [number, number] => {
@@ -175,10 +175,10 @@ const WeightBalanceGraph = ({
     <HtmlContainer
       $SideBarIsOpen={sideBarIsExpanded}
       $width={width ? width : 800}
-      $margin={margin ? margin : "0"}
+      $margin={margin ? margin : '0'}
     >
       {title ? <h1>{title}</h1> : null}
-      <ResponsiveContainer width={"100%"} aspect={1.4} debounce={100}>
+      <ResponsiveContainer width={'100%'} aspect={1.4} debounce={100}>
         <ComposedChart margin={{ top: 0, right: 25, left: 0, bottom: 15 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--color-grey" />
           <XAxis
@@ -188,7 +188,7 @@ const WeightBalanceGraph = ({
             dataKey="cg_location_in"
             type="number"
             allowDuplicatedCategory={false}
-            domain={["dataMin", "auto"]}
+            domain={['dataMin', 'auto']}
             allowDataOverflow={true}
           >
             <Label
@@ -220,9 +220,9 @@ const WeightBalanceGraph = ({
               verticalAlign="top"
               height={36}
               wrapperStyle={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "center",
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
               }}
               onMouseOver={!weightBalance ? handleMouseEnterLegend : () => {}}
               onMouseOut={!weightBalance ? handleMouseLeaveLegend : () => {}}
@@ -241,7 +241,7 @@ const WeightBalanceGraph = ({
               dot={
                 selected[i] || mouseOver[i]
                   ? {
-                      stroke: "var(--color-white)",
+                      stroke: 'var(--color-white)',
                       strokeWidth: 2,
                       fillOpacity: 1,
                       r: 6,

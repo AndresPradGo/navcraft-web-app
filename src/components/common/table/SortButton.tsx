@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction } from "react";
-import styled from "styled-components";
-import { HiArrowUp, HiArrowDown } from "react-icons/hi";
+import { Dispatch, SetStateAction } from 'react';
+import styled from 'styled-components';
+import { HiArrowUp, HiArrowDown } from 'react-icons/hi';
 
-import Button from "../button";
-import { usePopperButton } from "../button";
-import { SortAction } from "./sortReducer";
+import Button from '../button';
+import { usePopperButton } from '../button';
+import { SortAction } from './sortReducer';
 
 interface HtmlListProps {
   ref: Dispatch<SetStateAction<HTMLElement | null>>;
@@ -14,15 +14,15 @@ interface HtmlListProps {
 const HtmlList = styled.ul<HtmlListProps>`
   transition: all 0.2s ease-out;
   width: 280px;
-  max-height: ${(props) => (props.$expanded ? "300px" : "0")};
+  max-height: ${(props) => (props.$expanded ? '300px' : '0')};
   overflow-x: hidden;
-  overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
+  overflow-y: ${(props) => (props.$expanded ? 'auto' : 'hidden')};
   z-index: 10;
   margin: 0;
-  padding: ${(props) => (props.$expanded ? "5px 0" : "0")};
+  padding: ${(props) => (props.$expanded ? '5px 0' : '0')};
   list-style-type: none;
   border: ${(props) =>
-    props.$expanded ? "1px groove var(--color-grey-bright)" : "none"};
+    props.$expanded ? '1px groove var(--color-grey-bright)' : 'none'};
   border-radius: 5px;
   background-color: var(--color-primary-light);
 `;
@@ -52,7 +52,7 @@ export interface SortColumnType {
 
 export interface SortDataType {
   index: number;
-  order: "asc" | "desc";
+  order: 'asc' | 'desc';
 }
 
 interface Props {
@@ -67,8 +67,8 @@ const SortButton = ({ sortOptions, selectedSortData, dispatch }: Props) => {
   const handleListItemClick = (index: number) => {
     popperTools.closeExpandible();
     const selectingSameColumn = selectedSortData.index === index;
-    if (selectingSameColumn) dispatch({ type: "SWAP" });
-    else dispatch({ type: "CHANGE", value: index });
+    if (selectingSameColumn) dispatch({ type: 'SWAP' });
+    else dispatch({ type: 'CHANGE', value: index });
   };
 
   const arrowIcons = {
@@ -99,7 +99,7 @@ const SortButton = ({ sortOptions, selectedSortData, dispatch }: Props) => {
         Sort by:&nbsp;
         {sortOptions[selectedSortData.index]
           ? sortOptions[selectedSortData.index].title
-          : ""}
+          : ''}
         {arrowIcons[selectedSortData.order]}
       </Button>
       <HtmlList

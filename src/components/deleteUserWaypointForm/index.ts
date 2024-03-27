@@ -1,2 +1,2 @@
 import DeleteUserWaypointForm from './DeleteUserWaypointForm';
-export default DeleteUserWaypointForm
+export default DeleteUserWaypointForm;

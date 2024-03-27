@@ -1,11 +1,11 @@
-import { IoWarningOutline } from "react-icons/io5";
-import { LiaTimesSolid } from "react-icons/lia";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { styled } from "styled-components";
+import { IoWarningOutline } from 'react-icons/io5';
+import { LiaTimesSolid } from 'react-icons/lia';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { styled } from 'styled-components';
 
-import Button from "../common/button";
-import useDeleteAircraft from "./useDeleteAircraft";
-import { useNavigate } from "react-router-dom";
+import Button from '../common/button';
+import useDeleteAircraft from './useDeleteAircraft';
+import { useNavigate } from 'react-router-dom';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -125,7 +125,7 @@ const DeleteAircraftForm = ({
 }: Props) => {
   const navigate = useNavigate();
   const mutation = useDeleteAircraft(() => {
-    if (!!redirect) navigate("/aircraft");
+    if (!!redirect) navigate('/aircraft');
   });
   const handleDelete = () => {
     closeModal();

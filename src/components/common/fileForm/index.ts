@@ -1,2 +1,2 @@
-import FileForm from './FileForm'
-export default FileForm
+import FileForm from './FileForm';
+export default FileForm;

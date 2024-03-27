@@ -1,25 +1,25 @@
-import { useState } from "react";
-import { AiFillTag } from "react-icons/ai";
-import { GiAirplane } from "react-icons/gi";
-import { IoAirplane } from "react-icons/io5";
-import { TfiHeadphoneAlt } from "react-icons/tfi";
-import { SiFloatplane } from "react-icons/si";
-import { styled } from "styled-components";
-import { useParams } from "react-router-dom";
+import { useState } from 'react';
+import { AiFillTag } from 'react-icons/ai';
+import { GiAirplane } from 'react-icons/gi';
+import { IoAirplane } from 'react-icons/io5';
+import { TfiHeadphoneAlt } from 'react-icons/tfi';
+import { SiFloatplane } from 'react-icons/si';
+import { styled } from 'styled-components';
+import { useParams } from 'react-router-dom';
 
-import { ContentLayout } from "../layout";
-import useFuelTypes from "../../hooks/useFuelTypes";
-import Loader from "../../components/Loader";
-import SideBarContent from "./SideBarContent";
-import { useModal, Modal } from "../../components/common/modal";
-import EditAircraftForm from "../../components/editAircraftForm";
-import DeleteAircraftForm from "../../components/deleteAircraftForm";
-import AddAircraftProfileForm from "../../components/addAircraftProfileForm";
-import useAircraftData from "../../hooks/useAircraftData";
-import DataTableList, { DataType } from "../../components/common/DataTableList";
-import ProfilesTable from "./ProfilesTable";
-import useSetTitle from "../../hooks/useSetTitle";
-import useUnauthorizedErrorHandler from "../../hooks/useUnauthorizedErrorHandler";
+import { ContentLayout } from '../layout';
+import useFuelTypes from '../../hooks/useFuelTypes';
+import Loader from '../../components/Loader';
+import SideBarContent from './SideBarContent';
+import { useModal, Modal } from '../../components/common/modal';
+import EditAircraftForm from '../../components/editAircraftForm';
+import DeleteAircraftForm from '../../components/deleteAircraftForm';
+import AddAircraftProfileForm from '../../components/addAircraftProfileForm';
+import useAircraftData from '../../hooks/useAircraftData';
+import DataTableList, { DataType } from '../../components/common/DataTableList';
+import ProfilesTable from './ProfilesTable';
+import useSetTitle from '../../hooks/useSetTitle';
+import useUnauthorizedErrorHandler from '../../hooks/useUnauthorizedErrorHandler';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -90,12 +90,12 @@ const NameIcon = styled(AiFillTag)`
 
 const AircraftPage = () => {
   const [modalForm, setModalForm] = useState<
-    "editAircraft" | "deleteAircraft" | "deleteProfile"
-  >("editAircraft");
+    'editAircraft' | 'deleteAircraft' | 'deleteProfile'
+  >('editAircraft');
   const [idRowToEdit, setIdRowToEdit] = useState<number>(0);
 
   const { id } = useParams();
-  const aircraftId = parseInt(id || "0");
+  const aircraftId = parseInt(id || '0');
 
   const modal = useModal();
   const addProfileModal = useModal();
@@ -109,38 +109,38 @@ const AircraftPage = () => {
   } = useFuelTypes();
 
   useSetTitle(
-    aircraftData ? `Aircraft ${aircraftData.registration}` : "Aircraft"
+    aircraftData ? `Aircraft ${aircraftData.registration}` : 'Aircraft',
   );
 
   useUnauthorizedErrorHandler([error]);
 
-  if (error && error.message !== "Network Error") throw new Error("notFound");
-  else if ((error && error.message === "Network Error") || fuelTypesError)
-    throw new Error("");
+  if (error && error.message !== 'Network Error') throw new Error('notFound');
+  else if ((error && error.message === 'Network Error') || fuelTypesError)
+    throw new Error('');
   if (isLoading || fuelTypesIsLoading) return <Loader />;
 
   const aircraftDataList = [
     {
-      key: "registration",
-      title: "Call Sign",
+      key: 'registration',
+      title: 'Call Sign',
       icon: <RegistrationIcon />,
       data: aircraftData?.registration,
     },
     {
-      key: "make",
-      title: "Make",
+      key: 'make',
+      title: 'Make',
       icon: <MakeIcon />,
       data: aircraftData?.make,
     },
     {
-      key: "abbriviation",
-      title: "Model",
+      key: 'abbriviation',
+      title: 'Model',
       icon: <ModelIcon />,
       data: aircraftData?.abbreviation,
     },
     {
-      key: "model",
-      title: "Full Name",
+      key: 'model',
+      title: 'Full Name',
       icon: <NameIcon />,
       data: aircraftData?.model,
     },
@@ -148,22 +148,22 @@ const AircraftPage = () => {
   return (
     <>
       <Modal isOpen={modal.isOpen}>
-        {modalForm === "deleteAircraft" ? (
+        {modalForm === 'deleteAircraft' ? (
           <DeleteAircraftForm
             closeModal={modal.handleClose}
-            registration={aircraftData?.registration || ""}
+            registration={aircraftData?.registration || ''}
             id={aircraftId}
             redirect={true}
           />
-        ) : modalForm === "editAircraft" ? (
+        ) : modalForm === 'editAircraft' ? (
           <EditAircraftForm
             closeModal={modal.handleClose}
             aircraftData={{
               id: aircraftId,
-              make: aircraftData?.make || "",
-              model: aircraftData?.model || "",
-              abbreviation: aircraftData?.abbreviation || "",
-              registration: aircraftData?.registration || "",
+              make: aircraftData?.make || '',
+              model: aircraftData?.model || '',
+              abbreviation: aircraftData?.abbreviation || '',
+              registration: aircraftData?.registration || '',
             }}
             isOpen={modal.isOpen}
           />
@@ -182,11 +182,11 @@ const AircraftPage = () => {
           <SideBarContent
             handleAddProfile={addProfileModal.handleOpen}
             handleEditAircraft={() => {
-              setModalForm("editAircraft");
+              setModalForm('editAircraft');
               modal.handleOpen();
             }}
             handleDeleteAircraft={() => {
-              setModalForm("deleteAircraft");
+              setModalForm('deleteAircraft');
               modal.handleOpen();
             }}
             canAddProfile={(aircraftData?.profiles || []).length < 3}

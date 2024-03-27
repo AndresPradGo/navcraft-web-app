@@ -1,2 +1,2 @@
-import AircraftListPage from './AircraftListPage'
-export default AircraftListPage
+import AircraftListPage from './AircraftListPage';
+export default AircraftListPage;

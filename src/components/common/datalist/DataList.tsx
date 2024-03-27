@@ -6,11 +6,11 @@ import {
   FocusEvent,
   useReducer,
   useEffect,
-} from "react";
-import { styled } from "styled-components";
+} from 'react';
+import { styled } from 'styled-components';
 
-import usePopperInput from "./usePopperInput";
-import dataListReducer from "./dataListReducer";
+import usePopperInput from './usePopperInput';
+import dataListReducer from './dataListReducer';
 
 interface RequiredInputProps {
   $accepted: boolean;
@@ -26,10 +26,10 @@ const HtmlInput = styled.div<RequiredInputProps>`
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  padding: ${(props) => (props.$lessPadding ? "10px 10px 0" : "10px 20px 0")};
+  padding: ${(props) => (props.$lessPadding ? '10px 10px 0' : '10px 20px 0')};
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -38,14 +38,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -65,9 +65,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -75,21 +75,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -101,7 +101,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   }
 
   @media screen and (min-width: 425px) {
-    padding: ${(props) => (props.$lessPadding ? "10px 10px 0" : "10px 20px 0")};
+    padding: ${(props) => (props.$lessPadding ? '10px 10px 0' : '10px 20px 0')};
   }
 `;
 
@@ -116,13 +116,13 @@ const HtmlList = styled.ul<HtmlListProps>`
   width: calc(100% - ${(props) => (props.$lessPadding ? 20 : 40)}px);
   position: absolute;
   transition: all 0.2s ease-out;
-  max-height: ${(props) => (props.$expanded ? "200px" : "0")};
-  overflow-y: ${(props) => (props.$expanded ? "auto" : "hidden")};
+  max-height: ${(props) => (props.$expanded ? '200px' : '0')};
+  overflow-y: ${(props) => (props.$expanded ? 'auto' : 'hidden')};
   margin: 0;
-  padding: ${(props) => (props.$expanded ? "5px 0" : "0")} !important;
+  padding: ${(props) => (props.$expanded ? '5px 0' : '0')} !important;
   list-style-type: none;
   border: ${(props) =>
-    props.$expanded ? "1px solid var(--color-grey)" : "none"};
+    props.$expanded ? '1px solid var(--color-grey)' : 'none'};
   border-radius: 5px;
   background-color: var(--color-grey-dark);
 `;
@@ -186,8 +186,8 @@ const DataList = ({
     if (formIsOpen && positionPopperTools.inputRef) {
       positionPopperTools.inputRef.value = resetValue;
 
-      if (resetValue === "") dispatch({ type: "RESET", options });
-      else dispatch({ type: "FILTER", value: resetValue, options });
+      if (resetValue === '') dispatch({ type: 'RESET', options });
+      else dispatch({ type: 'FILTER', value: resetValue, options });
     }
   }, [formIsOpen]);
 
@@ -205,20 +205,20 @@ const DataList = ({
     setValue(currentValue);
     if (
       options.filter((option) =>
-        option.toLowerCase().startsWith(currentValue.toLowerCase())
+        option.toLowerCase().startsWith(currentValue.toLowerCase()),
       ).length ||
-      (!required && currentValue === "")
+      (!required && currentValue === '')
     ) {
       clearErrors();
     }
-    if (currentValue === "") dispatch({ type: "RESET", options });
-    else dispatch({ type: "FILTER", value: currentValue, options });
+    if (currentValue === '') dispatch({ type: 'RESET', options });
+    else dispatch({ type: 'FILTER', value: currentValue, options });
   };
 
   const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
     const currentValue = event.target.value;
-    if (currentValue === "") dispatch({ type: "RESET", options });
-    else dispatch({ type: "FILTER", value: currentValue, options });
+    if (currentValue === '') dispatch({ type: 'RESET', options });
+    else dispatch({ type: 'FILTER', value: currentValue, options });
     positionPopperTools.handleInputClick();
   };
 
@@ -228,10 +228,10 @@ const DataList = ({
     if (
       required &&
       !options.filter(
-        (option) => option.toLowerCase() === currentValue.toLowerCase()
+        (option) => option.toLowerCase() === currentValue.toLowerCase(),
       ).length
     ) {
-      setError("Select a valid option");
+      setError('Select a valid option');
     } else clearErrors();
     positionPopperTools.closeExpandible;
   };

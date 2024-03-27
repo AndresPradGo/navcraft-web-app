@@ -1,21 +1,21 @@
-import { useEffect } from "react";
-import { AiOutlineSave } from "react-icons/ai";
-import { LiaMapSignsSolid, LiaTimesSolid } from "react-icons/lia";
-import { ImCompass2 } from "react-icons/im";
+import { useEffect } from 'react';
+import { AiOutlineSave } from 'react-icons/ai';
+import { LiaMapSignsSolid, LiaTimesSolid } from 'react-icons/lia';
+import { ImCompass2 } from 'react-icons/im';
 import {
   TbMapPinCog,
   TbMapPinPlus,
   TbMapSearch,
   TbWorldLatitude,
   TbWorldLongitude,
-} from "react-icons/tb";
-import { useForm, FieldValues } from "react-hook-form";
-import { styled } from "styled-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+} from 'react-icons/tb';
+import { useForm, FieldValues } from 'react-hook-form';
+import { styled } from 'styled-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-import Button from "../common/button";
-import useEditUserWaypoint from "./useEditUserWaypoint";
+import Button from '../common/button';
+import useEditUserWaypoint from './useEditUserWaypoint';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -96,7 +96,7 @@ const HtmlInput = styled.div<RequiredInputProps>`
   padding: 10px 20px 0;
 
   & label {
-    cursor: ${(props) => (props.$hasValue ? "default" : "text")};
+    cursor: ${(props) => (props.$hasValue ? 'default' : 'text')};
     position: absolute;
     top: 0;
     left: 0;
@@ -105,14 +105,14 @@ const HtmlInput = styled.div<RequiredInputProps>`
     align-items: center;
     transform: ${(props) =>
       props.$hasValue
-        ? "translate(7px, 7px) scale(0.8)"
-        : "translate(17px, 47px)"};
+        ? 'translate(7px, 7px) scale(0.8)'
+        : 'translate(17px, 47px)'};
     color: ${(props) =>
       props.$hasValue
         ? props.$accepted
-          ? "var(--color-grey-bright)"
-          : "var(--color-highlight)"
-        : "var(--color-grey-bright)"};
+          ? 'var(--color-grey-bright)'
+          : 'var(--color-highlight)'
+        : 'var(--color-grey-bright)'};
     transition: transform 0.3s;
 
     & span {
@@ -132,9 +132,9 @@ const HtmlInput = styled.div<RequiredInputProps>`
       ${(props) =>
         props.$hasValue
           ? props.$accepted
-            ? "var(--color-grey)"
-            : "var(--color-highlight)"
-          : "var(--color-grey)"};
+            ? 'var(--color-grey)'
+            : 'var(--color-highlight)'
+          : 'var(--color-grey)'};
     color: var(--color-white);
     font-size: 20px;
 
@@ -142,21 +142,21 @@ const HtmlInput = styled.div<RequiredInputProps>`
       cursor: default;
       color: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "var(--color-white)"
-          : "var(--color-highlight)"};
+          ? 'var(--color-white)'
+          : 'var(--color-highlight)'};
       transform: translate(7px, 7px) scale(0.8);
     }
 
     &:focus {
       box-shadow: ${(props) =>
         props.$accepted && (props.$hasValue || !props.$required)
-          ? "0"
-          : "0 0 6px 0 var(--color-highlight)"};
+          ? '0'
+          : '0 0 6px 0 var(--color-highlight)'};
       border: 1px solid
         ${(props) =>
           props.$accepted && (props.$hasValue || !props.$required)
-            ? "var(--color-white)"
-            : "var(--color-highlight)"};
+            ? 'var(--color-white)'
+            : 'var(--color-highlight)'};
     }
   }
 
@@ -272,52 +272,52 @@ const CloseIcon = styled(LiaTimesSolid)`
 const schema = z.object({
   code: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(12, { message: "Must be at most 12 characters long" })
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(12, { message: 'Must be at most 12 characters long' })
     .regex(/^[-A-Za-z0-9']+$/, {
       message: "Only letters, numbers and symbols -'",
     }),
   name: z
     .string()
-    .min(2, { message: "Must be at least 2 characters long" })
-    .max(50, { message: "Must be at most 50 characters long" }),
+    .min(2, { message: 'Must be at least 2 characters long' })
+    .max(50, { message: 'Must be at most 50 characters long' }),
   lat_degrees: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers")
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers')
     .min(0, `Latitude must be between S 89° 59' 59" and N 89° 59' 59"`)
     .max(89, `Latitude must be between S89° 59' 59" and N 89° 59' 59"`),
   lat_minutes: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers")
-    .min(0, "Minutes must be bewteen 0 and 59")
-    .max(59, "Minutes must be bewteen 0 and 59"),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers')
+    .min(0, 'Minutes must be bewteen 0 and 59')
+    .max(59, 'Minutes must be bewteen 0 and 59'),
   lat_seconds: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers")
-    .min(0, "Seconds must be bewteen 0 and 59")
-    .max(59, "Seconds must be bewteen 0 and 59"),
-  lat_direction: z.enum(["North", "South"]),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers')
+    .min(0, 'Seconds must be bewteen 0 and 59')
+    .max(59, 'Seconds must be bewteen 0 and 59'),
+  lat_direction: z.enum(['North', 'South']),
   lon_degrees: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers")
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers')
     .min(0, `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`)
     .max(180, `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`),
   lon_minutes: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers")
-    .min(0, "Minutes must be bewteen 0 and 59")
-    .max(59, "Minutes must be bewteen 0 and 59"),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers')
+    .min(0, 'Minutes must be bewteen 0 and 59')
+    .max(59, 'Minutes must be bewteen 0 and 59'),
   lon_seconds: z
-    .number({ invalid_type_error: "Enter a number" })
-    .int("Coordinates must be round numbers")
-    .min(0, "Seconds must be bewteen 0 and 59")
-    .max(59, "Seconds must be bewteen 0 and 59"),
-  lon_direction: z.enum(["East", "West"]),
+    .number({ invalid_type_error: 'Enter a number' })
+    .int('Coordinates must be round numbers')
+    .min(0, 'Seconds must be bewteen 0 and 59')
+    .max(59, 'Seconds must be bewteen 0 and 59'),
+  lon_direction: z.enum(['East', 'West']),
   magnetic_variation: z.union([
     z
-      .number({ invalid_type_error: "Enter a number" })
-      .max(99.94, { message: "Must be less than 99.95" })
-      .min(-99.94, { message: "Must be greater than -99.95" })
+      .number({ invalid_type_error: 'Enter a number' })
+      .max(99.94, { message: 'Must be less than 99.95' })
+      .min(-99.94, { message: 'Must be greater than -99.95' })
       .nullable(),
     z.literal(null),
   ]),
@@ -372,17 +372,17 @@ const EditUserWaypointForm = ({
 
   useEffect(() => {
     const badData = checkCoordinates({
-      lon_direction: watch("lon_direction"),
-      lon_degrees: watch("lon_degrees"),
-      lon_minutes: watch("lon_minutes"),
-      lon_seconds: watch("lon_seconds"),
+      lon_direction: watch('lon_direction'),
+      lon_degrees: watch('lon_degrees'),
+      lon_minutes: watch('lon_minutes'),
+      lon_seconds: watch('lon_seconds'),
     });
-    if (!badData) clearErrors("lon_degrees");
+    if (!badData) clearErrors('lon_degrees');
   }, [
-    watch("lon_direction"),
-    watch("lon_degrees"),
-    watch("lon_minutes"),
-    watch("lon_seconds"),
+    watch('lon_direction'),
+    watch('lon_degrees'),
+    watch('lon_minutes'),
+    watch('lon_seconds'),
   ]);
 
   const handleCancel = () => {
@@ -392,13 +392,13 @@ const EditUserWaypointForm = ({
   const checkCoordinates = (data: FieldValues) => {
     const { lon_direction, lon_degrees, lon_minutes, lon_seconds } = data;
     if (
-      (lon_direction === "E" &&
+      (lon_direction === 'E' &&
         lon_degrees >= 180 &&
         (lon_minutes > 59 || lon_seconds > 59)) ||
-      (lon_direction === "W" && lon_degrees > 179)
+      (lon_direction === 'W' && lon_degrees > 179)
     ) {
-      setError("lon_degrees", {
-        type: "manual",
+      setError('lon_degrees', {
+        type: 'manual',
         message: `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`,
       });
       return true;
@@ -437,8 +437,8 @@ const EditUserWaypointForm = ({
       <h1>
         <div>
           {waypointData.id !== 0 ? <EditWaypointIcon /> : <AddWaypointIcon />}
-          {`${waypointData.id !== 0 ? "Edit" : "Add"}${
-            isAdmin ? " User " : " "
+          {`${waypointData.id !== 0 ? 'Edit' : 'Add'}${
+            isAdmin ? ' User ' : ' '
           }Waypoint`}
         </div>
         <CloseIcon onClick={handleCancel} />
@@ -446,11 +446,11 @@ const EditUserWaypointForm = ({
       <HtmlInputContainer>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("code")}
+          $hasValue={!!watch('code')}
           $accepted={!errors.code}
         >
           <input
-            {...register("code")}
+            {...register('code')}
             id="user_waypoint_code"
             type="text"
             autoComplete="off"
@@ -464,11 +464,11 @@ const EditUserWaypointForm = ({
         </HtmlInput>
         <HtmlInput
           $required={true}
-          $hasValue={!!watch("name")}
+          $hasValue={!!watch('name')}
           $accepted={!errors.name}
         >
           <input
-            {...register("name")}
+            {...register('name')}
             id="user_waypoint_name"
             type="text"
             autoComplete="off"
@@ -483,12 +483,12 @@ const EditUserWaypointForm = ({
         <HtmlInput
           $required={false}
           $hasValue={
-            !!watch("magnetic_variation") || watch("magnetic_variation") === 0
+            !!watch('magnetic_variation') || watch('magnetic_variation') === 0
           }
           $accepted={!errors.magnetic_variation}
         >
           <input
-            {...register("magnetic_variation", {
+            {...register('magnetic_variation', {
               setValueAs: handleMagneticVariationValue,
             })}
             step="any"
@@ -513,11 +513,11 @@ const EditUserWaypointForm = ({
           </h2>
           <HtmlInput
             $required={true}
-            $hasValue={!!watch("lat_direction")}
+            $hasValue={!!watch('lat_direction')}
             $accepted={!errors.lat_direction}
           >
             <HtmlSelectElement
-              {...register("lat_direction")}
+              {...register('lat_direction')}
               id="user_waypoint_lat_direction"
               autoComplete="off"
               required={true}
@@ -533,11 +533,11 @@ const EditUserWaypointForm = ({
           </HtmlInput>
           <HtmlInput
             $required={true}
-            $hasValue={!!watch("lat_degrees") || watch("lat_degrees") === 0}
+            $hasValue={!!watch('lat_degrees') || watch('lat_degrees') === 0}
             $accepted={!errors.lat_degrees}
           >
             <input
-              {...register("lat_degrees", { valueAsNumber: true })}
+              {...register('lat_degrees', { valueAsNumber: true })}
               id="user_waypoint_lat_degrees"
               type="number"
               autoComplete="off"
@@ -554,11 +554,11 @@ const EditUserWaypointForm = ({
           </HtmlInput>
           <HtmlInput
             $required={true}
-            $hasValue={!!watch("lat_minutes") || watch("lat_minutes") === 0}
+            $hasValue={!!watch('lat_minutes') || watch('lat_minutes') === 0}
             $accepted={!errors.lat_minutes}
           >
             <input
-              {...register("lat_minutes", { valueAsNumber: true })}
+              {...register('lat_minutes', { valueAsNumber: true })}
               id="user_waypoint_lat_minutes"
               type="number"
               autoComplete="off"
@@ -575,11 +575,11 @@ const EditUserWaypointForm = ({
           </HtmlInput>
           <HtmlInput
             $required={true}
-            $hasValue={!!watch("lat_seconds") || watch("lat_seconds") === 0}
+            $hasValue={!!watch('lat_seconds') || watch('lat_seconds') === 0}
             $accepted={!errors.lat_seconds}
           >
             <input
-              {...register("lat_seconds", { valueAsNumber: true })}
+              {...register('lat_seconds', { valueAsNumber: true })}
               id="user_waypoint_lat_seconds"
               type="number"
               autoComplete="off"
@@ -602,11 +602,11 @@ const EditUserWaypointForm = ({
           </h2>
           <HtmlInput
             $required={true}
-            $hasValue={!!watch("lon_direction")}
+            $hasValue={!!watch('lon_direction')}
             $accepted={!errors.lon_direction}
           >
             <HtmlSelectElement
-              {...register("lon_direction")}
+              {...register('lon_direction')}
               id="user_waypoint_lon_direction"
               autoComplete="off"
               required={true}
@@ -622,11 +622,11 @@ const EditUserWaypointForm = ({
           </HtmlInput>
           <HtmlInput
             $required={true}
-            $hasValue={!!watch("lon_degrees") || watch("lon_degrees") === 0}
+            $hasValue={!!watch('lon_degrees') || watch('lon_degrees') === 0}
             $accepted={!errors.lon_degrees}
           >
             <input
-              {...register("lon_degrees", { valueAsNumber: true })}
+              {...register('lon_degrees', { valueAsNumber: true })}
               id="user_waypoint_lon_degrees"
               type="number"
               autoComplete="off"
@@ -643,11 +643,11 @@ const EditUserWaypointForm = ({
           </HtmlInput>
           <HtmlInput
             $required={true}
-            $hasValue={!!watch("lon_minutes") || watch("lon_minutes") === 0}
+            $hasValue={!!watch('lon_minutes') || watch('lon_minutes') === 0}
             $accepted={!errors.lon_minutes}
           >
             <input
-              {...register("lon_minutes", { valueAsNumber: true })}
+              {...register('lon_minutes', { valueAsNumber: true })}
               id="user_waypoint_lon_minutes"
               type="number"
               autoComplete="off"
@@ -664,11 +664,11 @@ const EditUserWaypointForm = ({
           </HtmlInput>
           <HtmlInput
             $required={true}
-            $hasValue={!!watch("lon_seconds") || watch("lon_seconds") === 0}
+            $hasValue={!!watch('lon_seconds') || watch('lon_seconds') === 0}
             $accepted={!errors.lon_seconds}
           >
             <input
-              {...register("lon_seconds", { valueAsNumber: true })}
+              {...register('lon_seconds', { valueAsNumber: true })}
               id="user_waypoint_lon_seconds"
               type="number"
               autoComplete="off"

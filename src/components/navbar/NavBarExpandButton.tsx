@@ -1,5 +1,5 @@
-import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
-import { styled } from "styled-components";
+import { RxHamburgerMenu, RxCross1 } from 'react-icons/rx';
+import { styled } from 'styled-components';
 
 const Button = styled.button`
   border-radius: 99999px;

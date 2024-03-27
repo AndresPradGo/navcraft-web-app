@@ -1,42 +1,41 @@
-
 import { useState, useEffect } from 'react';
 import useSideBar from '../../sidebar/useSideBar';
 
 export interface ReturnType {
-    isOpen: boolean;
-    handleOpen: () => void;
-    handleClose: () => void;
+  isOpen: boolean;
+  handleOpen: () => void;
+  handleClose: () => void;
 }
 
 const useModal = (): ReturnType => {
-    const [isOpen, setIsOpen] = useState(false);
-    const {hasSideBar, handleExpandSideBar} = useSideBar()
-    
-    useEffect(() => {
-        return () => {
-          document.removeEventListener("keydown", hadleEscapeKey, true);
-          document.body.style.overflow = 'auto';
-        }
-    }, [])
+  const [isOpen, setIsOpen] = useState(false);
+  const { hasSideBar, handleExpandSideBar } = useSideBar();
 
-    const hadleEscapeKey = (event: KeyboardEvent) => {
-        if (event.key === "Escape") handleClose();
+  useEffect(() => {
+    return () => {
+      document.removeEventListener('keydown', hadleEscapeKey, true);
+      document.body.style.overflow = 'auto';
     };
-    
-    const handleOpen = () => {
-        if(hasSideBar) handleExpandSideBar(false)
-        document.addEventListener("keydown", hadleEscapeKey, true);
-        setIsOpen(true);
-        document.body.style.overflow = 'hidden';
-    };
-    
-    const handleClose = () => {
-        document.removeEventListener("keydown", hadleEscapeKey, true);
-        setIsOpen(false);
-        document.body.style.overflow = 'auto';
-    };
+  }, []);
 
-    return {isOpen, handleOpen, handleClose}
-}
+  const hadleEscapeKey = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') handleClose();
+  };
 
-export default useModal
+  const handleOpen = () => {
+    if (hasSideBar) handleExpandSideBar(false);
+    document.addEventListener('keydown', hadleEscapeKey, true);
+    setIsOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleClose = () => {
+    document.removeEventListener('keydown', hadleEscapeKey, true);
+    setIsOpen(false);
+    document.body.style.overflow = 'auto';
+  };
+
+  return { isOpen, handleOpen, handleClose };
+};
+
+export default useModal;

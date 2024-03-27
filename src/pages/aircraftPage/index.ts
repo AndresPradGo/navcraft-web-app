@@ -1,2 +1,2 @@
 import AircraftPage from './AircraftPage';
-export default AircraftPage
+export default AircraftPage;

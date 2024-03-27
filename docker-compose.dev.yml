@@ -1,17 +1,17 @@
-version: "3.8"
+version: '3.8'
 
-services: 
+services:
   web:
-      build: 
-        context: ./
-        dockerfile: Dockerfile.dev
-      image: navcraft-web:1 # Adjust tag number if appropriate
-      ports: 
-        - 5173:5173 # If port 5173 is already occupied in your local machine, map to a different port
-      restart: unless-stopped
-      volumes:
-        - ./src:/app/src:ro
-      # ---------- NOTE: Adjust environment variables as desired ----------
-      environment:
-        SENTRY_AUTH_TOKEN: "" # The app will run without the token, but if you want to track your app performance with sentry, you need to create a sentry project and add your private token here.
-        VITE_REACT_APP_SENTRY_DSN: "" # The app will run without the DSN, but if you want to track your app's performance with sentry, you need to create a sentry project and add your DSN here.
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    image: navcraft-web:1 # Adjust tag number if appropriate
+    ports:
+      - 5173:5173 # If port 5173 is already occupied in your local machine, map to a different port
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src:ro
+    # ---------- NOTE: Adjust environment variables as desired ----------
+    environment:
+      SENTRY_AUTH_TOKEN: '' # The app will run without the token, but if you want to track your app performance with sentry, you need to create a sentry project and add your private token here.
+      VITE_REACT_APP_SENTRY_DSN: '' # The app will run without the DSN, but if you want to track your app's performance with sentry, you need to create a sentry project and add your DSN here.

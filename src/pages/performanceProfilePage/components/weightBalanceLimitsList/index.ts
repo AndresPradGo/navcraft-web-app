@@ -1,2 +1,2 @@
-import WeightBalanceLimitsList from './WeightBalanceLimitsList'
-export default WeightBalanceLimitsList
+import WeightBalanceLimitsList from './WeightBalanceLimitsList';
+export default WeightBalanceLimitsList;

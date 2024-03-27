@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { styled } from "styled-components";
+import { useState, useEffect } from 'react';
+import { styled } from 'styled-components';
 
-import Button from "./button";
-import { ReactNode } from "react";
+import Button from './button';
+import { ReactNode } from 'react';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -15,16 +15,16 @@ interface HtmlListProps {
 const HtmlList = styled.ol<HtmlListProps>`
   text-wrap: wrap;
   transition: all 0.3s linear;
-  max-height: ${(props) => (props.$expanded ? "200px" : "0")};
+  max-height: ${(props) => (props.$expanded ? '200px' : '0')};
   overflow-x: hidden;
   overflow-y: auto;
-  padding: ${(props) => (props.$expanded ? "10px 5px 10px 40px" : "0 30px")};
+  padding: ${(props) => (props.$expanded ? '10px 5px 10px 40px' : '0 30px')};
   flex-shrink: 0;
-  border: ${(props) => (props.$expanded ? "2px" : "0")} solid
+  border: ${(props) => (props.$expanded ? '2px' : '0')} solid
     var(--color-grey-bright);
-  margin: ${(props) => (props.$expanded ? "5px 10px 0" : "0 10px")};
+  margin: ${(props) => (props.$expanded ? '5px 10px 0' : '0 10px')};
   border-radius: 8px;
-  opacity: ${(props) => (props.$expanded ? "1" : "0")};
+  opacity: ${(props) => (props.$expanded ? '1' : '0')};
 `;
 
 interface Props {
@@ -45,11 +45,11 @@ const ExpandibleMessage = ({ reset, children, messageList }: Props) => {
   return (
     <HtmlContainer>
       <Button
-        color={helpExpanded ? "var(--color-primary-dark)" : "var(--color-grey)"}
+        color={helpExpanded ? 'var(--color-primary-dark)' : 'var(--color-grey)'}
         hoverColor={
           helpExpanded
-            ? "var(--color-primary-dark)"
-            : "var(--color-grey-bright)"
+            ? 'var(--color-primary-dark)'
+            : 'var(--color-grey-bright)'
         }
         backgroundColor="var(--color-grey)"
         backgroundHoverColor="var(--color-grey-bright)"
