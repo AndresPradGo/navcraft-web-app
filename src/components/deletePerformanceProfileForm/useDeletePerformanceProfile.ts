@@ -40,16 +40,28 @@ const useDeletePerformanceProfile = (
       return { previousData };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['aircraft', aircraftId] });
-      toast.success('The performance Profile has been deleted successfully.', {
-        position: 'top-center',
-        autoClose: 10000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
+      queryClient.invalidateQueries({ queryKey: ['aircraft', aircraftId] }).then(() => {
+        toast.success('The performance Profile has been deleted successfully.', {
+          position: 'top-center',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        });
+      }).catch(() => {
+        toast.info('The performance Profile has been deleted successfully. If the changes are not being displayed correctly, please refresh the website.', {
+          position: 'top-center',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        });
       });
       onDelete();
     },
