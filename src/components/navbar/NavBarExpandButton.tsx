@@ -1,6 +1,8 @@
 import { RxHamburgerMenu, RxCross1 } from 'react-icons/rx';
 import { styled } from 'styled-components';
 
+import type { ReactIconType } from '../../services/reactIconEntity';
+
 const Button = styled.button`
   border-radius: 99999px;
   width: 40px;
@@ -30,11 +32,11 @@ const Button = styled.button`
   }
 `;
 
-const HamburguerMenueIcon = styled(RxHamburgerMenu)`
+const HamburguerMenueIcon = styled(RxHamburgerMenu as ReactIconType)`
   font-size: 26px;
 `;
 
-const CrossIcon = styled(RxCross1)`
+const CrossIcon = styled(RxCross1 as ReactIconType)`
   font-size: 20px;
 `;
 

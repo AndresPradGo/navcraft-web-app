@@ -4,6 +4,7 @@ import { PiAirplaneInFlightDuotone } from 'react-icons/pi';
 import { RiMapPinFill } from 'react-icons/ri';
 import { IconType } from 'react-icons';
 import useAuth from '../../hooks/useAuth';
+import type { ReactIconType } from '../../services/reactIconEntity';
 
 interface NavLinkData {
   text: string;
@@ -19,27 +20,27 @@ const useNavLinks = (): NavLinkData[] => {
     {
       text: 'Flights',
       href: '/flights',
-      icon: PiAirplaneInFlightDuotone,
+      icon: PiAirplaneInFlightDuotone as ReactIconType,
     },
     {
       text: 'Waypoints',
       href: '/waypoints',
-      icon: RiMapPinFill,
+      icon: RiMapPinFill as ReactIconType,
     },
     {
       text: 'Aircraft',
       href: '/aircraft',
-      icon: IoAirplane,
+      icon: IoAirplane as ReactIconType,
     },
     {
       text: 'Profile',
       href: '/profile',
-      icon: FaUserGear,
+      icon: FaUserGear as ReactIconType,
     },
     {
       text: 'Users',
       href: '/users',
-      icon: FaUsersGear,
+      icon: FaUsersGear as ReactIconType,
     },
   ];
 
