@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "lint:fix": "eslint . --ext ts,tsx --fix"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
@@ -50,16 +51,21 @@
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.17",
     "@types/react-scroll": "^1.8.10",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
     "@vitest/ui": "^1.4.0",
-    "eslint": "^8.45.0",
+    "eslint": "^8.57.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "jsdom": "^24.0.0",
     "prettier": "^3.2.5",
-    "typescript": "^5.0.2",
+    "typescript": "^5.4.3",
     "vite": "^4.4.5",
     "vitest": "^1.4.0"
   }
