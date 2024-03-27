@@ -5,6 +5,7 @@ import { styled } from 'styled-components';
 
 import Button from '../common/button';
 import useDeleteUserWaypoint from './useDeleteUserWaypoint';
+import type { ReactIconType } from '../../services/reactIconEntity';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -67,12 +68,12 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const DeleteIcon = styled(RiDeleteBinLine)`
+const DeleteIcon = styled(RiDeleteBinLine as ReactIconType)`
   font-size: 20px;
   margin-left: 5px;
 `;
 
-const TitleIcon = styled(IoWarningOutline)`
+const TitleIcon = styled(IoWarningOutline as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 10px;
@@ -91,7 +92,7 @@ const TitleIcon = styled(IoWarningOutline)`
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+const CloseIcon = styled(LiaTimesSolid as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;

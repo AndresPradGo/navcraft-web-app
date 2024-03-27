@@ -38,20 +38,35 @@ const useDeleteUserWaypoint = () => {
       return { previusData };
     },
     onSuccess: (_, data) => {
-      queryClient.invalidateQueries({ queryKey: ['waypoints', 'user'] });
-      toast.success(
-        `"${data.name}" has been deleted from your waypoints' list.`,
-        {
-          position: 'top-center',
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'dark',
-        },
-      );
+      queryClient.invalidateQueries({ queryKey: ['waypoints', 'user'] }).then(() => {
+        toast.success(
+          `"${data.name}" has been deleted from your waypoints' list.`,
+          {
+            position: 'top-center',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          },
+        );
+      }).catch(() => {
+        toast.info(
+          `"${data.name}" has been deleted from your waypoints' list.`,
+          {
+            position: 'top-center',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          },
+        );
+      });
     },
     onError: (error, _, context) => {
       errorToast(error);
