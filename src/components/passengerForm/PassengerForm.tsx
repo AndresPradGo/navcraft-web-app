@@ -10,6 +10,7 @@ import { z } from 'zod';
 
 import Button from '../common/button';
 import useEditPassenger from './useEditPassenger';
+import type { ReactIconType } from '../../services/reactIconEntity';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -149,34 +150,34 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const SaveIcon = styled(AiOutlineSave)`
+const SaveIcon = styled(AiOutlineSave as ReactIconType)`
   font-size: 25px;
 `;
 
-const NameIcon = styled(FaUser)`
-  font-size: 25px;
-  margin: 0 10px;
-`;
-
-const WeightIcon = styled(FaWeightScale)`
+const NameIcon = styled(FaUser as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const AddPassengerIcon = styled(BsPersonFillAdd)`
+const WeightIcon = styled(FaWeightScale as ReactIconType)`
+  font-size: 25px;
+  margin: 0 10px;
+`;
+
+const AddPassengerIcon = styled(BsPersonFillAdd as ReactIconType)`
   flex-shrink: 0;
   font-size: 30px;
   margin: 0 10px;
 `;
 
-const EditPassengerIcon = styled(BsPersonFillGear)`
+const EditPassengerIcon = styled(BsPersonFillGear as ReactIconType)`
 flex-shrink: 0;
   font-size: 30px;
   margin: 0 10px;
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+const CloseIcon = styled(LiaTimesSolid as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
@@ -235,7 +236,7 @@ const PassengerForm = ({ passengerData, closeModal, isOpen }: Props) => {
         weight_lb: passengerData.weight_lb,
       });
     }
-  }, [isOpen]);
+  }, [isOpen, passengerData.name, passengerData.weight_lb, reset]);
 
   const editPassengerMutation = useEditPassenger();
 
@@ -246,14 +247,14 @@ const PassengerForm = ({ passengerData, closeModal, isOpen }: Props) => {
   const submitHandler = (data: FieldValues) => {
     closeModal();
     editPassengerMutation.mutate({
-      name: data.name,
-      weight_lb: data.weight_lb,
+      name: data.name as string,
+      weight_lb: data.weight_lb as number,
       id: passengerData.id,
     });
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           {passengerData.id !== 0 ? (
