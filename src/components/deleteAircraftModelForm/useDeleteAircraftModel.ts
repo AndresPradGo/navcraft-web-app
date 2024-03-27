@@ -27,20 +27,35 @@ const useDeleteAircraftModel = (onDelete: () => void) => {
       return { previousData };
     },
     onSuccess: (_, modelId) => {
-      queryClient.invalidateQueries({ queryKey: ['aircraftModel', 'list'] });
-      toast.success(
-        `Aircraft Model with ID ${modelId} has been deleted successfully.`,
-        {
-          position: 'top-center',
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'dark',
-        },
-      );
+      queryClient.invalidateQueries({ queryKey: ['aircraftModel', 'list'] }).then(() => {
+        toast.success(
+          `Aircraft Model with ID ${modelId} has been deleted successfully.`,
+          {
+            position: 'top-center',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          },
+        );
+      }).catch(() => {
+        toast.info(
+          `Aircraft Model with ID ${modelId} has been deleted successfully. If the changes are not being displayed correctly, please refresh the website.`,
+          {
+            position: 'top-center',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          },
+        );
+      });
       onDelete();
     },
     onError: (error, _, context) => {
