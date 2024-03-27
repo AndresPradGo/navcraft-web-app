@@ -4,7 +4,8 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import { styled } from 'styled-components';
 
 import Button from '../common/button';
-import useDeleterunway from './useDeleterunway';
+import useDeleteRunway from './useDeleteRunway';
+import type { ReactIconType } from '../../services/reactIconEntity';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -66,12 +67,12 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const DeleteIcon = styled(RiDeleteBinLine)`
+const DeleteIcon = styled(RiDeleteBinLine as ReactIconType)`
   font-size: 20px;
   margin-left: 5px;
 `;
 
-const TitleIcon = styled(IoWarningOutline)`
+const TitleIcon = styled(IoWarningOutline as ReactIconType)`
   font-size: 30px;
   margin: 0 5px;
   color: var(--color-white);
@@ -89,7 +90,7 @@ const TitleIcon = styled(IoWarningOutline)`
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+const CloseIcon = styled(LiaTimesSolid as ReactIconType)`
   font-size: 25px;
   margin: 0 5px;
   cursor: pointer;
@@ -123,7 +124,7 @@ const DeleteRunwayForm = ({
   aerodromeName,
   fromAerodrome,
 }: Props) => {
-  const mutation = useDeleterunway(fromAerodrome);
+  const mutation = useDeleteRunway(fromAerodrome);
   const handleDelete = () => {
     closeModal();
     mutation.mutate({

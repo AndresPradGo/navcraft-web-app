@@ -17,7 +17,7 @@ interface AerodromeContext {
   previousRunwaysData?: RunwayData[];
 }
 
-const useDeleterunway = (fromAerodrome: boolean) => {
+const useDeleteRunway = (fromAerodrome: boolean) => {
   const queryClient = useQueryClient();
   return useMutation<
     string,
@@ -60,21 +60,39 @@ const useDeleterunway = (fromAerodrome: boolean) => {
       return { previousRunwaysData };
     },
     onSuccess: (_, newData) => {
-      toast.success(`"Runway ${newData.name}" has been deleted successfully.`, {
-        position: 'top-center',
-        autoClose: 10000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-      if (fromAerodrome)
+      const displayToast = (successful: boolean) => {
+        if (successful)
+          toast.success(`"Runway ${newData.name}" has been deleted successfully.`, {
+            position: 'top-center',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          });
+        else
+          toast.info(`"Runway ${newData.name}" has been deleted successfully. If the changes are not being displayed correctly, please refresh the website.`, {
+            position: 'top-center',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          });
+      }
+      if (fromAerodrome) {
         queryClient.invalidateQueries({
           queryKey: ['aerodrome', newData.aerodrome_id],
-        });
-      else queryClient.invalidateQueries({ queryKey: ['runways'] });
+        }).then(() => {displayToast(true)}).catch(() => {displayToast(false)});
+      } else {
+        queryClient.invalidateQueries({ queryKey: ['runways'] })
+          .then(() => {displayToast(true)})
+          .catch(() => {displayToast(false)});
+      }
     },
     onError: (error, newData, context) => {
       errorToast(error);
@@ -93,4 +111,4 @@ const useDeleterunway = (fromAerodrome: boolean) => {
   });
 };
 
-export default useDeleterunway;
+export default useDeleteRunway;
