@@ -18,6 +18,7 @@ import { FuelTypeData } from '../../hooks/useFuelTypes';
 import DataList from '../common/datalist/index';
 import useAircraftModels from '../../hooks/useAircraftModels';
 import Loader from '../Loader';
+import type { ReactIconType } from '../../services/reactIconEntity';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -103,7 +104,7 @@ const HtmlSectionTitle = styled.div<HtmlSectionProps>`
   }
 `;
 
-const ToggleIcon = styled(BsChevronDown)<HtmlSectionProps>`
+const ToggleIcon = styled(BsChevronDown as ReactIconType)<HtmlSectionProps>`
   color: var(--color-grey);
   cursor: pointer;
   margin-right: 5px;
@@ -258,7 +259,7 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const TitleIcon = styled(BsSpeedometer)`
+const TitleIcon = styled(BsSpeedometer as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 10px;
@@ -268,7 +269,7 @@ const TitleIcon = styled(BsSpeedometer)`
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+const CloseIcon = styled(LiaTimesSolid as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
@@ -286,22 +287,22 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
-const NameIcon = styled(AiFillTag)`
+const NameIcon = styled(AiFillTag as ReactIconType)`
   font-size: 20px;
   margin: 0 5px 0 10px;
 `;
 
-const ModelIcon = styled(IoAirplaneOutline)`
+const ModelIcon = styled(IoAirplaneOutline as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const FuelIcon = styled(BsFillFuelPumpFill)`
+const FuelIcon = styled(BsFillFuelPumpFill as ReactIconType)`
   font-size: 20px;
   margin: 0 10px;
 `;
 
-const SaveIcon = styled(AiOutlineSave)`
+const SaveIcon = styled(AiOutlineSave as ReactIconType)`
   font-size: 25px;
 `;
 
@@ -310,14 +311,14 @@ const schema = z.object({
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(255, { message: 'Must be at most 255 characters long' })
-    .regex(/^[a-zA-Z0-9\s.,()/\-]+$/, {
+    .regex(/^[a-zA-Z0-9\s.,()/-]+$/, {
       message: 'Only letters, numbers, white space, and symbols .,-()/',
     }),
   performance_profile_name: z
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(255, { message: 'Must be at most 255 characters long' })
-    .regex(/^[a-zA-Z0-9\s.,()/\-]+$/, {
+    .regex(/^[a-zA-Z0-9\s.,()/-]+$/, {
       message: 'Only letters, numbers, white space, and symbols .,-()/',
     }),
   fuel_type: z
@@ -383,7 +384,7 @@ const AddAircraftProfileForm = ({
       });
       setFromModel(true);
     }
-  }, [isOpen]);
+  }, [isOpen, fuelOptions, reset]);
 
   if (aircraftModelsIsLoading) return <Loader />;
   if (aircraftModelsError) throw new Error('');
@@ -447,7 +448,7 @@ const AddAircraftProfileForm = ({
         closeModal();
         addMutation.mutate({
           type: 'BLANK',
-          performance_profile_name: data.performance_profile_name,
+          performance_profile_name: data.performance_profile_name as string,
           fuel_type_id: fuelId,
         });
       } else
@@ -459,7 +460,7 @@ const AddAircraftProfileForm = ({
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />
@@ -477,7 +478,7 @@ const AddAircraftProfileForm = ({
           </HtmlSectionTitle>
           <HtmlSectionContent $isOpen={fromModel}>
             <DataList
-              setError={(_) =>
+              setError={() =>
                 setError('model', {
                   type: 'manual',
                   message: 'Select a model',
