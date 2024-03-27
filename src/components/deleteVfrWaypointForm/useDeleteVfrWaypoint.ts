@@ -39,20 +39,35 @@ const useDeleteVfrWaypoint = () => {
       return { previusData };
     },
     onSuccess: (_, data) => {
-      queryClient.invalidateQueries({ queryKey: ['waypoints', 'vfr'] });
-      toast.success(
-        `"${data.name}" has been deleted from the official VFR waypoints' list.`,
-        {
-          position: 'top-center',
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'dark',
-        },
-      );
+      queryClient.invalidateQueries({ queryKey: ['waypoints', 'vfr'] }).then(() => {
+        toast.success(
+          `"${data.name}" has been deleted from the official VFR waypoints' list.`,
+          {
+            position: 'top-center',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          },
+        );
+      }).catch(() => {
+        toast.info(
+          `"${data.name}" has been deleted from the official VFR waypoints' list. If the changes are not being displayed correctly, please refresh the website.`,
+          {
+            position: 'top-center',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          },
+        );
+      });
     },
     onError: (error, _, context) => {
       errorToast(error);
