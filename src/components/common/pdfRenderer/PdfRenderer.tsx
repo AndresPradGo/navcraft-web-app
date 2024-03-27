@@ -6,7 +6,7 @@ import { PDFViewer, usePDF } from '@react-pdf/renderer';
 import PdfDocument from './PdfDocument';
 import type { Props as PdfContent } from './PdfDocument';
 import Button from '../button/index';
-import FlightWarningList from '../../FlightWarningList';
+import FlightWarningList from '../FlightWarningList';
 
 const HtmlPDFViwerContainer = styled.div`
   width: 100%;

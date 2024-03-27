@@ -11,7 +11,7 @@ import DataTableList from '../../../components/common/DataTableList';
 import formatUTCDate from '../../../utils/formatUTCDate';
 import formatUTCTime from '../../../utils/formatUTCTime';
 import Table from '../../../components/common/ExpandibleTable';
-import FlightWarningList from '../../../components/FlightWarningList';
+import FlightWarningList from '../../../components/common/FlightWarningList';
 import { Modal, useModal } from '../../../components/common/modal';
 import DeleteLegForm from './DeleteLegForm';
 import EditLegForm from './EditLegForm';

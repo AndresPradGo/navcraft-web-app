@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 
 import type { FlightDataFromApi } from '../../../services/flightClient';
 import type { NavLogLegData } from '../hooks/useNavLogData';
-import FlightWarningList from '../../../components/FlightWarningList';
+import FlightWarningList from '../../../components/common/FlightWarningList';
 import PdfRenderer from '../../../components/common/pdfRenderer';
 import type { PdfBodySection } from '../../../components/common/pdfRenderer';
 import formatUTCDate from '../../../utils/formatUTCDate';

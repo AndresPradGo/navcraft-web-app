@@ -6,7 +6,7 @@ import { styled } from 'styled-components';
 import Table from '../../../components/common/ExpandibleTable';
 import DataTableList from '../../../components/common/DataTableList';
 import { FuelCalculationsData } from '../hooks/useFuelCalculations';
-import FlightWarningList from '../../../components/FlightWarningList';
+import FlightWarningList from '../../../components/common/FlightWarningList';
 
 const ReportIcon = styled(PiClipboardTextDuotone)`
   font-size: 30px;

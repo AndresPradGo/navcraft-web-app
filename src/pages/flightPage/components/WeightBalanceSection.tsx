@@ -14,7 +14,7 @@ import usePersonsOnBoard from '../hooks/usePersonsOnBoard';
 import useLuggage from '../hooks/useLuggage';
 import useFuelOnBoard from '../hooks/useFuelOnBoard';
 import useAircraftArrangementData from '../../../hooks/useAircraftArrangementData';
-import FlightWarningList from '../../../components/FlightWarningList';
+import FlightWarningList from '../../../components/common/FlightWarningList';
 import { Modal, useModal } from '../../../components/common/modal';
 import AddFuelForm from './AddFuelForm';
 import AddLuggageForm from './AddLuggageForm';

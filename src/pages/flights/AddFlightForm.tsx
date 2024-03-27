@@ -17,7 +17,7 @@ import getUTCNowString from '../../utils/getUTCNowString';
 import { AircraftDataFromAPI } from '../../services/aircraftClient';
 import { OfficialAerodromeDataFromAPI } from '../../services/officialAerodromeClient';
 import useAddFlight from './useAddFlight';
-import FlightWarningList from '../../components/FlightWarningList';
+import FlightWarningList from '../../components/common/FlightWarningList';
 
 const HtmlForm = styled.form`
   width: 100%;

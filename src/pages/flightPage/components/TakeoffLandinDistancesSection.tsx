@@ -16,7 +16,7 @@ import { FlightDataFromApi } from '../../../services/flightClient';
 import { TakeoffLandingDistancesDataFromApi } from '../hooks/useTakeoffLandingDistances';
 import DataTableList from '../../../components/common/DataTableList';
 import Table from '../../../components/common/ExpandibleTable';
-import FlightWarningList from '../../../components/FlightWarningList';
+import FlightWarningList from '../../../components/common/FlightWarningList';
 
 const WeightIcon = styled(GiWeight)`
   font-size: 25px;

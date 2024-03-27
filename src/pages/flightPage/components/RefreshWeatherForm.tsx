@@ -11,7 +11,7 @@ import { FlightDataFromApi } from '../../../services/flightClient';
 import { NavLogLegData } from '../hooks/useNavLogData';
 import useRefreshWeather from '../hooks/useRefreshWeather';
 import Loader from '../../../components/Loader';
-import FlightWarningList from '../../../components/FlightWarningList';
+import FlightWarningList from '../../../components/common/FlightWarningList';
 import getUTCNowString from '../../../utils/getUTCNowString';
 
 const HtmlForm = styled.form`
