@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode, useCallback } from 'react';
 import { animateScroll as scroll } from 'react-scroll';
 
 import SideBarContext from './sideBarContext';
@@ -67,21 +67,24 @@ const SideBarProvider = ({ children }: Props) => {
 
   useScroll(hasSideBar);
 
-  const handleExpandSideBar = (expand: boolean, fromNavBar?: boolean) => {
-    if (!fromNavBar) {
-      scroll.scrollMore(0.5, {
-        duration: 1,
-        delay: 200,
-        smooth: false,
-      });
-      scroll.scrollMore(-0.5, {
-        duration: 1,
-        delay: 200,
-        smooth: false,
-      });
-    }
-    setSideBarIsExpanded(expand);
-  };
+  const handleExpandSideBar = useCallback(
+    (expand: boolean, fromNavBar?: boolean) => {
+      if (!fromNavBar) {
+        scroll.scrollMore(0.5, {
+          duration: 1,
+          delay: 200,
+          smooth: false,
+        });
+        scroll.scrollMore(-0.5, {
+          duration: 1,
+          delay: 200,
+          smooth: false,
+        });
+      }
+      setSideBarIsExpanded(expand);
+    },
+    [],
+  );
 
   return (
     <SideBarContext.Provider

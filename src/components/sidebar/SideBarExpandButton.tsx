@@ -104,7 +104,7 @@ const SideBarExpandButton = () => {
       handleExpandSideBar(false);
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [handleExpandSideBar]);
 
   if (!hasSideBar) return <HtmlDummyButton />;
 
