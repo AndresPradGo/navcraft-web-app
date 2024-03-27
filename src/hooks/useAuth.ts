@@ -23,7 +23,7 @@ const useAuth = (): UserType | null => {
   if (!jwt || !jwtType) {
     return null;
   }
-  const jwtData = jwtDecode(jwt) as JwtPayloadType;
+  const jwtData = jwtDecode(jwt);
 
   const user = {
     jwt,

@@ -110,7 +110,7 @@ const Users = () => {
             },
             permissions: user.is_master
               ? undefined
-              : ('edit-delete' as 'edit-delete'),
+              : ('edit-delete' as const),
           }))
         : [],
     breakingPoint: 1024,

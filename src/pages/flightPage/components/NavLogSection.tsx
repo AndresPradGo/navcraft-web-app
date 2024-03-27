@@ -184,8 +184,8 @@ const NavLogSection = ({ flightId, isLoading, handleAdd }: Props) => {
             },
             permissions:
               idx < legsData.length - 1
-                ? ('edit-delete' as 'edit-delete')
-                : ('edit' as 'edit'),
+                ? ('edit-delete' as const)
+                : ('edit' as const),
           };
         })
       : [],

@@ -19,7 +19,7 @@ const useNotamBriefingRequest = (flightId: number) => {
     onMutate: () => {
       queryClient.setQueryData<NOTAMBriefingData>(
         ['notamBriefing', flightId],
-        () => 'mutating' as 'mutating',
+        () => 'mutating' as const,
       );
     },
     onSuccess: (briefingData) => {
@@ -31,7 +31,7 @@ const useNotamBriefingRequest = (flightId: number) => {
     onError: () => {
       queryClient.setQueryData<NOTAMBriefingData>(
         ['notamBriefing', flightId],
-        () => 'error' as 'error',
+        () => 'error' as const,
       );
     },
   });

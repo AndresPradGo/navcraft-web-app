@@ -129,7 +129,7 @@ const HtmlNavBarGroup = styled.div<HtmlNavbarProps>`
   }
 `;
 
-const HtmlNavLinkContainer = styled.div<HtmlNavbarProps>`
+const HtmlNavLinkContainer = styled.div`
   min-width: 100%;
 
   background-color: transparent;
@@ -231,7 +231,7 @@ const NavBar = () => {
   const linksList = useNavLinks();
   const { hasSideBar, handleExpandSideBar } = useSideBar();
 
-  let currentPath = usePathList();
+  const currentPath = usePathList();
   let activeLinkDataList = linksList.filter(
     (item) => item.href === `/${currentPath[0]}`,
   );
@@ -256,7 +256,7 @@ const NavBar = () => {
           </HtmlTitle>
           <NavBarExpandButton isExpanded={expanded} handleClick={setExpanded} />
         </HtmlNavBarGroup>
-        <HtmlNavLinkContainer $expanded={expanded}>
+        <HtmlNavLinkContainer>
           {linksList.map((link) => {
             const IconComponent = link.icon;
             return (

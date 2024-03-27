@@ -272,14 +272,14 @@ const useGetTableStructure = (
 
   const tableData = [
     {
-      keys: waypointsKeys as string[],
+      keys: waypointsKeys,
       headers: waypointsHeaders,
       sortData: waypointsSortData as SortData[],
       searchBarParameters: waypointsSearchBarParameters as SearchParamsType,
       filterParameters: waypointsFilterParameters as FilterParamsType,
     },
     {
-      keys: aerodromesKeys as string[],
+      keys: aerodromesKeys,
       headers: aerodromesHeaders,
       sortData: aerodromesSortData as SortData[],
       searchBarParameters: aerodromesSearchBarParameters as SearchParamsType,
@@ -289,7 +289,7 @@ const useGetTableStructure = (
 
   if (isAdmin) {
     tableData.push({
-      keys: runwaysKeys as string[],
+      keys: runwaysKeys,
       headers: runwaysHeaders,
       sortData: runwaysSortData as SortData[],
       searchBarParameters: runwaysSearchBarParameters as SearchParamsType,

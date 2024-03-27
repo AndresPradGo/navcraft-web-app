@@ -19,7 +19,7 @@ const useWeatherBriefingRequest = (flightId: number) => {
     onMutate: () => {
       queryClient.setQueryData<WeatherBriefingData>(
         ['weatherBriefing', flightId],
-        () => 'mutating' as 'mutating',
+        () => 'mutating' as const,
       );
     },
     onSuccess: (briefingData) => {
@@ -31,7 +31,7 @@ const useWeatherBriefingRequest = (flightId: number) => {
     onError: () => {
       queryClient.setQueryData<WeatherBriefingData>(
         ['weatherBriefing', flightId],
-        () => 'error' as 'error',
+        () => 'error' as const,
       );
     },
   });

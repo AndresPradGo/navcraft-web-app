@@ -125,7 +125,7 @@ const DeleteAircraftForm = ({
 }: Props) => {
   const navigate = useNavigate();
   const mutation = useDeleteAircraft(() => {
-    if (!!redirect) navigate('/aircraft');
+    if (redirect) navigate('/aircraft');
   });
   const handleDelete = () => {
     closeModal();

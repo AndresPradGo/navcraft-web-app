@@ -23,12 +23,12 @@ const useEditSeatRow = (profileId: number, aircraftId: number) => {
     mutationFn: (data) => {
       if (data.id === 0)
         return apiClient.postAndGetOther<SeatRowDataFromForm>(
-          data as SeatRowDataFromForm,
+          data,
           `/seat-row/${profileId}`,
         );
       else
         return apiClient.editAndGetOther<SeatRowDataFromForm>(
-          data as SeatRowDataFromForm,
+          data,
           `/seat-row/${data.id}`,
         );
     },

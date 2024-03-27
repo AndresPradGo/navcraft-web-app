@@ -356,9 +356,9 @@ const AircraftListPage = () => {
               setIdRowToDelete(model.id);
               modal.handleOpen();
             },
-            permissions: !!userIsAdmin
-              ? ('open-delete' as 'open-delete')
-              : ('open' as 'open'),
+            permissions: userIsAdmin
+              ? ('open-delete' as const)
+              : ('open' as const),
           }))
         : aircraftList.map((aircraft) => {
             const datesUpdated = aircraft.profiles.length
@@ -396,7 +396,7 @@ const AircraftListPage = () => {
                 setIdRowToDelete(aircraft.id);
                 modal.handleOpen();
               },
-              permissions: 'open-delete' as 'open-delete',
+              permissions: 'open-delete' as const,
             };
           }),
   };

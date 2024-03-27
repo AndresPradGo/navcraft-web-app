@@ -23,12 +23,12 @@ const useEditFuelTank = (profileId: number, aircraftId: number) => {
     mutationFn: (data) => {
       if (data.id === 0)
         return apiClient.postAndGetOther<FuelTankDataFromForm>(
-          data as FuelTankDataFromForm,
+          data,
           `/fuel-tank/${profileId}`,
         );
       else
         return apiClient.editAndGetOther<FuelTankDataFromForm>(
-          data as FuelTankDataFromForm,
+          data,
           `/fuel-tank/${data.id}`,
         );
     },

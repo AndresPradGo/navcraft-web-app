@@ -104,7 +104,7 @@ const RunwaysTable = ({
           deleteModal.handleOpen();
         }
       },
-      permissions: canEdit ? ('edit-delete' as 'edit-delete') : undefined,
+      permissions: canEdit ? ('edit-delete' as const) : undefined,
     })),
     breakingPoint: 1000,
   };

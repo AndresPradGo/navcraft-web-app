@@ -439,7 +439,7 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
           passengerModal.handleOpen();
         },
         handleDelete: () => {},
-        permissions: 'edit' as 'edit',
+        permissions: 'edit' as const,
       };
     }),
     breakingPoint: 1024,
@@ -505,7 +505,7 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
           modal.handleOpen();
         },
         handleDelete: () => {},
-        permissions: 'edit' as 'edit',
+        permissions: 'edit' as const,
       };
     }),
     breakingPoint: 1024,
@@ -555,7 +555,7 @@ const WeightBalanceSection = ({ profileId, flightId, isLoading }: Props) => {
           modal.handleOpen();
         },
         handleDelete: () => {},
-        permissions: 'edit' as 'edit',
+        permissions: 'edit' as const,
       };
     }),
     breakingPoint: 1024,

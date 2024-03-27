@@ -23,12 +23,12 @@ const useEditBaggageCompartment = (profileId: number, aircraftId: number) => {
     mutationFn: (data) => {
       if (data.id === 0)
         return apiClient.postAndGetOther<CompartmentDataFromForm>(
-          data as CompartmentDataFromForm,
+          data,
           `/baggage-compartment/${profileId}`,
         );
       else
         return apiClient.editAndGetOther<CompartmentDataFromForm>(
-          data as CompartmentDataFromForm,
+          data,
           `/baggage-compartment/${data.id}`,
         );
     },

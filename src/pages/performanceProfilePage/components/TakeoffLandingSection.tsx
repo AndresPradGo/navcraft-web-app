@@ -97,7 +97,7 @@ const TakeoffLandingSection = ({
               deleteModal.handleOpen();
               setIdToDelete(item.surface_id);
             },
-            permissions: 'delete' as 'delete',
+            permissions: 'delete' as const,
           }))
         : [],
   };

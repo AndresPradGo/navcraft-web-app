@@ -210,41 +210,41 @@ const WeatherBriefingSection = ({
     };
     if (pirep.aircraft)
       pdfPirep.components.push({
-        type: 'bulletpoint' as 'bulletpoint',
+        type: 'bulletpoint' as const,
         content: `\u2022 \t Aircraft type: ${pirep.aircraft}`,
       });
     if (pirep.clouds)
       pdfPirep.components.push({
-        type: 'bulletpoint' as 'bulletpoint',
+        type: 'bulletpoint' as const,
         content: `\u2022 \t Clouds: ${pirep.clouds}`,
       });
     if (pirep.temperature)
       pdfPirep.components.push({
-        type: 'bulletpoint' as 'bulletpoint',
+        type: 'bulletpoint' as const,
         content: `\u2022 \t Temperature: ${pirep.temperature}\u00B0C`,
       });
     if (pirep.wind)
       pdfPirep.components.push({
-        type: 'bulletpoint' as 'bulletpoint',
+        type: 'bulletpoint' as const,
         content: `\u2022 \t Wind: ${pirep.wind}`,
       });
     if (pirep.turbulence)
       pdfPirep.components.push({
-        type: 'bulletpoint' as 'bulletpoint',
+        type: 'bulletpoint' as const,
         content: `\u2022 \t Turbulence: ${pirep.turbulence}`,
       });
     if (pirep.icing)
       pdfPirep.components.push({
-        type: 'bulletpoint' as 'bulletpoint',
+        type: 'bulletpoint' as const,
         content: `\u2022 \t Icing: ${pirep.icing}`,
       });
     if (pirep.remarks)
       pdfPirep.components.push({
-        type: 'bulletpoint' as 'bulletpoint',
+        type: 'bulletpoint' as const,
         content: `\u2022 \t Remarks: ${pirep.remarks}`,
       });
     pdfPirep.components.push({
-      type: 'report' as 'report',
+      type: 'report' as const,
       content: pirep.data,
     });
     body.push(pdfPirep);
@@ -454,7 +454,7 @@ const WeatherBriefingSection = ({
         wrap: true,
       });
       let departureReports = briefingData.aerodromes.departure.aerodrome;
-      let departureHasWeather = briefingData.aerodromes.departure.aerodrome;
+      const departureHasWeather = briefingData.aerodromes.departure.aerodrome;
       if (
         !departureHasWeather &&
         !!briefingData.aerodromes.legs[0].aerodromes.length
@@ -515,7 +515,7 @@ const WeatherBriefingSection = ({
 
       // Add enroute aerodromes
       if (
-        !!briefingData.aerodromes.legs.reduce(
+        briefingData.aerodromes.legs.reduce(
           (sum, l) => sum + l.aerodromes.length,
           0,
         )
@@ -535,11 +535,11 @@ const WeatherBriefingSection = ({
               );
               const metars = [
                 {
-                  type: 'title3' as 'title3',
+                  type: 'title3' as const,
                   content: `${aerodrome?.name} (${aerodrome?.code})`,
                 },
                 ...station.metar.map((metar) => ({
-                  type: 'report' as 'report',
+                  type: 'report' as const,
                   content: metar.data,
                 })),
               ];
@@ -571,7 +571,7 @@ const WeatherBriefingSection = ({
         wrap: true,
       });
       let arrivalReports = briefingData.aerodromes.arrival.aerodrome;
-      let arrivalHasWeather = briefingData.aerodromes.arrival.aerodrome;
+      const arrivalHasWeather = briefingData.aerodromes.arrival.aerodrome;
       if (!arrivalHasWeather && !!briefingData.aerodromes.alternates.length) {
         const closestAerodromes = briefingData.aerodromes.alternates
           .slice()
@@ -630,7 +630,7 @@ const WeatherBriefingSection = ({
       }
 
       // Add Alternates
-      if (!!briefingData.aerodromes.alternates.length) {
+      if (briefingData.aerodromes.alternates.length) {
         body.push({
           components: [{ type: 'title2', content: 'Alternates' }],
           margin: '0',
@@ -645,11 +645,11 @@ const WeatherBriefingSection = ({
             );
             const metars = [
               {
-                type: 'title3' as 'title3',
+                type: 'title3' as const,
                 content: `${aerodrome?.name} (${aerodrome?.code})`,
               },
               ...station.metar.map((metar) => ({
-                type: 'report' as 'report',
+                type: 'report' as const,
                 content: metar.data,
               })),
             ];

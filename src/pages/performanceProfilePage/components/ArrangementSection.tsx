@@ -96,7 +96,7 @@ const ArrangementSection = ({
           },
           permissions:
             (isModel && userIsAdmin) || !isModel
-              ? ('edit-delete' as 'edit-delete')
+              ? ('edit-delete' as const)
               : undefined,
         }))
       : [],
@@ -144,7 +144,7 @@ const ArrangementSection = ({
           },
           permissions:
             (isModel && userIsAdmin) || !isModel
-              ? ('edit-delete' as 'edit-delete')
+              ? ('edit-delete' as const)
               : undefined,
         }))
       : [],
@@ -208,7 +208,7 @@ const ArrangementSection = ({
           },
           permissions:
             (isModel && userIsAdmin) || !isModel
-              ? ('edit-delete' as 'edit-delete')
+              ? ('edit-delete' as const)
               : undefined,
         }))
       : [],

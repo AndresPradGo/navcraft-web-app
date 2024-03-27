@@ -29,7 +29,7 @@ const useDeleteArrangementComponent = (
     AircraftArrangementContext
   >({
     mutationFn: (data) => {
-      let endpoint = `/${
+      const endpoint = `/${
         data.type === 'Fuel Tank'
           ? 'fuel-tank'
           : data.type === 'Seat Row'

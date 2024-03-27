@@ -75,7 +75,7 @@ const AnnouncementBox = ({
 }: Props) => {
   return (
     <HtmlContainer
-      $type={!!isDanger ? 'danger' : !!isWarning ? 'warning' : 'normal'}
+      $type={isDanger ? 'danger' : isWarning ? 'warning' : 'normal'}
       $margin={margin ? margin : '0'}
       $maxWidth={maxWidth ? `${maxWidth}px` : '100%'}
     >

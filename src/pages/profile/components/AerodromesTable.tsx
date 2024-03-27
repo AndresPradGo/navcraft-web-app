@@ -30,11 +30,11 @@ const AerodromesTable = ({ editModal }: Props) => {
     lat_degrees: 0,
     lat_minutes: 0,
     lat_seconds: 0,
-    lat_direction: 'North' as 'North',
+    lat_direction: 'North' as const,
     lon_degrees: 0,
     lon_minutes: 0,
     lon_seconds: 0,
-    lon_direction: 'West' as 'West',
+    lon_direction: 'West' as const,
     magnetic_variation: NaN,
     elevation_ft: 0,
     status: 6,
@@ -98,7 +98,7 @@ const AerodromesTable = ({ editModal }: Props) => {
               setAerodromeId(a.id);
               deleteModal.handleOpen();
             },
-            permissions: 'open-delete' as 'open-delete',
+            permissions: 'open-delete' as const,
           }))
         : [],
     breakingPoint: 1400,

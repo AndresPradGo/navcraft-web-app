@@ -129,7 +129,7 @@ const DeletePerformanceProfileForm = ({
   const mutation = useDeleteProfile(
     aircraftId,
     () => {
-      if (!!redirect) navigate(`/aircraft/${aircraftId}`);
+      if (redirect) navigate(`/aircraft/${aircraftId}`);
     },
     !!redirect,
   );

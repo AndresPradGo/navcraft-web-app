@@ -62,7 +62,7 @@ const ProfilesTable = ({
         setProfileId(p.id);
         deleteModal.handleOpen();
       },
-      permissions: 'open-delete' as 'open-delete',
+      permissions: 'open-delete' as const,
     })),
     breakingPoint: 1000,
   };
