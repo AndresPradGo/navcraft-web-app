@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import Button from '../common/button';
 import useAddAircraft from './useAddAircraft';
 import useEditAircraft from './useEditAircraft';
+import type { ReactIconType } from '../../services/reactIconEntity';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -154,7 +155,7 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const TitleIcon = styled(IoAirplane)`
+const TitleIcon = styled(IoAirplane as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 10px;
@@ -164,7 +165,7 @@ const TitleIcon = styled(IoAirplane)`
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+const CloseIcon = styled(LiaTimesSolid as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
@@ -182,27 +183,27 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
-const MakeIcon = styled(SiFloatplane)`
+const MakeIcon = styled(SiFloatplane as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const ModelIcon = styled(GiAirplane)`
+const ModelIcon = styled(GiAirplane as ReactIconType)`
   font-size: 35px;
   margin: 0 10px;
 `;
 
-const NameIcon = styled(AiFillTag)`
+const NameIcon = styled(AiFillTag as ReactIconType)`
   font-size: 15px;
   margin: 0 5px 0 10px;
 `;
 
-const RegistrationIcon = styled(TfiHeadphoneAlt)`
+const RegistrationIcon = styled(TfiHeadphoneAlt as ReactIconType)`
   font-size: 20px;
   margin: 0 10px;
 `;
 
-const SaveIcon = styled(AiOutlineSave)`
+const SaveIcon = styled(AiOutlineSave as ReactIconType)`
   font-size: 25px;
 `;
 
@@ -211,28 +212,28 @@ const schema = z.object({
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(50, { message: 'Must be at most 50 characters long' })
-    .regex(/^[\.\-a-zA-Z0-9\(\) ]+$/, {
+    .regex(/^[.\-a-zA-Z0-9() ]+$/, {
       message: 'Only letters, numbers, white space, and symbols .-()',
     }),
   model: z
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(50, { message: 'Must be at most 50 characters long' })
-    .regex(/^[\.\-a-zA-Z0-9\(\) ]+$/, {
+    .regex(/^[.\-a-zA-Z0-9() ]+$/, {
       message: 'Only letters, numbers, white space, and symbols .-()',
     }),
   abbreviation: z
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(10, { message: 'Must be at most 10 characters long' })
-    .regex(/^[\-a-zA-Z0-9]+$/, {
+    .regex(/^[-a-zA-Z0-9]+$/, {
       message: 'Only letters, numbers, and symbol -',
     }),
   registration: z
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(10, { message: 'Must be at most 10 characters long' })
-    .regex(/^[\-a-zA-Z0-9]+$/, {
+    .regex(/^[-a-zA-Z0-9]+$/, {
       message: 'Only letters, numbers, and symbol -',
     }),
 });
@@ -268,31 +269,38 @@ const EditAircraftForm = ({ aircraftData, closeModal, isOpen }: Props) => {
         registration: aircraftData.registration,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    aircraftData.make,
+    aircraftData.model,
+    aircraftData.abbreviation,
+    aircraftData.registration,
+    reset,
+  ]);
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
     if (aircraftData.id === 0) {
       addMutation.mutate({
         id: aircraftData.id,
-        make: data.make,
-        model: data.model,
-        abbreviation: data.abbreviation,
-        registration: data.registration,
+        make: data.make as string,
+        model: data.model as string,
+        abbreviation: data.abbreviation as string,
+        registration: data.registration as string,
       });
     } else {
       editMutation.mutate({
         id: aircraftData.id,
-        make: data.make,
-        model: data.model,
-        abbreviation: data.abbreviation,
-        registration: data.registration,
+        make: data.make as string,
+        model: data.model as string,
+        abbreviation: data.abbreviation as string,
+        registration: data.registration as string,
       });
     }
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />
