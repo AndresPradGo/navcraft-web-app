@@ -36,20 +36,35 @@ const useDeleteAircraft = (onDelete: () => void) => {
       return { previusData };
     },
     onSuccess: (_, data) => {
-      queryClient.invalidateQueries({ queryKey: ['aircraft', 'list'] });
-      toast.success(
-        `"${data.registration}" has been deleted from your fleet.`,
-        {
-          position: 'top-center',
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'dark',
-        },
-      );
+      queryClient.invalidateQueries({ queryKey: ['aircraft', 'list'] }).then(() => {
+        toast.success(
+          `"${data.registration}" has been deleted from your fleet.`,
+          {
+            position: 'top-center',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          },
+        );
+      }).catch(() => {
+        toast.info(
+          `"${data.registration}" has been deleted from your fleet, but we weren't able to refresh the displayed data. To see the changes, please refresh the website.`,
+          {
+            position: 'top-center',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          },
+        );
+      });
       onDelete();
     },
     onError: (error, _, context) => {
