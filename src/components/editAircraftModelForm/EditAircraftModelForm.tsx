@@ -13,6 +13,7 @@ import useAddAircraftModel from './useAddAircraftModel';
 import useEditAircraftModel from './useEditAircraftModel';
 import { FuelTypeData } from '../../hooks/useFuelTypes';
 import DataList from '../common/datalist';
+import type { ReactIconType } from '../../services/reactIconEntity';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -196,7 +197,7 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const TitleIcon = styled(IoAirplaneOutline)`
+const TitleIcon = styled(IoAirplaneOutline as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 10px;
@@ -206,7 +207,7 @@ const TitleIcon = styled(IoAirplaneOutline)`
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+const CloseIcon = styled(LiaTimesSolid as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
@@ -224,17 +225,17 @@ const CloseIcon = styled(LiaTimesSolid)`
   }
 `;
 
-const NameIcon = styled(AiFillTag)`
+const NameIcon = styled(AiFillTag as ReactIconType)`
   font-size: 20px;
   margin: 0 5px 0 10px;
 `;
 
-const FuelIcon = styled(BsFillFuelPumpFill)`
+const FuelIcon = styled(BsFillFuelPumpFill as ReactIconType)`
   font-size: 20px;
   margin: 0 10px;
 `;
 
-const SaveIcon = styled(AiOutlineSave)`
+const SaveIcon = styled(AiOutlineSave as ReactIconType)`
   font-size: 25px;
 `;
 
@@ -243,7 +244,7 @@ const schema = z.object({
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(255, { message: 'Must be at most 255 characters long' })
-    .regex(/^[a-zA-Z0-9\s.,()/\-]+$/, {
+    .regex(/^[a-zA-Z0-9\s.,()/-]+$/, {
       message: 'Only letters, numbers, white space, and symbols .,-()/',
     }),
   is_complete: z.boolean(),
@@ -296,7 +297,13 @@ const EditAircraftModelForm = ({
         fuel_type: aircraftModelData.fuel_type,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    aircraftModelData.performance_profile_name,
+    aircraftModelData.is_complete,
+    aircraftModelData.fuel_type,
+    reset,
+  ]);
 
   const submitHandler = (data: FieldValues) => {
     const fuelId = fuelOptions.find((item) => item.name === data.fuel_type)?.id;
@@ -305,15 +312,15 @@ const EditAircraftModelForm = ({
       if (aircraftModelData.id === 0) {
         addMutation.mutate({
           id: aircraftModelData.id,
-          performance_profile_name: data.performance_profile_name,
+          performance_profile_name: data.performance_profile_name as string,
           is_complete: false,
           fuel_type_id: fuelId,
         });
       } else {
         editMutation.mutate({
           id: aircraftModelData.id,
-          performance_profile_name: data.performance_profile_name,
-          is_complete: data.is_complete,
+          performance_profile_name: data.performance_profile_name as string,
+          is_complete: data.is_complete as boolean,
           fuel_type_id: fuelId,
         });
       }
@@ -326,7 +333,7 @@ const EditAircraftModelForm = ({
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />
