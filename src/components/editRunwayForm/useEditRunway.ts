@@ -155,7 +155,7 @@ const useEditRunway = (fromAerodrome: boolean) => {
 
       return { previousRunwaysData };
     },
-    onSuccess: (savedData, newData, _) => {
+    onSuccess: (savedData, newData) => {
       const runway = `${savedData.number < 10 ? '0' : ''}${savedData.number}${savedData.position || ''}`;
       toast.success(
         newData.id !== 0

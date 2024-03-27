@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { AiOutlineFieldNumber, AiOutlineSave } from 'react-icons/ai';
 import { BsSignIntersectionSide } from 'react-icons/bs';
 import { CgMoveUp } from 'react-icons/cg';
@@ -18,6 +18,7 @@ import DataList from '../common/datalist';
 import useRunwaySurfaces from '../../hooks/useRunwaySurfaces';
 import Loader from '../Loader';
 import useEditRunway from './useEditRunway';
+import type { ReactIconType } from '../../services/reactIconEntity';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -164,47 +165,47 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const AerodromeIcon = styled(PiAirTrafficControlDuotone)`
+const AerodromeIcon = styled(PiAirTrafficControlDuotone as ReactIconType)`
   font-size: 35px;
   margin: 0 10px;
   flex-shrink: 0;
 `;
 
-const NumberIcon = styled(AiOutlineFieldNumber)`
+const NumberIcon = styled(AiOutlineFieldNumber as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const PositionIcon = styled(FaLinesLeaning)`
+const PositionIcon = styled(FaLinesLeaning as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const LengthIcon = styled(TfiRuler)`
+const LengthIcon = styled(TfiRuler as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const DisplacementIcon = styled(CgMoveUp)`
+const DisplacementIcon = styled(CgMoveUp as ReactIconType)`
   font-size: 30px;
   margin: 0 10px;
 `;
 
-const IntersectionIcon = styled(BsSignIntersectionSide)`
+const IntersectionIcon = styled(BsSignIntersectionSide as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const SurfaceIcon = styled(GiConcreteBag)`
+const SurfaceIcon = styled(GiConcreteBag as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const SaveIcon = styled(AiOutlineSave)`
+const SaveIcon = styled(AiOutlineSave as ReactIconType)`
   font-size: 25px;
 `;
 
-const AddRunwayIcon = styled(MdAddRoad)`
+const AddRunwayIcon = styled(MdAddRoad as ReactIconType)`
   font-size: 35px;
   margin: 0 5px;
 
@@ -214,7 +215,7 @@ const AddRunwayIcon = styled(MdAddRoad)`
   }
 `;
 
-const EditRunwayIcon = styled(MdEditRoad)`
+const EditRunwayIcon = styled(MdEditRoad as ReactIconType)`
   font-size: 35px;
   margin: 0 5px;
 
@@ -224,7 +225,7 @@ const EditRunwayIcon = styled(MdEditRoad)`
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+const CloseIcon = styled(LiaTimesSolid as ReactIconType)`
   font-size: 25px;
   margin: 0 5px;
   cursor: pointer;
@@ -311,7 +312,7 @@ const EditRunwayForm = ({
   useEffect(() => {
     register('position');
     register('surface');
-  }, []);
+  }, [register]);
 
   useEffect(() => {
     if (isOpen) {
@@ -325,8 +326,40 @@ const EditRunwayForm = ({
         surface: runwayData.surface,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    runwayData.number,
+    runwayData.position,
+    runwayData.length_ft,
+    runwayData.thld_displ,
+    runwayData.intersection_departure_length_ft,
+    runwayData.surface,
+    reset,
+  ]);
 
+  const checkIntersectionDeparture = useCallback(
+    (data: FieldValues): boolean => {
+      const errorMessage =
+        'Threshold displacement must be less than runway length';
+
+      if (errors.intersection_departure_length_ft)
+        if (errors.intersection_departure_length_ft.message !== errorMessage)
+          return true;
+      if ((data.intersection_departure_length_ft || 1) >= data.length_ft) {
+        setError('intersection_departure_length_ft', {
+          type: 'manual',
+          message: errorMessage,
+        });
+        return true;
+      }
+      return false;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setError],
+  );
+
+  const intersecDepartWatch = watch('intersection_departure_length_ft');
+  const lengthWatch = watch('length_ft');
   useEffect(() => {
     const wrongIntxnDep = checkIntersectionDeparture({
       intersection_departure_length_ft: watch(
@@ -335,49 +368,43 @@ const EditRunwayForm = ({
       length_ft: watch('length_ft'),
     });
     if (!wrongIntxnDep) clearErrors('intersection_departure_length_ft');
-  }, [watch('intersection_departure_length_ft'), watch('length_ft')]);
+  }, [
+    intersecDepartWatch,
+    lengthWatch,
+    clearErrors,
+    watch,
+    checkIntersectionDeparture,
+  ]);
 
+  const checkThresholdDisplacement = useCallback(
+    (data: FieldValues): boolean => {
+      const errorMessage =
+        'Threshold displacement must be less than runway length';
+
+      if (errors.thld_displ)
+        if (errors.thld_displ.message !== errorMessage) return true;
+
+      if ((data.thld_displ || 1) >= data.length_ft) {
+        setError('thld_displ', {
+          type: 'manual',
+          message: errorMessage,
+        });
+        return true;
+      }
+      return false;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setError],
+  );
+
+  const thldDispl = watch('thld_displ');
   useEffect(() => {
     const wrongThldDispl = checkThresholdDisplacement({
       thld_displ: watch('thld_displ'),
       length_ft: watch('length_ft'),
     });
     if (!wrongThldDispl) clearErrors('thld_displ');
-  }, [watch('thld_displ'), watch('length_ft')]);
-
-  const checkIntersectionDeparture = (data: FieldValues): boolean => {
-    const errorMessage =
-      'Threshold displacement must be less than runway length';
-
-    if (errors.intersection_departure_length_ft)
-      if (errors.intersection_departure_length_ft.message !== errorMessage)
-        return true;
-    if ((data.intersection_departure_length_ft || 1) >= data.length_ft) {
-      setError('intersection_departure_length_ft', {
-        type: 'manual',
-        message: errorMessage,
-      });
-      return true;
-    }
-    return false;
-  };
-
-  const checkThresholdDisplacement = (data: FieldValues): boolean => {
-    const errorMessage =
-      'Threshold displacement must be less than runway length';
-
-    if (errors.thld_displ)
-      if (errors.thld_displ.message !== errorMessage) return true;
-
-    if ((data.thld_displ || 1) >= data.length_ft) {
-      setError('thld_displ', {
-        type: 'manual',
-        message: errorMessage,
-      });
-      return true;
-    }
-    return false;
-  };
+  }, [thldDispl, lengthWatch, clearErrors, watch, checkThresholdDisplacement]);
 
   const handleOptionalLengthValues = (value: string): number | null => {
     if (Number.isNaN(parseFloat(value))) return null;
@@ -404,11 +431,11 @@ const EditRunwayForm = ({
 
     if (!wrongThldDispl && !wrongIntxnDep && surface_id) {
       closeModal();
-      const pos = data.position;
+      const pos = data.position as string;
       mutation.mutate({
         id: runwayData.id,
         aerodrome_id: runwayData.aerodromeId,
-        number: data.number,
+        number: data.number as number,
         position:
           pos === 'Right'
             ? 'R'
@@ -417,19 +444,20 @@ const EditRunwayForm = ({
               : pos === 'Center'
                 ? 'C'
                 : undefined,
-        length_ft: data.length_ft,
+        length_ft: data.length_ft as number,
         landing_length_ft: data.thld_displ
           ? data.length_ft - data.thld_displ
           : undefined,
-        intersection_departure_length_ft: data.intersection_departure_length_ft,
-        surface: data.surface,
+        intersection_departure_length_ft:
+          data.intersection_departure_length_ft as number,
+        surface: data.surface as string,
         surface_id: surface_id,
       });
     }
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           {runwayData.id !== 0 ? <EditRunwayIcon /> : <AddRunwayIcon />}
