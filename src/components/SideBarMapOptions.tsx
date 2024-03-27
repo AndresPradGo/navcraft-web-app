@@ -5,6 +5,7 @@ import { TbMapOff } from 'react-icons/tb';
 import { styled } from 'styled-components';
 
 import Button from './common/button';
+import type { ReactIconType } from '../services/reactIconEntity';
 
 const HtmlButtonList = styled.div`
   width: 100%;
@@ -98,11 +99,11 @@ const HtmlCheckbox = styled.label<InputProps>`
   }
 `;
 
-const MapIcon = styled(GrMapLocation)`
+const MapIcon = styled(GrMapLocation as ReactIconType)`
   font-size: 23px;
 `;
 
-const CloseMapIcon = styled(TbMapOff)`
+const CloseMapIcon = styled(TbMapOff as ReactIconType)`
   font-size: 25px;
 `;
 
