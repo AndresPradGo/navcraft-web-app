@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { AiOutlineSave } from 'react-icons/ai';
 import { BiHide } from 'react-icons/bi';
 import {
@@ -20,6 +20,7 @@ import Button from '../common/button';
 import useEditOfficialAerodrome from './useEditOfficialAerodrome';
 import DataList from '../../components/common/datalist';
 import { AerodromeStatus } from '../../hooks/useAerodromeStatusList';
+import type { ReactIconType } from '../../services/reactIconEntity';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -261,56 +262,56 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const HideIcon = styled(BiHide)`
+const HideIcon = styled(BiHide as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const SaveIcon = styled(AiOutlineSave)`
+const SaveIcon = styled(AiOutlineSave as ReactIconType)`
   font-size: 25px;
 `;
 
-const CodeIcon = styled(TbMapSearch)`
-  font-size: 25px;
-  margin: 0 10px;
-`;
-
-const NameIcon = styled(LiaMapSignsSolid)`
+const CodeIcon = styled(TbMapSearch as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const StatusIcon = styled(SlBadge)`
+const NameIcon = styled(LiaMapSignsSolid as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const WeatherIcon = styled(WiDayCloudyGusts)`
+const StatusIcon = styled(SlBadge as ReactIconType)`
+  font-size: 25px;
+  margin: 0 10px;
+`;
+
+const WeatherIcon = styled(WiDayCloudyGusts as ReactIconType)`
   font-size: 30px;
   margin: 0 10px;
 `;
 
-const LatitudeIcon = styled(TbWorldLatitude)`
+const LatitudeIcon = styled(TbWorldLatitude as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const LongitudeIcon = styled(TbWorldLongitude)`
+const LongitudeIcon = styled(TbWorldLongitude as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const CompassIcon = styled(ImCompass2)`
+const CompassIcon = styled(ImCompass2 as ReactIconType)`
   font-size: 25px;
   margin: 0 10px;
 `;
 
-const TerrainIcon = styled(LiaMountainSolid)`
+const TerrainIcon = styled(LiaMountainSolid as ReactIconType)`
   font-size: 30px;
   margin: 0 10px;
 `;
 
-const AddAerodromeIcon = styled(PiAirTrafficControlDuotone)`
+const AddAerodromeIcon = styled(PiAirTrafficControlDuotone as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 10px;
@@ -320,7 +321,7 @@ const AddAerodromeIcon = styled(PiAirTrafficControlDuotone)`
   }
 `;
 
-const CloseIcon = styled(LiaTimesSolid)`
+const CloseIcon = styled(LiaTimesSolid as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
@@ -457,8 +458,52 @@ const EditOfficialAerodromeForm = ({
         status: aerodromeData.status,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    aerodromeData.code,
+    aerodromeData.name,
+    aerodromeData.lat_degrees,
+    aerodromeData.lat_minutes,
+    aerodromeData.lat_seconds,
+    aerodromeData.lat_direction,
+    aerodromeData.lon_degrees,
+    aerodromeData.lon_minutes,
+    aerodromeData.lon_seconds,
+    aerodromeData.lon_direction,
+    aerodromeData.magnetic_variation,
+    aerodromeData.elevation_ft,
+    aerodromeData.hide,
+    aerodromeData.has_taf,
+    aerodromeData.has_metar,
+    aerodromeData.has_fds,
+    aerodromeData.status,
+    reset,
+  ]);
 
+  const checkCoordinates = useCallback(
+    (data: FieldValues) => {
+      const { lon_direction, lon_degrees, lon_minutes, lon_seconds } = data;
+      if (
+        (lon_direction === 'E' &&
+          lon_degrees >= 180 &&
+          (lon_minutes > 59 || lon_seconds > 59)) ||
+        (lon_direction === 'W' && lon_degrees > 179)
+      ) {
+        setError('lon_degrees', {
+          type: 'manual',
+          message: `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`,
+        });
+        return true;
+      }
+      return false;
+    },
+    [setError],
+  );
+
+  const lonDirWatch = watch('lon_direction');
+  const lonDegWatch = watch('lon_degrees');
+  const lonMinWatch = watch('lon_minutes');
+  const lonSecWatch = watch('lon_seconds');
   useEffect(() => {
     const wrongCoordinates = checkCoordinates({
       lon_direction: watch('lon_direction'),
@@ -468,31 +513,17 @@ const EditOfficialAerodromeForm = ({
     });
     if (!wrongCoordinates) clearErrors('lon_degrees');
   }, [
-    watch('lon_direction'),
-    watch('lon_degrees'),
-    watch('lon_minutes'),
-    watch('lon_seconds'),
+    lonDirWatch,
+    lonDegWatch,
+    lonMinWatch,
+    lonSecWatch,
+    watch,
+    clearErrors,
+    checkCoordinates,
   ]);
 
   const handleCancel = () => {
     closeModal();
-  };
-
-  const checkCoordinates = (data: FieldValues) => {
-    const { lon_direction, lon_degrees, lon_minutes, lon_seconds } = data;
-    if (
-      (lon_direction === 'E' &&
-        lon_degrees >= 180 &&
-        (lon_minutes > 59 || lon_seconds > 59)) ||
-      (lon_direction === 'W' && lon_degrees > 179)
-    ) {
-      setError('lon_degrees', {
-        type: 'manual',
-        message: `Longitude must be between W 179° 59' 59" and E 180° 0' 0"`,
-      });
-      return true;
-    }
-    return false;
   };
 
   const handleMagneticVariationValue = (value: string): number | null => {
@@ -515,30 +546,30 @@ const EditOfficialAerodromeForm = ({
       closeModal();
       mutation.mutate({
         id: aerodromeData.id,
-        code: data.code,
-        name: data.name,
-        lat_degrees: data.lat_degrees,
-        lat_minutes: data.lat_minutes,
-        lat_seconds: data.lat_seconds,
-        lat_direction: data.lat_direction,
-        lon_degrees: data.lon_degrees,
-        lon_minutes: data.lon_minutes,
-        lon_seconds: data.lon_seconds,
-        lon_direction: data.lon_direction,
-        magnetic_variation: data.magnetic_variation,
-        elevation_ft: data.elevation_ft,
-        hide: data.hide,
-        has_taf: data.has_taf,
-        has_metar: data.has_metar,
-        has_fds: data.has_fds,
-        status: data.status,
+        code: data.code as string,
+        name: data.name as string,
+        lat_degrees: data.lat_degrees as number,
+        lat_minutes: data.lat_minutes as number,
+        lat_seconds: data.lat_seconds as number,
+        lat_direction: data.lat_direction as 'North' | 'South',
+        lon_degrees: data.lon_degrees as number,
+        lon_minutes: data.lon_minutes as number,
+        lon_seconds: data.lon_seconds as number,
+        lon_direction: data.lon_direction as 'East' | 'West',
+        magnetic_variation: data.magnetic_variation as number,
+        elevation_ft: data.elevation_ft as number,
+        hide: data.hide as boolean,
+        has_taf: data.has_taf as boolean,
+        has_metar: data.has_metar as boolean,
+        has_fds: data.has_fds as boolean,
+        status: data.status as string,
         status_id: statusId,
       });
     }
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <AddAerodromeIcon />
