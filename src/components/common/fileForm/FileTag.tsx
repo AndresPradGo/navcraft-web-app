@@ -2,6 +2,8 @@ import { LiaTimesSolid } from 'react-icons/lia';
 import { FaFileCsv } from 'react-icons/fa6';
 import { styled } from 'styled-components';
 
+import type { ReactIconType } from '../../../services/reactIconEntity';
+
 const HtmlFileTag = styled.p`
   overflow: hidden;
   max-width: 90%;
@@ -27,7 +29,7 @@ const HtmlFileTag = styled.p`
   }
 `;
 
-const FileIcon = styled(FaFileCsv)`
+const FileIcon = styled(FaFileCsv as ReactIconType)`
   flex-shrink: 0;
   margin-right: 10px !important;
   font-size: 20px !important;
@@ -35,7 +37,7 @@ const FileIcon = styled(FaFileCsv)`
   cursor: default !important;
 `;
 
-const DeleteIcon = styled(LiaTimesSolid)`
+const DeleteIcon = styled(LiaTimesSolid as ReactIconType)`
   flex-shrink: 0;
   cursor: pointer;
   color: var(--color-grey-bright);

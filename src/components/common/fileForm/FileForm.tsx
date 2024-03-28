@@ -18,6 +18,7 @@ import FileTag from './FileTag';
 import useUploadFile from './useUploadFile';
 import Loader from '../../Loader';
 import ExpandibleMessage from '../ExpandibleMessage';
+import type { ReactIconType } from '../../../services/reactIconEntity';
 
 const HtmlForm = styled.form`
   width: 100%;
@@ -143,26 +144,26 @@ const HtmlButtons = styled.div`
   padding: 10px 20px;
 `;
 
-const SaveIcon = styled(AiOutlineSave)`
+const SaveIcon = styled(AiOutlineSave as ReactIconType)`
   font-size: 25px;
 `;
 
-const UploadIcon = styled(FaUpload)`
+const UploadIcon = styled(FaUpload as ReactIconType)`
   font-size: 40px;
 `;
 
-const BrowseIcon = styled(LuFolderSearch)`
+const BrowseIcon = styled(LuFolderSearch as ReactIconType)`
   font-size: 20px;
   margin: 0 5px;
 `;
 
-const HelpIcon = styled(MdOutlineLiveHelp)`
+const HelpIcon = styled(MdOutlineLiveHelp as ReactIconType)`
   font-size: 20px;
   flex-shrink: 0;
   margin: 0 0 0 5px;
 `;
 
-const ExportIcon = styled(FaFileExport)`
+const ExportIcon = styled(FaFileExport as ReactIconType)`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 2px;
@@ -176,7 +177,7 @@ interface CloseIconProps {
   $disabled: boolean;
 }
 
-const CloseIcon = styled(LiaTimesSolid)<CloseIconProps>`
+const CloseIcon = styled(LiaTimesSolid as ReactIconType)<CloseIconProps>`
   flex-shrink: 0;
   font-size: 25px;
   margin: 0 5px;
@@ -235,7 +236,7 @@ const FileForm = ({
     if (submited && !mutation.isLoading) {
       closeModal();
     }
-  }, [submited, mutation.isLoading]);
+  }, [submited, mutation.isLoading, closeModal]);
 
   const handleDragover = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();

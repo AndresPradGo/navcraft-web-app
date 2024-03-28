@@ -14,9 +14,9 @@ const useUploadFile = (
   const queryClient = useQueryClient();
   return useMutation<string, APIClientError, FormData>({
     mutationFn: (data) => apiClient.post(data, path),
-    onSuccess: () => {
+    onSuccess: async () => {
       for (const queryKey of queryKeys)
-        queryClient.invalidateQueries({ queryKey });
+        await queryClient.invalidateQueries({ queryKey });
       toast.success(`${successMessage} data has been updated successfully`, {
         position: 'top-center',
         autoClose: 10000,
