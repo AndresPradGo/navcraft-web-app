@@ -189,7 +189,8 @@ const DataList = ({
       if (resetValue === '') dispatch({ type: 'RESET', options });
       else dispatch({ type: 'FILTER', value: resetValue, options });
     }
-  }, [formIsOpen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formIsOpen, resetValue, positionPopperTools.inputRef]);
 
   const handleListItemClick = (value: string) => {
     positionPopperTools.closeExpandible();
