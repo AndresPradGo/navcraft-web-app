@@ -4,7 +4,6 @@ import useSideBar from '../../sidebar/useSideBar';
 import { ReactNode } from 'react';
 import EditTableButtons, {
   Props as EditButtonsProps,
-  EditButtonsPropsTypeUnion,
 } from './EditTableButtons';
 import Loader from '../../Loader';
 
@@ -260,7 +259,7 @@ const HtmlTableDataCell = styled.td<HtmlTagProps>`
 
 export interface RowType extends EditButtonsProps {
   id: number;
-  [key: string]: ReactNode | EditButtonsPropsTypeUnion;
+  [key: string]: ReactNode | (() => void);
   isResult?: boolean;
 }
 
@@ -354,7 +353,7 @@ const Table = ({
                       >
                         <EditTableButtons
                           handleEdit={row.handleEdit}
-                          handleDelete={row.handleDelete as () => {}}
+                          handleDelete={row.handleDelete as () => void}
                           permissions={row.permissions}
                         />
                       </HtmlTableDataCell>

@@ -3,6 +3,7 @@ import { RiDeleteBinLine, RiArrowRightLine } from 'react-icons/ri';
 import { styled } from 'styled-components';
 
 import Button from '../button/Button';
+import type { ReactIconType } from '../../../services/reactIconEntity';
 
 const HtmlButtonGroup = styled.div`
   display: flex;
@@ -18,21 +19,18 @@ const HtmlButtonGroup = styled.div`
   }
 `;
 
-const DeleteIcon = styled(RiDeleteBinLine)`
+const DeleteIcon = styled(RiDeleteBinLine as ReactIconType)`
   font-size: 14px;
 `;
 
-const EditIcon = styled(BiSolidEditAlt)`
+const EditIcon = styled(BiSolidEditAlt as ReactIconType)`
   font-size: 14px;
 `;
 
-const OpenIcon = styled(RiArrowRightLine)`
+const OpenIcon = styled(RiArrowRightLine as ReactIconType)`
   font-size: 14px;
 `;
 
-export type EditButtonsPropsTypeUnion =
-  | (() => void)
-  | ('open' | 'edit' | 'delete' | undefined);
 export interface Props {
   handleEdit: string | (() => void);
   handleDelete: () => void;

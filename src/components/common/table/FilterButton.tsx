@@ -6,6 +6,7 @@ import { TbFilterOff } from 'react-icons/tb';
 import Button from '../button/Button';
 import { usePopperButton } from '../button';
 import { FilterAction } from './filtersReducer';
+import type { ReactIconType } from '../../../services/reactIconEntity';
 
 interface HtmlFormProps {
   ref: Dispatch<SetStateAction<HTMLElement | null>>;
@@ -86,11 +87,11 @@ const HtmlCheckbox = styled.label`
   }
 `;
 
-const FilterIcon = styled(VscFilter)`
+const FilterIcon = styled(VscFilter as ReactIconType)`
   font-size: 20px;
 `;
 
-const FilterFilledIcon = styled(VscFilterFilled)`
+const FilterFilledIcon = styled(VscFilterFilled as ReactIconType)`
   font-size: 20px;
 `;
 

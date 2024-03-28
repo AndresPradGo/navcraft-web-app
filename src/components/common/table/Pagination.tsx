@@ -8,6 +8,7 @@ import {
 import { styled } from 'styled-components';
 
 import { PageAction } from './pageReducer';
+import type { ReactIconType } from '../../../services/reactIconEntity';
 
 const HtmlContainer = styled.div`
   width: 100%;
@@ -29,7 +30,7 @@ const IconContainer = styled.div`
   }
 `;
 
-const DoubleLeftIcon = styled(BsChevronDoubleLeft)`
+const DoubleLeftIcon = styled(BsChevronDoubleLeft as ReactIconType)`
   cursor: pointer;
   color: var(--color-grey);
   font-size: 25px;
@@ -41,7 +42,7 @@ const DoubleLeftIcon = styled(BsChevronDoubleLeft)`
   }
 `;
 
-const DoubleRightIcon = styled(BsChevronDoubleRight)`
+const DoubleRightIcon = styled(BsChevronDoubleRight as ReactIconType)`
   cursor: pointer;
   color: var(--color-grey);
   font-size: 25px;
@@ -53,7 +54,7 @@ const DoubleRightIcon = styled(BsChevronDoubleRight)`
   }
 `;
 
-const LeftIcon = styled(BsArrowLeft)`
+const LeftIcon = styled(BsArrowLeft as ReactIconType)`
   cursor: pointer;
   color: var(--color-grey);
   font-size: 25px;
@@ -65,7 +66,7 @@ const LeftIcon = styled(BsArrowLeft)`
   }
 `;
 
-const RightIcon = styled(BsArrowRight)`
+const RightIcon = styled(BsArrowRight as ReactIconType)`
   cursor: pointer;
   color: var(--color-grey);
   font-size: 25px;

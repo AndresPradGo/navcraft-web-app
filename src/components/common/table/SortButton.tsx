@@ -64,11 +64,11 @@ interface Props {
 const SortButton = ({ sortOptions, selectedSortData, dispatch }: Props) => {
   const popperTools = usePopperButton();
 
-  const handleListItemClick = (index: number) => {
+  const handleListItemClick = (idx: number) => {
     popperTools.closeExpandible();
-    const selectingSameColumn = selectedSortData.index === index;
+    const selectingSameColumn = selectedSortData.index === idx;
     if (selectingSameColumn) dispatch({ type: 'SWAP' });
-    else dispatch({ type: 'CHANGE', value: index });
+    else dispatch({ type: 'CHANGE', value: idx });
   };
 
   const arrowIcons = {
@@ -110,7 +110,7 @@ const SortButton = ({ sortOptions, selectedSortData, dispatch }: Props) => {
         {sortOptions.map((sortColumn, index) => (
           <HtmlListItem
             key={sortColumn.key}
-            onClick={() => handleListItemClick((index = index))}
+            onClick={() => handleListItemClick(index)}
           >
             {sortColumn.title}
             {index === selectedSortData.index &&

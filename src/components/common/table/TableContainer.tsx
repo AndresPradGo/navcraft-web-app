@@ -74,6 +74,7 @@ const TableContainer = ({
     dispatchPage({ type: 'RESET' });
   }, [searchText, filters.length]);
 
+  const tableKey = tableData.keys[0];
   useEffect(() => {
     setSearchText('');
     dispatchFilters({ type: 'CLEAR' });
@@ -82,7 +83,7 @@ const TableContainer = ({
   }, [
     emptyTableMessage,
     tableData.keys.length,
-    tableData.keys[0],
+    tableKey,
     sortColumnOptions?.length,
   ]);
 
