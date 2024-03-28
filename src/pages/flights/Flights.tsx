@@ -66,7 +66,7 @@ const AddIcon = styled(IoAdd)`
   font-size: 25px;
 `;
 
-const flights = () => {
+const Flights = () => {
   const [deleteFlightData, setDeleteFlightData] = useState({
     route: '',
     id: 0,
@@ -297,4 +297,4 @@ const flights = () => {
   );
 };
 
-export default flights;
+export default Flights;

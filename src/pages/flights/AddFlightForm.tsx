@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AiOutlineSave } from 'react-icons/ai';
 import { BiSolidPlaneLand, BiSolidPlaneTakeOff } from 'react-icons/bi';
@@ -271,7 +271,7 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
     register('aircraft');
     register('departure_aerodrome');
     register('arrival_aerodrome');
-  }, []);
+  }, [register]);
 
   useEffect(() => {
     if (isOpen) {
@@ -282,8 +282,46 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
         arrival_aerodrome: '',
       });
     }
-  }, [isOpen]);
+  }, [isOpen, reset]);
 
+  const checkDepartureTime = useCallback(
+    (data: FieldValues): boolean => {
+      const dateValue = `${data.departure_time}:00Z`;
+      const wrongFormat = 'Enter a valid date-time';
+      const futureDateMessage = 'Departure Time must be in the future';
+
+      if (errors.departure_time) {
+        if (
+          errors.departure_time.message !== futureDateMessage &&
+          errors.departure_time.message !== wrongFormat
+        )
+          return true;
+      }
+
+      const datetimeSchema = z.string().datetime();
+      const result = datetimeSchema.safeParse(dateValue);
+      if (!result.success) {
+        setError('departure_time', {
+          type: 'manual',
+          message: wrongFormat,
+        });
+        return false;
+      }
+
+      if (dateValue < getUTCNowString()) {
+        setError('departure_time', {
+          type: 'manual',
+          message: futureDateMessage,
+        });
+        return true;
+      }
+      return false;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setError],
+  );
+
+  const departureTime = watch('departure_time');
   useEffect(() => {
     const wrongDatatime = checkDepartureTime({
       departure_time: watch('departure_time'),
@@ -291,40 +329,7 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
     if (!wrongDatatime) {
       clearErrors('departure_time');
     }
-  }, [watch('departure_time')]);
-
-  const checkDepartureTime = (data: FieldValues): boolean => {
-    const dateValue = `${data.departure_time}:00Z`;
-    const wrongFormat = 'Enter a valid date-time';
-    const futureDateMessage = 'Departure Time must be in the future';
-
-    if (errors.departure_time) {
-      if (
-        errors.departure_time.message !== futureDateMessage &&
-        errors.departure_time.message !== wrongFormat
-      )
-        return true;
-    }
-
-    const datetimeSchema = z.string().datetime();
-    const result = datetimeSchema.safeParse(dateValue);
-    if (!result.success) {
-      setError('departure_time', {
-        type: 'manual',
-        message: wrongFormat,
-      });
-      return false;
-    }
-
-    if (dateValue < getUTCNowString()) {
-      setError('departure_time', {
-        type: 'manual',
-        message: futureDateMessage,
-      });
-      return true;
-    }
-    return false;
-  };
+  }, [departureTime, checkDepartureTime, watch, clearErrors]);
 
   const submitHandler = (data: FieldValues) => {
     const wrongDatatime = checkDepartureTime({
@@ -372,7 +377,7 @@ const AddFlightForm = ({ closeModal, isOpen }: Props) => {
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />
