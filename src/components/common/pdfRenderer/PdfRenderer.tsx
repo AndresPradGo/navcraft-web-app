@@ -7,6 +7,7 @@ import PdfDocument from './PdfDocument';
 import type { Props as PdfContent } from './PdfDocument';
 import Button from '../button/index';
 import FlightWarningList from '../FlightWarningList';
+import type { ReactIconType } from '../../../services/reactIconEntity';
 
 const HtmlPDFViwerContainer = styled.div`
   width: 100%;
@@ -19,13 +20,13 @@ const HtmlPDFViwerContainer = styled.div`
   }
 `;
 
-const DownloadIcon = styled(FaDownload)`
+const DownloadIcon = styled(FaDownload as ReactIconType)`
   font-size: 20px;
   margin-right: 8px;
   padding-bottom: 3px;
 `;
 
-const PDFIcon = styled(FaRegFilePdf)`
+const PDFIcon = styled(FaRegFilePdf as ReactIconType)`
   font-size: 25px;
   margin-right: 8px;
 `;
@@ -37,7 +38,7 @@ interface Props extends PdfContent {
 
 const PdfRenderer = ({ content, btnText, handleBtnClick }: Props) => {
   const document = <PdfDocument content={content} />;
-  const [instance, _] = usePDF({ document });
+  const instance = usePDF({ document })[0];
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
