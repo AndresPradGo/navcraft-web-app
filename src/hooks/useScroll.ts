@@ -9,7 +9,7 @@ import { animateScroll as scroll, scroller } from 'react-scroll';
 export default function useScroll(hasSideBar: boolean) {
   const location = useLocation();
   const searchParams = useSearchParams()[0];
-  const action = useNavigationType();
+  const action: 'POP' | 'PUSH' | 'REPLACE' = useNavigationType();
 
   useEffect(() => {
     const scrollTo = searchParams.get('scrollTo');
@@ -46,5 +46,5 @@ export default function useScroll(hasSideBar: boolean) {
         delay: 0,
         smooth: false,
       });
-  }, [location.key]);
+  }, [location.key, action, hasSideBar, searchParams]);
 }

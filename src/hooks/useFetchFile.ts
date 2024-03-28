@@ -38,7 +38,7 @@ const useFetchFile = () => {
       apiClient
         .getZipOrImage(path)
         .then((res) => {
-          saveZIPOrImageToFile(res.data, res.headers.filename);
+          saveZIPOrImageToFile(res.data, res.headers.filename as string);
         })
         .catch((err) => {
           const error = err as APIClientError;
@@ -70,7 +70,7 @@ const useFetchFile = () => {
       apiClient
         .getZipOrImage(path)
         .then((res) => {
-          saveZIPOrImageToFile(res.data, res.headers.filename, isGraph);
+          saveZIPOrImageToFile(res.data, res.headers.filename as string, isGraph);
         })
         .catch((err) => {
           const error = err as APIClientError;
@@ -102,7 +102,7 @@ const useFetchFile = () => {
       apiClient
         .getCsvFile(path)
         .then((res) => {
-          downloadCSV(res.data, res.headers.filename);
+          downloadCSV(res.data, res.headers.filename as string);
         })
         .catch((err) => {
           const error = err as APIClientError;
