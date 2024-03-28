@@ -41,7 +41,7 @@ const useDeleteLeg = (flightId: number, isLeg?: boolean) => {
       );
       return { previousData };
     },
-    onSuccess: (savedData, newData) => {
+    onSuccess: async (savedData, newData) => {
       toast.success(
         !isLeg
           ? `${newData.identifier} waypoint has been successfully removed from your flight plan.`
@@ -61,20 +61,20 @@ const useDeleteLeg = (flightId: number, isLeg?: boolean) => {
         ['flight', flightId],
         () => savedData,
       );
-      queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
+      await queryClient.invalidateQueries({
         queryKey: ['weightBalanceReport', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['fuelCalculations', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['takeoffLandingDistances', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['weatherBriefing', flightId],
       });
-      queryClient.invalidateQueries({ queryKey: ['notamBriefing', flightId] });
+      await queryClient.invalidateQueries({ queryKey: ['notamBriefing', flightId] });
     },
     onError: (error, _, context) => {
       errorToast(error);

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { LuRefreshCw } from 'react-icons/lu';
 import { styled } from 'styled-components';
@@ -60,19 +60,7 @@ const WeatherBriefingSection = ({
     flightId,
   ]);
 
-  useEffect(() => {
-    if (
-      briefingData === 'null' &&
-      !mutation.isLoading &&
-      !isLoading &&
-      flightData &&
-      legsData
-    ) {
-      refreshBriefing();
-    }
-  }, [isLoading, flightDataIsChanging]);
-
-  const refreshBriefing = () => {
+  const refreshBriefing = useCallback(() => {
     if (legsData && flightData && flightData.weather_hours_from_etd >= 0) {
       const etd = new Date(flightData.departure_time);
       const departure = {
@@ -128,7 +116,33 @@ const WeatherBriefingSection = ({
       const data = { departure, legs, arrival, alternates };
       mutation.mutate(data);
     }
-  };
+  }, [
+    arrivalAerodrome.code,
+    departureAerodrome.code,
+    flightData,
+    legsData,
+    mutation,
+  ]);
+
+  useEffect(() => {
+    if (
+      briefingData === 'null' &&
+      !mutation.isLoading &&
+      !isLoading &&
+      flightData &&
+      legsData
+    ) {
+      refreshBriefing();
+    }
+  }, [
+    isLoading,
+    flightDataIsChanging,
+    briefingData,
+    flightData,
+    legsData,
+    mutation.isLoading,
+    refreshBriefing,
+  ]);
 
   if (
     isLoading ||

@@ -124,7 +124,7 @@ export type NOTAMBriefingData =
 
 const apiClient = new APIClient<
   BriefingRequest,
-  WeatherBriefingFromAPI | unknown
+  WeatherBriefingFromAPI | NOTAMBriefingFromAPI
 >('/briefings');
 
 export default apiClient;

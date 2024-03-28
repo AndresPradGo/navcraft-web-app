@@ -46,10 +46,12 @@ const NewMarker = ({
                 handleFocusLegIdx(-1);
               }
             },
-            dragend: (e) => {
+            dragend: (e: L.DragEndEvent) => {
               handleNewWaypointCoordinates({
-                lat: e.target._latlng.lat,
-                lng: e.target._latlng.lng,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                lat: e.target._latlng.lat as number,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                lng: e.target._latlng.lng as number,
               });
               handleMarkerDrop();
               openModal();

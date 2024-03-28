@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useForm, FieldValues } from 'react-hook-form';
 import { AiOutlineSave } from 'react-icons/ai';
 import { BsFillFuelPumpFill } from 'react-icons/bs';
@@ -242,44 +242,48 @@ const AddFuelForm = ({
         gallons: fuelData.gallons,
       });
     }
-  }, [isOpen]);
+  }, [isOpen, fuelData.gallons, reset]);
 
   useEffect(() => {
     if (submited && !mutation.isLoading) {
       closeModal();
     }
-  }, [submited, mutation.isLoading]);
+  }, [submited, mutation.isLoading, closeModal]);
 
+  const checkWithinCapacity = useCallback(
+    (gallons: number): boolean => {
+      if (gallons > usableCapacity) {
+        setError('gallons', {
+          type: 'manual',
+          message: `Maximum usable capacity is ${usableCapacity} gallons`,
+        });
+        return false;
+      } else {
+        clearErrors('gallons');
+        return true;
+      }
+    },
+    [clearErrors, setError, usableCapacity],
+  );
+
+  const watchedGallons = watch('gallons');
   useEffect(() => {
     checkWithinCapacity(watch('gallons'));
-  }, [watch('gallons')]);
-
-  const checkWithinCapacity = (gallons: number): boolean => {
-    if (gallons > usableCapacity) {
-      setError('gallons', {
-        type: 'manual',
-        message: `Maximum usable capacity is ${usableCapacity} gallons`,
-      });
-      return false;
-    } else {
-      clearErrors('gallons');
-      return true;
-    }
-  };
+  }, [watchedGallons, checkWithinCapacity, watch]);
 
   const submitHandler = (data: FieldValues) => {
-    const isWithinCapacity = checkWithinCapacity(data.gallons);
+    const isWithinCapacity = checkWithinCapacity(data.gallons as number);
     if (isWithinCapacity) {
       mutation.mutate({
         id: fuelData.id,
-        gallons: data.gallons,
+        gallons: data.gallons as number,
       });
       setSubmited(true);
     }
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

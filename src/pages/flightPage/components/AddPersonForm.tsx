@@ -447,13 +447,20 @@ const AddPersonForm = ({
         weight_lb: null,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    passengerData.id,
+    passengerData.is_me,
+    passengerData.name,
+    passengerData.passenger_profile_id,
+    passengerData.weight_lb,
+  ]);
 
   useEffect(() => {
     if (submited && (!mutation.isLoading || removeMutation.isLoading)) {
       closeModal();
     }
-  }, [submited, mutation.isLoading, removeMutation.isLoading]);
+  }, [submited, mutation.isLoading, removeMutation.isLoading, closeModal]);
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newName = e.target.value;

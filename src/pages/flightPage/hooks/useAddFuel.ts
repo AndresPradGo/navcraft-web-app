@@ -12,7 +12,7 @@ const useAddFuel = (flightId: number) => {
   const queryClient = useQueryClient();
   return useMutation<FuelOnBoardDataFromAPI, APIClientError, FuelDataFromForm>({
     mutationFn: (data) => apiClient.edit(data, `/${data.id}`),
-    onSuccess: (savedData) => {
+    onSuccess: async (savedData) => {
       toast.success('Aircraft has been refuelled successfully', {
         position: 'top-center',
         autoClose: 10000,
@@ -32,20 +32,20 @@ const useAddFuel = (flightId: number) => {
               )
             : [savedData],
       );
-      queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
+      await queryClient.invalidateQueries({
         queryKey: ['weightBalanceReport', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['fuelCalculations', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['takeoffLandingDistances', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['weatherBriefing', flightId],
       });
-      queryClient.invalidateQueries({ queryKey: ['notamBriefing', flightId] });
+      await queryClient.invalidateQueries({ queryKey: ['notamBriefing', flightId] });
     },
     onError: (error) => {
       errorToast(error);

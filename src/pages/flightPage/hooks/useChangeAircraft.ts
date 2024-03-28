@@ -45,7 +45,7 @@ const useChangeAircraft = (flightId: number) => {
       );
       return { previousData };
     },
-    onSuccess: (savedData, newData) => {
+    onSuccess: async (savedData, newData) => {
       toast.success(`Aircarft has been Changed to "${newData.aircraft}"`, {
         position: 'top-center',
         autoClose: 10000,
@@ -60,20 +60,20 @@ const useChangeAircraft = (flightId: number) => {
         ['flight', flightId],
         () => savedData,
       );
-      queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
+      await queryClient.invalidateQueries({
         queryKey: ['weightBalanceReport', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['fuelCalculations', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['takeoffLandingDistances', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['weatherBriefing', flightId],
       });
-      queryClient.invalidateQueries({ queryKey: ['notamBriefing', flightId] });
+      await queryClient.invalidateQueries({ queryKey: ['notamBriefing', flightId] });
     },
     onError: (error, _, context) => {
       errorToast(error);

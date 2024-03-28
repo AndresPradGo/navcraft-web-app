@@ -13,7 +13,7 @@ const useRemovePerson = (flightId: number) => {
     mutationFn: (id) => {
       return apiClient.delete(`/${id}`);
     },
-    onSuccess: (_, id) => {
+    onSuccess: async (_, id) => {
       toast.success('Passenger/crew-member has been removed successfully', {
         position: 'top-center',
         autoClose: 10000,
@@ -32,17 +32,17 @@ const useRemovePerson = (flightId: number) => {
             : [];
         },
       );
-      queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
+      await queryClient.invalidateQueries({
         queryKey: ['weightBalanceReport', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['fuelCalculations', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['takeoffLandingDistances', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['weatherBriefing', flightId],
       });
     },

@@ -169,11 +169,11 @@ const ChangeAircraftForm = ({
     if (submited && !mutation.isLoading) {
       closeModal();
     }
-  }, [submited, mutation.isLoading]);
+  }, [submited, mutation.isLoading, closeModal]);
 
   useEffect(() => {
     register('aircraft');
-  }, []);
+  }, [register]);
 
   useEffect(() => {
     if (isOpen) {
@@ -181,7 +181,7 @@ const ChangeAircraftForm = ({
         aircraft: aircraft,
       });
     }
-  }, [isOpen]);
+  }, [isOpen, reset, aircraft]);
 
   const submitHandler = (data: FieldValues) => {
     const aircraftId = aircraftList?.find(
@@ -196,14 +196,14 @@ const ChangeAircraftForm = ({
     } else {
       mutation.mutate({
         aircraftId,
-        aircraft: data.aircraft,
+        aircraft: data.aircraft as string,
       });
       setSubmited(true);
     }
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

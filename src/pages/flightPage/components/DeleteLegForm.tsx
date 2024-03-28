@@ -138,7 +138,7 @@ const DeleteLegForm = ({
     if (submited && !mutation.isLoading) {
       closeModal();
     }
-  }, [submited, mutation.isLoading]);
+  }, [submited, mutation.isLoading, closeModal]);
 
   const handleDelete = () => {
     mutation.mutate({

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { renderToString } from 'react-dom/server';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -130,6 +130,12 @@ const MapSection = ({
 
   const [renderMap, setRenderMap] = useState(false);
 
+  const handleRestoreFlight = useCallback(() => {
+    setFocusLegIdx(-1);
+    setNewWaypoint(null);
+    setDroppedMarker(false);
+  }, []);
+
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setRenderMap((prev) => !prev);
@@ -183,11 +189,7 @@ const MapSection = ({
           longitude={newWaypoint ? newWaypoint.lng : center.lng}
           closeModal={modal.handleClose}
           isOpen={modal.isOpen}
-          restoreFlight={() => {
-            setFocusLegIdx(-1);
-            setNewWaypoint(null);
-            setDroppedMarker(false);
-          }}
+          restoreFlight={handleRestoreFlight}
         />
       </Modal>
       <HtmlContainer>

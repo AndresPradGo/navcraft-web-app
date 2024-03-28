@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AiOutlineSave } from 'react-icons/ai';
 import { BsThermometerSun } from 'react-icons/bs';
@@ -366,7 +366,7 @@ const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
     if (submited && !mutation.isLoading) {
       closeModal();
     }
-  }, [submited, mutation.isLoading]);
+  }, [submited, mutation.isLoading, closeModal]);
 
   useEffect(() => {
     if (isOpen) {
@@ -378,33 +378,47 @@ const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
         altitude_ft: currentLegData?.altitude_ft,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    currentLegData?.altimeter_inhg,
+    currentLegData?.altitude_ft,
+    currentLegData?.temperature_c,
+    currentLegData?.wind_direction,
+    currentLegData?.wind_magnitude_knot,
+    reset,
+  ]);
 
+  const checkWindMagnitude = useCallback(
+    (data: FieldValues): boolean => {
+      const message =
+        'If wind magnitude is not 0, you need to enter a wind direction';
+
+      if (errors.wind_direction) {
+        if (errors.wind_direction.message !== message) return true;
+      }
+      const wrongData = (data.wind_magnitude_knot &&
+        !data.wind_direction) as boolean;
+      if (wrongData) {
+        setError('wind_direction', {
+          type: 'manual',
+          message: message,
+        });
+        return true;
+      }
+      return false;
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setError],
+  );
+
+  const windMagnitude = watch('wind_magnitude_knot');
+  const windDirection = watch('wind_direction');
   useEffect(() => {
     const wrongWindDirection = checkWindMagnitude({
       wind_direction: watch('wind_direction'),
       wind_magnitude_knot: watch('wind_magnitude_knot'),
     });
     if (!wrongWindDirection) clearErrors('wind_direction');
-  }, [watch('wind_magnitude_knot'), watch('wind_direction')]);
-
-  const checkWindMagnitude = (data: FieldValues): boolean => {
-    const message =
-      'If wind magnitude is not 0, you need to enter a wind direction';
-
-    if (errors.wind_direction) {
-      if (errors.wind_direction.message !== message) return true;
-    }
-    const wrongData = data.wind_magnitude_knot && !data.wind_direction;
-    if (wrongData) {
-      setError('wind_direction', {
-        type: 'manual',
-        message: message,
-      });
-      return true;
-    }
-    return false;
-  };
+  }, [windMagnitude, windDirection, checkWindMagnitude, clearErrors, watch]);
 
   const handleWindDirectionValue = (value: string): number | null => {
     if (Number.isNaN(parseFloat(value))) return null;
@@ -413,19 +427,19 @@ const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
 
   const submitHandler = (data: FieldValues) => {
     const wrongWindDirection = checkWindMagnitude({
-      wind_direction: data.wind_direction,
-      wind_magnitude_knot: data.wind_magnitude_knot,
+      wind_direction: data.wind_direction as number | null,
+      wind_magnitude_knot: data.wind_magnitude_knot as number,
     });
 
     if (!wrongWindDirection) {
       mutation.mutate({
         id: id,
         route,
-        temperature_c: data.temperature_c,
-        altimeter_inhg: data.altimeter_inhg,
-        wind_direction: data.wind_direction,
-        wind_magnitude_knot: data.wind_magnitude_knot,
-        altitude_ft: data.altitude_ft,
+        temperature_c: data.temperature_c as number,
+        altimeter_inhg: data.altimeter_inhg as number,
+        wind_direction: data.wind_direction as number | null,
+        wind_magnitude_knot: data.wind_magnitude_knot as number,
+        altitude_ft: data.altitude_ft as number,
         temperature_last_updated: getUTCNowString(),
         wind_last_updated: getUTCNowString(),
         altimeter_last_updated: getUTCNowString(),
@@ -435,7 +449,7 @@ const EditLegForm = ({ route, flightId, closeModal, isOpen, id }: Props) => {
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

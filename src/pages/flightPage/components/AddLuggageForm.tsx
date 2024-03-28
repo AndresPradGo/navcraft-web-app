@@ -240,18 +240,18 @@ const AddLuggageForm = ({
         weight_lb: luggageData.weight_lb,
       });
     }
-  }, [isOpen]);
+  }, [isOpen, reset, luggageData.weight_lb]);
 
   useEffect(() => {
     if (submited && !mutation.isLoading) {
       closeModal();
     }
-  }, [submited, mutation.isLoading]);
+  }, [submited, mutation.isLoading, closeModal]);
 
   const submitHandler = (data: FieldValues) => {
     mutation.mutate({
       id: luggageData.id,
-      weight_lb: data.weight_lb,
+      weight_lb: data.weight_lb as number,
       baggage_compartment_id: compartment.id,
       name: compartment.name,
     });
@@ -267,7 +267,7 @@ const AddLuggageForm = ({
     );
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

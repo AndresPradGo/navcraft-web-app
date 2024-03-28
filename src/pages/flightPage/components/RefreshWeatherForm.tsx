@@ -221,7 +221,7 @@ const RefreshWeatherForm = ({ flightId, closeModal }: Props) => {
     if (submited && !mutation.isLoading) {
       closeModal();
     }
-  }, [submited, mutation.isLoading]);
+  }, [submited, mutation.isLoading, closeModal]);
 
   const handleSelectItem = (box: 'departure' | 'enroute' | 'arrival') => {
     const newState = { ...formState };

@@ -1,4 +1,10 @@
-import { useEffect, useState, FormEvent, ChangeEvent } from 'react';
+import {
+  useEffect,
+  useState,
+  FormEvent,
+  ChangeEvent,
+  useCallback,
+} from 'react';
 import { AiOutlineSave } from 'react-icons/ai';
 import { LiaTimesSolid, LiaMapSignsSolid } from 'react-icons/lia';
 import { MdOutlineLiveHelp } from 'react-icons/md';
@@ -355,8 +361,6 @@ const DropMarkerForm = ({
   isOpen,
   restoreFlight,
 }: Props) => {
-  const apiClient = new APIClient<string, NearbyWaypointType>('/waypoints');
-
   const [identifier, setIdentifier] = useState<IdentifierDataType>({
     code: '',
     name: '',
@@ -392,9 +396,15 @@ const DropMarkerForm = ({
       closeModal();
       restoreFlight();
     }
-  }, [submited, mutation.isLoading]);
+  }, [submited, mutation.isLoading, closeModal, restoreFlight]);
+
+  const handleCancel = useCallback(() => {
+    restoreFlight();
+    closeModal();
+  }, [restoreFlight, closeModal]);
 
   useEffect(() => {
+    const apiClient = new APIClient<string, NearbyWaypointType>('/waypoints');
     if (isOpen) {
       setIdentifier({
         code: '',
@@ -426,7 +436,7 @@ const DropMarkerForm = ({
           else setSelectedWaypointId(0);
           setIsLoading(false);
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           if (isOpen && err.name !== 'CanceledError') {
             toast.error('Something went wrong, please try again', {
               position: 'top-center',
@@ -447,7 +457,17 @@ const DropMarkerForm = ({
     return () => {
       apiClient.cancelRequest();
     };
-  }, [latitude, longitude, sequence]);
+  }, [
+    latitude,
+    longitude,
+    sequence,
+    currentWaypoint.code,
+    currentWaypoint.isUser,
+    currentWaypoint.isVFR,
+    currentWaypoint.name,
+    handleCancel,
+    isOpen,
+  ]);
 
   const instructions = [
     'Either select the location where you dropped the pin, or one of the nearby waypoints.',
@@ -455,11 +475,6 @@ const DropMarkerForm = ({
     'If you are not sure about the location where you dropped the pin, you can view the new tentative flight path, by peeking the map.',
     'After “peeking the map”, you can drag-and-drop the pin in a new location, or you can confirm the current location by clicking anywhere in the map.',
   ];
-
-  const handleCancel = () => {
-    restoreFlight();
-    closeModal();
-  };
 
   const handleCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newCode = e.target.value;

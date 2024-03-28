@@ -247,7 +247,7 @@ const SaveIcon = styled(AiOutlineSave)`
   flex-shrink: 0;
 `;
 
-export const schema = z.object({
+const schema = z.object({
   departure_time: z.string(),
   bhp_percent: z
     .number({ invalid_type_error: 'Enter a number' })
@@ -309,7 +309,7 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
     if (submited && !mutation.isLoading) {
       closeModal();
     }
-  }, [submited, mutation.isLoading]);
+  }, [submited, mutation.isLoading, closeModal]);
 
   useEffect(() => {
     if (isOpen) {
@@ -323,7 +323,17 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
         alternate_radius_nm: flightData?.alternate_radius_nm,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    flightData?.added_enroute_time_hours,
+    flightData?.alternate_radius_nm,
+    flightData?.bhp_percent,
+    flightData?.briefing_radius_nm,
+    flightData?.contingency_fuel_hours,
+    flightData?.departure_time,
+    flightData?.reserve_fuel_hours,
+    reset,
+  ]);
 
   const checkDepartureTime = (data: FieldValues): boolean => {
     const dateValue = `${data.departure_time}:00Z`;
@@ -360,26 +370,26 @@ const EditFlightForm = ({ closeModal, isOpen, flightId }: Props) => {
 
   const submitHandler = (data: FieldValues) => {
     const wrongDatatime = checkDepartureTime({
-      departure_time: data.departure_time,
+      departure_time: data.departure_time as string,
     });
     if (!wrongDatatime) {
       clearErrors('departure_time');
       const departureTime = `${data.departure_time}:00Z`;
       mutation.mutate({
         departure_time: departureTime,
-        bhp_percent: data.bhp_percent,
-        added_enroute_time_hours: data.added_enroute_time_hours,
-        contingency_fuel_hours: data.contingency_fuel_hours,
-        reserve_fuel_hours: data.reserve_fuel_hours,
-        briefing_radius_nm: data.briefing_radius_nm,
-        alternate_radius_nm: data.alternate_radius_nm,
+        bhp_percent: data.bhp_percent as number,
+        added_enroute_time_hours: data.added_enroute_time_hours as number,
+        contingency_fuel_hours: data.contingency_fuel_hours as number,
+        reserve_fuel_hours: data.reserve_fuel_hours as number,
+        briefing_radius_nm: data.briefing_radius_nm as number,
+        alternate_radius_nm: data.alternate_radius_nm as number,
       });
       setSubmited(true);
     }
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

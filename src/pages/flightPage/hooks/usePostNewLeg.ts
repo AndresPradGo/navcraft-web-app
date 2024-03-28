@@ -39,7 +39,7 @@ const usePostNewLeg = (flightId: number, isLeg?: boolean) => {
         );
       }
     },
-    onSuccess: (savedData, newData) => {
+    onSuccess: async (savedData, newData) => {
       toast.success(
         isLeg
           ? 'A new leg has been successfully added to the flight path.'
@@ -59,17 +59,17 @@ const usePostNewLeg = (flightId: number, isLeg?: boolean) => {
         ['flight', flightId],
         () => savedData,
       );
-      queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
+      await queryClient.invalidateQueries({
         queryKey: ['weightBalanceReport', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['fuelCalculations', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['takeoffLandingDistances', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['weatherBriefing', flightId],
       });
     },

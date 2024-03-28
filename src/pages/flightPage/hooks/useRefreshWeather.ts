@@ -62,7 +62,7 @@ const useRefreshWeather = (flightId: number) => {
     FlightContext
   >({
     mutationFn: (data) => apiClient.post(data, `/${flightId}`),
-    onSuccess: (savedData) => {
+    onSuccess: async (savedData) => {
       toast.success('Weather Data has been refresh successfully.', {
         position: 'top-center',
         autoClose: 10000,
@@ -129,17 +129,17 @@ const useRefreshWeather = (flightId: number) => {
           return undefined;
         },
       );
-      queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({ queryKey: ['navLog', flightId] });
+      await queryClient.invalidateQueries({
         queryKey: ['weightBalanceReport', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['fuelCalculations', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['takeoffLandingDistances', flightId],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['weatherBriefing', flightId],
       });
     },

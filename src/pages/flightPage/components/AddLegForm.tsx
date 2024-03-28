@@ -205,12 +205,12 @@ const AddLegForm = ({
     if (submited && !mutation.isLoading) {
       closeModal();
     }
-  }, [submited, mutation.isLoading]);
+  }, [submited, mutation.isLoading, closeModal]);
 
   useEffect(() => {
     register('interceptingWaypoint');
     register('newWaypoint');
-  }, []);
+  }, [register]);
 
   useEffect(() => {
     if (isOpen) {
@@ -219,10 +219,11 @@ const AddLegForm = ({
         newWaypoint: '',
       });
     }
-  }, [isOpen]);
+  }, [isOpen, reset]);
 
   const submitHandler = (data: FieldValues) => {
-    const sequence = flightWaypoints.indexOf(data.interceptingWaypoint) + 1;
+    const sequence =
+      flightWaypoints.indexOf(data.interceptingWaypoint as string) + 1;
     const aerodromeData = aerodromes?.find(
       (a) =>
         `${a.code}: ${a.name}${a.registered ? '' : ' (saved)'}` ===
@@ -313,7 +314,7 @@ const AddLegForm = ({
     .sort();
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />
