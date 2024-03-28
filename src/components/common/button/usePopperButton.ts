@@ -1,6 +1,6 @@
-import { useState, Dispatch, SetStateAction, CSSProperties } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction, CSSProperties, useCallback } from 'react';
 import { usePopper } from 'react-popper';
-import { useEffect } from 'react';
+import {  } from 'react';
 
 interface SetReferenceFunctions {
   button: Dispatch<SetStateAction<HTMLElement | null>>;
@@ -20,12 +20,31 @@ const usePopperButton = (): PopperToolsType => {
   const [buttonRef, setButtonRef] = useState<HTMLElement | null>(null);
   const [listRef, setListRef] = useState<HTMLElement | null>(null);
 
+  const closeExpandible = useCallback(() => {
+    document.removeEventListener('click', hadleClickOutside, true);
+    document.removeEventListener('keydown', hadleEscapeKey, true);
+    setIsExpanded(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const hadleEscapeKey = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape') closeExpandible();
+  }, [closeExpandible]);
+
+  const hadleClickOutside = useCallback((event: MouseEvent) => {
+    if (
+      !listRef?.contains(event.target as Node) &&
+      !buttonRef?.contains(event.target as Node)
+    )
+      closeExpandible();
+  }, [listRef, buttonRef, closeExpandible]);
+
   useEffect(() => {
     return () => {
       document.removeEventListener('click', hadleClickOutside, true);
       document.removeEventListener('keydown', hadleEscapeKey, true);
     };
-  }, []);
+  }, [hadleClickOutside, hadleEscapeKey]);
 
   const { styles } = usePopper(buttonRef, listRef, {
     placement: 'bottom',
@@ -49,25 +68,7 @@ const usePopperButton = (): PopperToolsType => {
     ],
   });
 
-  const closeExpandible = () => {
-    document.removeEventListener('click', hadleClickOutside, true);
-    document.removeEventListener('keydown', hadleEscapeKey, true);
-    setIsExpanded(false);
-  };
-
-  const hadleClickOutside = (event: MouseEvent) => {
-    if (
-      !listRef?.contains(event.target as Node) &&
-      !buttonRef?.contains(event.target as Node)
-    )
-      closeExpandible();
-  };
-
-  const hadleEscapeKey = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') closeExpandible();
-  };
-
-  const handleButtonClick = () => {
+    const handleButtonClick = () => {
     if (!isExpanded) {
       document.addEventListener('click', hadleClickOutside, true);
       document.addEventListener('keydown', hadleEscapeKey, true);
