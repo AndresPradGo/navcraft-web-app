@@ -83,7 +83,7 @@ const ContentLayout = ({ children, sideBarContent, map }: Props) => {
     return () => {
       clearTimeout(timeOut);
     };
-  }, [map?.isOpen]);
+  }, [map, map?.isOpen]);
 
   if (!map) {
     return (

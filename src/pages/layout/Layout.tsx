@@ -50,7 +50,6 @@ const HtmlText = styled.p`
 
 const Layout = () => {
   const user = useAuth();
-  if (!user) return <Navigate to="/login" />;
 
   const [screenTooSmall, setScreenTooSmall] = useState(false);
 
@@ -69,6 +68,8 @@ const Layout = () => {
       window.removeEventListener('resize', checkScreenWidth);
     };
   }, []);
+
+  if (!user) return <Navigate to="/login" />;
 
   if (screenTooSmall) {
     return (
