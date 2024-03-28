@@ -117,50 +117,77 @@ const WeightBalanceGraph = ({
     return [Math.ceil(dataMin * 100) / 100, top];
   };
 
-  const handleMouseEnterLegend = (_: {}, index: number) => {
+  const handleMouseEnterLegend = (_: object, index: number) => {
     setSelected((prev) => prev.map((v, i) => (index === i ? true : v)));
   };
 
-  const handleMouseLeaveLegend = (_: {}, index: number) => {
+  const handleMouseLeaveLegend = (_: object, index: number) => {
     setSelected((prev) => prev.map((v, i) => (index === i ? false : v)));
   };
 
-  const handleMouseEnterGraph = (e: MouseEvent<SVGElement> | any) => {
+  interface HnadleMouseEnterGraphEvent extends MouseEvent<SVGElement> {
+    name: string;
+  }
+  const handleMouseEnterGraph = (e: HnadleMouseEnterGraphEvent) => {
     const index = profiles.findIndex((p) => p.name === e.name);
     setMouseOver((prev) => prev.map((v, i) => (index === i ? true : v)));
   };
 
-  const handleMouseLeaveGraph = (e: MouseEvent<SVGElement> | any) => {
+  const handleMouseLeaveGraph = (e: HnadleMouseEnterGraphEvent) => {
     const index = profiles.findIndex((p) => p.name === e.name);
     setMouseOver((prev) => prev.map((v, i) => (index === i ? false : v)));
   };
 
-  const renderCustomizedLabel = (props: any) => {
+  interface CartesianViewBox {
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+  }
+  interface PolarViewBox {
+    cx?: number;
+    cy?: number;
+    innerRadius?: number;
+    outerRadius?: number;
+    startAngle?: number;
+    endAngle?: number;
+    clockWise?: boolean;
+  }
+  interface RenderLabelProp {
+    viewBox?: CartesianViewBox | PolarViewBox;
+    value?: number | string;
+  }
+  const renderCustomizedLabel = (props: RenderLabelProp) => {
     const { viewBox, value } = props;
 
-    return (
-      <g>
-        <text
-          x={viewBox.x + 0}
-          y={viewBox.y - 12}
-          fill="#fff"
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {value}
-        </text>
-      </g>
-    );
+    if (
+      (viewBox as CartesianViewBox).x !== undefined &&
+      (viewBox as CartesianViewBox).y !== undefined
+    )
+      return (
+        <g>
+          <text
+            x={((viewBox as CartesianViewBox).x || 0) + 0}
+            y={((viewBox as CartesianViewBox).y || 0) - 12}
+            fill="#fff"
+            textAnchor="middle"
+            dominantBaseline="middle"
+          >
+            {value}
+          </text>
+        </g>
+      );
+    else return null;
   };
 
-  const renderResultCustomizedLabel = (props: any) => {
+  const renderResultCustomizedLabel = (props: RenderLabelProp) => {
     const { viewBox, value } = props;
 
     return (
       <g>
         <text
-          x={viewBox.x + 35}
-          y={viewBox.y + 10}
+          x={((viewBox as CartesianViewBox).x || 0) + 35}
+          y={((viewBox as CartesianViewBox).y || 0) + 10}
           fill="#fff"
           textAnchor="middle"
           dominantBaseline="middle"
