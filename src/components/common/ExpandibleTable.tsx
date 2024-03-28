@@ -48,7 +48,10 @@ const HtmlTitleContainer = styled.div<HtmlHighlightedTableProps>`
 interface HtmlTagProps extends HtmlHighlightedTableProps {
   $isOpen: boolean;
 }
-const ToggleIcon = styled(BsChevronDown)<HtmlTagProps>`
+
+const ToggleIcon = styled(
+  BsChevronDown as React.FC<{ onClick: () => void; $isOpen: boolean }>,
+)<HtmlTagProps>`
   color: var(--color-grey);
   cursor: pointer;
   margin-right: 5px;

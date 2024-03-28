@@ -5,6 +5,7 @@ import { styled } from 'styled-components';
 
 import Button from './button';
 import useSideBar from '../sidebar/useSideBar';
+import type { ReactIconType } from '../../services/reactIconEntity';
 
 const HtmlButtonList = styled.div`
   width: 100%;
@@ -50,7 +51,7 @@ const HtmlSpan = styled.span`
   margin-left: 10px;
 `;
 
-const SectionIcon = styled(RiArchiveDrawerFill)`
+const SectionIcon = styled(RiArchiveDrawerFill as ReactIconType)`
   font-size: 27px;
   margin-right: 8px;
   padding-bottom: 3px;
