@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import useAuth from '../hooks/useAuth';
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_REACT_APP_NAVCRAFT_API_URL,
+  baseURL: import.meta.env.VITE_REACT_APP_NAVCRAFT_API_URL as string,
 });
 
 interface APIResponseData {
@@ -226,8 +226,8 @@ class APIClient<TPost, TGet> {
       .then((res) => {
         return handlePreProcess(
           res.data,
-          res.headers['x-access-token'],
-          res.headers['x-token-type'],
+          res.headers['x-access-token'] as string,
+          res.headers['x-token-type'] as string,
         );
       });
   };
@@ -247,7 +247,7 @@ class APIClient<TPost, TGet> {
       .delete(this._getEndpoint(endpointPostfix), {
         signal: this._controller.signal,
       })
-      .then((res) => res.data);
+      .then((res) => res.data as TGet);
   };
 }
 
