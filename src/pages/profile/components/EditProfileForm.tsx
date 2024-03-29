@@ -212,15 +212,6 @@ const EditProfileForm = ({ closeModal, isOpen }: Props) => {
   const queryClient = useQueryClient();
   const userData = queryClient.getQueryData<ProfileData>(['profile']);
 
-  useEffect(() => {
-    if (isOpen) {
-      reset({
-        name: userData?.name,
-        weight_lb: userData?.weight,
-      });
-    }
-  }, [isOpen]);
-
   const {
     register,
     handleSubmit,
@@ -235,6 +226,15 @@ const EditProfileForm = ({ closeModal, isOpen }: Props) => {
     },
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      reset({
+        name: userData?.name,
+        weight_lb: userData?.weight,
+      });
+    }
+  }, [isOpen, userData?.name, userData?.weight, reset]);
+
   const editProfile = useEditProfile();
 
   const handleCancel = () => {
@@ -243,14 +243,14 @@ const EditProfileForm = ({ closeModal, isOpen }: Props) => {
 
   const submitHandler = (data: FieldValues) => {
     editProfile.mutate({
-      name: data.name,
-      weight_lb: parseFloat(data.weight_lb),
+      name: data.name as string,
+      weight_lb: data.weight_lb as number,
     });
     closeModal();
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

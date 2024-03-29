@@ -196,14 +196,6 @@ const ChangeEmailForm = ({ closeModal, isOpen }: Props) => {
   const queryClient = useQueryClient();
   const userData = queryClient.getQueryData<ProfileData>(['profile']);
 
-  useEffect(() => {
-    if (isOpen) {
-      reset({
-        email: userData?.email,
-      });
-    }
-  }, [isOpen]);
-
   const {
     register,
     handleSubmit,
@@ -217,6 +209,14 @@ const ChangeEmailForm = ({ closeModal, isOpen }: Props) => {
     },
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      reset({
+        email: userData?.email,
+      });
+    }
+  }, [isOpen, userData?.email, reset]);
+
   const changeEmail = useChangeEmail();
 
   const handleCancel = () => {
@@ -224,12 +224,12 @@ const ChangeEmailForm = ({ closeModal, isOpen }: Props) => {
   };
 
   const submitHandler = (data: FieldValues) => {
-    changeEmail.mutate({ email: data.email });
+    changeEmail.mutate({ email: data.email as string });
     closeModal();
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

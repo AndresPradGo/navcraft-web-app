@@ -39,8 +39,8 @@ const useDeletePassenger = () => {
       );
       return { previusData };
     },
-    onSuccess: (_, passenger) => {
-      queryClient.invalidateQueries({ queryKey: ['Passengers'] });
+    onSuccess: async (_, passenger) => {
+      await queryClient.invalidateQueries({ queryKey: ['Passengers'] });
       toast.success(
         `"${passenger.name}" has been deleted from your passengers' list.`,
         {

@@ -245,8 +245,10 @@ const ChangePasswordForm = ({ closeModal, isOpen }: Props) => {
         confirmPassword: '',
       });
     }
-  }, [isOpen]);
+  }, [isOpen, reset]);
 
+  const confirmpassword = watch('confirmPassword');
+  const newPassword = watch('newPassword');
   useEffect(() => {
     if (watch('confirmPassword') !== watch('newPassword')) {
       setError('confirmPassword', {
@@ -254,7 +256,7 @@ const ChangePasswordForm = ({ closeModal, isOpen }: Props) => {
         message: 'Password confirmation does not match',
       });
     } else clearErrors('confirmPassword');
-  }, [watch('confirmPassword'), watch('newPassword')]);
+  }, [confirmpassword, newPassword, clearErrors, setError, watch]);
 
   const changePassword = useChangePassword();
 
@@ -271,14 +273,14 @@ const ChangePasswordForm = ({ closeModal, isOpen }: Props) => {
     else {
       closeModal();
       changePassword.mutate({
-        current_password: data.currentPassword,
-        password: data.newPassword,
+        current_password: data.currentPassword as string,
+        password: data.newPassword as string,
       });
     }
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />
