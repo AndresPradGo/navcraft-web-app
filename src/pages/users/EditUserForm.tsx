@@ -148,12 +148,17 @@ interface Props {
 }
 
 const EditUserForm = ({ userData, closeModal, isOpen }: Props) => {
-  const [userState, setUserState] = useState(userData);
+  const [userState, setUserState] = useState({ ...userData });
   const editUserMutation = useEditUser();
 
   useEffect(() => {
-    if (isOpen) setUserState(userData);
-  }, [isOpen]);
+    if (isOpen)
+      setUserState({
+        id: userData.id,
+        is_admin: userData.is_admin,
+        is_active: userData.is_active,
+      });
+  }, [isOpen, userData.id, userData.is_admin, userData.is_active]);
 
   const handleSelectItem = (box: 'active' | 'admin') => {
     const newState = { ...userState };

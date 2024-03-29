@@ -29,8 +29,8 @@ const useDeleteUser = () => {
         );
         return { previusData };
       },
-      onSuccess: (_, user) => {
-        queryClient.invalidateQueries({ queryKey: ['users'] });
+      onSuccess: async (_, user) => {
+        await queryClient.invalidateQueries({ queryKey: ['users'] });
         toast.success(
           `"${user.name}'s" profile has been deleted successfully.`,
           {
