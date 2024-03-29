@@ -321,9 +321,9 @@ type FormDataType = z.infer<typeof schema>;
 
 const LoginPage = () => {
   const userIsLogedin = useAuth();
-  if (userIsLogedin) return <Navigate to="/flights" />;
 
-  const [searchParams, _] = useSearchParams();
+  const searchParams = useSearchParams()[0];
+
   const credentials = searchParams.get('credentials');
 
   const {
@@ -359,19 +359,21 @@ const LoginPage = () => {
       );
       navigate('/login');
     }
-  }, []);
+  }, [credentials, navigate]);
+
+  if (userIsLogedin) return <Navigate to="/flights" />;
 
   const submitHandler = (data: FieldValues) => {
     const formData = new FormData();
-    formData.append('username', data.email);
-    formData.append('password', data.password);
+    formData.append('username', data.email as string);
+    formData.append('password', data.password as string);
     login.mutate(formData);
   };
   return (
     <HtmlPageContainer>
       <HtmlFormContainer>
         <HtmlAnimationSpan />
-        <HtmlLoginForm onSubmit={handleSubmit(submitHandler)}>
+        <HtmlLoginForm onSubmit={handleSubmit(submitHandler) as () => void}>
           {login.isLoading ? (
             <Loader />
           ) : (
