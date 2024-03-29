@@ -341,16 +341,16 @@ const RegisterPage = () => {
       });
     else
       registerMutation.mutate({
-        name: data.name,
-        email: data.email,
-        password: data.password,
+        name: data.name as string,
+        email: data.email as string,
+        password: data.password as string,
       });
   };
   return (
     <HtmlPageContainer>
       <HtmlFormContainer>
         <HtmlAnimationSpan />
-        <HtmlRegisterForm onSubmit={handleSubmit(submitHandler)}>
+        <HtmlRegisterForm onSubmit={handleSubmit(submitHandler) as () => void}>
           {registerMutation.isLoading ? (
             <Loader />
           ) : (
