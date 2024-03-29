@@ -70,7 +70,7 @@ const useEditWindAdjustmentData = (profileId: number, isTakeoff: boolean) => {
       );
       return { previousData };
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success(
         `${isTakeoff ? 'Takeoff' : 'Landing'} wind-adjustment data has been updated successfully.`,
         {
@@ -84,7 +84,7 @@ const useEditWindAdjustmentData = (profileId: number, isTakeoff: boolean) => {
           theme: 'dark',
         },
       );
-      queryClient.invalidateQueries<TakeoffLandingDataFromAPI>([
+      await queryClient.invalidateQueries<TakeoffLandingDataFromAPI>([
         `${isTakeoff ? 'takeoff' : 'landing'}Performance`,
         profileId,
       ]);

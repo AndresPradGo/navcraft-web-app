@@ -251,18 +251,25 @@ const EditWindAdjustmentsForm = ({
           data?.percent_increase_knot_tailwind || 0,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    data?.percent_decrease_knot_headwind,
+    data?.percent_increase_knot_tailwind,
+    reset,
+  ]);
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
     mutation.mutate({
-      percent_decrease_knot_headwind: data.percent_decrease_knot_headwind,
-      percent_increase_knot_tailwind: data.percent_increase_knot_tailwind,
+      percent_decrease_knot_headwind:
+        data.percent_decrease_knot_headwind as number,
+      percent_increase_knot_tailwind:
+        data.percent_increase_knot_tailwind as number,
     });
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

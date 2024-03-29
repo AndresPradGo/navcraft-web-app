@@ -47,7 +47,7 @@ const useEditClimbData = (profileId: number) => {
       );
       return { previousData };
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success(
         `Climb performance adjustment values have been updated successfully.`,
         {
@@ -61,7 +61,7 @@ const useEditClimbData = (profileId: number) => {
           theme: 'dark',
         },
       );
-      queryClient.invalidateQueries<ClimbPerformanceDataFromAPI>([
+      await queryClient.invalidateQueries<ClimbPerformanceDataFromAPI>([
         'aircraftClimbPerformance',
         profileId,
       ]);

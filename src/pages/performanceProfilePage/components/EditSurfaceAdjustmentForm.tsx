@@ -263,18 +263,18 @@ const EditSurfaceAdjustmentForm = ({
         percent: percent,
       });
     }
-  }, [isOpen]);
+  }, [isOpen, percent, reset, surface_id, surfaces]);
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
     mutation.mutate({
       surface_id: surfaces?.find((s) => s.surface === data.surface)?.id || -1,
-      percent: data.percent,
+      percent: data.percent as number,
     });
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

@@ -90,7 +90,7 @@ const useEditWeightBalanceProfile = (profileId: number) => {
       );
       return { previusData };
     },
-    onSuccess: (savedData, newData) => {
+    onSuccess: async (savedData, newData) => {
       toast.success(
         `W&B Profile "${savedData.name}" has been ${newData.id === 0 ? 'added' : 'updated'} successfully.`,
         {
@@ -104,7 +104,7 @@ const useEditWeightBalanceProfile = (profileId: number) => {
           theme: 'dark',
         },
       );
-      queryClient.invalidateQueries<WeightAndBalanceDataFromAPI>([
+      await queryClient.invalidateQueries<WeightAndBalanceDataFromAPI>([
         'AircraftWeightBalanceData',
         profileId,
       ]);

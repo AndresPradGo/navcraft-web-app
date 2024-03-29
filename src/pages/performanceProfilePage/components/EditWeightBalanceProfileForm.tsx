@@ -340,7 +340,7 @@ const formSchema = z.object({
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(50, { message: 'Must be at most 50 characters long' })
-    .regex(/^[\-a-zA-Z0-9\(\) ]+$/, {
+    .regex(/^[-a-zA-Z0-9() ]+$/, {
       message: 'Only letters, numbers, white space, and symbols -()',
     }),
   limits: z
@@ -417,6 +417,7 @@ const EditWeightBalanceProfileForm = ({
         cg_location_in: null,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const checkLimits = (newLimits: LimitDataType[]) => {

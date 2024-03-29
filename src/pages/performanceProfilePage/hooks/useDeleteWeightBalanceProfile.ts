@@ -46,7 +46,7 @@ const useDeleteWeightBalanceProfile = (profileId: number) => {
       );
       return { previousData };
     },
-    onSuccess: (_, data) => {
+    onSuccess: async (_, data) => {
       toast.success(
         `W&B Profile "${data.name}" has been deleted successfully.`,
         {
@@ -60,7 +60,7 @@ const useDeleteWeightBalanceProfile = (profileId: number) => {
           theme: 'dark',
         },
       );
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['AircraftWeightBalanceData', profileId],
       });
     },

@@ -302,14 +302,23 @@ const EditWeightAndBalanceDataForm = ({
         baggage_allowance_lb: weightBalanceData?.baggage_allowance_lb,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    reset,
+    weightBalanceData?.baggage_allowance_lb,
+    weightBalanceData?.center_of_gravity_in,
+    weightBalanceData?.empty_weight_lb,
+    weightBalanceData?.max_landing_weight_lb,
+    weightBalanceData?.max_ramp_weight_lb,
+    weightBalanceData?.max_takeoff_weight_lb,
+  ]);
 
   const submitHandler = (data: FieldValues) => {
     closeModal();
     mutation.mutate(data as WeightBalanceDataFromForm);
   };
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <EditIcon />

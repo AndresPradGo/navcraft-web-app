@@ -72,7 +72,7 @@ const useSelectPerformanceProfile = (aircraftId: number) => {
       );
       return { previusData };
     },
-    onSuccess: (savedData) => {
+    onSuccess: async (savedData) => {
       toast.success(
         `${savedData.performance_profile_name}, has been selected for flight-planning.`,
         {
@@ -86,7 +86,7 @@ const useSelectPerformanceProfile = (aircraftId: number) => {
           theme: 'dark',
         },
       );
-      queryClient.invalidateQueries({ queryKey: ['aircraft', aircraftId] });
+      await queryClient.invalidateQueries({ queryKey: ['aircraft', aircraftId] });
     },
     onError: (error, _, context) => {
       errorToast(error);

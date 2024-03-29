@@ -73,7 +73,7 @@ const useEditBaggageCompartment = (profileId: number, aircraftId: number) => {
       );
       return { previousData };
     },
-    onSuccess: (savedData, newData) => {
+    onSuccess: async (savedData, newData) => {
       toast.success(
         `${savedData.name} has been ${newData.id === 0 ? 'added' : 'edited'} successfully`,
         {
@@ -105,7 +105,7 @@ const useEditBaggageCompartment = (profileId: number, aircraftId: number) => {
         },
       );
       if (newData.id === 0) {
-        queryClient.invalidateQueries({ queryKey: ['aircraft', aircraftId] });
+        await queryClient.invalidateQueries({ queryKey: ['aircraft', aircraftId] });
       }
     },
     onError: (error, _, context) => {

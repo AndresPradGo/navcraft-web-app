@@ -253,7 +253,12 @@ const EditClimbDataForm = ({ data, closeModal, isOpen, profileId }: Props) => {
           data.percent_increase_climb_temperature_c,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    data.percent_increase_climb_temperature_c,
+    data.take_off_taxi_fuel_gallons,
+    reset,
+  ]);
 
   const handleNullableNumberValue = (value: string): number | null => {
     if (Number.isNaN(parseFloat(value))) return null;
@@ -263,14 +268,14 @@ const EditClimbDataForm = ({ data, closeModal, isOpen, profileId }: Props) => {
   const submitHandler = (data: FieldValues) => {
     closeModal();
     mutation.mutate({
-      take_off_taxi_fuel_gallons: data.take_off_taxi_fuel_gallons,
+      take_off_taxi_fuel_gallons: data.take_off_taxi_fuel_gallons as number,
       percent_increase_climb_temperature_c:
-        data.percent_increase_climb_temperature_c,
+        data.percent_increase_climb_temperature_c as number,
     });
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <EditIcon />

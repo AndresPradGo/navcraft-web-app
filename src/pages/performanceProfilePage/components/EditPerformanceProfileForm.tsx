@@ -207,7 +207,7 @@ const schema = z.object({
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(255, { message: 'Must be at most 255 characters long' })
-    .regex(/^[a-zA-Z0-9\s.,()/\-]+$/, {
+    .regex(/^[a-zA-Z0-9\s.,()/-]+$/, {
       message: 'Only letters, numbers, white space, and symbols .,-()/',
     }),
   fuel_type: z
@@ -260,7 +260,7 @@ const EditPerformanceProfileForm = ({
         fuel_type: fuelType,
       });
     }
-  }, [isOpen]);
+  }, [isOpen, fuelType, profileName, reset]);
 
   const submitHandler = (data: FieldValues) => {
     const fuelId = fuelOptions?.find(
@@ -270,7 +270,7 @@ const EditPerformanceProfileForm = ({
       closeModal();
       mutation.mutate({
         id: profileId,
-        performance_profile_name: data.performance_profile_name,
+        performance_profile_name: data.performance_profile_name as string,
         fuel_type_id: fuelId,
       });
     } else
@@ -281,7 +281,7 @@ const EditPerformanceProfileForm = ({
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

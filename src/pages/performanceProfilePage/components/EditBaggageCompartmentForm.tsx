@@ -199,7 +199,7 @@ const schema = z.object({
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(50, { message: 'Must be at most 50 characters long' })
-    .regex(/^[\-a-zA-Z0-9 ]+$/, {
+    .regex(/^[-a-zA-Z0-9 ]+$/, {
       message: 'Only letters, numbers white space, and hyphens -',
     }),
   arm_in: z
@@ -254,7 +254,13 @@ const EditBaggageCompartmentForm = ({
         weight_limit_lb: compartmentData.weight_limit_lb,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    compartmentData.arm_in,
+    compartmentData.name,
+    compartmentData.weight_limit_lb,
+    reset,
+  ]);
 
   const handleWeightLimitValue = (value: string): number | null => {
     if (Number.isNaN(parseFloat(value))) return null;
@@ -265,14 +271,14 @@ const EditBaggageCompartmentForm = ({
     closeModal();
     mutation.mutate({
       id: compartmentData.id,
-      name: data.name,
-      arm_in: data.arm_in,
-      weight_limit_lb: data.weight_limit_lb,
+      name: data.name as string,
+      arm_in: data.arm_in as number,
+      weight_limit_lb: data.weight_limit_lb as number,
     });
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />

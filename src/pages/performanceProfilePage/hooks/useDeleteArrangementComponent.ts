@@ -80,7 +80,7 @@ const useDeleteArrangementComponent = (
       );
       return { previousData };
     },
-    onSuccess: (_, data) => {
+    onSuccess: async (_, data) => {
       toast.success(
         `${data.type} "${data.name}", has been deleted successfully.`,
         {
@@ -94,10 +94,10 @@ const useDeleteArrangementComponent = (
           theme: 'dark',
         },
       );
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['AircraftArrangementData', profileId],
       });
-      queryClient.invalidateQueries({ queryKey: ['aircraft', aircraftId] });
+      await queryClient.invalidateQueries({ queryKey: ['aircraft', aircraftId] });
     },
     onError: (error, _, context) => {
       errorToast(error);

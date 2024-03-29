@@ -210,7 +210,7 @@ const schema = z.object({
     .string()
     .min(2, { message: 'Must be at least 2 characters long' })
     .max(50, { message: 'Must be at most 50 characters long' })
-    .regex(/^[\-a-zA-Z0-9 ]+$/, {
+    .regex(/^[-a-zA-Z0-9 ]+$/, {
       message: 'Only letters, numbers white space, and hyphens -',
     }),
   arm_in: z
@@ -279,7 +279,15 @@ const EditFuelTankForm = ({
         burn_sequence: fuelTankData.burn_sequence,
       });
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    fuelTankData.arm_in,
+    fuelTankData.burn_sequence,
+    fuelTankData.fuel_capacity_gallons,
+    fuelTankData.name,
+    fuelTankData.unusable_fuel_gallons,
+    reset,
+  ]);
 
   const handleNullableNumberValue = (value: string): number | null => {
     if (Number.isNaN(parseFloat(value))) return null;
@@ -290,16 +298,16 @@ const EditFuelTankForm = ({
     closeModal();
     mutation.mutate({
       id: fuelTankData.id,
-      name: data.name,
-      arm_in: data.arm_in,
-      fuel_capacity_gallons: data.fuel_capacity_gallons,
-      unusable_fuel_gallons: data.unusable_fuel_gallons,
-      burn_sequence: data.burn_sequence,
+      name: data.name as string,
+      arm_in: data.arm_in as number,
+      fuel_capacity_gallons: data.fuel_capacity_gallons as number,
+      unusable_fuel_gallons: data.unusable_fuel_gallons as number,
+      burn_sequence: data.burn_sequence as number,
     });
   };
 
   return (
-    <HtmlForm onSubmit={handleSubmit(submitHandler)}>
+    <HtmlForm onSubmit={handleSubmit(submitHandler) as () => void}>
       <h1>
         <div>
           <TitleIcon />
