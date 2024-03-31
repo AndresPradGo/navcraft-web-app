@@ -228,9 +228,7 @@ const DataList = ({
     const currentValue = event.target.value;
     if (
       required &&
-      !options.filter(
-        (option) => option.toLowerCase() === currentValue.toLowerCase(),
-      ).length
+      !options.filter((option) => option === currentValue).length
     ) {
       setError('Select a valid option');
     } else clearErrors();
@@ -272,7 +270,11 @@ const DataList = ({
           ))}
         </HtmlList>
       ) : null}
-      {hasError ? <p>{errorMessage}</p> : <p>&nbsp;</p>}
+      {hasError ? (
+        <p role="paragraph">{errorMessage}</p>
+      ) : (
+        <p role="paragraph">&nbsp;</p>
+      )}
       <label htmlFor={name}>{children}</label>
     </HtmlInput>
   );
