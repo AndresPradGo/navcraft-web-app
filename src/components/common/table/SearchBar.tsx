@@ -107,7 +107,7 @@ const SearchBar = ({ placeHolder, text, setText }: Props) => {
           placeholder={placeHolder ? placeHolder : 'Search...'}
           value={text}
         />
-        <button type="submit">
+        <button type="submit" data-testid="table-clear-search-bar-btn">
           <LiaTimesSolid />
         </button>
       </HtmlForm>

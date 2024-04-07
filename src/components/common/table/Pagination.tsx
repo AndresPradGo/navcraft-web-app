@@ -86,11 +86,17 @@ interface Props {
 
 const Pagination = ({ currentPage, finalPage, dispatch }: Props) => {
   return (
-    <HtmlContainer>
+    <HtmlContainer data-testid="pagination-index">
       {currentPage > 1 ? (
         <IconContainer>
-          <DoubleLeftIcon onClick={() => dispatch({ type: 'RESET' })} />
-          <LeftIcon onClick={() => dispatch({ type: 'DECREASE' })} />
+          <DoubleLeftIcon
+            onClick={() => dispatch({ type: 'RESET' })}
+            data-testid="table-first-page-btn"
+          />
+          <LeftIcon
+            onClick={() => dispatch({ type: 'DECREASE' })}
+            data-testid="table-previous-page-btn"
+          />
         </IconContainer>
       ) : (
         <IconContainer />
@@ -98,9 +104,13 @@ const Pagination = ({ currentPage, finalPage, dispatch }: Props) => {
       <span>{`Page ${currentPage} / ${finalPage}`}</span>
       {currentPage < finalPage ? (
         <IconContainer>
-          <RightIcon onClick={() => dispatch({ type: 'INCREASE' })} />
+          <RightIcon
+            onClick={() => dispatch({ type: 'INCREASE' })}
+            data-testid="table-next-page-btn"
+          />
           <DoubleRightIcon
             onClick={() => dispatch({ type: 'SET', page: finalPage })}
+            data-testid="table-last-page-btn"
           />
         </IconContainer>
       ) : (

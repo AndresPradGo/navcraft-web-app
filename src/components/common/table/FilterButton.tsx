@@ -154,6 +154,7 @@ const FilterButton = ({ text, filters, appliedFilters, dispatch }: Props) => {
             dispatch({ type: 'CLEAR' });
             popperTools.closeExpandible();
           }}
+          data-testid="table-filter-clear-all-btn"
         >
           Clear all <TbFilterOff />
         </button>
@@ -162,12 +163,13 @@ const FilterButton = ({ text, filters, appliedFilters, dispatch }: Props) => {
             !!appliedFilters.find((i) => i === idx) ||
             appliedFilters.find((i) => i === idx) === 0;
           return (
-            <HtmlCheckbox key={`checkbox-${idx}`} htmlFor={`checkbox-${idx}`}>
+            <HtmlCheckbox key={`filter-${idx}`} htmlFor={`checkbox-${idx}`}>
               <input
                 type="checkbox"
                 id={`checkbox-${idx}`}
                 onChange={() => handleSelectItem(idx, selected)}
                 checked={selected}
+                data-testid={`table-filter-option-${filter.key}-${idx}`}
               />
               <span>{filter.title}</span>
             </HtmlCheckbox>

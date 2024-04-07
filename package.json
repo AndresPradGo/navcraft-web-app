@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ui": "vitest --ui",
+    "test:ui": "DEBUG_PRINT_LIMIT=100000 vitest --ui",
     "format": "prettier . --write",
     "lint:fix": "eslint . --ext ts,tsx --fix"
   },

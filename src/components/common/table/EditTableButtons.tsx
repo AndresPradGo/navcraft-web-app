@@ -32,12 +32,18 @@ const OpenIcon = styled(RiArrowRightLine as ReactIconType)`
 `;
 
 export interface Props {
+  id: number;
   handleEdit: string | (() => void);
   handleDelete: () => void;
   permissions?: 'open' | 'edit' | 'delete' | 'open-delete' | 'edit-delete';
 }
 
-const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
+const EditTableButtons = ({
+  handleEdit,
+  handleDelete,
+  permissions,
+  id,
+}: Props) => {
   if (!permissions) return <HtmlButtonGroup />;
   if (permissions === 'edit-delete')
     return (
@@ -47,6 +53,7 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
           handleClick={typeof handleEdit !== 'string' ? handleEdit : undefined}
           height="24px"
           borderRadious={40}
+          dataTestid={`table-edit-button-${id}`}
         >
           EDIT
           <EditIcon />
@@ -60,6 +67,7 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
           margin="10px"
           borderRadious={40}
           handleClick={handleDelete}
+          dataTestid={`table-delete-button-${id}`}
         >
           DELETE
           <DeleteIcon />
@@ -74,6 +82,7 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
           handleClick={typeof handleEdit !== 'string' ? handleEdit : undefined}
           height="24px"
           borderRadious={40}
+          dataTestid={`table-edit-button-${id}`}
         >
           DETAILS
           <OpenIcon />
@@ -87,6 +96,7 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
           margin="10px"
           borderRadious={40}
           handleClick={handleDelete}
+          dataTestid={`table-delete-button-${id}`}
         >
           DELETE
           <DeleteIcon />
@@ -105,6 +115,7 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
           margin="10px"
           borderRadious={40}
           handleClick={handleDelete}
+          dataTestid={`table-delete-button-${id}`}
         >
           DELETE
           <DeleteIcon />
@@ -119,6 +130,7 @@ const EditTableButtons = ({ handleEdit, handleDelete, permissions }: Props) => {
         height="24px"
         borderRadious={40}
         margin="10px"
+        dataTestid={`table-edit-button-${id}`}
       >
         {permissions === 'edit' ? (
           <>

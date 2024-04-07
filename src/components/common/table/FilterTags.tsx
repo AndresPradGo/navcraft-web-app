@@ -58,6 +58,7 @@ const FilterTags = ({ filters, selectedFilters, dispatch }: Props) => {
             <HtmlFilterTag key={`${filter.key}-${filter.value}`}>
               <span>{filter.title}</span>
               <LiaTimesSolid
+                data-testid={`table-filter-tag-delete-${filter.key}-${idx}`}
                 onClick={() => dispatch({ type: 'REMOVE', index: idx })}
               />
             </HtmlFilterTag>

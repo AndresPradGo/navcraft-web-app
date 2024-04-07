@@ -171,6 +171,7 @@ export interface Props {
   disabled?: boolean;
   disabledText?: string;
   onlyHover?: boolean;
+  dataTestid?: string;
 }
 
 const Button = ({
@@ -199,6 +200,7 @@ const Button = ({
   disabledText,
   onlyHover,
   alignSelf,
+  dataTestid,
 }: Props) => {
   const defaultColor = color
     ? color
@@ -244,6 +246,7 @@ const Button = ({
           download={download ? download : false}
           target="_blank"
           $onlyHover={!!onlyHover}
+          data-testid={dataTestid}
         >
           {children}
         </HtmlAnchor>
@@ -277,6 +280,7 @@ const Button = ({
         onClick={handleClick ? handleClick : () => {}}
         to={href}
         $onlyHover={!!onlyHover}
+        data-testid={dataTestid}
       >
         {children}
       </HtmlLink>
@@ -312,6 +316,7 @@ const Button = ({
       onClick={handleClick ? handleClick : () => {}}
       disabled={!!disabled}
       $onlyHover={!!onlyHover}
+      data-testid={dataTestid}
     >
       {disabled && disabledText ? disabledText : children}
     </HtmlButton>

@@ -338,6 +338,7 @@ const Table = ({
                     row.id === 0 ? (
                       <HtmlTableDataCell
                         key={`${key}${row.id}`}
+                        data-testid={`table-data-cell-${key}-${row.id}`}
                         $sideBarIsExpanded={sideBarIsExpanded}
                         $breakingPoint={truncatedBreakingPoint}
                         $isResult={!!row.isResult}
@@ -347,11 +348,13 @@ const Table = ({
                     ) : (
                       <HtmlTableDataCell
                         key={`${key}${row.id}`}
+                        data-testid={`table-data-cell-${key}-${row.id}`}
                         $sideBarIsExpanded={sideBarIsExpanded}
                         $breakingPoint={truncatedBreakingPoint}
                         $isResult={!!row.isResult}
                       >
                         <EditTableButtons
+                          id={row.id}
                           handleEdit={row.handleEdit}
                           handleDelete={row.handleDelete as () => void}
                           permissions={row.permissions}
@@ -361,6 +364,7 @@ const Table = ({
                   ) : (
                     <HtmlTableDataCell
                       data-title={headersWithButtons[key]}
+                      data-testid={`table-data-cell-${key}-${row.id}`}
                       key={`${key}${row.id}`}
                       $sideBarIsExpanded={sideBarIsExpanded}
                       $breakingPoint={truncatedBreakingPoint}
@@ -372,6 +376,7 @@ const Table = ({
                 ) : (
                   <HtmlTableBodyHeaderCell
                     key={`${key}${row.id}`}
+                    data-testid={`table-data-cell-${key}-${row.id}`}
                     $sideBarIsExpanded={sideBarIsExpanded}
                     $breakingPoint={truncatedBreakingPoint}
                     $isResult={!!row.isResult}

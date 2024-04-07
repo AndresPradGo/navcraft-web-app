@@ -110,6 +110,7 @@ const SortButton = ({ sortOptions, selectedSortData, dispatch }: Props) => {
         {sortOptions.map((sortColumn, index) => (
           <HtmlListItem
             key={sortColumn.key}
+            data-testid={`table-sortBy-option-${sortColumn.key}`}
             onClick={() => handleListItemClick(index)}
           >
             {sortColumn.title}
