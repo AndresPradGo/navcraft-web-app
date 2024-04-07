@@ -4,7 +4,7 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import { styled } from 'styled-components';
 
 import Button from '../common/button';
-import useDeleteRunway from './useDeleteRunway';
+import useDeleteRunway from './useDeleterunway';
 import type { ReactIconType } from '../../services/reactIconEntity';
 
 const HtmlContainer = styled.div`
