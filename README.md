@@ -79,19 +79,9 @@ Currently, the forms are all unique components, which leads to some code duplica
 
 ### 3. Testing <img align="center" alt="pytest" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitest/vitest-original.svg" style="max-width: 100%; margin: 0; padding: 0;"/>
 
-The first version of the NavCraft APP doesn't have tests in place. To minimize vulnerabilities, the app uses Typescript for type checking, and the Node.js library Zod for validating user inputs.
+The first version of the NavCraft APP has tests in place for common reusable components. To minimize vulnerabilities, the app uses Typescript for type checking, and the Node.js library Zod for validating user inputs.
 
-Nevertheless, due to the high amount of data the application handles, testing the react components' behavior under different scenarios has become a priority before adding more features. The three testing priorities, in no particular order, are:
-
-- Test the functionality of reusable components such as:
-
-  - Searching, filtering, sorting and pagination of tables.
-  - Buttons' functionality and rendering/disabling under certain conditions such as user privileges.
-  - Sidebar, navbar and modal functionality.
-
-- Set up a Mock Service Worker and test the pages that make API calls.
-
-- Test the rendering, behavior and submission of forms.
+We are currently looking to Test the rendering, behavior and submission of forms.
 
 ### 4. VFR Charts 🗺
 
